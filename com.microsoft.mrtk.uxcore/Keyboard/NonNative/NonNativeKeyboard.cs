@@ -113,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         public KeyboardPreview Preview { get; set; }
 
         /// <summary>
-        /// The text entered in the curret keyboard session.
+        /// The text entered in the current keyboard session.
         /// </summary>
         public string Text
         {
@@ -227,7 +227,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         #region Private fields
         /// <summary>
-        /// The keyword recongition subsystem that was stopped by this component.
+        /// The keyword recognition subsystem that was stopped by this component.
         /// </summary>
         private KeywordRecognitionSubsystem keywordRecognitionSubsystem = null;
 
@@ -620,7 +620,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             if (dictationSubsystem != null && !isRecording)
             {
                 isRecording = true;
-                UpdateDicationRecordIconColor();
+                UpdateDictationRecordIconColor();
 
                 keywordRecognitionSubsystem = XRSubsystemHelpers.KeywordRecognitionSubsystem;
                 if (keywordRecognitionSubsystem != null)
@@ -757,7 +757,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// Set mike recording look (red)
         /// </summary>
-        private void UpdateDicationRecordIconColor()
+        private void UpdateDictationRecordIconColor()
         {
             if (IsDictationAvailable && DictationRecordIcon != null)
             {
@@ -860,7 +860,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <param name="eventData">Dictation event data</param>
         private void OnDictationFinished(DictationSessionEventArgs eventData)
         {
-            HandleDictationationShutdown();
+            HandleDictationShutdown();
         }
 
         /// <summary>
@@ -870,13 +870,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private void OnDictationFaulted(DictationSessionEventArgs eventData)
         {
             Debug.LogError("Dictation faulted. Reason: " + eventData.Reason);
-            HandleDictationationShutdown();
+            HandleDictationShutdown();
         }
 
         /// <summary>
         /// Release references to dictation events
         /// </summary>
-        private void HandleDictationationShutdown()
+        private void HandleDictationShutdown()
         {
             var dictationSubsystem = XRSubsystemHelpers.DictationSubsystem;
             if (dictationSubsystem != null)
@@ -886,7 +886,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 dictationSubsystem.Recognized -= OnDictationRecognizedResult;
 
                 isRecording = false;
-                UpdateDicationRecordIconColor();
+                UpdateDictationRecordIconColor();
             }
 
             if (keywordRecognitionSubsystem != null)

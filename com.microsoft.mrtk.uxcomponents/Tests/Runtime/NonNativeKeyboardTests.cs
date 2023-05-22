@@ -60,20 +60,20 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 		[UnityTest]
 		public IEnumerator TestNonnativeValueKeyShift()
 		{
-			NonNativeValueKey fkey = FindValueKey('f');
-			Assert.IsNotNull(fkey, "Unable to find the 'f' key.");
+			NonNativeValueKey fKey = FindValueKey('f');
+			Assert.IsNotNull(fKey, "Unable to find the 'f' key.");
 
-			TMP_Text textMeshProText = fkey.gameObject.GetComponentInChildren<TMP_Text>();
-			Assert.AreEqual(fkey.CurrentValue, "f", "Current value is set correctly");
+			TMP_Text textMeshProText = fKey.gameObject.GetComponentInChildren<TMP_Text>();
+			Assert.AreEqual(fKey.CurrentValue, "f", "Current value is set correctly");
 			Assert.AreEqual(textMeshProText.text, "f", "TMP text is set correctly");
 
             yield return TypeFunctionKey(NonNativeFunctionKey.Function.Shift);
-			Assert.AreEqual(fkey.CurrentValue, "F", "Current value shifts correctly");
+			Assert.AreEqual(fKey.CurrentValue, "F", "Current value shifts correctly");
 			Assert.AreEqual(textMeshProText.text, "F", "TMP text shifts correctly");
 
             yield return TypeFunctionKey(NonNativeFunctionKey.Function.Shift);
-            Assert.AreEqual(fkey.CurrentValue, "f", "Current value is unshifts correctly");
-			Assert.AreEqual(textMeshProText.text, "f", "TMP text unshifts correctly");
+            Assert.AreEqual(fKey.CurrentValue, "f", "Current value is un-shifts correctly");
+			Assert.AreEqual(textMeshProText.text, "f", "TMP text un-shifts correctly");
 		}
 
 		[UnityTest]
@@ -172,8 +172,8 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 		[UnityTest]
 		public IEnumerator TestNonnativeCloseFunctionKey()
 		{
-			NonNativeFunctionKey closekey = FindFunctionKey(NonNativeFunctionKey.Function.Close);
-			testKeyboard.ProcessFunctionKeyPress(closekey);
+			NonNativeFunctionKey closeKey = FindFunctionKey(NonNativeFunctionKey.Function.Close);
+			testKeyboard.ProcessFunctionKeyPress(closeKey);
 
 			Assert.AreEqual(keyboardPreview.Text, "", "The input field is cleared.");
 			Assert.IsTrue(!testKeyboard.gameObject.activeInHierarchy, "The keyboard is inactive.");
@@ -196,8 +196,8 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 		public IEnumerator TestNonnativeKeyboardSubmitOnEnter()
 		{
 			testKeyboard.SubmitOnEnter = true;
-			NonNativeFunctionKey enterkey = FindFunctionKey(NonNativeFunctionKey.Function.Enter);
-			testKeyboard.ProcessFunctionKeyPress(enterkey);
+			NonNativeFunctionKey enterKey = FindFunctionKey(NonNativeFunctionKey.Function.Enter);
+			testKeyboard.ProcessFunctionKeyPress(enterKey);
 
 			Assert.AreEqual(keyboardPreview.Text, "", "The input field is cleared.");
 			Assert.IsTrue(!testKeyboard.gameObject.activeInHierarchy, "The keyboard is inactive.");
@@ -282,7 +282,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             var newCursorPosition3 = keyboardPreview.PreviewCaret.localPosition;
             TestCursorHorizontalPositionsEqual(startCursorPosition, newCursorPosition3, "Cursor transform did not move back to the front with a new line character");
-            Assert.IsTrue(newCursorPosition3.y == -newLabelPosition3.y, "Cursor transform should not move up or down while typing, when considering label movement. Note, the caret's parent shoud be the text label.");
+            Assert.IsTrue(newCursorPosition3.y == -newLabelPosition3.y, "Cursor transform should not move up or down while typing, when considering label movement. Note, the caret's parent should be the text label.");
 
             var testString3 = "Some more text.";
             yield return TypeString(testString3);
@@ -341,7 +341,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
         private void TestCursorHorizontalPositionsEqual(Vector3 start, Vector3 end, string message)
         {
-            // due to how cursor postions are calculated, the cursor may not end up at the exact position if move forward and then back.
+            // due to how cursor positions are calculated, the cursor may not end up at the exact position if move forward and then back.
             float acceptableDelta = 1.5f;
             float delta = Mathf.Abs(start.x - end.x);
             Assert.IsTrue(delta <= acceptableDelta, message);
@@ -383,12 +383,12 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         private IEnumerator TypeStringWithHand(TestHand hand, string text)
         {
             // transform's position is in upper left corner. Adjust slightly so hand ray points at the correct key
-            Vector3 adjusments = new Vector3(10f, -10f, 0f);
+            Vector3 adjustments = new Vector3(10f, -10f, 0f);
 
             foreach (char c in text)
             {
                 NonNativeValueKey key = FindValueKey(c);
-                yield return hand.AimAt(key.transform.parent.TransformPoint(key.transform.localPosition + adjusments));
+                yield return hand.AimAt(key.transform.parent.TransformPoint(key.transform.localPosition + adjustments));
                 yield return RuntimeTestUtilities.WaitForUpdates();
                 yield return hand.SetHandshape(HandshapeId.Pinch);
                 yield return RuntimeTestUtilities.WaitForUpdates();

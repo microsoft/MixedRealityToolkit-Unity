@@ -223,7 +223,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// Move the caret transform immediately before the currently focused character.
         /// </summary>
         /// <remarks>
-        /// If Right-To-Left text is enabled, this will adjust x-cordinates accordingly.
+        /// If Right-To-Left text is enabled, this will adjust x-coordinate accordingly.
         /// </remarks>
         private void UpdateCaret(
             ref TMP_TextInfo textInfo,
@@ -249,13 +249,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
 
             float caretPositionX;
-            float caretPoistionY = lineInfo.baseline - textInfo.lineInfo[0].baseline;
+            float caretPositionY = lineInfo.baseline - textInfo.lineInfo[0].baseline;
 
             // if at end of line, text info doesn't go to a new line info, so account for this.
             if (AtEmptyNewLine(ref lineInfo, ref prevChar))
             {
                 caretPositionX = focusedLineStart;
-                caretPoistionY -= lineInfo.lineHeight;
+                caretPositionY -= lineInfo.lineHeight;
             }
             else if (AtStartOfLine(ref lineInfo, ref prevChar))
             {
@@ -266,14 +266,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 caretPositionX = focusedLineCurrentChar;
             }
 
-            PreviewCaret.anchoredPosition = new Vector2(caretPositionX, caretPoistionY);
+            PreviewCaret.anchoredPosition = new Vector2(caretPositionX, caretPositionY);
         }
 
         /// <summary>
         /// Move the caret transform to the start of the text.
         /// </summary>
         /// <remarks>
-        /// If Right-To-Left text is enabled, this will adjust x-cordinates accordingly.
+        /// If Right-To-Left text is enabled, this will adjust x-coordinates accordingly.
         /// </remarks>
         private void ResetCaret()
         {
@@ -291,7 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// Move the text label transform so that the currently focus character is visible.
         /// </summary>
         /// <remarks>
-        /// If Right-To-Left text is enabled, this will adjust x-cordinates accordingly.
+        /// If Right-To-Left text is enabled, this will adjust x-coordinates accordingly.
         /// </remarks>
         private void ScrollView(
             ref TMP_TextInfo textInfo,
@@ -362,7 +362,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         /// <summary>
-        /// Continuously blink the caret gameobject until it is destroyed.
+        /// Continuously blink the caret game object until it is destroyed.
         /// </summary>
         private IEnumerator BlinkCaret()
         {
@@ -378,7 +378,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         /// <summary>
         /// If there is a follow solver and a solver handler, update their properties so that the KeyboardPreview transform
-        /// moves ontop of the system's native's keyboard.
+        /// moves on top of the system's native's keyboard.
         /// </summary>
         private void ApplyShellSolverParameters()
         {

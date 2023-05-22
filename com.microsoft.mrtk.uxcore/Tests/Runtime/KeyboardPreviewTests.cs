@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         {
             Assert.IsNotNull(keyboardPreview, "KeyboardPreview was not created.");
             yield return Initialize();
-            Assert.IsNotNull(keyboardPreview, "KeyboardPreview was destroyed uunexceptedly.");
+            Assert.IsNotNull(keyboardPreview, "KeyboardPreview was destroyed unexpectedly.");
         }
 
         [UnityTest]
