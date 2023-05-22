@@ -23,29 +23,11 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$PackageRoot,
 
-    [string]$OutputDirectory = "./artifacts/upm",
-
-    [ValidatePattern("\d+\.\d+\.\d+")]
-    [string]$Version,
-
-    [ValidatePattern("\d+")]
-    [string]$BuildNumber,
-
-    [ValidatePattern("[A-Za-z]+\.\d+[\.\d+]*")]
-    [string]$PreviewTag,
-    
-    [string]$Revision,
-
-    [string]$ReleasePackages = ""    
+    [string]$OutputDirectory = "./artifacts/upm/release" 
 )
-$releasePkgs = $ReleasePackages.Split(",")
+
 $versionHash = @{}
 $PackageRoot = Resolve-Path -Path $PackageRoot
-
-
-if ($BuildNumber) {
-    $BuildNumber = ".$BuildNumber"
-}
 
 if (-not (Test-Path $OutputDirectory -PathType Container)) {
     New-Item $OutputDirectory -ItemType Directory | Out-Null
@@ -69,6 +51,7 @@ try {
         tar -xzf $_ -C (Join-Path $repackTempDirectory $_.BaseName)
     }
     $packageSearchPath = "$repackTempDirectory\*\package\package.json"
+    Write-Output "PackageSearchPath: $packageSearchPath"
 
     Get-ChildItem -Path $packageSearchPath | ForEach-Object {
         $packageName = Select-String -Pattern "com\.microsoft\.mrtk\.\w+" -Path $_.FullName | Select-Object -First 1
@@ -87,36 +70,30 @@ try {
         Write-Output "Creating $packageName"
         Write-Output "====================="
 
+        $inlineVersion = Select-String '^.*"version":.*"(?<sem>[0-9]\.[0-9]\.[0-9])-(?<prerelease>prerelease\.)*(?<tag>pre\.\d*)*\.*(?<build>\d{6}\.\d*)' -InputObject (Get-Content -Path $_)
+        $version = $inlineVersion.Matches[0].Groups['sem'].Value
+        $prerelease = $inlineVersion.Matches[0].Groups['prerelease'].Value
+        $tag = $inlineVersion.Matches[0].Groups['tag'].Value
+        $build = $inlineVersion.Matches[0].Groups['build'].Value
 
-        $inlineVersion = Select-String '"version" *: *"([0-9.]+)(-?[a-zA-Z0-9.]*)' -InputObject (Get-Content -Path $_)
-        $Version = $inlineVersion.Matches.Groups[1].Value
-        $suffix = $inlineVersion.Matches.Groups[2].Value
-
-        
-        if (!$releasePkgs.Contains( $packageName )) {
-            $preview = "$PreviewTag."
-            Write-Output "Version preview: $preview"
-        } else {
-            $preview = ""
+        if ($tag) {
+            $tag = "-$tag"
         }
 
-        $buildTag = "$preview$Revision"
-        Write-Output "buildTag: $buildTag"
+        Write-Output "Version: $version   prerelease: $prerelease   tag: $tag   build: $build"
+        
+        $versionHash[$packageName]=$version
 
+        Write-Output " Version: $version"
+        
+        Write-Output "Patching package version to $version$tag"
+        ((Get-Content -Path $_ -Raw) -Replace '("version": )"(?:[0-9.]+|%version%)-?[a-zA-Z0-9.]*', "`$1`"$version$tag") | Set-Content -Path $_ -NoNewline
 
-        $versionHash[$packageName]=$Version
-
-        Write-Output " Version: $Version"
-        Write-Output " suffix:  $suffix"
-
-        Write-Output "Patching package version to $Version-$buildTag"
-        ((Get-Content -Path $_ -Raw) -Replace '("version": )"(?:[0-9.]+|%version%)-?[a-zA-Z0-9.]*', "`$1`"$Version-$buildTag") | Set-Content -Path $_ -NoNewline
-
-        Write-Output "Patching assembly version to $Version$BuildNumber"
+        Write-Output "Patching assembly version to $version$tag"
         Get-ChildItem -Path $packagePath/AssemblyInfo.cs -Recurse | ForEach-Object {
-            (Get-Content -Path $_ -Raw) -Replace '\[assembly:.AssemblyVersion\(.*', "[assembly: AssemblyVersion(`"$Version.0`")]`r" | Set-Content -Path $_ -NoNewline
-            ((Get-Content -Path $_ -Raw) -Replace "(assembly: AssemblyFileVersion.)`"(?:[0-9.]+)", "`$1`"$Version$BuildNumber") | Set-Content -Path $_ -NoNewline
-            ((Get-Content -Path $_ -Raw) -Replace "(assembly: AssemblyInformationalVersion.)`"(?:[0-9.]+)-?[a-zA-Z0-9.]*", "`$1`"$Version-$buildTag") | Set-Content -Path $_ -NoNewline
+            (Get-Content -Path $_ -Raw) -Replace '\[assembly:.AssemblyVersion\(.*', "[assembly: AssemblyVersion(`"$version.0`")]`r" | Set-Content -Path $_ -NoNewline
+            ((Get-Content -Path $_ -Raw) -Replace "assembly: AssemblyFileVersion\`(\`".*\`"", "assembly: AssemblyFileVersion(`"$version$tag`"") | Set-Content -Path $_ -NoNewline
+            ((Get-Content -Path $_ -Raw) -Replace "assembly: AssemblyInformationalVersion\`(\`".*\`"", "assembly: AssemblyInformationalVersion(`"$version$tag`"") | Set-Content -Path $_ -NoNewline
         }
 
         Write-Output "Packing $packageFriendlyName to $OutputDirectory"
