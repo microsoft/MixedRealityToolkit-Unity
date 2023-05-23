@@ -2217,7 +2217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a69521b3ce9adad4da2e79bb15ae34ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DialogPrefab>k__BackingField: {fileID: 6930810733556124559, guid: cca6164bb2744884a92a100266f5f3aa, type: 3}
+  <DialogPrefab>k__BackingField: {fileID: 8529335236329353063, guid: b18a8137ff3b1c441948d57f752d44a7, type: 3}
 --- !u!114 &1547517352
 MonoBehaviour:
   m_ObjectHideFlags: 0
