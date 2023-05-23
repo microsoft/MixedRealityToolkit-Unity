@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using TMPro;
+using Microsoft.MixedReality.Toolkit.Subsystems;
+using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using static Microsoft.MixedReality.Toolkit.UX.NonNativeFunctionKey;
-using Microsoft.MixedReality.Toolkit.Subsystems;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
@@ -69,6 +70,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
         public NonNativeKeyboardTextEvent OnTextUpdate { get; private set; }
 
         /// <summary>
+        /// Fired every time the caret index changes.
+        /// </summary>
+        [field: SerializeField, Tooltip("Fired every time the caret index changes.")]
+        public NonNativeKeyboardIntEvent OnCaretIndexUpdate { get; private set; }
+
+        /// <summary>
         /// Fired every time the close button is pressed.
         /// </summary>
         [field: SerializeField, Tooltip("Fired every time the close button is pressed.")]
@@ -95,26 +102,56 @@ namespace Microsoft.MixedReality.Toolkit.UX
         #endregion Callbacks
 
         #region Properties
+        /// <summary>
+        /// The preview component that the keyboard uses to show the currently edited text.
+        /// </summary>
+        /// <remarks>
+        /// Text will be stored in this component, so this component must to assigned for the keyboard to function.
+        /// The default Non-native Keyboard prefab sets this field by default.
+        /// </remarks>
+        [field: SerializeField, Tooltip("The preview component that the keyboard uses to show the currently edited text.")]
+        public KeyboardPreview Preview { get; set; }
 
         /// <summary>
-        /// The InputField that the keyboard uses to show the currently edited text.
-        /// If you are using the Keyboard prefab you can ignore this field as it will
-        /// be already assigned.
+        /// The text entered in the current keyboard session.
         /// </summary>
-        [field: SerializeField, Tooltip("The input field used to view the typed text.")]
-        public TMP_InputField InputField { get; set; }
-
-
-        /// <summary>
-        /// A wrapper for InputField.text. 
-        /// </summary>
-        [SerializeField, Tooltip("The input field used to view the typed text.")]
         public string Text
         {
-            get => InputField == null ? null : InputField.text;
+            get => text;
             set
             {
-                if (InputField != null) InputField.text = value;
+                if (Preview != null)
+                {
+                    Preview.Text = value;
+                }
+
+                if (text != value)
+                {
+                    text = value;
+                    DoTextUpdated(value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// The caret index for the current keyboard session.
+        /// </summary>
+        public int CaretIndex
+        {
+            get => caretIndex;
+
+            private set
+            {
+                if (Preview != null)
+                {
+                    Preview.CaretIndex = value;
+                }
+
+                if (caretIndex != value)
+                {
+                    caretIndex = value;
+                    DoCaretIndexUpdated(value);
+                }
             }
         }
 
@@ -145,6 +182,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// Accessor reporting caps lock state of keyboard.
         /// </summary>
         public bool IsCapsLocked { get; private set; }
+
+        /// <summary>
+        /// Get if the dictation services are available for this device.
+        /// </summary>
+        private bool IsDictationAvailable => XRSubsystemHelpers.DictationSubsystem != null;
 
         /// <summary>
         /// The panel that contains the alpha keys.
@@ -185,19 +227,19 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         #region Private fields
         /// <summary>
-        /// Dictation System
+        /// The keyword recognition subsystem that was stopped by this component.
         /// </summary>
-        private DictationSubsystem dictationSubsystem;
+        private KeywordRecognitionSubsystem keywordRecognitionSubsystem = null;
 
         /// <summary>
-        /// Tracks whether or not dictation is enabled.
-        /// </summary>        
-        private bool isDictationEnabled = false;
+        /// The inner text value set via the `Text` property
+        /// </summary>
+        private string text = string.Empty;
 
         /// <summary>
-        /// The default color of the mike key.
+        /// The default color of the mic key.
         /// </summary>        
-        private Color defaultColor;
+        private Color dictationRecordIconDefaultColor;
 
         /// <summary>
         /// Tracks whether or not dictation is actively recording.
@@ -210,13 +252,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private bool firstRecording = true;
 
         /// <summary>
-        /// The position of the caret in the text field.
-        /// </summary>
-        private int m_CaretPosition = 0;
-
-        /// <summary>
         /// Tracking the previous keyboard layout.
         /// </summary>
+        /// <summary>
+        /// The inner caret index set via the `CaretIndex` property
+        /// </summary>
+        private int caretIndex = 0;
+
         private LayoutType lastKeyboardLayout = LayoutType.Alpha;
 
         /// <summary>
@@ -239,40 +281,34 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
             if (DictationRecordIcon != null)
             {
-                defaultColor = DictationRecordIcon.material.color;
-            }
-
-            if (InputField != null)
-            {
-                // Setting the keyboardType to an undefined TouchScreenKeyboardType,
-                // which prevents the MRTK keyboard from triggering the system keyboard itself.
-                InputField.keyboardType = (TouchScreenKeyboardType)(-1);
-            }
-            else
-            {
-                Debug.LogError("You must set an input field for the NonNativeKeyboard.");
+                dictationRecordIconDefaultColor = DictationRecordIcon.material.color;
             }
 
             if (OnKeyPressed == null)
             {
                 OnKeyPressed = new NonNativeKeyboardPressEvent();
             }
+
             if (OnTextSubmit == null)
             {
                 OnTextSubmit = new NonNativeKeyboardTextEvent();
             }
+
             if (OnTextUpdate == null)
             {
                 OnTextUpdate = new NonNativeKeyboardTextEvent();
             }
+
             if (OnClose == null)
             {
                 OnTextUpdate = new NonNativeKeyboardTextEvent();
             }
+
             if (OnShow == null)
             {
                 OnShow = new UnityEvent();
             }
+
             if (OnKeyboardShifted == null)
             {
                 OnKeyboardShifted = new NonNativeKeyboardShiftEvent();
@@ -287,21 +323,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         protected void Start()
         {
-
-            dictationSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<DictationSubsystem>();
-            if (dictationSubsystem != null)
+            if (DictationRecordIcon != null)
             {
-                isDictationEnabled = true;
-            }
-            else
-            {
-                DictationRecordIcon.gameObject.SetActive(false);
-            }
-
-            // Delegate Subscription
-            if (InputField != null)
-            {
-                InputField.onValueChanged.AddListener(DoTextUpdated);
+                DictationRecordIcon.gameObject.SetActive(IsDictationAvailable);
             }
         }
 
@@ -312,18 +336,23 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <param name="value">String value.</param>
         private void DoTextUpdated(string value) => OnTextUpdate?.Invoke(value);
 
+        /// <summary>
+        /// Intermediary function for caret index update events.
+        /// </summary>
+        /// <param name="value">Integer value.</param>
+        private void DoCaretIndexUpdated(int value) => OnCaretIndexUpdate?.Invoke(value);
+
         private void LateUpdate()
         {
             CheckForCloseOnInactivityTimeExpired();
         }
-
-        private void UpdateCaretPosition(int newPos) => InputField.caretPosition = newPos;
 
         private void OnDisable()
         {
             // Reset the keyboard layout for next use
             lastKeyboardLayout = LayoutType.Alpha;
             Clear();
+            StopDictation();
         }
 
         private void OnDestroy()
@@ -354,12 +383,20 @@ namespace Microsoft.MixedReality.Toolkit.UX
         public void Open(string startText)
         {
             Clear();
-            if (InputField != null)
-            {
-                Text = startText;
-                UpdateCaretPosition(Text.Length);
-            }
+            Text = startText;
             Open();
+        }
+
+        /// <summary>
+        /// Opens a specific keyboard, with start text.
+        /// </summary>
+        /// <param name="startText">The initial text to put into <see cref="Text"/>.</param>
+        /// <param name="keyboardType">Specify the keyboard type.</param>
+        public void Open(string startText, LayoutType keyboardType)
+        {
+            Clear();
+            Text = startText;
+            Open(keyboardType);
         }
 
         /// <summary>
@@ -372,30 +409,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
             gameObject.SetActive(true);
             ActivateSpecificKeyboard(keyboardType);
             OnShow?.Invoke();
-
-            if (InputField != null)
-            {
-                InputField.ActivateInputField();
-                UpdateCaretPosition(Text.Length);
-            }
+            CaretIndex = Text.Length;
         }
-
-        /// <summary>
-        /// Opens a specific keyboard, with start text.
-        /// </summary>
-        /// <param name="startText">The initial text to put into <see cref="Text"/>.</param>
-        /// <param name="keyboardType">Specify the keyboard type.</param>
-        public void Open(string startText, LayoutType keyboardType)
-        {
-            Clear();
-            if (InputField != null)
-            {
-                InputField.text = startText;
-                UpdateCaretPosition(Text.Length);
-            }
-            Open(keyboardType);
-        }
-
         #endregion Open Functions
 
         #region Keyboard Functions
@@ -405,28 +420,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public void ProcessValueKeyPress(NonNativeValueKey valueKey)
         {
-            if (InputField != null)
+            ResetClosingTime();
+            OnKeyPressed?.Invoke(valueKey);
+            Text = Text.Insert(CaretIndex, valueKey.CurrentValue);
+            CaretIndex += valueKey.CurrentValue.Length;
+
+            if (!IsCapsLocked)
             {
-                ResetClosingTime();
-                OnKeyPressed?.Invoke(valueKey);
-
-                if (InputField != null)
-                {
-                    m_CaretPosition = InputField.caretPosition;
-                    Text = Text.Insert(m_CaretPosition, valueKey.CurrentValue);
-                    m_CaretPosition += valueKey.CurrentValue.Length;
-
-                    UpdateCaretPosition(m_CaretPosition);
-                }
-
-                if (!IsCapsLocked)
-                {
-                    Shift(false);
-                }
-            }
-            else
-            {
-                Debug.LogError("You must set an input field for the NonNativeKeyboard.");
+                Shift(false);
             }
         }
 
@@ -435,85 +436,60 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public void ProcessFunctionKeyPress(NonNativeFunctionKey functionKey)
         {
-            if (InputField != null)
+            ResetClosingTime();
+            OnKeyPressed?.Invoke(functionKey);
+            switch (functionKey.KeyFunction)
             {
-                ResetClosingTime();
-                OnKeyPressed?.Invoke(functionKey);
-                switch (functionKey.KeyFunction)
-                {
-                    case Function.Enter:
-                        Enter();
-                        break;
+                case Function.Enter:
+                    Enter();
+                    break;
 
-                    case Function.Tab:
-                        Tab();
-                        break;
+                case Function.Tab:
+                    Tab();
+                    break;
 
-                    case Function.Alpha:
-                        ActivateSpecificKeyboard(lastKeyboardLayout);
-                        break;
+                case Function.Alpha:
+                    ActivateSpecificKeyboard(lastKeyboardLayout);
+                    break;
 
-                    case Function.Symbol:
-                        ActivateSpecificKeyboard(LayoutType.Symbol);
-                        break;
+                case Function.Symbol:
+                    ActivateSpecificKeyboard(LayoutType.Symbol);
+                    break;
 
-                    case Function.Previous:
-                        {
-                            MoveCaretLeft();
-                            break;
-                        }
+                case Function.Previous:
+                     MoveCaretLeft();
+                    break;
+                case Function.Next:
+                    MoveCaretRight();
+                    break;
+                case Function.Close:
+                    Close();
+                    break;
 
-                    case Function.Next:
-                        {
-                            MoveCaretRight();
-                            break;
-                        }
+                case Function.Shift:
+                    Shift(!IsShifted);
+                    break;
 
-                    case Function.Close:
-                        Close();
-                        break;
+                case Function.CapsLock:
+                    CapsLock(!IsCapsLocked);
+                    break;
 
-                    case Function.Shift:
-                        Shift(!IsShifted);
-                        break;
+                case Function.Space:
+                    Space();
+                    break;
 
-                    case Function.CapsLock:
-                        CapsLock(!IsCapsLocked);
-                        break;
+                case Function.Backspace:
+                    Backspace();
+                    break;
 
-                    case Function.Space:
-                        Space();
-                        break;
+                case Function.Dictate:
+                    ToggleDictation();
+                    break;
 
-                    case Function.Backspace:
-                        Backspace();
-                        break;
-
-                    case Function.Dictate:
-                        {
-                            if (isDictationEnabled)
-                            {
-                                if (isRecording)
-                                {
-                                    EndDictation();
-                                }
-                                else
-                                {
-                                    BeginDictation();
-                                }
-                            }
-                            break;
-                        }
-
-                    case Function.Undefined:
-                    default:
-                        Debug.LogErrorFormat("The {0} key on this keyboard hasn't been assigned a function.", functionKey.name);
-                        break;
-                }
-            }
-            else
-            {
-                Debug.LogError("You must set an input field for the NonNativeKeyboard.");
+                case Function.Undefined:
+                default:
+                    Debug.LogErrorFormat("The {0} key on this keyboard hasn't been assigned a function.", functionKey.name);
+                    break;
             }
         }
 
@@ -522,34 +498,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public void Backspace()
         {
-            // check if text is selected
-            if (InputField.selectionFocusPosition != InputField.caretPosition || InputField.selectionAnchorPosition != InputField.caretPosition)
+            int caretPosition = CaretIndex;
+            if (caretPosition > 0)
             {
-                if (InputField.selectionAnchorPosition > InputField.selectionFocusPosition) // right to left
-                {
-                    Text = Text.Substring(0, InputField.selectionFocusPosition) + Text.Substring(InputField.selectionAnchorPosition);
-                    InputField.caretPosition = InputField.selectionFocusPosition;
-                }
-                else // left to right
-                {
-                    Text = Text.Substring(0, InputField.selectionAnchorPosition) + Text.Substring(InputField.selectionFocusPosition);
-                    InputField.caretPosition = InputField.selectionAnchorPosition;
-                }
-
-                m_CaretPosition = InputField.caretPosition;
-                InputField.selectionAnchorPosition = m_CaretPosition;
-                InputField.selectionFocusPosition = m_CaretPosition;
-            }
-            else
-            {
-                m_CaretPosition = InputField.caretPosition;
-
-                if (m_CaretPosition > 0)
-                {
-                    --m_CaretPosition;
-                    Text = Text.Remove(m_CaretPosition, 1);
-                    UpdateCaretPosition(m_CaretPosition);
-                }
+                --caretPosition;
+                Text = Text.Remove(caretPosition, 1);
+                CaretIndex = caretPosition;
             }
         }
 
@@ -567,13 +521,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
             else
             {
                 string enterString = "\n";
-
-                m_CaretPosition = InputField.caretPosition;
-
-                Text = Text.Insert(m_CaretPosition, enterString);
-                m_CaretPosition += enterString.Length;
-
-                UpdateCaretPosition(m_CaretPosition);
+                Text = Text.Insert(CaretIndex, enterString);
+                CaretIndex += enterString.Length;
             }
         }
 
@@ -610,10 +559,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public void Space()
         {
-            m_CaretPosition = InputField.caretPosition;
-            Text = Text.Insert(m_CaretPosition++, " ");
-
-            UpdateCaretPosition(m_CaretPosition);
+            int caretPosition = CaretIndex;
+            Text = Text.Insert(caretPosition++, " ");
+            CaretIndex = caretPosition;
         }
 
         /// <summary>
@@ -622,13 +570,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         public void Tab()
         {
             string tabString = "\t";
-
-            m_CaretPosition = InputField.caretPosition;
-
-            Text = Text.Insert(m_CaretPosition, tabString);
-            m_CaretPosition += tabString.Length;
-
-            UpdateCaretPosition(m_CaretPosition);
+            Text = Text.Insert(CaretIndex, tabString);
+            CaretIndex += tabString.Length;
         }
 
         /// <summary>
@@ -636,12 +579,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public void MoveCaretRight()
         {
-            m_CaretPosition = InputField.caretPosition;
-
-            if (m_CaretPosition < Text.Length)
+            if (CaretIndex < Text.Length)
             {
-                ++m_CaretPosition;
-                UpdateCaretPosition(m_CaretPosition);
+                CaretIndex++;
             }
         }
 
@@ -650,12 +590,61 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public void MoveCaretLeft()
         {
-            m_CaretPosition = InputField.caretPosition;
-
-            if (m_CaretPosition > 0)
+            if (CaretIndex > 0)
             {
-                --m_CaretPosition;
-                UpdateCaretPosition(m_CaretPosition);
+                --CaretIndex;
+            }
+        }
+
+        /// <summary>
+        /// Toggle dictation on or off,
+        /// </summary>
+        public void ToggleDictation()
+        {
+            if (isRecording)
+            {
+                StopDictation();
+            }
+            else
+            {
+                StartDictation();
+            }
+        }
+
+        /// <summary>
+        /// Start dictation on a DictationSubsystem.
+        /// </summary>
+        public void StartDictation()
+        {
+            var dictationSubsystem = XRSubsystemHelpers.DictationSubsystem;
+            if (dictationSubsystem != null && !isRecording)
+            {
+                isRecording = true;
+                UpdateDictationRecordIconColor();
+
+                keywordRecognitionSubsystem = XRSubsystemHelpers.KeywordRecognitionSubsystem;
+                if (keywordRecognitionSubsystem != null)
+                {
+                    keywordRecognitionSubsystem.Stop();
+                }
+
+                ResetClosingTime();
+                dictationSubsystem.Recognized += OnDictationRecognizedResult;
+                dictationSubsystem.RecognitionFinished += OnDictationFinished;
+                dictationSubsystem.RecognitionFaulted += OnDictationFaulted;
+                dictationSubsystem.StartDictation();
+            }
+        }
+
+        /// <summary>
+        /// Stop dictation on the current DictationSubsystem.
+        /// </summary>
+        public void StopDictation()
+        {
+            var dictationSubsystem = XRSubsystemHelpers.DictationSubsystem;
+            if (dictationSubsystem != null)
+            {
+                dictationSubsystem.StopDictation();
             }
         }
 
@@ -664,15 +653,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public void Close()
         {
-            if (isRecording)
-            {
-                StopRecognition();
-            }
-            SetMicrophoneDefault();
-            if (InputField != null)
-            {
-                OnClose.Invoke(Text);
-            }
+            StopDictation();
+            OnClose.Invoke(Text);
             gameObject.SetActive(false);
         }
 
@@ -681,13 +663,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public void Clear()
         {
-            if (InputField != null)
-            {
-                ResetKeyboardState();
-                Text = "";
-                UpdateCaretPosition(Text.Length);
-                m_CaretPosition = InputField.caretPosition;
-            }
+            ResetKeyboardState();
+            Text = string.Empty;
+            CaretIndex = Text.Length;
         }
 
         #endregion Keyboard Functions
@@ -775,127 +753,16 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         #endregion Keyboard Layout Modes
 
-        #region Dictation
-        /// <summary>
-        /// Start dictation on a DictationSubsystem.
-        /// </summary>
-        public void StartRecognition()
-        {
-            // Make sure there isn't an ongoing recognition session
-            StopRecognition();
-
-            if (dictationSubsystem != null)
-            {
-                dictationSubsystem.Recognized += OnDictationResult;
-                dictationSubsystem.RecognitionFinished += OnDictationComplete;
-                dictationSubsystem.RecognitionFaulted += OnDictationFaulted;
-                dictationSubsystem.StartDictation();
-            }
-            else
-            {
-                Debug.LogError("Cannot find a running DictationSubsystem. Please check the MRTK profile settings " +
-                    "(Project Settings -> MRTK3) and/or ensure a DictationSubsystem is running.");
-            }
-        }
-
-        /// <summary>
-        /// Stop dictation on the current DictationSubsystem.
-        /// </summary>
-        public void StopRecognition()
-        {
-            if (dictationSubsystem != null)
-            {
-                dictationSubsystem.StopDictation();
-                dictationSubsystem.Recognized -= OnDictationResult;
-                dictationSubsystem.RecognitionFinished -= OnDictationComplete;
-                dictationSubsystem.RecognitionFaulted -= OnDictationFaulted;
-            }
-        }
-
-        /// <summary>
-        /// Called when dictation result is obtained
-        /// </summary>
-        /// <param name="eventData">Dictation event data</param>
-        public void OnDictationResult(DictationResultEventArgs eventData)
-        {
-            var text = eventData.Result;
-            ResetClosingTime();
-            if (text != null)
-            {
-                m_CaretPosition = InputField.caretPosition;
-
-                Text = Text.Insert(m_CaretPosition, text);
-                m_CaretPosition += text.Length;
-
-                UpdateCaretPosition(m_CaretPosition);
-            }
-        }
-
-        /// <summary>
-        /// Called when dictation is completed
-        /// </summary>
-        /// <param name="eventData">Dictation event data</param>
-        public void OnDictationComplete(DictationSessionEventArgs eventData)
-        {
-            ResetClosingTime();
-            SetMicrophoneDefault();
-        }
-
-
-        /// <summary>
-        /// Called when dictation is faulted
-        /// </summary>
-        /// <param name="eventData">Dictation event data</param>
-        public void OnDictationFaulted(DictationSessionEventArgs eventData)
-        {
-            Debug.LogError("Dictation faulted. Reason: " + eventData.Reason);
-            ResetClosingTime();
-            SetMicrophoneDefault();
-        }
-        #endregion Dictation
-
         #region Private Functions
-        /// <summary>
-        /// Initialize dictation mode.
-        /// </summary>
-        private void BeginDictation()
-        {
-            ResetClosingTime();
-            StartRecognition();
-            SetMicrophoneRecording();
-        }
-
-        /// <summary>
-        /// Set mike default look
-        /// </summary>
-        private void SetMicrophoneDefault()
-        {
-            if (defaultColor != null && DictationRecordIcon != null)
-            {
-                DictationRecordIcon.color = defaultColor;
-            }
-            isRecording = false;
-        }
-
         /// <summary>
         /// Set mike recording look (red)
         /// </summary>
-        private void SetMicrophoneRecording()
+        private void UpdateDictationRecordIconColor()
         {
-            if (DictationRecordIcon != null)
+            if (IsDictationAvailable && DictationRecordIcon != null)
             {
-                DictationRecordIcon.color = Color.red;
+                DictationRecordIcon.color = isRecording ? Color.red : dictationRecordIconDefaultColor;
             }
-            isRecording = true;
-        }
-
-        /// <summary>
-        /// Terminate dictation mode.
-        /// </summary>
-        private void EndDictation()
-        {
-            StopRecognition();
-            SetMicrophoneDefault();
         }
 
         /// <summary>
@@ -968,6 +835,64 @@ namespace Microsoft.MixedReality.Toolkit.UX
             if (Time.time > timeToClose && CloseOnInactivity)
             {
                 Close();
+            }
+        }
+
+        /// <summary>
+        /// Called when dictation result is obtained
+        /// </summary>
+        /// <param name="eventData">Dictation event data</param>
+        private void OnDictationRecognizedResult(DictationResultEventArgs eventData)
+        {
+            var text = eventData.Result;
+            ResetClosingTime();
+
+            if (!string.IsNullOrEmpty(text))
+            {
+                Text = Text.Insert(CaretIndex, text);
+                CaretIndex += text.Length;
+            }
+        }
+
+        /// <summary>
+        /// Called when dictation is completed
+        /// </summary>
+        /// <param name="eventData">Dictation event data</param>
+        private void OnDictationFinished(DictationSessionEventArgs eventData)
+        {
+            HandleDictationShutdown();
+        }
+
+        /// <summary>
+        /// Called when dictation is faulted
+        /// </summary>
+        /// <param name="eventData">Dictation event data</param>
+        private void OnDictationFaulted(DictationSessionEventArgs eventData)
+        {
+            Debug.LogError("Dictation faulted. Reason: " + eventData.Reason);
+            HandleDictationShutdown();
+        }
+
+        /// <summary>
+        /// Release references to dictation events
+        /// </summary>
+        private void HandleDictationShutdown()
+        {
+            var dictationSubsystem = XRSubsystemHelpers.DictationSubsystem;
+            if (dictationSubsystem != null)
+            {
+                dictationSubsystem.RecognitionFinished -= OnDictationFinished;
+                dictationSubsystem.RecognitionFaulted -= OnDictationFaulted;
+                dictationSubsystem.Recognized -= OnDictationRecognizedResult;
+
+                isRecording = false;
+                UpdateDictationRecordIconColor();
+            }
+
+            if (keywordRecognitionSubsystem != null)
+            {
+                keywordRecognitionSubsystem.Start();
+                keywordRecognitionSubsystem = null;
             }
         }
         #endregion Private Functions
