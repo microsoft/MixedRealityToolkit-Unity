@@ -59,6 +59,10 @@ ExportedObj/
 # Unity3D generated file on crash reports
 sysinfo.txt
 
+# Unity3D Test Runner generated files
+*/[Aa]ssets/InitTestScene*.unity
+*/[Aa]ssets/InitTestScene*.unity.meta
+
 # Builds
 *.apk
 *.aab
