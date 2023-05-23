@@ -155,7 +155,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
             layoutInvalidated = true;
         }
 
-
         private void UpdateLayout()
         {
             if (previewCaret == null || PreviewText == null)
@@ -215,8 +214,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
 
             var lineInfo = textInfo.lineInfo[prevChar.lineNumber];
-            ScrollView(ref textInfo, ref lineInfo, ref prevChar, ref nextChar);
-            UpdateCaret(ref textInfo, ref lineInfo, ref prevChar);
+            ScrollView(textInfo, ref lineInfo, ref prevChar, ref nextChar);
+            UpdateCaret(textInfo, ref lineInfo, ref prevChar);
         }
 
         /// <summary>
@@ -226,7 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// If Right-To-Left text is enabled, this will adjust x-coordinate accordingly.
         /// </remarks>
         private void UpdateCaret(
-            ref TMP_TextInfo textInfo,
+            TMP_TextInfo textInfo,
             ref TMP_LineInfo lineInfo,
             ref TMP_CharacterInfo prevChar)
         {
@@ -294,7 +293,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// If Right-To-Left text is enabled, this will adjust x-coordinates accordingly.
         /// </remarks>
         private void ScrollView(
-            ref TMP_TextInfo textInfo,
+            TMP_TextInfo textInfo,
             ref TMP_LineInfo lineInfo,
             ref TMP_CharacterInfo prevChar,
             ref TMP_CharacterInfo nextChar)
