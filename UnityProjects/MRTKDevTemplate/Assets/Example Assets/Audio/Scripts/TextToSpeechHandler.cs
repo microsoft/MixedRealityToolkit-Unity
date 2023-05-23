@@ -8,8 +8,6 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     using Speech.Windows;
-    using System;
-    using UnityEngine.SubsystemsImplementation.Extensions;
 
     /// <summary>
     /// Demonstration script showing how to subscribe to and handle
@@ -86,15 +84,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 {
                     WindowsTextToSpeechSubsystemConfig winConfig = config as WindowsTextToSpeechSubsystemConfig;
                     if (winConfig != null)
+                    {
                         winConfig.Voice = voice;
 
-                    // Create message
-                    var msg = string.Format(
-                        "This is the {0} voice. It should sound like it's coming from the object you clicked. Feel free to walk around and listen from different angles.",
-                        winConfig.Voice.ToString());
+                        // Create message
+                        var msg = string.Format(
+                            "This is the {0} voice. It should sound like it's coming from the object you clicked. Feel free to walk around and listen from different angles.",
+                            winConfig.Voice.ToString());
 
-                    // Speak message
-                    textToSpeechSubsystem.TrySpeak(msg, audioSource);
+                        // Speak message
+                        textToSpeechSubsystem.TrySpeak(msg, audioSource);
+                    }
                 }
             }
             else
