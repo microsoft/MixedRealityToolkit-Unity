@@ -57,7 +57,7 @@ if (-not (Test-Path $OutputDirectory -PathType Container)) {
 $OutputDirectory = Resolve-Path -Path $OutputDirectory
 Write-Output "OutputDirectory: $OutputDirectory"
 
-Write-Output "Preview packages: $releasePkgs"
+Write-Output "Release packages: $releasePkgs"
 
 try {
     Push-Location $OutputDirectory
