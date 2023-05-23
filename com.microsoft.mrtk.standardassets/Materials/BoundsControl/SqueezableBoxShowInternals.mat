@@ -2,15 +2,20 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: SqueezableBoxShowInternals
   m_Shader: {fileID: 4800000, guid: a68807ff3cc42b24b88efce2b72e9f16, type: 3}
-  m_ShaderKeywords: _ENABLE_EDGE_ _SHOW_INTERNAL_BACK__ON _SHOW_INTERNAL_FRONT__ON
-    _SHOW_INTERNAL__ON _SHRINK_ON_PINCH__ON
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _ENABLE_EDGE_
+  - _SHOW_INTERNAL_BACK__ON
+  - _SHOW_INTERNAL_FRONT__ON
+  - _SHOW_INTERNAL__ON
+  - _SHRINK_ON_PINCH__ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -20,6 +25,7 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs: []
+    m_Ints: []
     m_Floats:
     - _Affordance_Line_Scale_: 2.667
     - _Always_Show_Internal_: 0
