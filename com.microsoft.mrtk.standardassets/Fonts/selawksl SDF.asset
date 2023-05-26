@@ -73,6 +73,7 @@ MonoBehaviour:
     m_StyleName: Semilight
     m_PointSize: 90
     m_Scale: 1
+    m_UnitsPerEM: 0
     m_LineHeight: 108.01758
     m_AscentLine: 89.07715
     m_CapLine: 64
@@ -182,14 +183,15 @@ MonoBehaviour:
   tabSize: 10
 --- !u!21 &7186382491369329732
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: selawksl Atlas Material
   m_Shader: {fileID: 4800000, guid: c5f3f59b19556b3479f929a84f25f776, type: 3}
-  m_ShaderKeywords: 
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -219,6 +221,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _Ambient: 0.5
     - _Bevel: 0.5
