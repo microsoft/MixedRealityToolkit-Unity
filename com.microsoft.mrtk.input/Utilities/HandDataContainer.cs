@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Constructor.
         /// </summary>
-        /// <param name="handNode"></param>
+        /// <param name="handNode">The XRNode the hand data pertains to.</param>
         public HandDataContainer(XRNode handNode)
         {
             HandNode = handNode;
