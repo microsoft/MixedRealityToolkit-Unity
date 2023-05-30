@@ -50,14 +50,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>   
         /// Implemented in derived classes.  This method gets all of the joint poses for the hand.
         /// </summary>
-        /// <param name="joints"></param>
+        /// <param name="joints"> The returned list of HandJointPoses</param>
         /// <returns>True if the query was successful, otherwise false.</returns>
         public abstract bool TryGetEntireHand(out IReadOnlyList<HandJointPose> joints);
 
         /// <summary>   
         /// Implemented in derived classes.  This method gets the specified joint pose.
         /// </summary>
-        /// <param name="joints"></param>
+        /// <param name="joint">The TrackedHandJoint to retrieve the post for.</param>
+        /// <param name="pose">The returned HandJointPose.</param>
         /// <returns>True if the query was successful, otherwise false.</returns>
         public abstract bool TryGetJoint(TrackedHandJoint joint, out HandJointPose pose);
     }
