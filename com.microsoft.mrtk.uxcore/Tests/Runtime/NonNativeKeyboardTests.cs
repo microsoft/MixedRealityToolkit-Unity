@@ -2,12 +2,9 @@
 // Licensed under the MIT License.
 
 using System.Collections;
-using System.Threading.Tasks;
-using Microsoft.MixedReality.Toolkit.Core.Tests;
 using Microsoft.MixedReality.Toolkit.Input.Tests;
 using NUnit.Framework;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.UI;
@@ -27,22 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             GameObject obj = new GameObject("Keyboard");
             obj.AddComponent<Canvas>();
             obj.SetActive(false);
-
-            GameObject inputObj = new GameObject("InputField");
-            inputObj.transform.SetParent(obj.transform, false);
-            MRTKTMPInputField inputfield = inputObj.AddComponent<MRTKTMPInputField>();
-
-            GameObject textObj = new GameObject("InputText");
-            textObj.transform.SetParent(inputObj.transform, false);
-            TextMeshProUGUI text = textObj.AddComponent<TextMeshProUGUI>();
-
             keyboard = obj.AddComponent<NonNativeKeyboard>();
-            keyboard.InputField = inputfield;
-            inputfield.textComponent = text;
-
-            obj.SetActive(true);
-            inputfield.textComponent.ForceMeshUpdate(true);
-
             keyboard.Open();
         }
 
@@ -61,8 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             StatefulInteractable interactable = qkey.gameObject.GetComponentInChildren<StatefulInteractable>();
             interactable.OnClicked.Invoke();
 
-            MRTKTMPInputField inputfield = keyboard.gameObject.GetComponentInChildren<MRTKTMPInputField>();
-            Assert.AreEqual(inputfield.textComponent.text.Substring(0,1), "q", "Pressing key changes InputField text.");
+            Assert.AreEqual(keyboard.Text.Substring(0,1), "q", "Pressing key changes InputField text.");
 
             yield return null;
         }
@@ -94,17 +75,15 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             NonNativeFunctionKey shiftkey = SetUpFunctionKey(NonNativeFunctionKey.Function.Shift);
             yield return null;
 
-            MRTKTMPInputField inputfield = keyboard.gameObject.GetComponentInChildren<MRTKTMPInputField>();
             StatefulInteractable Qinteractable = qkey.gameObject.GetComponentInChildren<StatefulInteractable>();
 
             Qinteractable.OnClicked.Invoke();
-            Assert.AreEqual(inputfield.text, "q", "Values not shifted to start with.");
+            Assert.AreEqual(keyboard.Text, "q", "Values not shifted to start with.");
             keyboard.ProcessFunctionKeyPress(shiftkey);
             Qinteractable.OnClicked.Invoke();
-            Assert.AreEqual(inputfield.text, "qQ", "The Shift function key works");
+            Assert.AreEqual(keyboard.Text, "qQ", "The Shift function key works");
             Qinteractable.OnClicked.Invoke();
-            Assert.AreEqual(inputfield.text, "qQq", "Unshift works correctly");
-
+            Assert.AreEqual(keyboard.Text, "qQq", "Unshift works correctly");
             yield return null;
         }
 
@@ -116,19 +95,18 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             NonNativeFunctionKey shiftkey = SetUpFunctionKey(NonNativeFunctionKey.Function.Shift);
             yield return null;
 
-            MRTKTMPInputField inputfield = keyboard.gameObject.GetComponentInChildren<MRTKTMPInputField>();
             StatefulInteractable Qinteractable = qkey.gameObject.GetComponentInChildren<StatefulInteractable>();
 
             Qinteractable.OnClicked.Invoke();
-            Assert.AreEqual(inputfield.text, "q", "Values not shifted to start with.");
+            Assert.AreEqual(keyboard.Text, "q", "Values not shifted to start with.");
             keyboard.ProcessFunctionKeyPress(capslockkey);
             Qinteractable.OnClicked.Invoke();
-            Assert.AreEqual(inputfield.text, "qQ", "The CapsLock function key works");
+            Assert.AreEqual(keyboard.Text, "qQ", "The CapsLock function key works");
             Qinteractable.OnClicked.Invoke();
-            Assert.AreEqual(inputfield.text, "qQQ", "The CapsLock state remains.");
+            Assert.AreEqual(keyboard.Text, "qQQ", "The CapsLock state remains.");
             keyboard.ProcessFunctionKeyPress(shiftkey);
             Qinteractable.OnClicked.Invoke();
-            Assert.AreEqual(inputfield.text, "qQQq", "The CapsLock state clears properly on shift.");
+            Assert.AreEqual(keyboard.Text, "qQQq", "The CapsLock state clears properly on shift.");
 
             yield return null;
         }
@@ -136,28 +114,25 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         [UnityTest]
         public IEnumerator TestNonnativeSpaceFunctionKey()
         {
-            MRTKTMPInputField inputfield = PressFunctionKey(NonNativeFunctionKey.Function.Space);
+            PressFunctionKey(NonNativeFunctionKey.Function.Space);
             yield return null;
-
-            Assert.AreEqual(inputfield.text, "a b", "The Space function key works.");
+            Assert.AreEqual(keyboard.Text, "a b", "The Space function key works.");
         }
 
         [UnityTest]
         public IEnumerator TestNonnativeEnterFunctionKey()
         {
-            MRTKTMPInputField inputfield = PressFunctionKey(NonNativeFunctionKey.Function.Enter);
+            PressFunctionKey(NonNativeFunctionKey.Function.Enter);
             yield return null;
-
-            Assert.AreEqual(inputfield.text, "a\nb", "The Enter function key works.");
+            Assert.AreEqual(keyboard.Text, "a\nb", "The Enter function key works.");
         }
 
         [UnityTest]
         public IEnumerator TestNonnativeTabFunctionKey()
         {
-            MRTKTMPInputField inputfield = PressFunctionKey(NonNativeFunctionKey.Function.Tab);
+            PressFunctionKey(NonNativeFunctionKey.Function.Tab);
             yield return null;
-
-            Assert.AreEqual(inputfield.text, "a\tb", "The Tab function key works.");
+            Assert.AreEqual(keyboard.Text, "a\tb", "The Tab function key works.");
         }
 
         [UnityTest]
@@ -170,7 +145,6 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             NonNativeFunctionKey nextkey = SetUpFunctionKey(NonNativeFunctionKey.Function.Next);
             yield return null;
 
-            MRTKTMPInputField inputfield = keyboard.gameObject.GetComponentInChildren<MRTKTMPInputField>();
             StatefulInteractable Ainteractable = akey.gameObject.GetComponentInChildren<StatefulInteractable>();
             StatefulInteractable Binteractable = bkey.gameObject.GetComponentInChildren<StatefulInteractable>();
             StatefulInteractable Cinteractable = ckey.gameObject.GetComponentInChildren<StatefulInteractable>();
@@ -179,12 +153,12 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Cinteractable.OnClicked.Invoke();
             keyboard.ProcessFunctionKeyPress(prevkey);
             Binteractable.OnClicked.Invoke();
-            Assert.AreEqual(inputfield.text, "abc", "The Previous function key works.");
+            Assert.AreEqual(keyboard.Text, "abc", "The Previous function key works.");
 
             Ainteractable.OnClicked.Invoke();
             keyboard.ProcessFunctionKeyPress(nextkey);
             Ainteractable.OnClicked.Invoke();
-            Assert.AreEqual(inputfield.text, "abaca", "The Next function key works");
+            Assert.AreEqual(keyboard.Text, "abaca", "The Next function key works");
 
             yield return null;
         }
@@ -224,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             return functionkey;
         }
 
-        private MRTKTMPInputField PressFunctionKey(NonNativeFunctionKey.Function function)
+        private void PressFunctionKey(NonNativeFunctionKey.Function function)
         {
             NonNativeValueKey akey = SetUpValueKey("a", true);
             NonNativeValueKey bkey = SetUpValueKey("b", true);
@@ -235,8 +209,6 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Ainteractable.OnClicked.Invoke();
             keyboard.ProcessFunctionKeyPress(functkey);
             Binteractable.OnClicked.Invoke();
-
-            return keyboard.gameObject.GetComponentInChildren<MRTKTMPInputField>();
         }
     }
 }

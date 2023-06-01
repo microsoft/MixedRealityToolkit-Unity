@@ -9,9 +9,24 @@ namespace Microsoft.MixedReality.Toolkit
     [System.Flags]
     public enum TransformFlags
     {
+        /// <summary>
+        /// No transformations
+        /// </summary>
         None = 0,
+
+        /// <summary>
+        /// Position transformations
+        /// </summary>
         Move = 1 << 0,
+
+        /// <summary>
+        /// Rotation transformations
+        /// </summary>
         Rotate = 1 << 1,
+
+        /// <summary>
+        /// Scale transformations
+        /// </summary>
         Scale = 1 << 2
     }
 

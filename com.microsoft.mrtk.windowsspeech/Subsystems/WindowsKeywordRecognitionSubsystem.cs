@@ -142,6 +142,14 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 {
                     keywordRecognizer.OnPhraseRecognized -= Recognizer_OnPhraseRecognized;
                     keywordRecognizer.Stop();
+
+                    // Calling stop won't shutdown the recognition system after it has started.
+                    // This recognition system should be shut down when not in use, so that
+                    // things like dictation can occur.
+                    if (PhraseRecognitionSystem.isSupported)
+                    {
+                        PhraseRecognitionSystem.Shutdown();
+                    }
                 }
 #if MSFT_OPENXR_1_5_0_OR_NEWER
                 if (selectKeywordRecognizer != null)

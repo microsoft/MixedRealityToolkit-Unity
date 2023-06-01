@@ -9,6 +9,9 @@ using UnityEngine.SubsystemsImplementation;
 
 namespace Microsoft.MixedReality.Toolkit.Subsystems
 {
+    /// <summary>
+    /// A subsystem to enable text-to-speech.
+    /// </summary>
     [Preserve]
     public class TextToSpeechSubsystem :
         MRTKSubsystem<TextToSpeechSubsystem, TextToSpeechSubsystemDescriptor, TextToSpeechSubsystem.Provider>,
@@ -20,6 +23,9 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         public TextToSpeechSubsystem()
         { }
 
+        /// <summary>
+        /// An abstract class for the provider that will implement the ITextToSpeechSubsystem.
+        /// </summary>
         [Preserve]
         public abstract class Provider : MRTKSubsystemProvider<TextToSpeechSubsystem>, ITextToSpeechSubsystem
         {

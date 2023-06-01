@@ -2,203 +2,361 @@
 // Licensed under the MIT License.
 
 using System.Collections;
+using System.Threading.Tasks;
 using Microsoft.MixedReality.Toolkit.Core.Tests;
 using Microsoft.MixedReality.Toolkit.Input.Tests;
 using NUnit.Framework;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
+using UnityEngine.XR.Interaction.Toolkit;
 
-using ObsoleteAttribute = System.ObsoleteAttribute;
-using DialogButtonType = Microsoft.MixedReality.Toolkit.UX.Deprecated.DialogButtonType;
-
-namespace Microsoft.MixedReality.Toolkit.UX.Deprecated.Runtime.Tests
+namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 {
     /// <summary>
-    /// Tests for the Static Dialog UX component.
+    /// Tests for the Non Canvas Dialog UX component.
     /// </summary>
-    [Obsolete("Tests for obsolete Dialog component. Will be removed in a future release.")]
-    public class LegacyDialogTests : BaseRuntimeInputTests
+    public class NonCanvasDialogTests : BaseRuntimeInputTests
     {
-        // UXComponents/Dialogs/Prefabs/Dialog_168x88mm.prefab
-        private const string SmallDialogPrefabAssetGuid = "175cf7e8b8559f342806a0f7d7f3082a";
-        private static readonly string SmallDialogPrefabAssetPath = AssetDatabase.GUIDToAssetPath(SmallDialogPrefabAssetGuid);
+        // A dummy interactor used to test basic selection logic.
+        private class TestInteractor : XRBaseInteractor { }
 
-        private GameObject dialogGameObject;
-        private Dialog dialogComponent;
-        private DialogButtonType dialogResult;
+        // UXComponents.NonCanvas/Dialog/Dialog_168x88mm.prefab
+        private const string NonCanvasDialogPrefabGUID = "175cf7e8b8559f342806a0f7d7f3082a";
+        private static readonly string CanvasDialogPrefabAssetPath = AssetDatabase.GUIDToAssetPath(NonCanvasDialogPrefabGUID);
 
-        private const float DialogStabilizationTime = 0.2f;
+        private DialogPool spawner;
+        private TestInteractor testInteractor;
+
+        private const float DialogCloseTime = 0.5f;
+
+        public override IEnumerator Setup()
+        {
+            yield return base.Setup();
+
+            var spawnerObj = new GameObject("DialogPool");
+            spawner = spawnerObj.AddComponent<DialogPool>();
+            spawner.DialogPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(CanvasDialogPrefabAssetPath);
+
+            var interactorObj = new GameObject("TestInteractor");
+            testInteractor = interactorObj.AddComponent<TestInteractor>();
+        }
 
         public override IEnumerator TearDown()
         {
-            UnityEngine.Object.Destroy(dialogGameObject);
-            UnityEngine.Object.Destroy(dialogComponent);
+            UnityEngine.Object.Destroy(spawner.gameObject);
+            UnityEngine.Object.Destroy(testInteractor.gameObject);
             yield return base.TearDown();
         }
 
         /// <summary>
-        /// Tests the prefabs number of buttons
+        /// Tests whether the dialog can be spawned with no content other than the header.
         /// </summary>
         [UnityTest]
-        public IEnumerator TestDialogPrefabInitializations()
+        public IEnumerator TestDialogHeaderOnly()
         {
-            InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonHelpers.OK, true);
-            yield return RuntimeTestUtilities.WaitForUpdates();
-            // near distances determined by relevant properties on the dialog component
-            float dialogDistance = dialogGameObject.transform.position.magnitude;
-            Assert.AreEqual(DialogButtonType.OK, dialogComponent.Property.ButtonContexts[0].ButtonType);
-            Assert.AreEqual("This is an example dialog", dialogComponent.Property.Message);
-            Assert.AreEqual("Test Dialog", dialogComponent.Property.Title);
+            IDialog dialog = spawner.Get()
+                .SetHeader("This is a test header.")
+                .Show();
 
-            // TODO: Reinstate when properly-scaling Dialogs are reintroduced.
-            // Assert.IsTrue(dialogDistance > dialogComponent.FollowMinDistanceNear && dialogDistance < dialogComponent.FollowMaxDistanceNear);
+            // Let's dig in and find the text object that corresponds to the header.
+            // It should have the text properly set.
+            // If we only set the header, it should be the only text object in the entire layout.
+            TMP_Text textObject = dialog.VisibleRoot.GetComponentInChildren<TMP_Text>(false);
 
-            Object.Destroy(dialogGameObject);
-            Object.Destroy(dialogComponent);
-            yield return RuntimeTestUtilities.WaitForUpdates();
+            Assert.IsNotNull(textObject, "No text object was found at all in the dialog after setting the header.");
+            Assert.AreEqual("This is a test header.", textObject.text, "The header object did not have the expected text.");
 
-            // The dialog only supports displaying up to two options
-            InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonHelpers.YesNo, true);
-            yield return RuntimeTestUtilities.WaitForUpdates();
-            // near distances determined by relevant properties on the dialog component
-            dialogDistance = dialogGameObject.transform.position.magnitude;
-            Assert.AreEqual(DialogButtonType.Yes, dialogComponent.Property.ButtonContexts[0].ButtonType);
-            Assert.AreEqual(DialogButtonType.No, dialogComponent.Property.ButtonContexts[1].ButtonType);
-
-            // TODO: Reinstate when properly-scaling Dialogs are reintroduced.
-            // Assert.IsTrue(dialogDistance > dialogComponent.FollowMinDistanceNear && dialogDistance < dialogComponent.FollowMaxDistanceNear);
-
-            Object.Destroy(dialogGameObject);
-            Object.Destroy(dialogComponent);
-            yield return RuntimeTestUtilities.WaitForUpdates();
-
-            InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonHelpers.YesNo, false);
-            yield return RuntimeTestUtilities.WaitForUpdates();
-            // near distances determined by relevant properties on the dialog component
-            dialogDistance = dialogGameObject.transform.position.magnitude;
-            Assert.AreEqual(DialogButtonType.Yes, dialogComponent.Property.ButtonContexts[0].ButtonType);
-            Assert.AreEqual(DialogButtonType.No, dialogComponent.Property.ButtonContexts[1].ButtonType);
-
-            // TODO: Reinstate when properly-scaling Dialogs are reintroduced.
-            // Assert.IsTrue(dialogDistance > dialogComponent.FollowMinDistanceFar && dialogDistance < dialogComponent.FollowMaxDistanceFar);
-
-            Object.Destroy(dialogGameObject);
-            Object.Destroy(dialogComponent);
+            yield return null;
         }
 
         /// <summary>
-        /// Tests the prefabs number of buttons
+        /// Tests whether the dialog can be spawned with no content other than the body.
         /// </summary>
         [UnityTest]
-        public IEnumerator TestDialogPrefabResults()
+        public IEnumerator TestDialogBodyOnly()
         {
-            TestHand handRight = new TestHand(Handedness.Right);
-            yield return handRight.Show(Vector3.zero);
-            yield return RuntimeTestUtilities.WaitForUpdates();
+            IDialog dialog = spawner.Get()
+                .SetBody("This is a test body.")
+                .Show();
 
-            // Testing near interactions
-            InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonHelpers.OK, true);
+            // Let's dig in and find the text object that corresponds to the body.
+            // It should have the text properly set.
+            // If we only set the header, it should be the only text object in the entire layout.
+            TMP_Text textObject = dialog.VisibleRoot.GetComponentInChildren<TMP_Text>(false);
 
-            // Wait for the dialog to move to a stable position
-            yield return new WaitForSeconds(DialogStabilizationTime);
+            Assert.IsNotNull(textObject, "No text object was found at all in the dialog after setting the body.");
+            Assert.AreEqual("This is a test body.", textObject.text, "The body object did not have the expected text.");
 
-            yield return RuntimeTestUtilities.WaitForUpdates();
-            Assert.AreEqual(DialogState.WaitingForInput, dialogComponent.State);
-
-            // Make sure the OK button works.
-            yield return PokeAndCheckResult(handRight, DialogButtonType.OK);
-
-            Object.Destroy(dialogGameObject);
-            Object.Destroy(dialogComponent);
-            yield return RuntimeTestUtilities.WaitForUpdates();
-
-            // The dialog only supports displaying up to two options
-            InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonHelpers.YesNo, true);
-
-            // Wait for the dialog to move to a stable position
-            yield return new WaitForSeconds(DialogStabilizationTime);
-
-            yield return RuntimeTestUtilities.WaitForUpdates();
-            Assert.AreEqual(DialogState.WaitingForInput, dialogComponent.State);
-
-            // Makes sure the No button works.
-            yield return PokeAndCheckResult(handRight, DialogButtonType.No);
-
-            Object.Destroy(dialogGameObject);
-            Object.Destroy(dialogComponent);
-
-            InstantiateFromPrefab("Test Dialog", "This is an example dialog", DialogButtonHelpers.YesNo, true);
-
-            // Wait for the dialog to move to a stable position
-            yield return new WaitForSeconds(DialogStabilizationTime);
-
-            yield return RuntimeTestUtilities.WaitForUpdates();
-            Assert.AreEqual(DialogState.WaitingForInput, dialogComponent.State);
-
-            // Makes sure the Yes button works.
-            yield return PokeAndCheckResult(handRight, DialogButtonType.Yes);
-
-            Object.Destroy(dialogGameObject);
-            Object.Destroy(dialogComponent);
-
-            // TODO: Re-introduce far-interaction tests for Dialogs once properly-scaling dialogs are reintroduced.
+            yield return null;
         }
 
         /// <summary>
-        /// Instantiates a dialog from the default prefab at position and rotation
+        /// Tests whether the dialog can be spawned with one button, and one button only.
         /// </summary>
-        private void InstantiateFromPrefab(string title, string message, DialogButtonContext[] buttonContexts, bool isNearInteraction, Vector3? position = null, Quaternion? rotation = null)
+        [UnityTest]
+        public IEnumerator TestDialogSingleButton()
         {
-            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(SmallDialogPrefabAssetPath);
+            bool optionSelected = false;
+            bool wasDismissed = false;
 
-            dialogComponent = Dialog.InstantiateFromPrefab(prefab.GetComponent<Dialog>(), new DialogProperty(title, message, buttonContexts), isNearInteraction, true);
-            Assert.IsNotNull(dialogComponent);
+            IDialog dialog = spawner.Get()
+                .SetHeader("This is a test header.")
+                .SetBody("This is a test body.")
+                .SetNeutral("OK", (args) => { optionSelected = true; })
+                .Show();
 
-            dialogGameObject = dialogComponent.gameObject;
-            Assert.IsNotNull(dialogGameObject);
+            dialog.OnDismissed += (args) => { wasDismissed = true; };
 
-            if (dialogComponent != null)
+            // How many buttons got spawned?
+            PressableButton[] buttons = dialog.VisibleRoot.GetComponentsInChildren<PressableButton>(false);
+            Assert.AreEqual(1, buttons.Length, "One and only one button should be present in the layout.");
+
+            // Select the option, test the result.
+            testInteractor.StartManualInteraction(buttons[0] as IXRSelectInteractable);
+            yield return null;
+            testInteractor.EndManualInteraction();
+
+            Assert.IsTrue(optionSelected, "The dialog option was not selected.");
+
+            // Wait for the dialog to close.
+            yield return new WaitForSeconds(DialogCloseTime);
+
+            Assert.IsTrue(wasDismissed, "The dialog was not dismissed.");
+
+            // Dialog should be gone.
+            Assert.IsFalse(dialog.VisibleRoot.activeInHierarchy, "Dialog shouldn't be active after dismissal.");
+        }
+
+        /// <summary>
+        /// Tests whether the dialog correctly reports which option was selected. Also tests
+        /// dialogs using all three selection types.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestDialogOptions(
+            [Values(
+                DialogButtonType.Negative,
+                DialogButtonType.Positive,
+                DialogButtonType.Neutral)] DialogButtonType buttonToTest,
+            [Values] bool pickWrong)
+        {
+            bool optionSelected = false;
+
+            IDialog dialog = spawner.Get()
+                .SetHeader("This is a test header.")
+                .SetBody("This is a test body.")
+                .SetNegative("No", (args) => optionSelected = (buttonToTest == DialogButtonType.Negative))
+                .SetPositive("Yes", (args) => optionSelected = (buttonToTest == DialogButtonType.Positive))
+                .SetNeutral("OK", (args) => optionSelected = (buttonToTest == DialogButtonType.Neutral))
+                .Show();
+
+            // How many buttons got spawned?
+            PressableButton[] buttons = dialog.VisibleRoot.GetComponentsInChildren<PressableButton>(false);
+            Assert.AreEqual(3, buttons.Length, "Three buttons should be present in the layout.");
+
+            // We set them in the same order as the enum values,
+            // so we can fetch them in hierarchy order as well.
+            int buttonIdx = (int)buttonToTest;
+
+            // Should we pick the "wrong" button? If so, pick the next one.
+            buttonIdx = pickWrong ? (buttonIdx + 1) % buttons.Length : buttonIdx;
+
+            // Select the option, test the result.
+            testInteractor.StartManualInteraction(buttons[buttonIdx] as IXRSelectInteractable);
+            yield return null;
+            testInteractor.EndManualInteraction();
+
+            if (pickWrong)
             {
-                dialogComponent.OnClosed += OnClosedDialogEvent;
+                Assert.IsFalse(optionSelected, $"The dialog option ({buttonToTest}) was selected, but it shouldn't have been.");
+            }
+            else
+            {
+                Assert.IsTrue(optionSelected, $"The dialog option ({buttonToTest}) was not selected, but it should have been.");
+            }
+        }
+
+        /// <summary>
+        /// Tests whether the dialog can be spawned with one button, and one button only.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestMultiDialogPolicy()
+        {
+            bool wasDismissed = false;
+
+            IDialog dialog = spawner.Get()
+                .SetHeader("This is a test header.")
+                .SetBody("This is a test body.")
+                .SetNeutral("OK", (args) => { })
+                .Show();
+
+            dialog.OnDismissed += (args) => { wasDismissed = true; };
+
+            IDialog anotherDialog = spawner.Get(spawnPolicy: DialogPool.Policy.DismissExisting)
+                .SetHeader("This is a test header.")
+                .SetBody("This is a test body.")
+                .SetNeutral("OK", (args) => { })
+                .Show();
+
+            // Wait for the dialog to close.
+            yield return new WaitForSeconds(DialogCloseTime);
+
+            Assert.IsTrue(wasDismissed, "The previous dialog was not dismissed.");
+
+            IDialog thirdDialog = spawner.Get(spawnPolicy: DialogPool.Policy.AbortIfExisting);
+
+            Assert.IsNull(thirdDialog, "The third dialog should not have been spawned.");
+
+            yield return null;
+        }
+
+        /// <summary>
+        /// Tests that only one Dialog object is left in the scene after many dialogs are opened and closed,
+        /// with enough time left between opening each dialog to allow for the dismissal animation.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestPoolingPolitely()
+        {
+            IDialog dialog;
+
+            for (int i = 0; i < 5; i++)
+            {
+                dialog = spawner.Get()
+                    .SetHeader("This is a test header.")
+                    .SetBody("This is a test body.")
+                    .SetNeutral("OK", (args) => { })
+                    .Show();
+
+                dialog.Dismiss();
+                yield return new WaitForSeconds(DialogCloseTime);
             }
 
-            dialogGameObject.transform.SetPositionAndRotation(
-                position ?? Vector3.forward,
-                rotation ?? Quaternion.identity);
+            // We have to query by the impl here.
+            object[] dialogs = GameObject.FindObjectsOfType(typeof(Dialog), true);
+            Assert.AreEqual(1, dialogs.Length, "There should be only one pooled dialog in the scene.");
         }
 
-        private void OnClosedDialogEvent(DialogProperty obj)
+        /// <summary>
+        /// Tests that many dialog objects are concurrently managed when opening many dialogs
+        /// without waiting for the dismissal animation to complete.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestPoolingRudely()
         {
-            dialogResult = obj.ResultContext.ButtonType;
-        }
+            IDialog dialog;
 
-        private IEnumerator PokeAndCheckResult(TestHand hand, DialogButtonType dialogButtonType)
-        {
-            // Go find the button so we know where to poke with the finger.
-            foreach (DialogButton button in dialogComponent.GetComponentsInChildren<DialogButton>())
+            for (int i = 0; i < 5; i++)
             {
-                if (button.ButtonContext.ButtonType == dialogButtonType)
-                {
-                    yield return hand.MoveTo(button.transform.position - button.transform.forward * 0.05f);
-                    yield return RuntimeTestUtilities.WaitForUpdates();
-                    yield return hand.MoveTo(button.transform.position + button.transform.forward * 0.05f);
-                    yield return RuntimeTestUtilities.WaitForUpdates();
-                    yield return WaitForDialogClosedAndCheckResult(dialogButtonType);
-                    break;
-                }
+                dialog = spawner.Get()
+                    .SetHeader("This is a test header.")
+                    .SetBody("This is a test body.")
+                    .SetNeutral("OK", (args) => { })
+                    .Show();
+
+                dialog.Dismiss();
+                yield return null; // Don't wait! Rude!
             }
+
+            // We have to query by the impl here.
+            object[] dialogs = GameObject.FindObjectsOfType(typeof(Dialog), true);
+            Assert.AreEqual(5, dialogs.Length, "There should have been 5 total dialogs used.");
+
         }
 
-        private IEnumerator WaitForDialogClosedAndCheckResult(DialogButtonType dialogButtonType)
+        /// <summary>
+        /// Tests using async methods for awaiting on dialog results.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestAsyncDialog()
         {
-            while (dialogComponent.State != DialogState.Closed)
+            Task<bool> task = AsyncTestDialog();
+
+            // Ew!
+            while (!task.IsCompleted)
             {
                 yield return null;
             }
 
-            Assert.AreEqual(DialogState.Closed, dialogComponent.State);
-            Assert.AreEqual(dialogButtonType, dialogResult);
+            Assert.IsTrue(task.Result, "Something in the dialog test failed.");
+        }
+
+        private async Task<bool> AsyncTestDialog()
+        {
+            bool wasDismissed = false;
+
+            var dialog = spawner.Get()
+                .SetHeader("This is a test header.")
+                .SetBody("This is a test body.")
+                .SetNeutral("OK");
+
+            dialog.OnDismissed += (args) => { wasDismissed = true; };
+
+            // Fire off an async click. This is pretty gross, don't do this outside of testing.
+            var _ = ClickAsync(dialog as Dialog);
+
+            var result = await dialog.ShowAsync();
+
+            // In async contexts, Assert.IsTrue/False will not work.
+            // We'll just log errors and return early.
+
+            if (result == null)
+            {
+                Debug.LogError("Dialog result was null.");
+                return false;
+            }
+
+            if (result.Choice.ButtonType != DialogButtonType.Neutral)
+            {
+                Debug.LogError("Dialog result was not the expected button choice.");
+                return false;
+            }
+
+            if (wasDismissed == false)
+            {
+                Debug.LogError("Dialog was not dismissed after ShowAsync's Task resolved.");
+                return false;
+            }
+
+            if (result.Choice.ButtonText != "OK")
+            {
+                Debug.LogError("Dialog result was not the expected button text.");
+                return false;
+            }
+
+            if (result.Choice.Dialog != dialog)
+            {
+                Debug.LogError("Dialog instance returned in event args was not the expected dialog instance.");
+                return false;
+            }
+
+            return true;
+        }
+
+        // Super gross way of issuing an async fake click on a dialog
+        // from another async method. Don't do this outside of testing.
+        private async Task ClickAsync(Dialog dialog)
+        {
+            // Waits for the dialog to spawn.
+            while (!dialog.VisibleRoot.activeInHierarchy) { await Task.Yield(); }
+            PressableButton[] buttons = dialog.VisibleRoot.GetComponentsInChildren<PressableButton>(false);
+
+            // Select the option, test the result.
+            testInteractor.StartManualInteraction(buttons[0] as IXRSelectInteractable);
+            await WaitAsyncFrames(1);
+            testInteractor.EndManualInteraction();
+            await WaitAsyncFrames(1);
+        }
+
+        // Gross way of waiting frames in an async context.
+        // Do not use outside of testing.
+        private async Task WaitAsyncFrames(int frames)
+        {
+            var start = Time.frameCount;
+            while (Time.frameCount < start + frames)
+            {
+                await Task.Yield();
+            }
         }
     }
 }
