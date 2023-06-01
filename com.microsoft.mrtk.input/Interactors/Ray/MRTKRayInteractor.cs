@@ -108,7 +108,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // semi-pressing another.
             bool canHoverNew = !isNew || SelectProgress < relaxationThreshold;
 
-            return base.CanHover(interactable) && stickyHover && ready && canHoverNew;
+            return ready && (stickyHover || (base.CanHover(interactable) && canHoverNew));
         }
 
         /// <inheritdoc />

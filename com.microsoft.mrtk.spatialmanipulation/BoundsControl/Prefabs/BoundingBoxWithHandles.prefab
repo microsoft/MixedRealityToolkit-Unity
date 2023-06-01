@@ -118,6 +118,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScaleHandle (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1881740777175929027, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7622992455544025216, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
       propertyPath: m_InteractionManager
       value: 
@@ -1426,6 +1430,10 @@ PrefabInstance:
     - target: {fileID: 1881740777175929027, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
       propertyPath: m_Name
       value: ScaleHandle
+      objectReference: {fileID: 0}
+    - target: {fileID: 1881740777175929027, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7622992455544025216, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
       propertyPath: m_InteractionManager

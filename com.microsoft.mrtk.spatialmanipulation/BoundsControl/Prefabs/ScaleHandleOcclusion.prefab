@@ -57,7 +57,7 @@ MonoBehaviour:
     m_Bits: 1
   m_DistanceCalculationMode: 1
   m_SelectMode: 0
-  m_CustomReticle: {fileID: 0}
+  m_CustomReticle: {fileID: 6018983043162336388, guid: c08f24dc1074bdb47bb1d0a352c5e6a0, type: 3}
   m_AllowGazeInteraction: 0
   m_AllowGazeSelect: 0
   m_OverrideGazeTimeToSelect: 0

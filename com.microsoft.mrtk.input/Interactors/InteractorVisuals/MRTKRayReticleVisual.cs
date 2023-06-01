@@ -96,6 +96,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         {
                             reticleRoot.transform.SetPositionAndRotation(reticlePosition, Quaternion.LookRotation(reticleNormal, Vector3.up));
                         }
+                        if (customReticle != null)
+                        {
+                           reticleNormal = new Vector3(0, 0, 1f);
+                           customReticle.transform.SetPositionAndRotation(reticlePosition, Quaternion.LookRotation(reticleNormal, Vector3.up));
+                        }
 
                         // If the reticle is an IVariableSelectReticle, have the reticle update based on selectedness
                         if (VariableReticle != null)

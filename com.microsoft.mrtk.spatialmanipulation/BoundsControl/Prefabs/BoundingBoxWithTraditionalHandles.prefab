@@ -1380,6 +1380,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScaleHandle
       objectReference: {fileID: 0}
+    - target: {fileID: 2474321119437392825, guid: c1859d1d3f5090248a08125171b6fbe8, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 6273884922986239398, guid: eed09895eda47964bbc6ac91039b18a2, type: 3}
     - target: {fileID: 7622992455544025216, guid: c1859d1d3f5090248a08125171b6fbe8, type: 3}
       propertyPath: m_InteractionManager
       value: 
