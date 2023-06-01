@@ -29,10 +29,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("Joint visualization mesh.")]
-        private Mesh jointMesh;
+        private UnityEngine.Mesh jointMesh;
 
         /// <summary> Joint visualization mesh. </summary>
-        public Mesh JointMesh { get => jointMesh; set => jointMesh = value; }
+        public UnityEngine.Mesh JointMesh { get => jointMesh; set => jointMesh = value; }
 
         [SerializeField]
         [Tooltip("Joint visualization material.")]
