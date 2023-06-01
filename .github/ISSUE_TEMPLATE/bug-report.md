@@ -31,7 +31,7 @@ If applicable, add screenshots to help explain your problem.
 ## Your setup (please complete the following information)
 
 - Unity Version [e.g. 2018.3.11f1]
-- MRTK Version [e.g. v2.0]
+- MRTK Version or Commit [e.g. v2.0] [e.g. [b026319](https://github.com/microsoft/MixedRealityToolkit-Unity/commit/b0263190f4cf7636ec4aacb08d4224bcc5ec5719)]
 
 ## Target platform (please complete the following information)
 
