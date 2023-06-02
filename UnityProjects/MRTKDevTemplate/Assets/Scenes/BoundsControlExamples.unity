@@ -3908,6 +3908,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CursorMoveArrowsEastWest
       objectReference: {fileID: 0}
+    - target: {fileID: 6273884922986239398, guid: eed09895eda47964bbc6ac91039b18a2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eed09895eda47964bbc6ac91039b18a2, type: 3}
 --- !u!1 &1651310862
@@ -5052,7 +5056,7 @@ PrefabInstance:
     - target: {fileID: 4822457094764861131, guid: 818e133c8f245de438f3edbd7d8d65bb, type: 3}
       propertyPath: m_CustomReticle
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2817082550597684457, guid: 518abe7d4c9232840bfe1b021e889761, type: 3}
     - target: {fileID: 4986292954374696882, guid: 818e133c8f245de438f3edbd7d8d65bb, type: 3}
       propertyPath: m_RootOrder
       value: 8

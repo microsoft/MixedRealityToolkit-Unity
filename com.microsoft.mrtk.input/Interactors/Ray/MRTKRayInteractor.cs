@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using Unity.Profiling;
 using UnityEngine;
@@ -94,7 +95,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override bool CanHover(IXRHoverInteractable interactable)
         {
             // We stay hovering if we have selected anything.
-            bool stickyHover = !hasSelection || IsSelecting(interactable);
+            bool stickyHover = hasSelection && IsSelecting(interactable);
+            if (stickyHover) return true;
 
             // We are ready to pinch if we are in the PinchReady position,
             // or if we are already selecting something.
@@ -108,13 +110,32 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // semi-pressing another.
             bool canHoverNew = !isNew || SelectProgress < relaxationThreshold;
 
-            return ready && (stickyHover || (base.CanHover(interactable) && canHoverNew));
+            return ready && base.CanHover(interactable) && canHoverNew;
         }
 
         /// <inheritdoc />
         public override bool CanSelect(IXRSelectInteractable interactable)
         {
             return base.CanSelect(interactable) && (!hasSelection || IsSelecting(interactable)) && isRelaxedBeforeSelect;
+        }
+
+        /// <inheritdoc />
+        public override void GetValidTargets(List<IXRInteractable> targets)
+        {
+            if (hasSelection && isActiveAndEnabled)
+            {
+                targets.Clear();
+                var selected = interactablesSelected;
+                int count = interactablesSelected.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    targets.Add(selected[i]);
+                }
+            }
+            else
+            {
+                base.GetValidTargets(targets);
+            }
         }
 
         /// <inheritdoc />

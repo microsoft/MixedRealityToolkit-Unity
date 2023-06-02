@@ -257,32 +257,6 @@ namespace Microsoft.MixedReality.Toolkit
             isGrabSelected.Active = grabSelectCount > 0;
             isPokeSelected.Active = pokeSelectCount > 0;
         }
-
-        private void ReattachCustomReticleIfSelected(IXRHoverInteractor interactorObject)
-        {
-            if (customReticle != null && isSelected)
-            {
-                if (interactorObject is XRBaseInteractor baseInteractor)
-#pragma warning disable 618 // Calling deprecated method to help with backwards compatibility with existing user code.
-                    AttachCustomReticle(baseInteractor);
-#pragma warning restore 618
-                else
-                    AttachCustomReticle(interactorObject);
-            }
-        }
-
-        private void DetachCustomReticleIfNoHover(IXRSelectInteractor interactorObject)
-        {
-            if (customReticle != null && !isHovered)
-            {
-                if (interactorObject is XRBaseInteractor baseInteractor)
-#pragma warning disable 618 // Calling deprecated method to help with backwards compatibility with existing user code.
-                    RemoveCustomReticle(baseInteractor);
-#pragma warning restore 618
-                else
-                    RemoveCustomReticle(interactorObject);
-            }
-        }
         #region XRI methods
 
         /// <inheritdoc />
@@ -321,8 +295,6 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 selectingGazePinchInteractors.Remove(gazePinchInteractor);
             }
-
-            DetachCustomReticleIfNoHover(args.interactorObject);
         }
 
         /// <inheritdoc />
@@ -397,8 +369,6 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             UpdateHoverFlags();
-
-            ReattachCustomReticleIfSelected(args.interactorObject);
         }
 
         #endregion

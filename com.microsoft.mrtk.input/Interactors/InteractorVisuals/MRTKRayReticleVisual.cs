@@ -1,9 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+#if SPATIAL_PRESENT
+using Microsoft.MixedReality.Toolkit.SpatialManipulation;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -47,6 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected void OnEnable()
         {
             rayInteractor.selectEntered.AddListener(LocateTargetHitPoint);
+            rayInteractor.hoverEntered.AddListener(LocateTargetHoverPoint);
 
             // If no custom reticle root is specified, just use the interactor's transform.
             if (reticleRoot == null)
@@ -59,6 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected void OnDisable()
         {
             rayInteractor.selectEntered.RemoveListener(LocateTargetHitPoint);
+            rayInteractor.hoverEntered.RemoveListener(LocateTargetHoverPoint);
 
             ReticleSetActive(false);
         }
@@ -98,11 +104,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         {
                             reticleRoot.transform.SetPositionAndRotation(reticlePosition, Quaternion.LookRotation(reticleNormal, Vector3.up));
                         }
-                        if (customReticle != null)
-                        {
-                           reticleNormal = new Vector3(0, 0, 1f);
-                           customReticle.transform.SetPositionAndRotation(reticlePosition, Quaternion.LookRotation(reticleNormal, Vector3.up));
-                        }
 
                         // If the reticle is an IVariableSelectReticle, have the reticle update based on selectedness
                         if (VariableReticle != null)
@@ -115,6 +116,30 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             {
                                 VariableReticle.UpdateVisuals(rayInteractor.isSelectActive ? 1 : 0);
                             }
+                        }
+
+                        if (customReticle != null)
+                        {
+#if SPATIAL_PRESENT
+                            SpatialManipulationReticle customVariableReticle = Reticle.GetComponent<SpatialManipulationReticle>();
+                            if (customVariableReticle)
+                            {
+                                if (rayInteractor.interactablesSelected.Count > 0)
+                                {
+                                    customReticle.transform.position = reticlePosition;
+                                    customVariableReticle.UpdateRotation();
+                                }
+                                else if (rayInteractor.interactablesHovered.Count > 0)
+                                {
+                                    customReticle.transform.SetPositionAndRotation(reticlePosition, Quaternion.LookRotation(reticleNormal, Vector3.up));
+                                    customVariableReticle.UpdateReticle(reticleNormal, hoverTargetTransform);
+                                }
+                            }
+                            else
+                            {
+                                customReticle.transform.SetPositionAndRotation(reticlePosition, Quaternion.LookRotation(reticleNormal, Vector3.up));
+                            }
+#endif
                         }
                     }
                     else
@@ -174,6 +199,40 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     hitTargetTransform = raycastHit.Value.collider.transform;
                     targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastHit.Value.point);
                     targetLocalHitNormal = hitTargetTransform.InverseTransformDirection(raycastHit.Value.normal);
+                }
+            }
+        }
+
+        private Transform hoverTargetTransform;
+        private void LocateTargetHoverPoint(HoverEnterEventArgs args)
+        {
+            // If no hit, abort.
+            if (!rayInteractor.TryGetCurrentRaycast(
+                  out RaycastHit? raycastHit,
+                  out _,
+                  out UnityEngine.EventSystems.RaycastResult? raycastResult,
+                  out _,
+                  out bool isUIHitClosest))
+            {
+                return;
+            }
+
+            // Align the reticle with a UI hit if applicable
+            if (raycastResult.HasValue && isUIHitClosest)
+            {
+                hoverTargetTransform = raycastResult.Value.gameObject.transform;
+            }
+            // Otherwise, calculate the reticle pose based on the raycast hit.
+            else if (raycastHit.HasValue)
+            {
+                // In the case of affordances/handles, we can stick the ray right on to the handle.
+                if (args.interactableObject is ISnapInteractable snappable)
+                {
+                    hoverTargetTransform = snappable.HandleTransform;
+                }
+                else
+                {
+                    hoverTargetTransform = raycastHit.Value.collider.transform;
                 }
             }
         }
