@@ -19,6 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         private static readonly string MRTKRigPrefabPath = AssetDatabase.GUIDToAssetPath(MRTKRigPrefabGuid);
 
         private static GameObject rigReference;
+        private static bool eyeGazeTracking = true;
 
         /// <summary>
         /// The default number of frames that elapse for each test controller movement.
@@ -64,6 +65,19 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         public static int ControllerMoveSteps => UseSlowTestController ? ControllerMoveStepsSlow : ControllerMoveStepsDefault;
 
         /// <summary>
+        /// Get or set if eye gaze is tracking.
+        /// </summary>
+        public static bool EyeGazeTracking
+        {
+            get => eyeGazeTracking;
+            set
+            {
+                eyeGazeTracking = value;
+                eyeGaze?.Update(eyeGazeTracking, lookDelta: Vector3.zero, eyeOffset: Vector3.zero);
+            }
+        }
+
+        /// <summary>
         /// A sentinel value used by controller test utilities to indicate that the default number of move
         /// steps should be used or not.
         /// </summary>
@@ -84,6 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         private static ControllerControls rightControls;
 
         private static SimulatedHMD hmd;
+        private static SimulatedEyeGaze eyeGaze;
 
         #endregion Simulated Devices
 
@@ -98,21 +113,42 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         }
 
         /// <summary>
-        /// Forces the playspace camera to origin facing forward along +Z.
+        /// Forces the playspace camera to origin facing forward along +Z, with optional movement of eyes so to match camera.
         /// </summary>
-        public static void InitializeCameraToOriginAndForward()
+        public static void InitializeCameraToOriginAndForward(bool moveEyes = true)
         {
             // Move the camera to origin looking at +z to more easily see the target at 0,0,+Z
             hmd.ResetToOrigin();
+
+            if (moveEyes)
+            {
+                // Update eyes so to match HMD.
+                eyeGaze.ResetToOrigin(EyeGazeTracking);
+            }
         }
 
         /// <summary>
-        /// Forces the playspace camera to origin facing forward along +Z.
+        /// Forces the playspace camera to origin facing forward along +Z, with optional movement of eyes so to match camera.
         /// </summary>
-        public static void RotateCamera(Vector3 rotationDelta)
+        public static void RotateCamera(Vector3 rotationDelta, bool moveEyes = true)
         {
             // Move the camera to origin looking at +z to more easily see the target at 0,0,+Z
             hmd.Update(Vector3.zero, rotationDelta);
+
+            if (moveEyes)
+            {
+                // Update eyes so to match HMD.
+                eyeGaze.Update(EyeGazeTracking, Vector3.zero, rotationDelta);
+            }
+        }
+
+        /// <summary>
+        /// Forces the eye gaze to rotate.
+        /// </summary>
+        public static void RotateEyes(Vector3 rotationDelta)
+        {
+            // Update eyes so to match HMD.
+            eyeGaze.Update(EyeGazeTracking, Vector3.zero, rotationDelta);
         }
 
         /// <summary>
@@ -130,6 +166,15 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         public static Vector3 InFrontOfUser(Vector3 offset)
         {
             return Camera.main.transform.position + Camera.main.transform.TransformVector(offset);
+        }
+
+        /// <summary>
+        /// Returns a position placed in front of the user's eyes, offset forward by the given distance.
+        /// </summary>
+        public static Vector3 InFrontOfEyes(float distanceFromHead = 0.4f)
+        {
+            var pose = GetEyeGazePose();
+            return pose.position + pose.forward * distanceFromHead;
         }
 
         /// <summary>
@@ -175,6 +220,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             SetHandAnchorPoint(Handedness.Right, ControllerAnchorPoint.IndexFinger);
 
             hmd = new SimulatedHMD();
+            eyeGaze = new SimulatedEyeGaze();
+
+            InitializeCameraToOriginAndForward();
         }
 
         /// <summary>
@@ -185,6 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             leftController.Dispose();
             rightController.Dispose();
             hmd.Dispose();
+            eyeGaze.Dispose();
         }
 
         /// <summary>
@@ -348,6 +397,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             return RotateHandTo(lookRotation, handshapeId, handedness, numSteps);
         }
 
+
         public static IEnumerator SetHandshape(HandshapeId handshapeId, Handedness handedness, int numSteps = ControllerMoveStepsSentinelValue)
         {
             SimulatedController controller = handedness == Handedness.Right ? rightController : leftController;
@@ -397,15 +447,103 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             }
         }
 
+        /// <summary>
+        /// Rotate eye gaze to the given target.
+        /// </summary>
+        public static IEnumerator RotateEyesToTarget(Vector3 target)
+        {
+            Pose pose = GetEyeGazePose();
+            Vector3 position = pose.position;
+            Vector3 direction = (target - position).normalized;
+
+            // create the rotation we need to be in to look at the target
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+
+            yield return UpdateEyeGaze(pose.rotation, lookRotation);
+        }
+
+        /// <summary>
+        /// Rotate head gaze to the given target.
+        /// </summary>
+        public static IEnumerator RotateCameraToTarget(Vector3 target)
+        {
+            Pose pose = GetCameraPose();
+            Vector3 position = pose.position;
+            Vector3 direction = (target - position).normalized;
+
+            // create the rotation we need to be in to look at the target
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+
+            yield return UpdateHeadGaze(pose.rotation, lookRotation);
+        }
+
+        /// <summary>
+        /// Moves eye gaze rotation from the start rotation to the end rotation.
+        /// </summary>
+        /// <remarks>
+        /// <para>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
+        /// default number of steps should be used (i.e. ControllerMoveSteps). ControllerMoveSteps is not a compile
+        /// time constant, which is a requirement for default parameter values.</para>
+        /// </remarks>
+        public static IEnumerator UpdateEyeGaze(
+            Quaternion startRotation,
+            Quaternion endRotation,
+            int numSteps = ControllerMoveStepsSentinelValue)
+        {
+            numSteps = CalculateNumSteps(numSteps);
+
+            for (int i = 1; i <= numSteps; i++)
+            {
+                float t = i / (float)numSteps;
+                var currentRotation = Quaternion.Lerp(startRotation, endRotation, t);
+                var deltatRotation = currentRotation * Quaternion.Inverse(startRotation);
+                eyeGaze.Update(eyeGazeTracking, lookDelta: Vector3.zero, eyeOffset: deltatRotation.eulerAngles);
+                
+                yield return null;
+            }
+        }
+
+        /// <summary>
+        /// Moves head gaze rotation from the start rotation to the end rotation.
+        /// </summary>
+        /// <remarks>
+        /// <para>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
+        /// default number of steps should be used (i.e. ControllerMoveSteps). ControllerMoveSteps is not a compile
+        /// time constant, which is a requirement for default parameter values.</para>
+        /// </remarks>
+        public static IEnumerator UpdateHeadGaze(
+            Quaternion startRotation,
+            Quaternion endRotation,
+            int numSteps = ControllerMoveStepsSentinelValue)
+        {
+            numSteps = CalculateNumSteps(numSteps);
+
+            for (int i = 1; i <= numSteps; i++)
+            {
+                float t = i / (float)numSteps;
+                var currentRotation = Quaternion.Lerp(startRotation, endRotation, t);
+                var deltatRotation = currentRotation * Quaternion.Inverse(startRotation);
+                hmd.Update(moveDelta: Vector3.zero, rotationDelta: deltatRotation.eulerAngles);
+
+                yield return null;
+            }
+        }
 
         /// <summary>
         /// Returns the pose of the hmd
         /// </summary>
-        public static Pose GetCameraPose(Handedness handedness)
+        public static Pose GetCameraPose()
         {
             return new Pose(hmd.Position, hmd.Rotation);
         }
 
+        /// <summary>
+        /// Returns the pose of the eye gaze
+        /// </summary>
+        public static Pose GetEyeGazePose()
+        {
+            return new Pose(eyeGaze.Position, eyeGaze.Rotation);
+        }
 
         /// <summary>
         /// Returns the pose of the hand, rooted on the poke position.

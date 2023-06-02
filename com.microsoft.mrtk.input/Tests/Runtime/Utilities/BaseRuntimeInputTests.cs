@@ -71,6 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             InputSystem.RegisterInteraction<SectorInteraction>();
             InputSystem.RegisterBindingComposite<Vector3FallbackComposite>();
             InputSystem.RegisterBindingComposite<QuaternionFallbackComposite>();
+            InputSystem.RegisterBindingComposite<IntegerFallbackComposite>();
 
             InputTestUtilities.InstantiateRig();
             InputTestUtilities.SetupSimulation(0.0f);

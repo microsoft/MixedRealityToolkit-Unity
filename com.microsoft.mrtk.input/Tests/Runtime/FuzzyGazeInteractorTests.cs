@@ -148,6 +148,49 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             Assert.IsTrue(backgroundCube.GetComponent<StatefulInteractable>().IsGazeHovered,
                            "StatefulInteractable was not hovered by FuzzyGazeInteractor.");
         }
+
+        /// <summary>
+        /// Test that gaze fallbacks to HMD pose, if eye tracking loses tracking.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TestGazeFallbackWhenEyeTrackingLost()
+        {
+            // Confirm a FuzzyGazeInteractor is active in the scene
+            FuzzyGazeInteractor fuzzyGazeInteractor = Object.FindObjectOfType<FuzzyGazeInteractor>();
+            Assert.IsNotNull(fuzzyGazeInteractor, "There is no active FuzzyGazeInteractor found in the scene.");
+
+            // Instantiate two foregound cubes and one background cube for testing
+            GameObject cube1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube1.AddComponent<StatefulInteractable>();
+            cube1.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(0.07f, 0.2f, 1));
+            cube1.transform.localScale = Vector3.one * 0.1f;
+
+            GameObject cube2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube2.AddComponent<StatefulInteractable>();
+            cube2.transform.position = InputTestUtilities.InFrontOfUser(new Vector3(-0.05f, 0.2f, 1));
+            cube2.transform.localScale = Vector3.one * 0.1f;
+
+            GameObject backgroundCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            backgroundCube.AddComponent<StatefulInteractable>();
+            backgroundCube.transform.position = InputTestUtilities.InFrontOfUser(1.6f);
+            backgroundCube.transform.localScale = Vector3.one;
+
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            // No foreground cube should be hovered at their birth positions
+            Assert.IsFalse(cube1.GetComponent<StatefulInteractable>().IsGazeHovered,
+                           "StatefulInteractable was already hovered.");
+            Assert.IsFalse(cube2.GetComponent<StatefulInteractable>().IsGazeHovered,
+                           "StatefulInteractable was already hovered.");
+            Assert.IsTrue(backgroundCube.GetComponent<StatefulInteractable>().IsGazeHovered,
+                           "StatefulInteractable was not hovered by FuzzyGazeInteractor.");
+
+            // Point camera (HMD) at cube 1
+            yield return InputTestUtilities.RotateCameraToTarget(cube1.transform.position);
+
+            // Point eyes at cube 2
+            yield return InputTestUtilities.RotateEyesToTarget(cube2.transform.position);
+        }
     }
 }
 

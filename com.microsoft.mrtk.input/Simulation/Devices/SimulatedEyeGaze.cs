@@ -70,6 +70,16 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         public Vector3 CameraRelativeRotation { get; private set; } = Vector3.zero;
 
         /// <summary>
+        /// Retrieves the playspace relative position of the simulated eye gaze.
+        /// </summary>
+        internal Vector3 Position => poseState.position;
+
+        /// <summary>
+        /// Retrieves the playspace relative rotation of the simulated eye gaze.
+        /// </summary>
+        internal Quaternion Rotation => poseState.rotation;
+
+        /// <summary>
         /// Constructor.
         /// </summary>
         public SimulatedEyeGaze()
@@ -148,6 +158,19 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         private static readonly ProfilerMarker UpdatePerfMarker =
             new ProfilerMarker("[MRTK] SimulatedEyeDevice.Update");
 
+
+        /// <summary>
+        /// Places the simulated eye gaze at the initial position and rotation.
+        /// </summary>
+        public void ResetToOrigin(bool isTracked)
+        {
+            poseState.isTracked = isTracked;
+            poseState.trackingState = TrackingState.None;
+            poseState.position = default;
+            poseState.rotation = Quaternion.identity;
+            InputState.Change(simulatedEyeDevice.pose, poseState);
+        }
+
         /// <summary>
         /// Update the eye gaze simulation with relative per-frame delta rotation (a.k.a. look).
         /// </summary>
@@ -181,9 +204,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
                 // Update the camera-relative Euler angle look rotation.
                 CameraRelativeRotation += lookDelta;
 
-                poseState.position = Camera.main.transform.localPosition + (Camera.main.transform.localRotation * eyeOffset);
-                // todo - saccade support
-                poseState.rotation = Camera.main.transform.localRotation * Quaternion.Euler(CameraRelativeRotation);
+                if (isTracked)
+                {
+                    poseState.position = Camera.main.transform.localPosition + (Camera.main.transform.localRotation * eyeOffset);
+                    // todo - saccade support
+                    poseState.rotation = Camera.main.transform.localRotation * Quaternion.Euler(CameraRelativeRotation);
+
+                }
 
                 InputState.Change(simulatedEyeDevice.pose, poseState);
             }
