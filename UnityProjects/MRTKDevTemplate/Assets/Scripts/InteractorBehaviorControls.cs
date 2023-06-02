@@ -115,6 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         private void ActivateInteractor(XRBaseInteractor interactor)
         {
+            interactor.gameObject.SetActive(true);
             interactionModeManager.RegisterInteractor(interactor);
         }
 
@@ -129,7 +130,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         private void DeactivateInteractor(XRBaseInteractor interactor)
         {
             interactionModeManager.UnregisterInteractor(interactor);
-            interactor.enabled = false;
+            interactor.gameObject.SetActive(false);
         }
     }
 }
