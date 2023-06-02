@@ -158,18 +158,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         private static readonly ProfilerMarker UpdatePerfMarker =
             new ProfilerMarker("[MRTK] SimulatedEyeDevice.Update");
 
-
-        /// <summary>
-        /// Places the simulated eye gaze at the initial position and rotation.
-        /// </summary>
-        public void ResetToOrigin(bool isTracked)
-        {
-            poseState.isTracked = isTracked;
-            poseState.trackingState = TrackingState.None;
-            poseState.position = default;
-            poseState.rotation = Quaternion.identity;
-            InputState.Change(simulatedEyeDevice.pose, poseState);
-        }
+        private static readonly ProfilerMarker ChangePerfMarker =
+            new ProfilerMarker("[MRTK] SimulatedEyeDevice.Change");
 
         /// <summary>
         /// Update the eye gaze simulation with relative per-frame delta rotation (a.k.a. look).
@@ -196,24 +186,49 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
             using (UpdatePerfMarker.Auto())
             {
+                // Update the camera-relative Euler angle look rotation.
+                CameraRelativeRotation += lookDelta;
+
+                Vector3 eyePosition = Camera.main.transform.localPosition + (Camera.main.transform.localRotation * eyeOffset);
+                Quaternion eyeRotation = poseState.rotation = Camera.main.transform.localRotation * Quaternion.Euler(CameraRelativeRotation);
+
+                Change(isTracked, eyePosition, eyeRotation);
+            }
+        }
+
+        /// <summary>
+        /// Force the input change to the given pose and "is tracked" state.
+        /// </summary>
+        public void Change(
+            bool isTracked, Vector3 position, Quaternion rotation)
+        {
+            using (ChangePerfMarker.Auto())
+            {
+                if (simulatedEyeDevice == null) { return; }
+
                 poseState.isTracked = isTracked;
                 poseState.trackingState = poseState.isTracked ?
                     TrackingState.Position | TrackingState.Rotation :
                     TrackingState.None;
 
-                // Update the camera-relative Euler angle look rotation.
-                CameraRelativeRotation += lookDelta;
-
                 if (isTracked)
                 {
-                    poseState.position = Camera.main.transform.localPosition + (Camera.main.transform.localRotation * eyeOffset);
+                    poseState.position = position;
                     // todo - saccade support
-                    poseState.rotation = Camera.main.transform.localRotation * Quaternion.Euler(CameraRelativeRotation);
+                    poseState.rotation = rotation;
 
                 }
 
                 InputState.Change(simulatedEyeDevice.pose, poseState);
             }
+        }
+
+        /// <summary>
+        /// Force the input change to the given "is tracked" state.
+        /// </summary>
+        public void Change(bool isTracked)
+        {
+            Change(isTracked, poseState.position, poseState.rotation);
         }
     }
 }

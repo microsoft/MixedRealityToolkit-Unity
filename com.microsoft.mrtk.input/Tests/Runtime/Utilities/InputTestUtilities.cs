@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         private static readonly string MRTKRigPrefabPath = AssetDatabase.GUIDToAssetPath(MRTKRigPrefabGuid);
 
         private static GameObject rigReference;
-        private static bool eyeGazeTracking = true;
+        private static bool isEyeGazeTracking = true;
 
         /// <summary>
         /// The default number of frames that elapse for each test controller movement.
@@ -67,13 +67,13 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// <summary>
         /// Get or set if eye gaze is tracking.
         /// </summary>
-        public static bool EyeGazeTracking
+        public static bool IsEyeGazeTracking
         {
-            get => eyeGazeTracking;
+            get => isEyeGazeTracking;
             set
             {
-                eyeGazeTracking = value;
-                eyeGaze?.Update(eyeGazeTracking, lookDelta: Vector3.zero, eyeOffset: Vector3.zero);
+                isEyeGazeTracking = value;
+                eyeGaze?.Change(isEyeGazeTracking);
             }
         }
 
@@ -122,8 +122,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             if (moveEyes)
             {
-                // Update eyes so to match HMD.
-                eyeGaze.ResetToOrigin(EyeGazeTracking);
+                ResetEyes();
             }
         }
 
@@ -137,18 +136,17 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             if (moveEyes)
             {
-                // Update eyes so to match HMD.
-                eyeGaze.Update(EyeGazeTracking, Vector3.zero, rotationDelta);
+                ResetEyes();
             }
         }
 
         /// <summary>
-        /// Forces the eye gaze to rotate.
+        /// Reset eyes to HMD pose
         /// </summary>
-        public static void RotateEyes(Vector3 rotationDelta)
+        public static void ResetEyes()
         {
-            // Update eyes so to match HMD.
-            eyeGaze.Update(EyeGazeTracking, Vector3.zero, rotationDelta);
+            var pose = GetHeadPose();
+            eyeGaze?.Change(IsEyeGazeTracking, pose.position, pose.rotation);
         }
 
         /// <summary>
@@ -233,7 +231,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             leftController.Dispose();
             rightController.Dispose();
             hmd.Dispose();
-            eyeGaze.Dispose();
+            eyeGaze?.Dispose();
         }
 
         /// <summary>
@@ -453,8 +451,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         public static IEnumerator RotateEyesToTarget(Vector3 target)
         {
             Pose pose = GetEyeGazePose();
-            Vector3 position = pose.position;
-            Vector3 direction = (target - position).normalized;
+
+            // convert world position so its in HMD space
+            Vector3 tagetLocal = Camera.main.transform.parent.InverseTransformPoint(target);
+            Vector3 direction = (tagetLocal - GetEyeGazePose().position).normalized;
 
             // create the rotation we need to be in to look at the target
             Quaternion lookRotation = Quaternion.LookRotation(direction);
@@ -467,9 +467,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// </summary>
         public static IEnumerator RotateCameraToTarget(Vector3 target)
         {
-            Pose pose = GetCameraPose();
-            Vector3 position = pose.position;
-            Vector3 direction = (target - position).normalized;
+            Pose pose = GetHeadPose();
+
+            // convert world position so its in HMD space
+            Vector3 tagetLocal = Camera.main.transform.parent.InverseTransformPoint(target);
+            Vector3 direction = (tagetLocal - pose.position).normalized;
 
             // create the rotation we need to be in to look at the target
             Quaternion lookRotation = Quaternion.LookRotation(direction);
@@ -491,14 +493,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             int numSteps = ControllerMoveStepsSentinelValue)
         {
             numSteps = CalculateNumSteps(numSteps);
-
             for (int i = 1; i <= numSteps; i++)
             {
                 float t = i / (float)numSteps;
-                var currentRotation = Quaternion.Lerp(startRotation, endRotation, t);
-                var deltatRotation = currentRotation * Quaternion.Inverse(startRotation);
-                eyeGaze.Update(eyeGazeTracking, lookDelta: Vector3.zero, eyeOffset: deltatRotation.eulerAngles);
-                
+                var newRotation = Quaternion.Lerp(startRotation, endRotation, t);
+                eyeGaze?.Change(isEyeGazeTracking, position: Vector3.zero, rotation: newRotation);
                 yield return null;
             }
         }
@@ -517,14 +516,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             int numSteps = ControllerMoveStepsSentinelValue)
         {
             numSteps = CalculateNumSteps(numSteps);
-
             for (int i = 1; i <= numSteps; i++)
             {
                 float t = i / (float)numSteps;
-                var currentRotation = Quaternion.Lerp(startRotation, endRotation, t);
-                var deltatRotation = currentRotation * Quaternion.Inverse(startRotation);
-                hmd.Update(moveDelta: Vector3.zero, rotationDelta: deltatRotation.eulerAngles);
-
+                var newRotation = Quaternion.Lerp(startRotation, endRotation, t);
+                hmd.Change(position: Vector3.zero, rotation: newRotation);
                 yield return null;
             }
         }
@@ -532,7 +528,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// <summary>
         /// Returns the pose of the hmd
         /// </summary>
-        public static Pose GetCameraPose()
+        public static Pose GetHeadPose()
         {
             return new Pose(hmd.Position, hmd.Rotation);
         }
@@ -585,7 +581,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// Disables gaze interactions.
         /// </summary>
         /// <remarks>This is currently done by disabling the Fuzzy Gaze Interactor GameObject. Ideally, we'd want to do this via a more system level approach</remarks>
-        public static void DisableGaze()
+        public static void DisableGazeInteractor()
         {
             GameObject.FindObjectOfType<GazeInteractor>().gameObject.SetActive(false);
         }
@@ -594,9 +590,32 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// Enables gaze interactions.
         /// </summary>
         /// <remarks>This is currently done by enabling the Fuzzy Gaze Interactor GameObject.  Ideally, we'd want to do this via a more system level approach</remarks>
-        public static void EnableGaze()
+        public static void EnableGazeInteractor()
         {
             GameObject.FindObjectOfType<GazeInteractor>().gameObject.SetActive(true);
+        }
+
+        /// <summary>
+        /// Disable eye tracking.
+        /// </summary>
+        public static IEnumerator DisableEyeGazeDevice()
+        {
+            eyeGaze?.Dispose();
+            eyeGaze = null;
+            yield return null;
+        }
+
+        /// <summary>
+        /// Re-enable eye tracking if disabled.
+        /// </summary>
+        public static IEnumerator EnableEyeGazeDevice()
+        {
+            if (eyeGaze == null)
+            {
+                eyeGaze = new SimulatedEyeGaze();
+                ResetEyes();
+            }
+            yield return null;
         }
     }
 }

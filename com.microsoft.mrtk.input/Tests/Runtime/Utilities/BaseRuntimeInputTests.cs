@@ -75,7 +75,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
             InputTestUtilities.InstantiateRig();
             InputTestUtilities.SetupSimulation(0.0f);
-            yield return null;
+
+            // Wait for simulation HMD to update camera poses
+            yield return RuntimeTestUtilities.WaitForUpdates();
         }
 
         public override IEnumerator TearDown()

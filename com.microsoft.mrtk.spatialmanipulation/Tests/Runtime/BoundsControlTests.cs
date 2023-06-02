@@ -196,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             }
 
             InputTestUtilities.SetHandAnchorPoint(Handedness.Right, Input.Simulation.ControllerAnchorPoint.Grab);
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             BoundsControl bc = InstantiateSceneAndDefaultBoundsControl(visualsPath);
             yield return null;
@@ -246,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         public IEnumerator TestNoHandlesToggleWhenMovingWithObjectManipulator([ValueSource(nameof(BoundsVisualsPrefabs))] string visualsPath)
         {
             InputTestUtilities.SetHandAnchorPoint(Handedness.Right, Input.Simulation.ControllerAnchorPoint.Grab);
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             BoundsControl bc = InstantiateSceneAndDefaultBoundsControl(visualsPath);
             yield return null;
