@@ -7,10 +7,6 @@ using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
-    /// <summary>
-    /// Example script that turns pointers on and off
-    /// by activating and deactivating the interactors.
-    /// </summary>
     [RequireComponent(typeof(InteractorBehaviorControls))]
     [AddComponentMenu("MRTK/Examples/Disable Pointers")]
     public class DisablePointers : MonoBehaviour
@@ -28,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         private void Awake()
         {
+            SetupSpeechCommand();
             interactorBehaviorControls = GetComponent<InteractorBehaviorControls>();
         }
 
@@ -52,6 +49,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             interactorBehaviorControls.onGrabToggled -= OnGrabToggled;
             interactorBehaviorControls.onHandRayToggled -= OnHandRayToggled;
             interactorBehaviorControls.onPokeToggled -= OnPokeToggled;
+        }
+
+        private void SetupSpeechCommand()
+        {
+            XRSubsystemHelpers.GetFirstSubsystem<KeywordRecognitionSubsystem>().CreateOrGetEventForKeyword("Reset Example").AddListener(ResetExample);
         }
 
         public void ResetExample()
@@ -114,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         {
             if(toggle.IsToggled != isActive)
             {
-                toggle.ForceSetToggled(isActive, false);
+                toggle.ForceSetToggled(isActive, true);
             }
         }
     }

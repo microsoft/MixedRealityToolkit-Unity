@@ -8,10 +8,10 @@ using UnityEngine.XR.Interaction.Toolkit;
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
-    /// Utility class to control <see cref="Microsoft.MixedReality.Toolkit.Input.PointerBehavior"/> of pointers.
-    /// Hook up buttons to the public functions to turn rays on and off.
+    /// Example class to demonstrate how to turn various pointers on and off.
+    /// Hook up buttons to the public functions to turn interactors on and off.
     /// </summary>
-    [AddComponentMenu("Scripts/MRTK/SDK/InteractorBehaviorControls")]
+    [AddComponentMenu("MRTK/Examples/InteractorBehaviorControls")]
     public class InteractorBehaviorControls : MonoBehaviour
     {
         [SerializeField]

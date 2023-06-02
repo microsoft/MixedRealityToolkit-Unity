@@ -8664,18 +8664,13 @@ PrefabInstance:
     - target: {fileID: 2446705927233332293, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_text
       value: "<size=11><b>Disable Pointer Examples</b></size>\r\n\nThis scene demonstrates
-        use of PointerUtils to turn pointers like the hand ray, gaze, grab, and poke
-        pointers on and off from code.\n\n<size=\"9\"><b>How to use</b></size>\nClick
-        on the toggle buttons under \u201CToggle Pointers\u201D to turn different
-        rays on / off. You can also set the UI to certain common modes used by HoloLens
-        2 (Grab, Poke, Line pointers) and VR (Line and teleport pointers only). 
-        If you get stuck, say \"reset example\".\n\n<size=\"9\"><b>Setup</b></size>\nThis
-        example has a custom profile which enables both the HoloLens 1 \u2013 style
-        GGV pointer as well as HoloLens 2 \u2013 style  Line Pointer. To switch between
-        HoloLens 1 and 2 style interactions, make sure your profile copies the pointer
-        profile in this example.\r\n\nHave a look at TurnPointersOnOffController
-        to see how to call PointerUtils to enable / disable the various pointers
-        in the input system. \r"
+        how to turn interactors like the hand ray, gaze, grab, and poke pointers
+        on and off from code.\n\n<size=\"9\"><b>How to use</b></size>\nClick on the
+        toggle buttons under \u201CToggle Pointers\u201D to turn different rays on
+        / off. You can also set the UI to certain common modes used by HoloLens 2
+        (Grab, Poke, Line pointers) and VR (Line and teleport pointers only).  If
+        you get stuck, say \"reset example\".\n\nHave a look at InteractorBehaviorControls
+        to see how to to enable / disable the various Interactors. \r"
       objectReference: {fileID: 0}
     - target: {fileID: 2446705927233332293, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_fontStyle
@@ -8747,11 +8742,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3220012215463627515, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.018962938
+      value: 0.0373
       objectReference: {fileID: 0}
     - target: {fileID: 3220012215463627515, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.1129
+      value: 0.0619
       objectReference: {fileID: 0}
     - target: {fileID: 3220012215463627515, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8775,11 +8770,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5493534032387613222, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_LocalScale.y
-      value: 286.90564
+      value: 206.57207
       objectReference: {fileID: 0}
     - target: {fileID: 5493534032387613222, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -52.72
+      value: -12.97
       objectReference: {fileID: 0}
     - target: {fileID: 5929991690626966069, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_IsActive
@@ -13593,6 +13588,10 @@ PrefabInstance:
     - target: {fileID: 5241231772802432720, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
       propertyPath: prioritizedInteractionModes.Array.data[7].associatedTypes.Array.data[0].reference
       value: Microsoft.MixedReality.Toolkit.UX.CanvasProxyInteractor, Microsoft.MixedReality.Toolkit.UXCore
+      objectReference: {fileID: 0}
+    - target: {fileID: 8479077998186684813, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
