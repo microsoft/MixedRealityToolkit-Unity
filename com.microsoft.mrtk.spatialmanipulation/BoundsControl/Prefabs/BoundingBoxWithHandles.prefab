@@ -118,10 +118,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScaleHandle (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 1881740777175929027, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5036881520609974024, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
       propertyPath: m_CustomReticle
       value: 
@@ -1486,10 +1482,6 @@ PrefabInstance:
     - target: {fileID: 1881740777175929027, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
       propertyPath: m_Name
       value: ScaleHandle
-      objectReference: {fileID: 0}
-    - target: {fileID: 1881740777175929027, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5036881520609974024, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
       propertyPath: m_CustomReticle

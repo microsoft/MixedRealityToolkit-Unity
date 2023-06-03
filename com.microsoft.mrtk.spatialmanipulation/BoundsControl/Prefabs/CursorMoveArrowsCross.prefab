@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2817082550598521065}
   - component: {fileID: 2817082550599619113}
   m_Layer: 0
-  m_Name: CursorMoveArrowsMove
+  m_Name: CursorMoveArrowsCross
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

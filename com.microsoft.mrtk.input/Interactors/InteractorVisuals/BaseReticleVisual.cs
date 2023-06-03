@@ -94,7 +94,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool RemoveCustomReticle()
         {
-            
             if (customReticle != null)
             {
                 customReticle.SetActive(false);

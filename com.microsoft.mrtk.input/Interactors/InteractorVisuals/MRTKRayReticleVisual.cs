@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -127,18 +126,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                 if (rayInteractor.interactablesSelected.Count > 0)
                                 {
                                     customReticle.transform.position = reticlePosition;
-                                    customVariableReticle.UpdateRotation();
+                                    customVariableReticle.FixedRotateReticle();
                                 }
                                 else if (rayInteractor.interactablesHovered.Count > 0)
                                 {
                                     customReticle.transform.SetPositionAndRotation(reticlePosition, Quaternion.LookRotation(reticleNormal, Vector3.up));
-                                    customVariableReticle.UpdateReticle(reticleNormal, hoverTargetTransform);
+                                    customVariableReticle.RotateReticle(reticleNormal, hoverTargetTransform);
                                 }
                             }
                             else
                             {
                                 customReticle.transform.SetPositionAndRotation(reticlePosition, Quaternion.LookRotation(reticleNormal, Vector3.up));
                             }
+#else
+                            customReticle.transform.SetPositionAndRotation(reticlePosition, Quaternion.LookRotation(reticleNormal, Vector3.up));
 #endif
                         }
                     }

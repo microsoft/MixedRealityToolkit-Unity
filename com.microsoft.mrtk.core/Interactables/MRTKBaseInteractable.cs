@@ -257,6 +257,7 @@ namespace Microsoft.MixedReality.Toolkit
             isGrabSelected.Active = grabSelectCount > 0;
             isPokeSelected.Active = pokeSelectCount > 0;
         }
+
         #region XRI methods
 
         /// <inheritdoc />

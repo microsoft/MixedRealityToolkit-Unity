@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 800348947636869897}
   - component: {fileID: 4793470368411601799}
   - component: {fileID: 7388988754892222804}
+  - component: {fileID: 3189138210976840370}
   - component: {fileID: 2603518900594662515}
   m_Layer: 0
   m_Name: ColorChangingCube
@@ -84,6 +85,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &3189138210976840370
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 593722386012418505}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &2603518900594662515
 MonoBehaviour:
   m_ObjectHideFlags: 0

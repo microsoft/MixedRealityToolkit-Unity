@@ -1,3 +1,6 @@
+//Copyright(c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 using System;
 using UnityEngine;
 
@@ -7,14 +10,18 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     {
 
         [SerializeField]
-        [Tooltip("The root of the reticle visuals")]
+        [Tooltip("The type of the reticle visuals. Scale or Rotate.")]
         private SpatialManipulationReticleType reticleType;
 
         private Quaternion worldRotationCache;
 
-        // Update is called once per frame
-        public void UpdateReticle(Vector3 reticleNormal, Transform hitTargetTransform)
+        /// <summary>
+        /// Called by once per frame by <see cref="MRTKRayReticleVisual"/> from its UpdateReticle.
+        /// Rotates the cursor reticle based on the hovered or selected handle's position relative to the box visuals. 
+        /// </summary>
+        public void RotateReticle(Vector3 reticleNormal, Transform hitTargetTransform)
         {
+            // After hitting a handle, find the box that the handle belongs to
             SqueezableBoxVisuals boxVisuals = hitTargetTransform.gameObject.GetComponentInParent<SqueezableBoxVisuals>(true);
             if (boxVisuals == null)
                 return;
@@ -26,10 +33,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 Vector3 up = Vector3.zero;
                 Vector3 forward = Vector3.zero;
                 GetCursorTargetAxes(reticleNormal, ref right, ref up, ref forward, contextTransform);
+
+                // Get the cursor position, relative to the handles container
                 Vector3 adjustedCursorPos = transform.position - contextTransform.position;
 
                 switch (reticleType)
                 {
+                    // If it is a scaling reticle, position the arrows diagonally to indicate scaling direction 
                     case SpatialManipulationReticleType.Scale:
                         {
                             if (Vector3.Dot(adjustedCursorPos, up) * Vector3.Dot(adjustedCursorPos, right) > 0) // quadrant 1 and 3
@@ -42,6 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                             }
                             break;
                         }
+                    // If it is a rotate reticle, position the arrows horizontally or vertically
                     case SpatialManipulationReticleType.Rotate:
                         {
                             if (Math.Abs(Vector3.Dot(adjustedCursorPos, right)) <
@@ -54,10 +65,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     default: break;
                 }
             }
+            // Cache the world rotation 
             worldRotationCache = transform.rotation;
         }
 
-        public void UpdateRotation()
+        /// <summary>
+        /// Called by once per frame by <see cref="MRTKRayReticleVisual"/> from its UpdateReticle.
+        /// Rotates the cursor reticle based on the last stored value to maintain a fixed rotation. 
+        /// </summary>
+        public void FixedRotateReticle()
         {
             if (worldRotationCache != null)
             {
@@ -67,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         /// <summary>
         /// Gets three axes where the forward is as close to the provided normal as
-        /// possible but where the axes are aligned to the TargetObject's transform
+        /// possible but where the axes are aligned to the TargetObject's transform.
         /// </summary>
         private bool GetCursorTargetAxes(Vector3 normal, ref Vector3 right, ref Vector3 up, ref Vector3 forward, Transform contextTransform)
         {

@@ -96,7 +96,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             // We stay hovering if we have selected anything.
             bool stickyHover = hasSelection && IsSelecting(interactable);
-            if (stickyHover) return true;
+            if (stickyHover)
+                return true;
 
             // We are ready to pinch if we are in the PinchReady position,
             // or if we are already selecting something.
@@ -125,11 +126,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             if (hasSelection && isActiveAndEnabled)
             {
                 targets.Clear();
-                var selected = interactablesSelected;
-                int count = interactablesSelected.Count;
-                for (int i = 0; i < count; i++)
+                for (int i = 0; i < interactablesSelected.Count; i++)
                 {
-                    targets.Add(selected[i]);
+                    targets.Add(interactablesSelected[i]);
                 }
             }
             else
