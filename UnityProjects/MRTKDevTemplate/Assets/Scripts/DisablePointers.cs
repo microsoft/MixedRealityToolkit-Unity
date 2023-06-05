@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UX;
@@ -58,16 +57,19 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         public void ResetExample()
         {
-            List<InputDevice> motionControllers = new List<InputDevice>();
-            InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeldInHand, motionControllers);
-
-            if(motionControllers.Count > 0)
-            {
-                SetVRModeActive();
-            }
-            else if(XRSubsystemHelpers.HandsAggregator != null)
+            if(XRSubsystemHelpers.HandsAggregator != null)
             {
                 SetHololensModeActive();
+            }
+            else
+            {
+                List<InputDevice> motionControllers = new List<InputDevice>();
+                InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeldInHand, motionControllers);
+
+                if(motionControllers.Count > 0)
+                {
+                    SetVRModeActive();
+                }
             }
         }
 
