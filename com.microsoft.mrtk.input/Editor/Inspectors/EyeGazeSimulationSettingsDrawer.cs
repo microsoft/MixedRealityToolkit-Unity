@@ -14,6 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
     public class EyeGazeSimulationSettingsDrawer : PropertyDrawer
     {
         private readonly GUIContent simEnabledContent = new GUIContent("Simulation enabled");
+        private readonly GUIContent isTrackedContent = new GUIContent("Eyes tracked");
 
         private readonly GUIContent eyeOffsetContent = new GUIContent("Eye origin offset");
 
@@ -49,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
             int rowMultiplier = 1;
 
             SerializedProperty simEnabled = property.FindPropertyRelative("simulationEnabled");
-
+            SerializedProperty isTracked = property.FindPropertyRelative("isTracked");
             SerializedProperty eyeOffset = property.FindPropertyRelative("eyeOriginOffset");
 
             // SerializedProperty sensitivity = property.FindPropertyRelative("sensitivity");
@@ -65,6 +66,15 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
                     rowMultiplier,
                     PropertyDrawerUtilities.Height),
                 simEnabled, simEnabledContent);
+
+
+            EditorGUI.PropertyField(
+                PropertyDrawerUtilities.GetPosition(
+                    position,
+                    PropertyDrawerUtilities.VerticalSpacing,
+                    ++rowMultiplier,
+                    PropertyDrawerUtilities.Height),
+                isTracked, isTrackedContent);            
 
             EditorGUI.PropertyField(
                 PropertyDrawerUtilities.GetPosition(
