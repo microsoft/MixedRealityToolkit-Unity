@@ -8,7 +8,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
-    /// Example class to demonstrate how to turn various pointers on and off.
+    /// Example class to demonstrate how to turn various interactors on and off.
     /// Hook up buttons to the public functions to turn interactors on and off.
     /// </summary>
     [AddComponentMenu("MRTK/Examples/InteractorBehaviorControls")]
@@ -41,6 +41,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         public event Action<bool> onPokeToggled;
         public event Action<bool> onGazeToggled;
 
+        /// <summary>
+        /// Sets pointer behavior to mimic HoloLens 2
+        /// Poke interactor will be On
+        /// Grab interactor will be On
+        /// HandRay interactor will be On
+        /// MotionControllerRay interactor will be Off
+        /// Gaze interactor will be On
+        /// </summary>
         public void SetHololens()
         {
             SetHandPokeActive(true);
@@ -50,6 +58,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             SetGazeActive(true);
         }
 
+        /// <summary>
+        /// Sets pointer states to mimic traditional vr behavior.
+        /// Poke interactor will be Off
+        /// Grab interactor will be Off
+        /// HandRay interactor will be Off
+        /// MotionControllerRay interactor will be On
+        /// Gaze interactor will be Off
+        /// </summary>
         public void SetVR()
         {
             SetHandPokeActive(false);

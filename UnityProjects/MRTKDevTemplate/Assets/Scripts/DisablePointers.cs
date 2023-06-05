@@ -6,6 +6,10 @@ using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
+    /// <summary>
+    /// This example demonstrates how to turn pointers on and off by 
+    /// specifying custom behaviors.
+    /// </summary>
     [RequireComponent(typeof(InteractorBehaviorControls))]
     [AddComponentMenu("MRTK/Examples/Disable Pointers")]
     public class DisablePointers : MonoBehaviour
@@ -19,12 +23,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         public PressableButton VRToggle;
         public PressableButton HololensToggle;
 
-        InteractorBehaviorControls interactorBehaviorControls;
+        private InteractorBehaviorControls interactorBehaviorControls;
 
         private void Awake()
         {
-            SetupSpeechCommand();
             interactorBehaviorControls = GetComponent<InteractorBehaviorControls>();
+
+            SetupSpeechCommand();
         }
 
         private void Start()
