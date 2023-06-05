@@ -153,7 +153,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// Test that gaze fallbacks to HMD pose, if eye gaze loses tracking.
         /// </summary>
         [UnityTest]
-        public IEnumerator TestGazeFallbackWhenEyeGazeLosesTracking()
+        public IEnumerator GazeFallbackWhenEyeGazeLosesTrackingTest()
         {
             // Confirm a FuzzyGazeInteractor is active in the scene
             FuzzyGazeInteractor fuzzyGazeInteractor = Object.FindObjectOfType<FuzzyGazeInteractor>();
@@ -222,7 +222,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// Test that gaze fallbacks to HMD pose, if eye gaze is disabled.
         /// </summary>
         [UnityTest]
-        public IEnumerator TestGazeFallbackWhenEyeGazeIsDisabled()
+        public IEnumerator GazeFallbackWhenEyeGazeIsDisabledTest()
         {
             // Confirm a FuzzyGazeInteractor is active in the scene
             FuzzyGazeInteractor fuzzyGazeInteractor = Object.FindObjectOfType<FuzzyGazeInteractor>();
