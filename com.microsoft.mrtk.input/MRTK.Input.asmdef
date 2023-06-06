@@ -8,8 +8,7 @@
         "Unity.XR.CoreUtils",
         "Unity.XR.Interaction.Toolkit",
         "glTFast",
-        "Ktx",
-        "Microsoft.MixedReality.Toolkit.SpatialManipulation"
+        "Ktx"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -38,11 +37,6 @@
             "name": "com.atteneder.ktx",
             "expression": "",
             "define": "KTX_PRESENT"
-        },
-        {
-            "name": "com.microsoft.mrtk.spatialmanipulation",
-            "expression": "",
-            "define": "SPATIAL_PRESENT"
         }
     ],
     "noEngineReferences": false

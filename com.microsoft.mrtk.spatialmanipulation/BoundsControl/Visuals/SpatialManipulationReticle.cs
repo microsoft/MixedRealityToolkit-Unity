@@ -2,16 +2,20 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
-    public class SpatialManipulationReticle : MonoBehaviour
+    public class SpatialManipulationReticle : MonoBehaviour, IVariableReticle
     {
+        /// <summary>
+        /// The type of the reticle visuals. Scale or Rotate.
+        /// </summary>
+        [field: SerializeField, Tooltip("The type of the reticle visuals. Scale or Rotate.")]
+        public SpatialManipulationReticleType ReticleType { get; set; }
 
-        [SerializeField]
-        [Tooltip("The type of the reticle visuals. Scale or Rotate.")]
-        private SpatialManipulationReticleType reticleType;
 
         private Quaternion worldRotationCache;
 
@@ -19,52 +23,68 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// Called by once per frame by <see cref="MRTKRayReticleVisual"/> from its UpdateReticle.
         /// Rotates the cursor reticle based on the hovered or selected handle's position relative to the box visuals. 
         /// </summary>
+        public void UpdateVisuals(VariableReticleArgs args)
+        {
+            GameObject customReticle = args.Reticle;
+            XRRayInteractor rayInteractor = args.RayInteractor;
+            if (customReticle != null && rayInteractor != null)
+            {
+                customReticle.transform.SetPositionAndRotation(args.ReticlePosition, Quaternion.LookRotation(args.ReticleNormal, Vector3.up));
+
+                if (rayInteractor.interactablesSelected.Count > 0)
+                {
+                    FixedRotateReticle();
+                }
+                else if (rayInteractor.interactablesHovered.Count > 0)
+                {
+                    RotateReticle(args.ReticleNormal, rayInteractor.interactablesHovered[0].transform);
+                }
+                
+            }
+        }
+
+        /// <summary>
+        /// Called by once per frame by <see cref="MRTKRayReticleVisual"/> from its UpdateReticle.
+        /// Rotates the cursor reticle based on the hovered or selected handle's position relative to the box visuals. 
+        /// </summary>
         public void RotateReticle(Vector3 reticleNormal, Transform hitTargetTransform)
         {
-            // After hitting a handle, find the box that the handle belongs to
-            SqueezableBoxVisuals boxVisuals = hitTargetTransform.gameObject.GetComponentInParent<SqueezableBoxVisuals>(true);
-            if (boxVisuals == null)
-                return;
+            Vector3 right = Vector3.zero;
+            Vector3 up = Vector3.zero;
+            Vector3 forward = Vector3.zero;
+            GetCursorTargetAxes(reticleNormal, ref right, ref up, ref forward, hitTargetTransform.parent);
 
-            Transform contextTransform = boxVisuals.HandlesContainer;
-            if (contextTransform != null)
+            // Get the cursor position, relative to the handles container
+            Vector3 adjustedCursorPos = transform.position - hitTargetTransform.parent.position;
+
+            switch (ReticleType)
             {
-                Vector3 right = Vector3.zero;
-                Vector3 up = Vector3.zero;
-                Vector3 forward = Vector3.zero;
-                GetCursorTargetAxes(reticleNormal, ref right, ref up, ref forward, contextTransform);
-
-                // Get the cursor position, relative to the handles container
-                Vector3 adjustedCursorPos = transform.position - contextTransform.position;
-
-                switch (reticleType)
-                {
-                    // If it is a scaling reticle, position the arrows diagonally to indicate scaling direction 
-                    case SpatialManipulationReticleType.Scale:
+                // If it is a scaling reticle, position the arrows diagonally to indicate scaling direction 
+                case SpatialManipulationReticleType.Scale:
+                    {
+                        if (Vector3.Dot(adjustedCursorPos, up) * Vector3.Dot(adjustedCursorPos, right) > 0) // quadrant 1 and 3
                         {
-                            if (Vector3.Dot(adjustedCursorPos, up) * Vector3.Dot(adjustedCursorPos, right) > 0) // quadrant 1 and 3
-                            {
-                                transform.Rotate(new Vector3(0, 0, -45f));
-                            }
-                            else // quadrant 2 and 4
-                            {
-                                transform.Rotate(new Vector3(0, 0, 45f));
-                            }
-                            break;
+                            transform.Rotate(new Vector3(0, 0, -45f));
                         }
-                    // If it is a rotate reticle, position the arrows horizontally or vertically
-                    case SpatialManipulationReticleType.Rotate:
+                        else // quadrant 2 and 4
                         {
-                            if (Math.Abs(Vector3.Dot(adjustedCursorPos, right)) <
-                                Math.Abs(Vector3.Dot(adjustedCursorPos, up)))
-                            {
-                                transform.Rotate(new Vector3(0, 0, 90f));
-                            }
-                            break;
+                            transform.Rotate(new Vector3(0, 0, 45f));
                         }
-                    default: break;
-                }
+                        break;
+                    }
+                // If it is a rotate reticle, position the arrows horizontally or vertically
+                case SpatialManipulationReticleType.Rotate:
+                    {
+                        if (Math.Abs(Vector3.Dot(adjustedCursorPos, right)) <
+                            Math.Abs(Vector3.Dot(adjustedCursorPos, up)))
+                        {
+                            transform.Rotate(new Vector3(0, 0, 90f));
+                        }
+                        break;
+                    }
+                default: break;
             }
+            
             // Cache the world rotation 
             worldRotationCache = transform.rotation;
         }

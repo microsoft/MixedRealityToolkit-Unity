@@ -123,6 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override void GetValidTargets(List<IXRInteractable> targets)
         {
+            // When selection is active, force valid targets to be the current selection. This is done to ensure that selected objects remained hovered.
             if (hasSelection && isActiveAndEnabled)
             {
                 targets.Clear();

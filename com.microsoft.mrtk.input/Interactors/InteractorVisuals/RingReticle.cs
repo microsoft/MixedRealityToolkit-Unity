@@ -79,6 +79,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             SetReticleShrink(smoothedValue);
         }
 
+        /// Extracts values from VariableReticleArgs to call UpdateVisuals
+        public void UpdateVisuals(VariableReticleArgs args)
+        {
+            if (args.RayInteractor is IVariableSelectInteractor variableSelectInteractor)
+            {
+                UpdateVisuals(variableSelectInteractor.SelectProgress);
+            }
+            else
+            {
+                UpdateVisuals(args.RayInteractor.isSelectActive ? 1 : 0);
+            }
+        }
+
         private void SetReticleShrink(float value)
         {
             reticleRenderer.GetPropertyBlock(propertyBlock);
