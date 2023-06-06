@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2817082550597718217}
   - component: {fileID: 2817082550598521065}
   - component: {fileID: 2817082550599619113}
+  - component: {fileID: -7509540085681685705}
   m_Layer: 0
   m_Name: CursorMoveArrowsCross
   m_TagString: Untagged
@@ -85,6 +86,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-7509540085681685705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2817082550597684457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 050b82f49447b6244abbe98c527f146b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <ReticleType>k__BackingField: 0
 --- !u!1 &8162303432400838434
 GameObject:
   m_ObjectHideFlags: 0

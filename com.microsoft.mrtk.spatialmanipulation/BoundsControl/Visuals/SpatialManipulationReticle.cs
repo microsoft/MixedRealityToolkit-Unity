@@ -1,13 +1,16 @@
-//Copyright(c) Microsoft Corporation.
+// Copyright(c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using System;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
+    /// <summary>
+    /// A reticle used to visualize spatial manipulation capabilities when hovering over a bounding box handle.
+    /// The reticle is oriented in relation to the bounding box, to indicate the direction for rotation or scaling.
+    /// </summary>
     public class SpatialManipulationReticle : MonoBehaviour, IVariableReticle
     {
         /// <summary>
@@ -15,7 +18,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         [field: SerializeField, Tooltip("The type of the reticle visuals. Scale or Rotate.")]
         public SpatialManipulationReticleType ReticleType { get; set; }
-
 
         private Quaternion worldRotationCache;
 
@@ -49,6 +51,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         public void RotateReticle(Vector3 reticleNormal, Transform hitTargetTransform)
         {
+            if (hitTargetTransform == null || hitTargetTransform.parent == null)
+            {
+                return;
+            }
+
             Vector3 right = Vector3.zero;
             Vector3 up = Vector3.zero;
             Vector3 forward = Vector3.zero;
@@ -140,9 +147,24 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
     }
 
+    /// <summary>
+    /// The type of manipulation being visualized: rotation or scaling.
+    /// </summary>
     public enum SpatialManipulationReticleType
     {
+        /// <summary>
+        /// No valid type has been set.
+        /// </summary>
+        Unknown,
+
+        /// <summary>
+        /// The reticle indicates direction for one of the scaling handles on the corner of the bounding box.
+        /// </summary>
         Scale,
+
+        /// <summary>
+        /// The reticle indicates direction for one of the rotation handles on the side of the bounding box.
+        /// </summary>
         Rotate
     }
 }

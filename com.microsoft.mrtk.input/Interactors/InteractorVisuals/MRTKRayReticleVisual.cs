@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set => visibilitySettings = value;
         }
 
-        protected void OnEnable()
+        private void OnEnable()
         {
             rayInteractor.selectEntered.AddListener(LocateTargetHitPoint);
 
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             UpdateReticle();
         }
 
-        protected void OnDisable()
+        private void OnDisable()
         {
             rayInteractor.selectEntered.RemoveListener(LocateTargetHitPoint);
 

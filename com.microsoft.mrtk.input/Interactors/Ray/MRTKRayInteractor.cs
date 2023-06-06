@@ -97,7 +97,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // We stay hovering if we have selected anything.
             bool stickyHover = hasSelection && IsSelecting(interactable);
             if (stickyHover)
+            {
                 return true;
+            }
 
             // We are ready to pinch if we are in the PinchReady position,
             // or if we are already selecting something.
