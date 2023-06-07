@@ -110,6 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
+
         protected override void OnHoverEntered(HoverEnterEventArgs args)
         {
             //Debug.Log("SCROLLABLE: Hover Entered");
@@ -197,24 +198,38 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private void IncreaseHoverCount(HoverEnterEventArgs args)
         {
+            if (args.interactorObject is IPokeInteractor)
+            {
+                StartScrolling(args.interactorObject);
+            }
         }
 
         private void DescreaseHoverCount(HoverExitEventArgs args)
         {
+            if (args.interactorObject is IPokeInteractor)
+            {
+                StopScrolling(args.interactorObject);
+            }
         }
 
         private void IncreaseSelectCount(SelectEnterEventArgs args)
         {
-            StartScrolling(args.interactorObject);
+            if (!(args.interactorObject is IPokeInteractor) && StartScrolling(args.interactorObject))
+            {
+                //interactionManager.RegisterInteractable((IXRInteractable)this);
+            }
         }
 
 
         private void DecreaseSelectCount(SelectExitEventArgs args)
         {
-            StopScrolling(args.interactorObject);
+            if (!(args.interactorObject is IPokeInteractor) && StopScrolling(args.interactorObject))
+            {
+              // interactionManager.UnregisterInteractable((IXRInteractable)this);
+            }
         }
 
-        private void StartScrolling(IXRInteractor interactor)
+        private bool StartScrolling(IXRInteractor interactor)
         {
             if (interactorsScrolling.Add(interactor))
             {
@@ -224,12 +239,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
                 startNormalizedPosition = new Vector2(scrollRect.horizontalNormalizedPosition, scrollRect.verticalNormalizedPosition);
                 startTouchPoint = thisFrame;
-
-                interactionManager.RegisterInteractable((IXRInteractable)this);
+                return true;
             }
+            return false;
         }
 
-        private void StopScrolling(IXRInteractor interactor)
+        private bool StopScrolling(IXRInteractor interactor)
         {
             if (interactorsScrolling.Remove(interactor))
             {
@@ -240,8 +255,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     // Vector2 thisFrame = scrollRect.transform.InverseTransformPoint(interactor.GetAttachTransform(this).position);
                     scrollRect.velocity = velocity;
                 }
-                interactionManager.UnregisterInteractable((IXRInteractable)this);
+                return true;
             }
+            return false;
         }
     }
 }
