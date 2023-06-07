@@ -14,20 +14,19 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Updates visuals as needed for the variable reticle.
         /// </summary>
-        public void UpdateVisuals(VariableReticleArgs args);
+        public void UpdateVisuals(VariableReticleUpdateArgs args);
     }
 
-    public struct VariableReticleArgs
+    /// <summary>
+    /// A struct to store the arguments passed to UpdateVisuals
+    /// including the interactor associated with the reticle, and reticle position and normal.
+    /// </summary>
+    public struct VariableReticleUpdateArgs
     {
         /// <summary>
         /// XRRayInteractor that the reticle serves as a visual for.
         /// </summary>
-        public XRRayInteractor RayInteractor;
-
-        /// <summary>
-        /// The reticle game object. 
-        /// </summary>
-        public GameObject Reticle;
+        public IXRInteractor Interactor;
 
         /// <summary>
         /// The desired reticle position from the raycast hit.
@@ -39,10 +38,12 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public Vector3 ReticleNormal;
 
-        public VariableReticleArgs(XRRayInteractor rayInteractor, GameObject customReticle, Vector3 reticlePosition, Vector3 reticleNormal)
+        /// <summary>
+        /// Constructor for <see cref="VariableReticleUpdateArgs"/>.
+        /// </summary>
+        public VariableReticleUpdateArgs(IXRInteractor interactor, Vector3 reticlePosition, Vector3 reticleNormal)
         {
-            RayInteractor = rayInteractor;
-            Reticle = customReticle;
+            Interactor = interactor;
             ReticlePosition = reticlePosition;
             ReticleNormal = reticleNormal;
         }

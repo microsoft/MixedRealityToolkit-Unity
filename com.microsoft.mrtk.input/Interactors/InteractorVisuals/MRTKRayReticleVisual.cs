@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         // If the reticle is an IVariableSelectReticle, have the reticle update based on selectedness
                         if (VariableReticle != null)
                         {
-                            VariableReticle.UpdateVisuals(new VariableReticleArgs(rayInteractor, Reticle, reticlePosition, reticleNormal));
+                            VariableReticle.UpdateVisuals(new VariableReticleUpdateArgs(rayInteractor, reticlePosition, reticleNormal));
                         }
                     }
                     else

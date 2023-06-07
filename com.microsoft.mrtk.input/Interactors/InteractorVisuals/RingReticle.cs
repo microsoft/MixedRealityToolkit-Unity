@@ -80,15 +80,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// Extracts values from VariableReticleArgs to call UpdateVisuals
-        public void UpdateVisuals(VariableReticleArgs args)
+        public void UpdateVisuals(VariableReticleUpdateArgs args)
         {
-            if (args.RayInteractor is IVariableSelectInteractor variableSelectInteractor)
+            if (args.Interactor is XRRayInteractor rayInteractor)
             {
-                UpdateVisuals(variableSelectInteractor.SelectProgress);
-            }
-            else
-            {
-                UpdateVisuals(args.RayInteractor.isSelectActive ? 1 : 0);
+                if (rayInteractor is IVariableSelectInteractor variableSelectInteractor)
+                {
+                    UpdateVisuals(variableSelectInteractor.SelectProgress);
+                }
+                else
+                {
+                    UpdateVisuals(rayInteractor.isSelectActive ? 1 : 0);
+                }
             }
         }
 
