@@ -228,18 +228,18 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
     }
 
-    public sealed class SelectChildEventRoute : XRChildInteractableEventRoute<IXRSelectInteractable, IXRSelectInteractableParent>
+    public sealed class SelectChildEventRoute : XRChildInteractableEventRoute<IXRSelectInteractable, IXRSelectInteractableChild>
     {
-        protected override void Register(IXRSelectInteractable source, IXRSelectInteractableParent target)
+        protected override void Register(IXRSelectInteractable source, IXRSelectInteractableChild target)
         {
-            source.selectEntered.AddListener(target.OnChildSelectEntered);
-            source.selectExited.AddListener(target.OnChildSelectExited);
+            source.selectEntered.AddListener(target.OnParentSelectEntered);
+            source.selectExited.AddListener(target.OnnParentSelectExited);
         }
 
-        protected override void Unregister(IXRSelectInteractable source, IXRSelectInteractableParent target)
+        protected override void Unregister(IXRSelectInteractable source, IXRSelectInteractableChild target)
         {
-            source.selectEntered.RemoveListener(target.OnChildSelectEntered);
-            source.selectExited.RemoveListener(target.OnChildSelectExited);
+            source.selectEntered.RemoveListener(target.OnParentSelectEntered);
+            source.selectExited.RemoveListener(target.OnnParentSelectExited);
         }
     }
 }

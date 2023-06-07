@@ -8010,8 +8010,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 117.32, y: 38, z: 42.4}
-  m_Center: {x: 0, y: 0, z: 4.6}
+  m_Size: {x: 117.32, y: 38, z: 19.259512}
+  m_Center: {x: 0, y: 0, z: 8.003026}
 --- !u!114 &352806573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12324,11 +12324,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventRoutes:
   - rid: 4538478496705150976
+  - rid: 4538478496705150977
   references:
     version: 2
     RefIds:
     - rid: 4538478496705150976
       type: {class: HoverParentEventRoute, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
+    - rid: 4538478496705150977
+      type: {class: SelectParentEventRoute, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
 --- !u!224 &718172737 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8376646494505211229, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
@@ -14863,6 +14866,7 @@ GameObject:
   - component: {fileID: 955345455}
   - component: {fileID: 955345457}
   - component: {fileID: 955345456}
+  - component: {fileID: 955345458}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -14940,6 +14944,28 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 1
+--- !u!114 &955345458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 955345454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33899dd1111fc86498e4859f98dc9994, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventRoutes:
+  - rid: 4538478496705150979
+  - rid: 4538478496705150980
+  references:
+    version: 2
+    RefIds:
+    - rid: 4538478496705150979
+      type: {class: HoverParentEventRoute, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
+    - rid: 4538478496705150980
+      type: {class: SelectParentEventRoute, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
 --- !u!224 &958639156 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8376646494505211229, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
@@ -20678,11 +20704,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventRoutes:
   - rid: 4538478496103006208
+  - rid: 4538478496705150978
   references:
     version: 2
     RefIds:
     - rid: 4538478496103006208
       type: {class: HoverParentEventRoute, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
+    - rid: 4538478496705150978
+      type: {class: SelectParentEventRoute, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
 --- !u!224 &1748588597 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8376646494505211229, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
@@ -22268,8 +22297,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 38, y: 117.32, z: 42.4}
-  m_Center: {x: 0, y: 0, z: 4.6}
+  m_Size: {x: 38, y: 117.32, z: 19.84471}
+  m_Center: {x: 0, y: 0, z: 7.840722}
 --- !u!114 &1871826342
 MonoBehaviour:
   m_ObjectHideFlags: 0
