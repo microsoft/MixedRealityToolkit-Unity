@@ -12,8 +12,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// <summary>
     /// Allows a <see cref="ScrollRect"/> to be scrolled by XRI interactors.
     /// </summary>
-    public class Scrollable : PressableButton
+    public class Scrollable : PressableButton, IXRHoverInteractableParent, IXRSelectInteractableParent
     {
+
         [Tooltip("The scroll rect to scroll.")]
         [SerializeField]
         private ScrollRect scrollRect = null;
@@ -41,6 +42,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private Vector2 startTouchPoint;
 
         private bool isDead;
+
+        private int hoverCounts = 0;
+        private int selectCounts = 0;
 
         /// <inheritdoc />
         public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
@@ -72,7 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
                 float displacementFromStart = (thisFrame - startTouchPoint).magnitude / deadzone;
 
-                Debug.Log(displacementFromStart.ToString("F3"));
+                //Debug.Log(displacementFromStart.ToString("F3"));
 
                 dragDelta *= Mathf.Clamp01(displacementFromStart);
     
@@ -106,33 +110,144 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
+        protected override void OnHoverEntered(HoverEnterEventArgs args)
+        {
+            Debug.Log("SCROLLABLE: Hover Entered");
+            base.OnHoverEntered(args);
+            this.IncreaseHoverCount(args);
+        }
+
+        protected override void OnHoverExited(HoverExitEventArgs args)
+        {
+            Debug.Log("SCROLLABLE: Hover Exitted");
+            base.OnHoverExited(args);
+            this.DescreaseHoverCount(args);
+        }
+
         protected override void OnSelectEntered(SelectEnterEventArgs args)
         {
-            Vector2 thisFrame = scrollRect.transform.InverseTransformPoint(args.interactorObject.GetAttachTransform(this).position);
-
-            touchPoints[args.interactorObject] = thisFrame;
-
-            // if (interactorsSelecting.Count == 1)
-            // {
-                startNormalizedPosition = new Vector2(scrollRect.horizontalNormalizedPosition, scrollRect.verticalNormalizedPosition);
-                startTouchPoint = thisFrame;
-            // }
+            Debug.Log("SCROLLABLE: Select Entered");
+            base.OnSelectEntered(args);
+            IncreaseSelectCount(args);
         }
 
         protected override void OnSelectExited(SelectExitEventArgs args)
         {
+            Debug.Log("SCROLLABLE: Select Exitted");
             base.OnSelectExited(args);
+        }
 
-            if (touchPoints.ContainsKey(args.interactorObject))
+        public void OnChildHoverEntering(HoverEnterEventArgs args)
+        {
+            Debug.Log("SCROLLABLE: Child Hover Entering");
+        }
+
+        public void OnChildHoverEntered(HoverEnterEventArgs args)
+        {
+            Debug.Log("SCROLLABLE: Child Hover Entered");
+            this.IncreaseHoverCount(args);
+        }
+
+        public void OnChildHoverExiting(HoverExitEventArgs args)
+        {
+            Debug.Log("SCROLLABLE: Child Hover Exitting");
+        }
+
+        public void OnChildHoverExited(HoverExitEventArgs args)
+        {
+            Debug.Log("SCROLLABLE: Child Hover Exitted");
+            this.DescreaseHoverCount(args);
+        }
+
+
+        public void OnChildSelectEntering(SelectEnterEventArgs args)
+        {
+            Debug.Log("SCROLLABLE: Child Select Entering");
+        }
+
+        public void OnChildSelectEntered(SelectEnterEventArgs args)
+        {
+            Debug.Log("SCROLLABLE: Child Select Entered");
+            IncreaseSelectCount(args);
+        }
+
+        public void OnChildSelectExiting(SelectExitEventArgs args)
+        {
+            Debug.Log("SCROLLABLE: Child Select Exitting");
+        }
+
+        public void OnChildSelectExited(SelectExitEventArgs args)
+        {
+            Debug.Log("SCROLLABLE: Child Select Exitted");
+            DecreaseSelectCount(args);
+        }
+
+        private void IncreaseHoverCount(HoverEnterEventArgs args)
+        {
+            hoverCounts++;
+            if (hoverCounts == 1)
+            {
+            }
+        }
+
+        private void DescreaseHoverCount(HoverExitEventArgs args)
+        {
+            hoverCounts--;
+            if (hoverCounts <= 0)
+            {
+                hoverCounts = 0;
+            }
+        }
+
+        private void IncreaseSelectCount(SelectEnterEventArgs args)
+        {
+            selectCounts++;
+            if (selectCounts == 1)
+            {
+                StartScrolling(args.interactorObject);
+            }
+        }
+
+
+        private void DecreaseSelectCount(SelectExitEventArgs args)
+        {
+            selectCounts--;
+            if (selectCounts <= 0)
+            {
+                hoverCounts = 0;
+                StopScrolling(args.interactorObject);
+            }
+        }
+
+        private void StartScrolling(IXRInteractor interactor)
+        {
+            Vector2 thisFrame = scrollRect.transform.InverseTransformPoint(interactor.GetAttachTransform(this).position);
+
+            touchPoints[interactor] = thisFrame;
+
+            // if (interactorsSelecting.Count == 1)
+            // {
+            startNormalizedPosition = new Vector2(scrollRect.horizontalNormalizedPosition, scrollRect.verticalNormalizedPosition);
+            startTouchPoint = thisFrame;
+            // }
+
+            this.interactionManager.RegisterInteractable((IXRInteractable)this);
+        }
+
+        private void StopScrolling(IXRInteractor interactor)
+        {
+
+            if (touchPoints.ContainsKey(interactor))
             {
                 // Vector2 lastFrame = touchPoints[interactor];
                 // Vector2 thisFrame = scrollRect.transform.InverseTransformPoint(interactor.GetAttachTransform(this).position);
 
                 scrollRect.velocity = velocity;
             }
-            
-            touchPoints.Remove(args.interactorObject);
-        }
 
+            touchPoints.Remove(interactor);
+
+            this.interactionManager.UnregisterInteractable((IXRInteractable)this);
+        }
     }
 }
