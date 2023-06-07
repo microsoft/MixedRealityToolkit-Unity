@@ -51,13 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         public void RotateReticle(Vector3 reticleNormal, Transform hitTargetTransform)
         {
-            if (contextTransform == null && hitTargetTransform != null)
-            {
-                ISnapInteractable snapInteractable = hitTargetTransform.gameObject.GetComponent<ISnapInteractable>();
-                contextTransform = snapInteractable.HandleTransform;
-            }
-
-            if (contextTransform == null)
+            if (hitTargetTransform == null)
             {
                 return;
             }
@@ -65,10 +59,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             Vector3 right = Vector3.zero;
             Vector3 up = Vector3.zero;
             Vector3 forward = Vector3.zero;
-            GetCursorTargetAxes(reticleNormal, ref right, ref up, ref forward, contextTransform);
+            GetCursorTargetAxes(reticleNormal, ref right, ref up, ref forward, hitTargetTransform.parent);
 
             // Get the cursor position, relative to the handles container
-            Vector3 adjustedCursorPos = transform.position - contextTransform.position;
+            Vector3 adjustedCursorPos = transform.position - hitTargetTransform.parent.position;
 
             switch (ReticleType)
             {
