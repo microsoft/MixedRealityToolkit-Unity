@@ -98,12 +98,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         {
                             if (reticleNormal != Vector3.zero)
                             {
-
-                                transform.SetPositionAndRotation(reticlePosition, Quaternion.LookRotation(reticleNormal, Vector3.up));
+                                reticleRoot.transform.SetPositionAndRotation(reticlePosition, Quaternion.LookRotation(reticleNormal, Vector3.up));
                             }
                             else
                             {
-                                transform.position = reticlePosition;
+                                reticleRoot.transform.position = reticlePosition;
                             }
                         }
 

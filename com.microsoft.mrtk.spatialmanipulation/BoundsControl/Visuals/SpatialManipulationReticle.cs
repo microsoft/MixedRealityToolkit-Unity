@@ -32,7 +32,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             {
                 if (args.ReticleNormal != Vector3.zero)
                 {
-
                     transform.SetPositionAndRotation(args.ReticlePosition, Quaternion.LookRotation(args.ReticleNormal, Vector3.up));
                 }
                 else
