@@ -247,11 +247,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private bool isRecording = false;
 
         /// <summary>
-        /// On the first recording
-        /// </summary>        
-        private bool firstRecording = true;
-
-        /// <summary>
         /// Tracking the previous keyboard layout.
         /// </summary>
         /// <summary>
