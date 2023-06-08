@@ -63,17 +63,32 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 }
 
                 EditorGUI.BeginChangeCheck();
-
+ 
+#if UNITY_2022_1_OR_NEWER
+                Vector3 newStartPosition = Handles.FreeMoveHandle(startPos,
+                    handleSize,
+                    Vector3.zero,
+                    Handles.SphereHandleCap);
+#else
                 Vector3 newStartPosition = Handles.FreeMoveHandle(startPos,
                     Quaternion.identity,
                     handleSize,
                     Vector3.zero,
                     Handles.SphereHandleCap);
+#endif
+
+#if UNITY_2022_1_OR_NEWER
+                Vector3 newEndPosition = Handles.FreeMoveHandle(endPos,
+                    handleSize,
+                    Vector3.zero,
+                    Handles.SphereHandleCap);
+#else
                 Vector3 newEndPosition = Handles.FreeMoveHandle(endPos,
                     Quaternion.identity,
                     handleSize,
                     Vector3.zero,
                     Handles.SphereHandleCap);
+#endif
 
                 if (EditorGUI.EndChangeCheck())
                 {

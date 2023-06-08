@@ -751,7 +751,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             Handles.DrawDottedLine(origin, position, DottedLineScreenSpace);
             Handles.ArrowHandleCap(0, position, Quaternion.LookRotation(direction), handleSize * 2, EventType.Repaint);
+#if UNITY_2022_1_OR_NEWER
+            Vector3 newPosition = Handles.FreeMoveHandle(position, handleSize, Vector3.zero, Handles.CircleHandleCap);
+#else
             Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize, Vector3.zero, Handles.CircleHandleCap);
+#endif
 
             if (recordUndo)
             {
@@ -788,7 +792,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 handleSize = Mathf.Lerp(handleSize, HandleUtility.GetHandleSize(position) * handleSize, 0.75f);
             }
 
+#if UNITY_2022_1_OR_NEWER
+            Vector3 newPosition = Handles.FreeMoveHandle(position, handleSize, Vector3.zero, Handles.CircleHandleCap);
+#else
             Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize, Vector3.zero, Handles.CircleHandleCap);
+#endif
 
             if (recordUndo && position != newPosition)
             {
@@ -824,7 +832,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             // Multiply square handle to match other types
+#if UNITY_2022_1_OR_NEWER
+            Vector3 newPosition = Handles.FreeMoveHandle(position, handleSize * 0.8f, Vector3.zero, Handles.RectangleHandleCap);
+#else
             Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize * 0.8f, Vector3.zero, Handles.RectangleHandleCap);
+#endif
 
             if (recordUndo && position != newPosition)
             {
@@ -860,7 +872,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
 
             // Multiply sphere handle size to match other types
+#if UNITY_2022_1_OR_NEWER
+            Vector3 newPosition = Handles.FreeMoveHandle(position, handleSize * 2, Vector3.zero, Handles.SphereHandleCap);
+#else            
             Vector3 newPosition = Handles.FreeMoveHandle(position, Quaternion.identity, handleSize * 2, Vector3.zero, Handles.SphereHandleCap);
+#endif
 
             if (recordUndo && position != newPosition)
             {
@@ -926,7 +942,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 rotation = Quaternion.LookRotation(vector);
             }
 
+            // TODO: rotation needs to be applied somehow in 2022
+#if UNITY_2022_1_OR_NEWER
+            Vector3 newPosition = Handles.FreeMoveHandle(handlePosition, handleSize, Vector3.zero, Handles.DotHandleCap);
+#else 
             Vector3 newPosition = Handles.FreeMoveHandle(handlePosition, rotation, handleSize, Vector3.zero, Handles.DotHandleCap);
+#endif
 
             if (recordUndo && handlePosition != newPosition)
             {
