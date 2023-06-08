@@ -96,7 +96,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         // If we have a reticle, set its position and rotation.
                         if (reticleRoot != null)
                         {
-                            reticleRoot.transform.SetPositionAndRotation(reticlePosition, Quaternion.LookRotation(reticleNormal, Vector3.up));
+                            if (reticleNormal != Vector3.zero)
+                            {
+
+                                transform.SetPositionAndRotation(reticlePosition, Quaternion.LookRotation(reticleNormal, Vector3.up));
+                            }
+                            else
+                            {
+                                transform.position = reticlePosition;
+                            }
                         }
 
                         // If the reticle is an IVariableSelectReticle, have the reticle update based on selectedness

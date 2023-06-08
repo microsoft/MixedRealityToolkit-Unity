@@ -30,7 +30,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         {
             if (args.Interactor is XRRayInteractor rayInteractor)
             {
-                transform.SetPositionAndRotation(args.ReticlePosition, Quaternion.LookRotation(args.ReticleNormal, Vector3.up));
+                if (args.ReticleNormal != Vector3.zero)
+                {
+
+                    transform.SetPositionAndRotation(args.ReticlePosition, Quaternion.LookRotation(args.ReticleNormal, Vector3.up));
+                }
+                else
+                {
+                    transform.position = args.ReticlePosition;
+                }
 
                 if (rayInteractor.interactablesSelected.Count > 0)
                 {
@@ -40,15 +48,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 {
                     RotateReticle(args.ReticleNormal, rayInteractor.interactablesHovered[0].transform);
                 }
-                
             }
         }
 
         /// <summary>
-        /// Called by once per frame by <see cref="MRTKRayReticleVisual"/> from its UpdateReticle.
         /// Rotates the cursor reticle based on the hovered or selected handle's position relative to the box visuals. 
         /// </summary>
-        public void RotateReticle(Vector3 reticleNormal, Transform hitTargetTransform)
+        private void RotateReticle(Vector3 reticleNormal, Transform hitTargetTransform)
         {
             if (hitTargetTransform == null)
             {
@@ -96,10 +102,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         /// <summary>
-        /// Called by once per frame by <see cref="MRTKRayReticleVisual"/> from its UpdateReticle.
         /// Rotates the cursor reticle based on the last stored value to maintain a fixed rotation. 
         /// </summary>
-        public void FixedRotateReticle()
+        private void FixedRotateReticle()
         {
             if (worldRotationCache != null)
             {
