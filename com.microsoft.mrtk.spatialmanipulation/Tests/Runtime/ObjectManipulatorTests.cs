@@ -264,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             InputTestUtilities.SetHandAnchorPoint(Handedness.Right, Input.Simulation.ControllerAnchorPoint.Grab);
 
             // Disable gaze interactions for this unit test;
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -397,7 +397,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         public IEnumerator ObjectManipulatorOneHandMoveFar()
         {
             // Disable gaze interactions for this unit test;
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -540,7 +540,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         public IEnumerator ObjectManipulatorOneHandMoveGaze()
         {
             // Enable gaze interactions for this unit test;
-            InputTestUtilities.EnableGaze();
+            InputTestUtilities.EnableGazeInteractor();
 
             // Set up cube with ObjectManipulator
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -758,7 +758,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         [UnityTest]
         public IEnumerator ObjectManipulatorTwoHandedCentroid()
         {
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             InputTestUtilities.InitializeCameraToOriginAndForward();
 

@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         public IEnumerator SolverHandlerInteractorSwitchesToActiveHand()
         {
             // Disable gaze interactions for this unit test;
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             // Set up GameObject with a SolverHandler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -87,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         public IEnumerator SolverHandlerInteractorSwitchesToActiveHandWithEverythingValue()
         {
             // Disable gaze interactions for this unit test;
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             // Set up GameObject with a SolverHandler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -142,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         public IEnumerator SolverHandlerInteractorLeftHandOnly()
         {
             // Disable gaze interactions for this unit test;
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             // Set up GameObject with a SolverHandler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -197,7 +197,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         public IEnumerator SolverHandlerInteractorRightHandOnly()
         {
             // Disable gaze interactions for this unit test;
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             // Set up GameObject with a SolverHandler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -253,7 +253,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         public IEnumerator SolverHandlerInteractorPreferredHandedness()
         {
             // Disable gaze interactions for this unit test;
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             // Set up GameObject with a SolverHandler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -295,7 +295,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         public IEnumerator SolverHandlerInteractorTracksInitialActiveHand()
         {
             // Disable gaze interactions for this unit test;
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             // Set up GameObject with a SolverHandler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -337,7 +337,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         public IEnumerator SolverHandlerInteractorMovesWithHand()
         {
             // Disable gaze interactions for this unit test;
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             // Set up GameObject with a SolverHandler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -378,7 +378,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         public IEnumerator SolverHandlerHeadMovesWithHead()
         {
             // Disable gaze interactions for this unit test;
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             // Set up GameObject with a SolverHandler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -410,7 +410,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         public IEnumerator SolverHandlerAppliesOffset()
         {
             // Disable gaze interactions for this unit test;
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             // Set up GameObject with a SolverHandler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -444,7 +444,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         public IEnumerator SolverHandlerHandJointSwitchesToActiveHand()
         {
             // Disable gaze interactions for this unit test;
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             // For tracking joint pose in test
             HandJointPose jointPose = new HandJointPose();
@@ -507,7 +507,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         public IEnumerator SolverHandlerHandJointSwitchesToActiveHandWithEverythingValue()
         {
             // Disable gaze interactions for this unit test;
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             // For tracking joint pose in test
             HandJointPose jointPose = new HandJointPose();
@@ -567,7 +567,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         public IEnumerator SolverHandlerHandJointLeftHandOnly()
         {
             // Disable gaze interactions for this unit test;
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             // For tracking joint pose in test
             HandJointPose jointPose = new HandJointPose();
@@ -627,7 +627,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         public IEnumerator SolverHandlerHandJointRightHandOnly()
         {
             // Disable gaze interactions for this unit test;
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             // For tracking joint pose in test
             HandJointPose jointPose = new HandJointPose();
