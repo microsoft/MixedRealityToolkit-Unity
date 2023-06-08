@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using System;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
