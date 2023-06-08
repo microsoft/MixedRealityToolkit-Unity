@@ -342,29 +342,29 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Assert.IsFalse(bc.HandlesActive, "Handles should start inactive by default");
             bc.HandlesActive = true;
 
-            var squeezableVisuals = bc.GetComponentInChildren<SqueezableBoxVisuals>();
             // Show internal, all should be visible now
+            var squeezableVisuals = bc.GetComponentInChildren<SqueezableBoxVisuals>();
             if (squeezableVisuals != null)
             {
                 squeezableVisuals.ShowInternalHandles = true;
             }
 
+            // Grab the specified handle
             BoundsHandleInteractable[] allHandles = bc.GetComponentsInChildren<BoundsHandleInteractable>();
             BoundsHandleInteractable handle = null;
-
-            // Grab handles which we know to be on the top left and right corners, and the bottom and left side of the box
             for (int i = 0; i < allHandles.Length && (handle == null); i++)
             {
                 BoundsHandleInteractable nextHandle = allHandles[i];
                 if (nextHandle.transform.name.Equals(handleName)) handle = nextHandle;
-                else nextHandle.gameObject.SetActive(false);
             }
 
+            // Set up test hand
             TestHand hand = new TestHand(Handedness.Right);
             Vector3 initialHandPosition = InputTestUtilities.InFrontOfUser(new Vector3(0.05f, -0.05f, 0.3f)); // orient hand so far interaction ray will hit button
             yield return hand.Show(initialHandPosition);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
+            // Move it so the far ray hovers the handle
             Assert.IsNotNull(handle);
             yield return hand.AimAt(handle.transform.position);
             yield return RuntimeTestUtilities.WaitForUpdates();
@@ -376,6 +376,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Assert.IsTrue(ApproximatelyEquals(cursor.transform.eulerAngles, expectedRotation), $"Cursor should be rotated for {handleName}.");
             Quaternion worldRotation = cursor.transform.rotation;
 
+            // Select the handle
             yield return hand.SetHandshape(HandshapeId.Pinch);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
@@ -387,6 +388,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Assert.IsTrue(ApproximatelyEquals(cursor.transform.eulerAngles, expectedRotation), $"Cursor should be rotated for {handleName}.");
             Assert.IsTrue(ApproximatelyEquals(cursor.transform.rotation, worldRotation), $"Rotation should remain after select for {handleName}.");
 
+            // Move the handle
             yield return hand.Move(Vector3.left);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
