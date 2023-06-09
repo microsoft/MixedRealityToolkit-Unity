@@ -24,8 +24,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private class ManagedInteractorStatus
         {
             [SerializeField]
+            [Tooltip("A value representing interactor mode or state that is being targeted by this Managed Interactor Status.")]
             private InteractionMode currentMode;
 
+            /// <summary>
+            /// Get or set the value representing interactor mode or state that is being targeted by the <see cref="ManagedInteractorStatus"/> instance.
+            /// </summary>
             public InteractionMode CurrentMode
             {
                 get => currentMode;
@@ -33,8 +37,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             [SerializeField]
+            [Tooltip("The interactor mode or state that is being targeted by this Managed Interactor Status.")]
             private List<XRBaseInteractor> interactors = new List<XRBaseInteractor>();
 
+            /// <summary>
+            /// The interactor mode or state that is being targeted by the <see cref="ManagedInteractorStatus"/> instance.
+            /// </summary>
             public List<XRBaseInteractor> Interactors => interactors;
         }
 
@@ -72,6 +80,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Expands this object's <see cref="PrioritizedInteractionModes"/> property with base and sub types associated with
+        /// the current value stored in the <see cref="PrioritizedInteractionModes"/> property.
+        /// </summary>
+        /// <remarks>
+        /// This function is only intended for use in Unity's inspector window. See 
+        /// <see cref="Microsoft.MixedReality.Toolkit.Input.Editor.InteractionModeManagerEditor"> InteractionModeManagerEditor</see>
+        /// documentation for more details.
+        /// </remarks>
         public void PopulateModesWithSubtypes()
         {
             List<InteractionModeDefinition> newPrioritizedInteractionModes = new List<InteractionModeDefinition>();
