@@ -42,7 +42,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private bool interactionPointTracked;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Indicates whether this Interactor is in a state where it could hover.
+        /// </summary>
         public override bool isHoverActive
         {
             // Only be available for hovering if the controller is tracked or we have joint data.

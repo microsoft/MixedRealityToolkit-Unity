@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="terminus">The end position of the raycast step.</param>
         public RayStep(Vector3 origin, Vector3 terminus) : this()
         {
-            UpdateRayStep(ref origin, ref terminus);
+            UpdateRayStep(in origin, in terminus);
 
             epsilon = 0.01f;
         }
@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </remarks>
         /// <param name="origin">The origin position of the ray step.</param>
         /// <param name="terminus">The end position of the ray step.</param>
-        public void UpdateRayStep(ref const Vector3 origin, ref const Vector3 terminus)
+        public void UpdateRayStep(in Vector3 origin, in Vector3 terminus)
         {
             Origin = origin;
             Terminus = terminus;

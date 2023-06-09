@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// A new reference string. Will return an empty string if the assembly qualified
         /// name is null or empty.
         /// </returns>
-        public static string (string assemblyQualifiedName)
+        public static string GetReference(string assemblyQualifiedName)
         {
             if (string.IsNullOrEmpty(assemblyQualifiedName))
             {
@@ -147,6 +147,9 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Implemented so to receive a callback before Unity deserializes this object.
         /// </summary>
+        /// <remarks>
+        /// This is currently not utilized, and no operation will be preformed when called.
+        /// </remarks>
         void ISerializationCallbackReceiver.OnBeforeSerialize() { }
 
         #endregion ISerializationCallbackReceiver Members
