@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit
         public float Width { get; }
 
         /// <summary>
-        /// The constructor for <see cref="LabelWidthAttribute"/>
+        /// Initializes a new instance of the <see cref="LabelWidthAttribute"/> class.
         /// </summary>
         /// <param "name">The width to apply to the serializable property's label when the label is rendered in the Unity inspector window.</param>
         public LabelWidthAttribute(float width)
