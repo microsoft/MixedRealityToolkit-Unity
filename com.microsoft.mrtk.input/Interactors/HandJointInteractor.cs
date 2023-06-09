@@ -56,6 +56,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static readonly ProfilerMarker ProcessInteractorPerfMarker =
             new ProfilerMarker("[MRTK] HandJointInteractor.ProcessInteractor");
 
+        /// <summary>
+        /// Unity's <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.4/api/UnityEngine.XR.Interaction.Toolkit.XRInteractionManager.html">XRInteractionManager</see> 
+        /// or containing <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.4/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractionGroup.html">IXRInteractionGroup</see> 
+        /// calls this method to update the Interactor before interaction events occur. See Unity's documentation for more information.
+        /// </summary>
+        /// <param name="updatePhase">The update phase this is called during.</param>
+        /// <remarks>
+        /// Please see the <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.4/api/UnityEngine.XR.Interaction.Toolkit.XRInteractionManager.html">XRInteractionManager</see> documentation for more
+        /// details on update order.
+        /// </remarks>
         public override void ProcessInteractor(XRInteractionUpdateOrder.UpdatePhase updatePhase)
         {
             base.ProcessInteractor(updatePhase);
