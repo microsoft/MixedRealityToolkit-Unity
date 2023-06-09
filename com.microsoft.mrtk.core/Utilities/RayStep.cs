@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
 {
+    /// <summary>
+    /// Represents a single linear ray cast that is part of a longer ray cast.
+    /// </summary>
     [Serializable]
     public struct RayStep
     {
@@ -13,6 +16,7 @@ namespace Microsoft.MixedReality.Toolkit
         private static Vector3 dist;
         private static Vector3 dir;
         private static Vector3 pos;
+
 
         public RayStep(Vector3 origin, Vector3 terminus) : this()
         {
@@ -44,12 +48,14 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Update current raystep with new origin and terminus points. 
-        /// Pass by ref to avoid unnecessary struct copy into function since values will be copied anyways locally
+        /// Update the ray step with new origin and terminus points. 
         /// </summary>
-        /// <param name="origin">beginning of raystep origin</param>
-        /// <param name="terminus">end of raystep</param>
-        public void UpdateRayStep(ref Vector3 origin, ref Vector3 terminus)
+        /// <remarks>
+        /// Vectors are passed by reference to avoid unnecessary struct copies. The input values will be copied locally.
+        /// </remarks>
+        /// <param name="origin">The origin position of the ray step.</param>
+        /// <param name="terminus">The end position of the ray step.</param>
+        public void UpdateRayStep(ref const Vector3 origin, ref const Vector3 terminus)
         {
             Origin = origin;
             Terminus = terminus;
