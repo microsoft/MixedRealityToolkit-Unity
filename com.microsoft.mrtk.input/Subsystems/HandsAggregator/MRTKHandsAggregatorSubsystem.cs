@@ -197,9 +197,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// A Unity subsystem provider used with the <see cref="Microsoft.MixedReality.Toolkit.Input.MRTKHandsAggregatorSubsystem">MRTKHandsAggregatorSubsystem</see> subsystem.
+        /// </summary>
         [Preserve]
         protected class MRTKAggregator : Provider
         {
+            /// <summary>
+            /// Get the current configuration for this <see cref="MRTKAggregator"/>.
+            /// </summary>
             protected MRTKHandsAggregatorConfig Config { get; private set; }
 
             private Dictionary<XRNode, AggregateHandContainer> hands = null;
@@ -207,6 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Reusable pinch pose structs to reduce allocs.
             private HandJointPose leftPinchPose, rightPinchPose;
 
+            /// <inheritdoc/>
             public override void Start()
             {
                 base.Start();
@@ -222,6 +229,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 InputSystem.onBeforeUpdate += ResetHands;
             }
 
+            /// <inheritdoc/>
             public override void Stop()
             {
                 ResetHands();

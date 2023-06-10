@@ -5,22 +5,36 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// Represents a parametric curve of an inertial type movement. The parametric curve positions are updated each frame
+    /// before rendering line visuals, using a linear interpolation function, until the positions reach their specified targets.
+    /// </summary>
     [RequireComponent(typeof(BezierDataProvider))]
     [AddComponentMenu("MRTK/Input/Bezier Inertia")]
     public class BezierInertia : MonoBehaviour
-    {
+    {        
         [SerializeField]
+        [Tooltip("A set parametric curve points.")]
         private BezierDataProvider bezier;
+
         [SerializeField]
+        [Tooltip("The inertial value of the inertial movement.")]
         private float inertia = 15f;
+
         [SerializeField]
+        [Tooltip("The dampen value of the inertial movement.")]
         private float dampen = 6f;
+
         [SerializeField]
+        [Tooltip("The scalar value to apply to the time delta when updating the parametric curve point positions.")]
         private float seekTargetStrength = 5f;
 
         [SerializeField]
+        [Tooltip("The target value for the first parametric curve point position.")]
         private Vector3 p1Target = new Vector3(0, 0, 0.33f);
+
         [SerializeField]
+        [Tooltip("The target value for the second parametric curve point position.")]
         private Vector3 p2Target = new Vector3(0, 0, 0.66f);
 
         private Vector3 p1Velocity;

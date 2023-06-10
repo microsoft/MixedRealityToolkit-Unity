@@ -7,12 +7,19 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
+    /// <summary>
+    /// A custom class used when rendering a Unity inspector window editor for a <see cref="Microsoft.MixedReality.Toolkit.Input.InteractionModeManager">InteractionModeManager</see>
+    /// class.
+    /// </summary>
     [CustomEditor(typeof(InteractionModeManager))]
     public class InteractionModeManagerEditor : UnityEditor.Editor
     {
         private const string InitControllers = "Init Controllers";
         private const string InitSubtypes = "Populate Modes Definitions with Subtypes";
 
+        /// <summary>
+        /// Implemented so to make a custom inspector inside Unity's inspector window.
+        /// </summary>
         public override void OnInspectorGUI()
         {
             Color prevColor = GUI.color;
