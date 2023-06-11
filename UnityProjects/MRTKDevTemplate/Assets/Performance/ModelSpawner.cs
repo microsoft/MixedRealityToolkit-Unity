@@ -5,6 +5,10 @@ using UnityEngine;
 using TMPro;
 using System.IO;
 using System.Text;
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.UX;
+using Microsoft.MixedReality.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class ModelSpawner : MonoBehaviour
 {
@@ -18,6 +22,18 @@ public class ModelSpawner : MonoBehaviour
     //    public int StepCount;
     //    public bool Instantiate;
     //}
+
+    [SerializeField]
+    private GameObject descriptionPanel;
+
+    [SerializeField]
+    private ArticulatedHandController leftArticulatedHandController;
+
+    [SerializeField]
+    private ArticulatedHandController rightArticulatedHandController;
+
+    [SerializeField]
+    private PressableButton handControllerUpdateToggleButton;
 
     [SerializeField]
     private GameObject model;
@@ -50,7 +66,7 @@ public class ModelSpawner : MonoBehaviour
     private int startCount = 0;
 
     //[SerializeField]
-    private int targetLowFramerate = 60;
+    private int targetLowFramerate = 50;
 
     //[SerializeField]
     //public SpawnTest[] Tests;
@@ -72,6 +88,12 @@ public class ModelSpawner : MonoBehaviour
     private float yOffset = 0.0f;
     private int zRank = 0;
     private float zOffset = 0.0f;
+
+    private void Awake()
+    {
+        handControllerUpdateToggleButton.ForceSetToggled(leftArticulatedHandController.updateTrackingType == XRBaseController.UpdateType.UpdateAndBeforeRender, false);
+        handControllerUpdateToggleButton.OnClicked.AddListener(() => SetHandControllerUpdateMode(handControllerUpdateToggleButton.IsToggled));
+    }
 
     private void Start()
     {
@@ -100,8 +122,18 @@ public class ModelSpawner : MonoBehaviour
     //    resultsStringBuilder.Clear();
     //}
 
+
+    private void SetHandControllerUpdateMode(bool isToggled)
+    {
+        var controllerUpdateType = isToggled ? XRBaseController.UpdateType.UpdateAndBeforeRender : XRBaseController.UpdateType.Update;
+
+        leftArticulatedHandController.updateTrackingType = controllerUpdateType;
+        rightArticulatedHandController.updateTrackingType = controllerUpdateType;
+    }
+
     public void StartNextTest()
     {
+        descriptionPanel.SetActive(false);
         resultsText.text = string.Empty;
         lowFramerateFramecount = 0;
         SetModelCount(0);
@@ -146,7 +178,7 @@ public class ModelSpawner : MonoBehaviour
             lowFramerateFramecount++;
         }
 
-        if (currentCount < 800 && lowFramerateFramecount < 20)
+        if (currentCount < 800 && lowFramerateFramecount < 60)
         {
             //resultsStringBuilder.Append(currentCount);
             //resultsStringBuilder.Append(",");
@@ -167,6 +199,7 @@ public class ModelSpawner : MonoBehaviour
             testComplete = true;
             resultsText.text = $"Test dropped below target framerate after {currentCount} objects.  Test complete.";
             Debug.Log(resultsText.text);
+            descriptionPanel.SetActive(true);
         }
     }
 
