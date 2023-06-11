@@ -23,7 +23,7 @@ public class ModelSpawner : MonoBehaviour
     private GameObject model;
 
     [SerializeField]
-    private TextMeshProUGUI label;
+    private TextMeshProUGUI countText;
 
     [SerializeField]
     private TextMeshProUGUI framerateText;
@@ -203,6 +203,6 @@ public class ModelSpawner : MonoBehaviour
             }
         }
 
-        label.text = $"Count: {currentCount}";
+        countText.text = currentCount.ToString();
     }
 }
