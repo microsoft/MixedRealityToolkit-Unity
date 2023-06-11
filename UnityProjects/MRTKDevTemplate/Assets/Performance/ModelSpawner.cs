@@ -8,16 +8,16 @@ using System.Text;
 
 public class ModelSpawner : MonoBehaviour
 {
-    [Serializable]
-    public struct SpawnTest
-    {
-        public string TestName;
-        public GameObject ModelToSpawn;
-        public float ModelSize;
-        public GameObject Parent;
-        public int StepCount;
-        public bool Instantiate;
-    }
+    //[Serializable]
+    //public struct SpawnTest
+    //{
+    //    public string TestName;
+    //    public GameObject ModelToSpawn;
+    //    public float ModelSize;
+    //    public GameObject Parent;
+    //    public int StepCount;
+    //    public bool Instantiate;
+    //}
 
     [SerializeField]
     private GameObject model;
@@ -27,6 +27,9 @@ public class ModelSpawner : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI framerateText;
+
+    [SerializeField]
+    private TextMeshProUGUI resultsText;
 
     [SerializeField]
     private float secondsBetweenFramerateUpdates = 0.25f;
@@ -49,13 +52,13 @@ public class ModelSpawner : MonoBehaviour
     //[SerializeField]
     private int targetLowFramerate = 60;
 
-    [SerializeField]
-    public SpawnTest[] Tests;
+    //[SerializeField]
+    //public SpawnTest[] Tests;
 
     private float secondsSinceLastFramerateUpdate = 0.0f;
     private int currentCount = 0;
     private List<GameObject> models = new List<GameObject>();
-    private bool allTestsComplete = false;
+    private bool testComplete = true;
     StreamWriter writer;
     //StringBuilder resultsStringBuilder = new StringBuilder(8192);
     string filePath;
@@ -63,8 +66,8 @@ public class ModelSpawner : MonoBehaviour
     private readonly System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
     private float samplePeriod = 0.1f;
     public float FrameRate = 0f;
-    private int currentTestIdx = -1;
-    private SpawnTest currentTest;
+    //private int currentTestIdx = -1;
+    //private SpawnTest currentTest;
     private int yRank = 0;
     private float yOffset = 0.0f;
     private int zRank = 0;
@@ -99,18 +102,10 @@ public class ModelSpawner : MonoBehaviour
 
     public void StartNextTest()
     {
+        resultsText.text = string.Empty;
+        lowFramerateFramecount = 0;
         SetModelCount(0);
-
-        currentTestIdx++;
-        if (currentTestIdx >= Tests.Length)
-        {
-            Debug.Log("Finished all tests");
-            allTestsComplete = true;
-            return;
-        }
-
-        currentTest = Tests[currentTestIdx];
-
+        testComplete = false;
 
         stopwatch.Start();
     }
@@ -141,7 +136,7 @@ public class ModelSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (currentTestIdx < 0 || allTestsComplete)
+        if (testComplete)
         {
             return;
         }
@@ -151,7 +146,7 @@ public class ModelSpawner : MonoBehaviour
             lowFramerateFramecount++;
         }
 
-        if (currentCount < 800 && lowFramerateFramecount < 20 )
+        if (currentCount < 800 && lowFramerateFramecount < 20)
         {
             //resultsStringBuilder.Append(currentCount);
             //resultsStringBuilder.Append(",");
@@ -160,11 +155,7 @@ public class ModelSpawner : MonoBehaviour
             if (frameWait == 0)
             {
                 int cachedCount = currentCount;
-                if (currentTest.Instantiate)
-                {
-                    SetModelCount(0);
-                }
-                cachedCount += currentTest.StepCount;
+                cachedCount++;
                 SetModelCount(cachedCount);
                 frameWait = 10;
             }
@@ -173,9 +164,9 @@ public class ModelSpawner : MonoBehaviour
         }
         else
         {
-            //WriteResults();
-            Debug.Log($"Test complete after {currentCount} objects, wrote data to {filePath}");
-            StartNextTest();
+            testComplete = true;
+            resultsText.text = $"Test dropped below target framerate after {currentCount} objects.  Test complete.";
+            Debug.Log(resultsText.text);
         }
     }
 
@@ -193,17 +184,14 @@ public class ModelSpawner : MonoBehaviour
         }
         else if (count > currentCount)
         {
-            // spawn models
-            var modelParentTransform = currentTest.Parent == null ? canvasParent.transform : currentTest.Parent.transform;
+            // spawn object
 
             while (count > currentCount)
             {
                 var m = Instantiate(model);
-                if (currentTest.Parent != null)
-                {
-                    m.transform.parent = modelParentTransform;
-                    m.transform.localScale = Vector3.one;
-                }
+
+                m.transform.parent = canvasParent.transform;
+                m.transform.localScale = Vector3.one;
 
                 zRank = currentCount / (rows * columns);
                 zOffset = zRank * offset;
