@@ -1,39 +1,11 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using System.IO;
-using System.Text;
-using Microsoft.MixedReality.Toolkit.Input;
-using Microsoft.MixedReality.Toolkit.UX;
-using Microsoft.MixedReality.Toolkit;
-using UnityEngine.XR.Interaction.Toolkit;
 
 public class ModelSpawner : MonoBehaviour
 {
-    //[Serializable]
-    //public struct SpawnTest
-    //{
-    //    public string TestName;
-    //    public GameObject ModelToSpawn;
-    //    public float ModelSize;
-    //    public GameObject Parent;
-    //    public int StepCount;
-    //    public bool Instantiate;
-    //}
-
     [SerializeField]
     private GameObject descriptionPanel;
-
-    [SerializeField]
-    private ArticulatedHandController leftArticulatedHandController;
-
-    [SerializeField]
-    private ArticulatedHandController rightArticulatedHandController;
-
-    [SerializeField]
-    private PressableButton handControllerUpdateToggleButton;
 
     [SerializeField]
     private GameObject model;
@@ -68,32 +40,17 @@ public class ModelSpawner : MonoBehaviour
     //[SerializeField]
     private int targetLowFramerate = 50;
 
-    //[SerializeField]
-    //public SpawnTest[] Tests;
-
     private float secondsSinceLastFramerateUpdate = 0.0f;
     private int currentCount = 0;
     private List<GameObject> models = new List<GameObject>();
     private bool testComplete = true;
-    StreamWriter writer;
-    //StringBuilder resultsStringBuilder = new StringBuilder(8192);
-    string filePath;
-    private int frameCount = 0;
     private readonly System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
     private float samplePeriod = 0.1f;
     public float FrameRate = 0f;
-    //private int currentTestIdx = -1;
-    //private SpawnTest currentTest;
     private int yRank = 0;
     private float yOffset = 0.0f;
     private int zRank = 0;
     private float zOffset = 0.0f;
-
-    private void Awake()
-    {
-        handControllerUpdateToggleButton.ForceSetToggled(leftArticulatedHandController.updateTrackingType == XRBaseController.UpdateType.UpdateAndBeforeRender, false);
-        handControllerUpdateToggleButton.OnClicked.AddListener(() => SetHandControllerUpdateMode(handControllerUpdateToggleButton.IsToggled));
-    }
 
     private void Start()
     {
@@ -101,7 +58,6 @@ public class ModelSpawner : MonoBehaviour
         {
             columns = 20;
         }
-
     }
 
     private void OnDestroy()
@@ -109,27 +65,6 @@ public class ModelSpawner : MonoBehaviour
         stopwatch.Stop();
     }
 
-    //private void WriteResults()
-    //{
-    //    Debug.Log($"Results sb size: {resultsStringBuilder.Length}");
-    //    filePath = $"{Application.persistentDataPath}\\{currentTest.TestName}.csv";
-    //    using (StreamWriter sw = new StreamWriter(filePath))
-    //    {
-    //        sw.Write(resultsStringBuilder.ToString());
-    //        sw.Flush();
-    //    }
-
-    //    resultsStringBuilder.Clear();
-    //}
-
-
-    private void SetHandControllerUpdateMode(bool isToggled)
-    {
-        var controllerUpdateType = isToggled ? XRBaseController.UpdateType.UpdateAndBeforeRender : XRBaseController.UpdateType.Update;
-
-        leftArticulatedHandController.updateTrackingType = controllerUpdateType;
-        rightArticulatedHandController.updateTrackingType = controllerUpdateType;
-    }
 
     public void StartNextTest()
     {
@@ -178,12 +113,8 @@ public class ModelSpawner : MonoBehaviour
             lowFramerateFramecount++;
         }
 
-        if (currentCount < 800 && lowFramerateFramecount < 60)
+        if (currentCount < 2000 && lowFramerateFramecount < 60)
         {
-            //resultsStringBuilder.Append(currentCount);
-            //resultsStringBuilder.Append(",");
-            //resultsStringBuilder.AppendLine(FrameRate.ToString());
-
             if (frameWait == 0)
             {
                 int cachedCount = currentCount;
