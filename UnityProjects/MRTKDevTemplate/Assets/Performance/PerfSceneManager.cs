@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class ModelSpawner : MonoBehaviour
+public class PerfSceneManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject descriptionPanel;
