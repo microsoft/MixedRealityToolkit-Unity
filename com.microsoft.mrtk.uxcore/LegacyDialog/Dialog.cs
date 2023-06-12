@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
     /// The <see cref="Microsoft.MixedReality.Toolkit.UX.Deprecated.Dialog>Legacy Dialog</see> is deprecated. Please migrate to the 
     /// new <see cref="Microsoft.MixedReality.Toolkit.UX.Dialog">Dialog</see>. If you'd like to continue using the 
     /// <see cref="Microsoft.MixedReality.Toolkit.UX.Deprecated.Dialog">Legacy Dialog</see> implementation, it is recommend that the legacy code 
-    /// be copied to the application's code base, and maintained independently by the application developer. Otherwise, it is strongly recommend 
+    /// be copied to the application's code base, and maintained independently by the application developer. Otherwise, it is strongly recommended 
     /// that the application be updated to use the new <see cref="Microsoft.MixedReality.Toolkit.UX.Dialog">Dialog</see> system.
     /// </remarks>
     [Obsolete("Legacy Dialog is deprecated. Please migrate to the new Dialog system.")]
