@@ -28,6 +28,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// - Update VirtualizedScrollRectList's representation of the Item Count
     ///   as your list changes over time.
     /// </summary>
+    /// <remarks>
+    /// This is an experimental feature. This class is early in the cycle, it has 
+    /// been labeled as experimental to indicate that it is still evolving, and 
+    /// subject to change over time. Parts of the MRTK, such as this class, appear 
+    /// to have a lot of value even if the details haven’t fully been fleshed out. 
+    /// For these types of features, we want the community to see them and get 
+    /// value out of them early enough so to provide feedback. 
+    /// </remarks>
     [AddComponentMenu("MRTK/UX/Virtualized Scroll Rect List")]
     public class VirtualizedScrollRectList : MonoBehaviour
     {
@@ -52,6 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         // Header Objects
 
+        [Experimental]
         [Header("Objects")]
         [Tooltip("The pool of list item objects will be composed of this Prefab.")]
         [SerializeField]

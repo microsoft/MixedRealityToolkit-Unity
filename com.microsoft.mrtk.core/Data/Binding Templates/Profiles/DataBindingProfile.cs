@@ -24,6 +24,14 @@ namespace Microsoft.MixedReality.Toolkit
     ///        3 => Icons.Completed
     /// 3. This new value "Icons.Queued" is then used to retrieve the correct Sprite from the theme data source.
     /// </summary>
+    /// <remarks>
+    /// This is an experimental feature. This class is early in the cycle, it has 
+    /// been labeled as experimental to indicate that it is still evolving, and 
+    /// subject to change over time. Parts of the MRTK, such as this class, appear 
+    /// to have a lot of value even if the details haven’t fully been fleshed out. 
+    /// For these types of features, we want the community to see them and get 
+    /// value out of them early enough so to provide feedback. 
+    /// </remarks>
     public enum DataRetrievalMethod
     {
         /// <summary>
@@ -70,7 +78,14 @@ namespace Microsoft.MixedReality.Toolkit
     /// <summary>
     /// This profile can be used to configure data and theme binding settings for a themable element of the UX. It makes the connection between a data source, a theme source and the UX elements that should be affected.
     /// </summary>
-
+    /// <remarks>
+    /// This is an experimental feature. This class is early in the cycle, it has 
+    /// been labeled as experimental to indicate that it is still evolving, and 
+    /// subject to change over time. Parts of the MRTK, such as this class, appear 
+    /// to have a lot of value even if the details haven’t fully been fleshed out. 
+    /// For these types of features, we want the community to see them and get 
+    /// value out of them early enough so to provide feedback. 
+    /// </remarks>
     [Serializable]
     public class DataBindingProfile
     {
@@ -90,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         [Tooltip("Key path for the datum in the data source that can be used to retrieve the data bound value. This can be null or empty string if only theme bound.")]
-        [SerializeField]
+        [SerializeField, Experimental]
         private string dataKeyPath;
         public string DataKeyPath => dataKeyPath;
 
