@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set => visibilitySettings = value;
         }
 
-        protected void OnEnable()
+        private void OnEnable()
         {
             rayInteractor.selectEntered.AddListener(LocateTargetHitPoint);
 
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             UpdateReticle();
         }
 
-        protected void OnDisable()
+        private void OnDisable()
         {
             rayInteractor.selectEntered.RemoveListener(LocateTargetHitPoint);
 
@@ -96,20 +96,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         // If we have a reticle, set its position and rotation.
                         if (reticleRoot != null)
                         {
-                            reticleRoot.transform.SetPositionAndRotation(reticlePosition, Quaternion.LookRotation(reticleNormal, Vector3.up));
+                            if (reticleNormal != Vector3.zero)
+                            {
+                                reticleRoot.transform.SetPositionAndRotation(reticlePosition, Quaternion.LookRotation(reticleNormal, Vector3.up));
+                            }
+                            else
+                            {
+                                reticleRoot.transform.position = reticlePosition;
+                            }
                         }
 
                         // If the reticle is an IVariableSelectReticle, have the reticle update based on selectedness
                         if (VariableReticle != null)
                         {
-                            if (rayInteractor is IVariableSelectInteractor variableSelectInteractor)
-                            {
-                                VariableReticle.UpdateVisuals(variableSelectInteractor.SelectProgress);
-                            }
-                            else
-                            {
-                                VariableReticle.UpdateVisuals(rayInteractor.isSelectActive ? 1 : 0);
-                            }
+                            VariableReticle.UpdateVisuals(new VariableReticleUpdateArgs(rayInteractor, reticlePosition, reticleNormal));
                         }
                     }
                     else

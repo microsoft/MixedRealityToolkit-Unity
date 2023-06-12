@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         public IEnumerator TapToPlaceFollowsRightHandRay()
         {
             // Disable gaze interactions for this unit test;
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             // Set up GameObject with a SolverHandler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         public IEnumerator TapToPlaceFollowsLeftHandRay()
         {
             // Disable gaze interactions for this unit test;
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             // Set up GameObject with a SolverHandler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);

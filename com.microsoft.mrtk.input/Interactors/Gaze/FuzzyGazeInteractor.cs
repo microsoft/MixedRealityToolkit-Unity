@@ -174,10 +174,25 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // TODO: remove or refactor this section out when the XRRayInteractor exposes the raycast hits
         // Otherwise, it's mimicking the logic found in XRRayInteractor
 
+        /// <summary>
+        /// A structure representing a raycast hit result that originated
+        /// from a <see cref="Microsoft.MixedReality.Toolkit.Input.FuzzyGazeInteractor">FuzzyGazeInteractor</see> object.
+        /// </summary>
         public struct GazeRaycastHitResult
         {
+            /// <summary>
+            /// The raycast hit for fuzzy gaze interactor.
+            /// </summary>
             public RaycastHit raycastHit;
+
+            /// <summary>
+            /// The interactable object that was hit by the gaze's raycast.
+            /// </summary>
             public IXRInteractable targetInteractable;
+
+            /// <summary>
+            /// The precision level of the fuzzy gaze's raycast.
+            /// </summary>
             public int precisionLevel;
 
             /// <summary>

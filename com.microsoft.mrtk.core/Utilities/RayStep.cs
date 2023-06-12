@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
 {
+    /// <summary>
+    /// Represents a raycast that is a portion of a longer raycast.
+    /// </summary>
     [Serializable]
     public struct RayStep
     {
@@ -14,21 +17,48 @@ namespace Microsoft.MixedReality.Toolkit
         private static Vector3 dir;
         private static Vector3 pos;
 
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RayStep"/> struct.
+        /// </summary>
+        /// <param name="origin">The origin position of the raycast step.</param>
+        /// <param name="terminus">The end position of the raycast step.</param>
         public RayStep(Vector3 origin, Vector3 terminus) : this()
         {
-            UpdateRayStep(ref origin, ref terminus);
+            UpdateRayStep(in origin, in terminus);
 
             epsilon = 0.01f;
         }
 
+        /// <summary>
+        /// Get the origin position of the raycast step.
+        /// </summary>
         public Vector3 Origin { get; private set; }
+
+        /// <summary>
+        /// Get the end position of the raycast step.
+        /// </summary>
         public Vector3 Terminus { get; private set; }
+        
+        /// <summary>
+        /// Get the direction of the raycast step. This direction will be a normalized vector from the origin to the terminus.
+        /// </summary>
         public Vector3 Direction { get; private set; }
 
+        /// <summary>
+        /// The length or magnitude of the raycast step. This is the distance from the origin to the terminus.
+        /// </summary>
         public float Length { get; private set; }
 
         private readonly float epsilon;
 
+        /// <summary>
+        /// Get a point along the raycast, at a specified distance from the origin.
+        /// </summary>
+        /// <param name="distance">The returned point will be at this distance from the origin.</param>
+        /// <returns>
+        /// A new point that is at the specified distance from the origin.
+        /// </returns>
         public Vector3 GetPoint(float distance)
         {
             if (Length <= distance || Length == 0f)
@@ -44,12 +74,14 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Update current raystep with new origin and terminus points. 
-        /// Pass by ref to avoid unnecessary struct copy into function since values will be copied anyways locally
+        /// Update the ray step with new origin and terminus points. 
         /// </summary>
-        /// <param name="origin">beginning of raystep origin</param>
-        /// <param name="terminus">end of raystep</param>
-        public void UpdateRayStep(ref Vector3 origin, ref Vector3 terminus)
+        /// <remarks>
+        /// Vectors are passed by reference to avoid unnecessary struct copies. The input values will be copied locally.
+        /// </remarks>
+        /// <param name="origin">The origin position of the ray step.</param>
+        /// <param name="terminus">The end position of the ray step.</param>
+        public void UpdateRayStep(in Vector3 origin, in Vector3 terminus)
         {
             Origin = origin;
             Terminus = terminus;
@@ -74,9 +106,16 @@ namespace Microsoft.MixedReality.Toolkit
             Direction = dir;
         }
 
-        public void CopyRay(Ray ray, float rayLength)
+        /// <summary>
+        /// Copy the given ray structure to this raycast step, along with the specified length.
+        /// </summary>
+        /// <param name="length">
+        /// The new length for this raycast step. The length or magnitude of the raycast step. 
+        /// This is the distance from the ray's origin to the terminus.
+        /// </param>
+        public void CopyRay(Ray ray, float length)
         {
-            Length = rayLength;
+            Length = length;
             Origin = ray.origin;
             Direction = ray.direction;
 
@@ -87,6 +126,13 @@ namespace Microsoft.MixedReality.Toolkit
             Terminus = pos;
         }
 
+        /// <summary>
+        /// Test if the raycast step contain the specified point.
+        /// </summary>
+        /// <param name="point">The point to test.</param>
+        /// <returns>
+        /// True if the point is contained along the raycast step. Otherwise false is returned.
+        /// </returns>
         public bool Contains(Vector3 point)
         {
             dist.x = Origin.x - point.x;
@@ -105,9 +151,13 @@ namespace Microsoft.MixedReality.Toolkit
             return (sqrMagOriginPoint + sqrMagPointTerminus) - sqrLength > sqrEpsilon;
         }
 
-        public static implicit operator Ray(RayStep r)
+        /// <summary>
+        /// Create a copy of the given raycast step.
+        /// </summary>
+        /// <param name="rayStep">The raycast step to copy.</param>
+        public static implicit operator Ray(RayStep rayStep)
         {
-            return new Ray(r.Origin, r.Direction);
+            return new Ray(rayStep.Origin, rayStep.Direction);
         }
 
         #region static utility functions

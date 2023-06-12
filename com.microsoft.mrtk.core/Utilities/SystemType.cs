@@ -18,6 +18,15 @@ namespace Microsoft.MixedReality.Toolkit
 
         private Type type;
 
+        /// <summary>
+        /// Create a reference string from the given type's assembly qualified class name. The reference 
+        /// string will contain the full name and assembly name from the given type.
+        /// </summary>
+        /// <param name="type">The class type to track.</param>
+        /// <returns>
+        /// A new reference string. Will return an empty string if the type is null, 
+        /// or if the assembly qualified name is null or empty.
+        /// </returns>
         public static string GetReference(Type type)
         {
             if (type == null || string.IsNullOrEmpty(type.AssemblyQualifiedName))
@@ -28,6 +37,15 @@ namespace Microsoft.MixedReality.Toolkit
             return GetReference(type.AssemblyQualifiedName);
         }
 
+        /// <summary>
+        /// Create a reference string from the given assembly qualified class name. The reference 
+        /// string will contain the full name and assembly name from the given assembly qualified name.
+        /// </summary>
+        /// <param name="assemblyQualifiedClassName">Assembly qualified class name.</param>
+        /// <returns>
+        /// A new reference string. Will return an empty string if the assembly qualified
+        /// name is null or empty.
+        /// </returns>
         public static string GetReference(string assemblyQualifiedName)
         {
             if (string.IsNullOrEmpty(assemblyQualifiedName))
@@ -64,7 +82,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Initializes a new instance of the <see cref="SystemType"/> class.
         /// </summary>
-        /// <param name="type">Class type.</param>
+        /// <param name="type">The class type to track.</param>
         /// <exception cref="System.ArgumentException">
         /// If <paramref name="type"/> is not a class type.
         /// </exception>
@@ -76,24 +94,47 @@ namespace Microsoft.MixedReality.Toolkit
 
         // Override hash code and equality so we can
         // key dictionaries with the type reference.
+
+        /// <summary>
+        /// Gets the hash code for the <see cref="SystemType"/>.
+        /// </summary>
+        /// <remarks>
+        /// Obtains the hash from the underlying reference string.
+        /// </remarks>
+        /// <returns>
+        /// The hash value generated for this <see cref="SystemType"/>.
+        /// </returns>
         public override int GetHashCode()
         {
             return reference.GetHashCode();
         }
 
+        /// <summary>
+        /// Compares two <see cref="SystemType"/> instances for equality.
+        /// </summary>
+        /// <remarks>
+        /// Obtains the equality from the underlying reference string.
+        /// </remarks>
+        /// <returns>
+        /// `true` if the two instances represent the same <see cref="SystemType"/>; otherwise, `false`.
+        /// </returns>
         public override bool Equals(object other)
         {
             var otherType = other as SystemType;
 
             if (otherType == null)
+            {
                 return false;
+            }
 
             return reference.Equals(otherType.reference);
         }
 
-
         #region ISerializationCallbackReceiver Members
 
+        /// <summary>
+        /// Implemented so to receive a callback after Unity deserializes this object.
+        /// </summary>
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
             // Class references may move between asmdef or be renamed throughout MRTK development
@@ -103,6 +144,12 @@ namespace Microsoft.MixedReality.Toolkit
             type = !string.IsNullOrEmpty(reference) ? Type.GetType(reference) : null;
         }
 
+        /// <summary>
+        /// Implemented so to receive a callback before Unity deserializes this object.
+        /// </summary>
+        /// <remarks>
+        /// This is currently not utilized, and no operation will be preformed when called.
+        /// </remarks>
         void ISerializationCallbackReceiver.OnBeforeSerialize() { }
 
         #endregion ISerializationCallbackReceiver Members
@@ -135,35 +182,60 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// An overridable constraint to determine whether a type is valid to serialize.
         /// </summary>
-        /// <param name="t">Type to validate.</param>
+        /// <param name="type">Type to validate.</param>
         /// <returns>True if the type is valid, or false.</returns>
-        protected virtual bool ValidConstraint(Type t)
+        protected virtual bool ValidConstraint(Type type)
         {
-            return t != null && t.IsValueType && !t.IsEnum && !t.IsAbstract || t.IsClass;
+            return type != null && type.IsValueType && !type.IsEnum && !type.IsAbstract || type.IsClass;
         }
 
+        /// <summary>
+        /// Returns the reference string for the type represented by this <see cref="SystemType"/>.
+        /// </summary>
         public static implicit operator string(SystemType type)
         {
             return type.reference;
         }
 
+        /// <summary>
+        /// Returns the type represented by this <see cref="SystemType"/>.
+        /// </summary>
         public static implicit operator Type(SystemType type)
         {
             return type.Type;
         }
 
+        /// <summary>
+        /// Create an instance of <see cref="SystemType"/> for the given type.
+        /// </summary>
+        /// <param name="type">The class type to track.</param>
+        /// <exception cref="System.ArgumentException">
+        /// If <paramref name="type"/> is not a class type.
+        /// </exception>
         public static implicit operator SystemType(Type type)
         {
             return new SystemType(type);
         }
 
+        /// <summary>
+        /// Returns a string that represents this <see cref="SystemType"/>.
+        /// </summary>
+        /// <Returns>
+        /// The full name for the type represented by this <see cref="SystemType"/>, or 
+        /// "(None)" if the type is null.
+        /// </Returns>
         public override string ToString()
         {
-            return Type?.FullName ?? "(None)";
+            return type?.FullName ?? "(None)";
         }
 
-        // Key == original reference string entry, value == new migrated placement
-        // String values are broken into {namespace.classname, asmdef}
+        /// <summary>
+        /// A dictionary containing mappings from the original reference string entry to
+        /// the new migrated placement value.
+        /// </summary>
+        /// <remarks>
+        /// String values are broken into {Full Name, Assembly Definition}
+        /// </remarks>
         private static Dictionary<string, string> ReferenceMappings = new Dictionary<string, string>()
         {
             // Empty for now.

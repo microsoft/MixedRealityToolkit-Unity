@@ -461,7 +461,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 // Determine raycast params. Update struct to skip instantiation
                 Vector3 origin = RaycastOrigin;
                 Vector3 endpoint = RaycastEndPoint;
-                currentRayStep.UpdateRayStep(ref origin, ref endpoint);
+                currentRayStep.UpdateRayStep(in origin, in endpoint);
 
                 // Skip if there isn't a valid direction
                 if (currentRayStep.Direction == Vector3.zero)
