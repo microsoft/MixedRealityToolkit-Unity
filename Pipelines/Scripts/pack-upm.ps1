@@ -109,7 +109,7 @@ try {
         Write-Output "buildTag: $buildTag"
 
 
-        $versionHash[$packageName]=$Version
+        $versionHash[$packageName]="$Version-$buildTag"
 
         Write-Output " Version: $Version"
         Write-Output " suffix:  $suffix"
@@ -124,24 +124,80 @@ try {
             Add-Content -Path $_ -Value "[assembly: AssemblyInformationalVersion(`"$Version-$buildTag`")]"
         }
 
+        Write-Output "`nCurrent dependencies:"
+        $currentDependenciesMatches = Select-String '\s*"dependencies":.*\n*.*"(com.microsoft.mrtk.*)":\s*"(.*)"' -InputObject (Get-Content -Path $_)
+        $match1 = $currentDependenciesMatches.Matches.Groups
+        if($match1) {
+            Write-Output "$($match1[1].Value)  : $($match1[2].Value)"
+        }
+
         Write-Output "Packing $packageFriendlyName"
-        npm pack $packagePath
+        # npm pack $packagePath
 
-        if (Test-Path -Path $docFolder) {
-            Write-Output "Cleaning up Documentation~ from $packageFriendlyName"
-            # A documentation folder was created. Remove it.
-            Remove-Item -Path $docFolder -Recurse -Force
-            # But restore anything that's checked-in.
-            if (git ls-files $docFolder) {
-                git -C $packagePath checkout $docFolder
-            }
-        }
 
-        git -C $packagePath checkout $_
-        Get-ChildItem -Path $packagePath/AssemblyInfo.cs -Recurse | ForEach-Object {
-            git -C $packagePath checkout $_
-        }
+        # if (Test-Path -Path $docFolder) {
+        #     Write-Output "Cleaning up Documentation~ from $packageFriendlyName"
+        #     # A documentation folder was created. Remove it.
+        #     Remove-Item -Path $docFolder -Recurse -Force
+        #     # But restore anything that's checked-in.
+        #     if (git ls-files $docFolder) {
+        #         git -C $packagePath checkout $docFolder
+        #     }
+        # }
+
+        # git -C $packagePath checkout $_
+        # Get-ChildItem -Path $packagePath/AssemblyInfo.cs -Recurse | ForEach-Object {
+        #     git -C $packagePath checkout $_
+        # }
     }
+
+    
+    Write-Output "`nDependency versions:"
+    Write-Output $versionHash.Keys
+    Write-Output $versionHash.Values
+    Write-Output $versionHash
+    
+    
+    # update dependencies
+    Get-ChildItem -Path $ProjectRoot/*/package.json | ForEach-Object {
+        $packageName = Select-String -Pattern "com\.microsoft\.mrtk\.\w+" -Path $_ | Select-Object -First 1
+
+
+        if (-not $packageName) {
+            return # this is not an MRTK package, so skip
+        }
+
+
+        $currentDependenciesMatches = Select-String '^.*"dependencies":.*\n*.*"(com\.microsoft\.mrtk\.\w*)":.*"(.*)"' -InputObject (Get-Content -Path $_)
+        Write-Output $packageName
+        $match1 = $currentDependenciesMatches.Matches.Groups
+        if($match1) {
+            Write-Output "----"
+            # Write-Output $match1[0].Value
+            Write-Output $match1[1].Value
+            Write-Output $match1[2].Value
+            $newVersion = $versionHash["$($match1[1].Value)"]
+            Write-Output "$($match1[1].Value)  new version: $($newVersion)"
+            Write-Output "----"
+
+            if($versionHash["$($currentDependenciesMatches.Matches.Groups[1])"]) {
+                Write-Output "       FOUND!!  "
+                Write-Output $versionHash["$($currentDependenciesMatches.Matches.Groups[1])"]
+            }
+
+
+
+        } else {
+            Write-Output "   No dependencies"
+        }
+
+        
+
+
+    }
+
+
+
 }
 finally {
     Pop-Location
