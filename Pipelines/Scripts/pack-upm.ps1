@@ -136,6 +136,14 @@ try {
         }
 
         $currentPackageName = $currentPackageName.Matches[0].Value
+        $packageFriendlyName = (Select-String -Pattern "`"displayName`": `"(.+)`"" -Path $_ | Select-Object -First 1).Matches.Groups[1].Value
+
+        $packagePath = $_.Directory
+        $docFolder = "$packagePath/Documentation~"
+
+        
+        Write-Output "____________________________________________________________________________"
+        Write-Output "   Package: $($currentPackageName)"
 
         foreach ($packageName in $versionHash.Keys) {
             if ($currentPackageName -eq $packageName) {
@@ -146,21 +154,19 @@ try {
             $searchMatches = Select-String $searchRegex -InputObject (Get-Content -Path $_)
             if ($searchMatches.Matches.Groups) {
                 $newVersion = $versionHash["$($packageName)"]
-                Write-Output "_____________________________"
-                Write-Output "   Package: $($currentPackageName)"
                 Write-Output "        Patching dependency $($packageName) from $($searchMatches.Matches.Groups[1].Value) to $($newVersion)"
                 (Get-Content -Path $_ -Raw) -Replace $searchRegex, "$($packageName)"": ""$($newVersion)""" | Set-Content -Path $_ -NoNewline
-                # (Get-Content -Path $_ -Raw) -Replace '\[assembly:.AssemblyVersion\(.*', "[assembly: AssemblyVersion(`"$Version.0`")]`r" | Set-Content -Path $_ -NoNewline
-                Write-Output "_____________________________"
             }
         }
 
+        Write-Output "____________________________________________________________________________`n"
 
         # build the package
         Write-Output "Packing $packageFriendlyName"
         npm pack $packagePath
 
 
+        # clean up
         if (Test-Path -Path $docFolder) {
             Write-Output "Cleaning up Documentation~ from $packageFriendlyName"
             # A documentation folder was created. Remove it.
