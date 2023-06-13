@@ -61,9 +61,10 @@ Write-Output "Release packages: $releasePkgs"
 
 try {
     Push-Location $OutputDirectory
-
     $parseVersion = -not $Version
 
+
+    # loop through package directories, update package version, assembly version, and build version hash for updating dependencies
     Get-ChildItem -Path $ProjectRoot/*/package.json | ForEach-Object {
         $packageName = Select-String -Pattern "com\.microsoft\.mrtk\.\w+" -Path $_ | Select-Object -First 1
 
@@ -124,80 +125,57 @@ try {
             Add-Content -Path $_ -Value "[assembly: AssemblyInformationalVersion(`"$Version-$buildTag`")]"
         }
 
-        Write-Output "`nCurrent dependencies:"
-        $currentDependenciesMatches = Select-String '\s*"dependencies":.*\n*.*"(com.microsoft.mrtk.*)":\s*"(.*)"' -InputObject (Get-Content -Path $_)
-        $match1 = $currentDependenciesMatches.Matches.Groups
-        if($match1) {
-            Write-Output "$($match1[1].Value)  : $($match1[2].Value)"
-        }
 
-        Write-Output "Packing $packageFriendlyName"
-        # npm pack $packagePath
-
-
-        # if (Test-Path -Path $docFolder) {
-        #     Write-Output "Cleaning up Documentation~ from $packageFriendlyName"
-        #     # A documentation folder was created. Remove it.
-        #     Remove-Item -Path $docFolder -Recurse -Force
-        #     # But restore anything that's checked-in.
-        #     if (git ls-files $docFolder) {
-        #         git -C $packagePath checkout $docFolder
-        #     }
-        # }
-
-        # git -C $packagePath checkout $_
-        # Get-ChildItem -Path $packagePath/AssemblyInfo.cs -Recurse | ForEach-Object {
-        #     git -C $packagePath checkout $_
-        # }
     }
 
-    
-    Write-Output "`nDependency versions:"
-    Write-Output $versionHash.Keys
-    Write-Output $versionHash.Values
-    Write-Output $versionHash
-    
-    
-    # update dependencies
+    # update dependencies using the versionHash map
     Get-ChildItem -Path $ProjectRoot/*/package.json | ForEach-Object {
-        $packageName = Select-String -Pattern "com\.microsoft\.mrtk\.\w+" -Path $_ | Select-Object -First 1
-
-
-        if (-not $packageName) {
+        $currentPackageName = Select-String -Pattern "com\.microsoft\.mrtk\.\w+" -Path $_ | Select-Object -First 1
+        if (-not $currentPackageName) {
             return # this is not an MRTK package, so skip
         }
 
+        $currentPackageName = $currentPackageName.Matches[0].Value
 
-        $currentDependenciesMatches = Select-String '^.*"dependencies":.*\n*.*"(com\.microsoft\.mrtk\.\w*)":.*"(.*)"' -InputObject (Get-Content -Path $_)
-        Write-Output $packageName
-        $match1 = $currentDependenciesMatches.Matches.Groups
-        if($match1) {
-            Write-Output "----"
-            # Write-Output $match1[0].Value
-            Write-Output $match1[1].Value
-            Write-Output $match1[2].Value
-            $newVersion = $versionHash["$($match1[1].Value)"]
-            Write-Output "$($match1[1].Value)  new version: $($newVersion)"
-            Write-Output "----"
-
-            if($versionHash["$($currentDependenciesMatches.Matches.Groups[1])"]) {
-                Write-Output "       FOUND!!  "
-                Write-Output $versionHash["$($currentDependenciesMatches.Matches.Groups[1])"]
+        foreach ($packageName in $versionHash.Keys) {
+            if ($currentPackageName -eq $packageName) {
+                continue
             }
 
-
-
-        } else {
-            Write-Output "   No dependencies"
+            $searchRegex = "$($packageName).*:.*""(.*)"""
+            $searchMatches = Select-String $searchRegex -InputObject (Get-Content -Path $_)
+            if ($searchMatches.Matches.Groups) {
+                $newVersion = $versionHash["$($packageName)"]
+                Write-Output "_____________________________"
+                Write-Output "   Package: $($currentPackageName)"
+                Write-Output "        Patching dependency $($packageName) from $($searchMatches.Matches.Groups[1].Value) to $($newVersion)"
+                (Get-Content -Path $_ -Raw) -Replace $searchRegex, "$($packageName)"": ""$($newVersion)""" | Set-Content -Path $_ -NoNewline
+                # (Get-Content -Path $_ -Raw) -Replace '\[assembly:.AssemblyVersion\(.*', "[assembly: AssemblyVersion(`"$Version.0`")]`r" | Set-Content -Path $_ -NoNewline
+                Write-Output "_____________________________"
+            }
         }
 
-        
+
+        # build the package
+        Write-Output "Packing $packageFriendlyName"
+        npm pack $packagePath
 
 
+        if (Test-Path -Path $docFolder) {
+            Write-Output "Cleaning up Documentation~ from $packageFriendlyName"
+            # A documentation folder was created. Remove it.
+            Remove-Item -Path $docFolder -Recurse -Force
+            # But restore anything that's checked-in.
+            if (git ls-files $docFolder) {
+                git -C $packagePath checkout $docFolder
+            }
+        }
+
+        git -C $packagePath checkout $_
+        Get-ChildItem -Path $packagePath/AssemblyInfo.cs -Recurse | ForEach-Object {
+            git -C $packagePath checkout $_
+        }
     }
-
-
-
 }
 finally {
     Pop-Location
