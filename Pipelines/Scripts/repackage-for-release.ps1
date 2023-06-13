@@ -91,13 +91,13 @@ try {
     }
     # update all dependencies and repackage
     Get-ChildItem -Path $packageSearchPath | ForEach-Object {
-        $packageName = Select-String -Pattern "com\.microsoft\.mrtk\.\w+" -Path $_.FullName | Select-Object -First 1
+        $currentPackageName = Select-String -Pattern "com\.microsoft\.mrtk\.\w+" -Path $_.FullName | Select-Object -First 1
 
-        if (-not $packageName) {
+        if (-not $currentPackageName) {
             return # this is not an MRTK package, so skip
         }
 
-        $packageName = $packageName.Matches[0].Value
+        $currentPackageName = $currentPackageName.Matches[0].Value
         $packageFriendlyName = (Select-String -Pattern "`"displayName`": `"(.+)`"" -Path $_ | Select-Object -First 1).Matches.Groups[1].Value
 
         $packagePath = $_.Directory
@@ -110,7 +110,7 @@ try {
                 continue
             }
 
-            $searchRegex = "$($packageName).*:.*""(.*)"""
+            $searchRegex = "$($packageName)""\s*:.*""(.*)"""
             $searchMatches = Select-String $searchRegex -InputObject (Get-Content -Path $_)
             if ($searchMatches.Matches.Groups) {
                 $newVersion = $versionHash["$($packageName)"]
@@ -127,5 +127,5 @@ try {
 }
 finally {
     Write-Output "Removing temp directory $repackTempDirectory"
-    Remove-Item -Force -Recurse $repackTempDirectory
+    # Remove-Item -Force -Recurse $repackTempDirectory
 }
