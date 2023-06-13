@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.Subsystems;
+using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -131,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 float currentDistanceToAttachTransform = Vector3.Distance(rayOriginTransform.position, attachTransform.position);
                 float newDistanceToAttachTransform = Mathf.Max(0.1f, Mathf.Min(maxRaycastDistance, currentDistanceToAttachTransform + translateByZ));
 
-                attachTransform.position = rayOriginTransform.forward * newDistanceToAttachTransform;
+                attachTransform.position = rayOriginTransform.position + rayOriginTransform.forward * newDistanceToAttachTransform;
             }
 
             timeSinceLastMouseEvent = 0;
@@ -142,13 +143,42 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public override bool CanHover(IXRHoverInteractable interactable)
         {
-            return base.CanHover(interactable) && IsInUse;
+            // We stay hovering if we have selected anything.
+            bool stickyHover = hasSelection && IsSelecting(interactable);
+            if (stickyHover)
+            {
+                return true;
+            }
+
+            // We are ready to pinch if we are in the PinchReady position,
+            // or if we are already selecting something.
+            bool ready = isHoverActive || isSelectActive;
+
+            return ready && base.CanHover(interactable);
         }
 
         /// <inheritdoc />
         public override bool CanSelect(IXRSelectInteractable interactable)
         {
-            return base.CanSelect(interactable) && IsInUse;
+            return base.CanSelect(interactable) && (!hasSelection || IsSelecting(interactable)) && IsInUse;
+        }
+
+        /// <inheritdoc />
+        public override void GetValidTargets(List<IXRInteractable> targets)
+        {
+            // When selection is active, force valid targets to be the current selection. This is done to ensure that selected objects remained hovered.
+            if (hasSelection && isActiveAndEnabled)
+            {
+                targets.Clear();
+                for (int i = 0; i < interactablesSelected.Count; i++)
+                {
+                    targets.Add(interactablesSelected[i]);
+                }
+            }
+            else
+            {
+                base.GetValidTargets(targets);
+            }
         }
 
         #endregion
