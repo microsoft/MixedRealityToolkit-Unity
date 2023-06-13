@@ -7,37 +7,16 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    public class SpatialMouseInteractorCursorVisual : MonoBehaviour, IXRCustomReticleProvider
+    public class SpatialMouseInteractorCursorVisual : BaseReticleVisual
     {
         [SerializeField]
         [Tooltip("The ray interactor which this visual represents.")]
         private SpatialMouseInteractor mouseInteractor;
 
-        [SerializeField]
-        [Tooltip("The reticle (cursor)")]
-        private GameObject reticle;
 
         [SerializeField]
         [Tooltip("The default distance of the reticle (cursor)")]
         private float defaultDistance = 2.0f;
-
-        /// <summary>
-        /// The reticle (cursor).
-        /// </summary>
-        public GameObject Reticle
-        {
-            get => reticle;
-            set
-            {
-                if (reticle != value)
-                {
-                    reticle = value;
-                }
-            }
-        }
-
-        // If an interactable requests a custom reticle, it'll be referenced here.
-        private GameObject customReticle;
         
         /// <summary>
         /// See <see cref="MonoBehaviour"/>.
@@ -120,66 +99,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        #region IXRCustomReticleProvider Implementation
-
-        /// <inheritdoc />
-        public bool AttachCustomReticle(GameObject reticleInstance)
-        {
-            // If we don't already have a custom reticle,
-            // disable our standard reticle.
-            if (customReticle == null)
-            {
-                if (reticle != null)
-                {
-                    reticle.SetActive(false);
-                }
-            }
-            else if (customReticle != null)
-            {
-                // Otherwise, disable our current custom reticle.
-                customReticle.SetActive(false);
-            }
-
-            // Install the new custom reticle.
-            customReticle = reticleInstance;
-            if (customReticle != null)
-            {
-                customReticle.SetActive(true);
-            }
-            return false;
-        }
-
-        /// <inheritdoc />
-        public bool RemoveCustomReticle()
-        {
-            if (customReticle != null)
-            {
-                customReticle.SetActive(false);
-            }
-
-            // If we have a standard reticle, re-enable that one.
-            if (reticle != null)
-            {
-                reticle.SetActive(true);
-            }
-
-            customReticle = null;
-            return false;
-        }
-
-        #endregion IXRCustomReticleProvider Implementation
-
         private void OnBeforeRenderCursor()
         {
-            // Grab the reticle we're currently using
-            GameObject reticleToUse = customReticle != null ? customReticle : reticle;
-
-            if (reticleToUse == null) { return; }
+            if (Reticle == null) { return; }
 
             // Hide the cursor is the mouse isn't in use
             if (!mouseInteractor.IsInUse)
             {
-                reticleToUse.SetActive(false);
+                Reticle.SetActive(false);
                 return;
             }
 
@@ -222,12 +149,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
             reticleNormal = -mouseInteractor.rayOriginTransform.forward;
 
             // Set the relevant reticle position/normal and ensure it's active.
-            reticleToUse.transform.position = reticlePosition;
-            reticleToUse.transform.forward = reticleNormal;
+            Reticle.transform.position = reticlePosition;
+            Reticle.transform.forward = reticleNormal;
 
-            if (reticleToUse.activeSelf == false)
+            // If the reticle is an IVariableSelectReticle, have the reticle update based on selectedness
+            if (VariableReticle != null)
             {
-                reticleToUse.SetActive(true);
+                VariableReticle.UpdateVisuals(new VariableReticleUpdateArgs(mouseInteractor, reticlePosition, reticleNormal));
+            }
+
+            if (Reticle.activeSelf == false)
+            {
+                Reticle.SetActive(true);
             }
         }
     }

@@ -192,8 +192,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd37d3de25ec0844d9ea7e898410084c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseReticle: {fileID: 1275538619}
   mouseInteractor: {fileID: 4681310561030822292}
-  reticle: {fileID: 147216124}
   defaultDistance: 2
 --- !u!1 &6862721871616905633
 GameObject:
@@ -478,13 +478,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f7c9215713002d34a9107dd69004e749, type: 3}
---- !u!1 &147216124 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8113086299156719581, guid: f7c9215713002d34a9107dd69004e749, type: 3}
-  m_PrefabInstance: {fileID: 8113086299026845985}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &147216125 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8113086299156719580, guid: f7c9215713002d34a9107dd69004e749, type: 3}
+  m_PrefabInstance: {fileID: 8113086299026845985}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1275538619 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8113086300167495066, guid: f7c9215713002d34a9107dd69004e749, type: 3}
   m_PrefabInstance: {fileID: 8113086299026845985}
   m_PrefabAsset: {fileID: 0}
