@@ -64,11 +64,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private float hitDistance;
         private Transform hitTargetTransform;
 
-        /// <summary>
-        /// Used internally to determine if the ray we are visualizing hit an object or not.
-        /// </summary>
-        private bool rayHasHit;
-
         // reusable lists of the points returned by the XRRayInteractor
         Vector3[] rayPositions;
         int rayPositionsCount = -1;
@@ -207,7 +202,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 reticlePosition = hitTargetTransform.TransformPoint(targetLocalHitPoint);
                 reticleDistance = Vector3.Distance(mouseInteractor.rayOriginTransform.position, reticlePosition);
-                rayHasHit = true;
             }
             else
             {
@@ -216,17 +210,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     if (isValidTarget && endPositionInLine > 0 && endPositionInLine < rayPositionsCount)
                     {
                         reticleDistance = Vector3.Distance(mouseInteractor.rayOriginTransform.position, reticlePosition);
-                        rayHasHit = true;
-                    }
-                    else
-                    {
-                        rayHasHit = false;
                     }
                 }
                 else
                 {
                     reticlePosition = mouseInteractor.rayOriginTransform.position + mouseInteractor.rayOriginTransform.forward * reticleDistance;
-                    rayHasHit = false;
                 }
             }
 

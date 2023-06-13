@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             Vector2 mouseDelta = context.ReadValue<Vector2>();
 
-            Vector3 screenPoint = CameraCache.Main.WorldToViewportPoint(rayOriginTransform.position + rayOriginTransform.forward);
+            Vector3 screenPoint = Camera.main.WorldToViewportPoint(rayOriginTransform.position + rayOriginTransform.forward);
             bool onScreen = screenPoint.z > 0 && screenPoint.x > 0 && screenPoint.x < 1 && screenPoint.y > 0 && screenPoint.y < 1;
 
             // Reset the cursor to the center of the FoV if it's hidden or it's out of the user's FoV and 
@@ -101,15 +101,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (shouldResetMousePosition)
             {
-                rayOriginTransform.rotation = CameraCache.Main.transform.rotation;
+                rayOriginTransform.rotation = Camera.main.transform.rotation;
             }
             else
             {
                 float rotateByRadiansX = mouseDelta.x * mouseSensitivity;
                 float rotateByRadiansY = -mouseDelta.y * mouseSensitivity;
 
-                rayOriginTransform.RotateAround(rayOriginTransform.position, CameraCache.Main.transform.up, rotateByRadiansX);
-                rayOriginTransform.RotateAround(rayOriginTransform.position, CameraCache.Main.transform.right, rotateByRadiansY);
+                rayOriginTransform.RotateAround(rayOriginTransform.position, Camera.main.transform.up, rotateByRadiansX);
+                rayOriginTransform.RotateAround(rayOriginTransform.position, Camera.main.transform.right, rotateByRadiansY);
                 
                 if (hasSelection)
                 {
