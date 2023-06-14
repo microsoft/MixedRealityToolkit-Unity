@@ -127,5 +127,5 @@ try {
 }
 finally {
     Write-Output "Removing temp directory $repackTempDirectory"
-    # Remove-Item -Force -Recurse $repackTempDirectory
+    Remove-Item -Force -Recurse $repackTempDirectory
 }
