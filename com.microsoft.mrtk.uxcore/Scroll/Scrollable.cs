@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Unity.XR.CoreUtils.Collections;
 using UnityEngine.XR.Interaction.Toolkit;
+using Unity.XR.CoreUtils;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
@@ -34,16 +35,23 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private float deadzone = 10.0f;
 
         readonly HashSetList<IXRInteractor> interactorsScrolling = new HashSetList<IXRInteractor>();
-        private Dictionary<IXRInteractor, Vector2> touchPoints = new Dictionary<IXRInteractor, Vector2>();
+        readonly List<InteractorPosition> interactorPositions = new List<InteractorPosition>();
+
+        private struct InteractorPosition
+        {
+            public IXRInteractor interactor;
+            public Vector3 lastPoint;
+            public Vector3 startPoint;
+
+            public InteractorPosition(IXRInteractor interactor)
+            {
+                this.interactor = interactor;
+                lastPoint = Vector2.positiveInfinity;
+                startPoint = Vector2.positiveInfinity;
+            }
+        }        
 
         private Vector2 velocity;
-
-        private Vector2 startNormalizedPosition;
-
-        private Vector2 sprungNormalizedPosition;
-        private Vector2 startTouchPoint;
-
-        private bool isDead;
 
         /// <inheritdoc />
         public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
@@ -53,44 +61,45 @@ namespace Microsoft.MixedReality.Toolkit.UX
             if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
             {
                 Vector2 dragDelta = Vector2.zero;
-                Vector2 thisFrame = startTouchPoint;
+                float displacementFromStart = 0;
 
-                foreach (var interactor in interactorsScrolling)
+                if (interactorPositions.Count > 0)
                 {
-                    Vector2 lastFrame = Vector2.zero;
-                    thisFrame = scrollRect.transform.InverseTransformPoint(interactor.GetAttachTransform(this).position);
+                    var interactorPosition = interactorPositions[0];
+                    var thisPoint = scrollRect.transform.InverseTransformPoint(interactorPosition.interactor.GetAttachTransform(this).position);
 
-                    if (touchPoints.ContainsKey(interactor))
+                    if (!interactorPosition.startPoint.IsValidVector() ||
+                        !interactorPosition.lastPoint.IsValidVector())
                     {
-                        lastFrame = touchPoints[interactor];
-                    }
-                    else
-                    {
-                        lastFrame = thisFrame;
+                        interactorPosition.startPoint = thisPoint;
+                        interactorPosition.lastPoint = thisPoint;
                     }
 
-                    dragDelta = thisFrame - lastFrame;
-                    touchPoints[interactor] = thisFrame;
+                    dragDelta = thisPoint - interactorPosition.lastPoint;
+                    interactorPosition.lastPoint = thisPoint;
+                    interactorPositions[0] = interactorPosition;
+
+                    displacementFromStart = (thisPoint - interactorPosition.startPoint).magnitude / deadzone;
+                    dragDelta *= Mathf.Clamp01(displacementFromStart);
                 }
-
-                float displacementFromStart = (thisFrame - startTouchPoint).magnitude / deadzone;
 
                 //Debug.Log(displacementFromStart.ToString("F3"));
                 //Debug.Log($"SCROLLABLE: Processing ({displacementFromStart.ToString("F3")})");
 
-                dragDelta *= Mathf.Clamp01(displacementFromStart);
-    
 
                 float contentHeight = scrollRect.content.rect.height - scrollRect.viewport.rect.height;
                 float contentWidth = scrollRect.content.rect.width - scrollRect.viewport.rect.width;
 
                 if (contentHeight > 0.0f)
+                {
                     scrollRect.verticalNormalizedPosition -= (dragDelta.y / contentHeight);
+                }
 
                 if (contentWidth > 0.0f)
+                {
                     scrollRect.horizontalNormalizedPosition -= (dragDelta.x / contentWidth);
+                }
 
-                
                 if (displacementFromStart < 0.01f)
                 {
                     velocity = Vector2.zero;
@@ -102,10 +111,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
 
                 // velocity += ((dragDelta * (1.0f / Time.deltaTime) * Selectedness()) - velocity) * 0.1f;
-                // velocity = newVelocity;
-
-                
-
+                // velocity = newVelocity;             
                 // scrollRect.velocity = new Vector2((dragDelta.x / contentWidth) * Selectedness(), (dragDelta.y / contentHeight) * Selectedness());
             }
         }
@@ -214,50 +220,48 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private void IncreaseSelectCount(SelectEnterEventArgs args)
         {
-            if (!(args.interactorObject is IPokeInteractor) && StartScrolling(args.interactorObject))
+            if (!(args.interactorObject is IPokeInteractor))
             {
-                //interactionManager.RegisterInteractable((IXRInteractable)this);
+                StartScrolling(args.interactorObject);
             }
         }
-
 
         private void DecreaseSelectCount(SelectExitEventArgs args)
         {
-            if (!(args.interactorObject is IPokeInteractor) && StopScrolling(args.interactorObject))
+            if (!(args.interactorObject is IPokeInteractor))
             {
-              // interactionManager.UnregisterInteractable((IXRInteractable)this);
+                StopScrolling(args.interactorObject);
             }
         }
 
-        private bool StartScrolling(IXRInteractor interactor)
+        private void StartScrolling(IXRInteractor interactor)
         {
             if (interactorsScrolling.Add(interactor))
             {
                 Debug.Log("SCROLLABLE: Start Scrolling");
-                Vector2 thisFrame = scrollRect.transform.InverseTransformPoint(interactor.GetAttachTransform(this).position);
-                touchPoints[interactor] = thisFrame;
-
-                startNormalizedPosition = new Vector2(scrollRect.horizontalNormalizedPosition, scrollRect.verticalNormalizedPosition);
-                startTouchPoint = thisFrame;
-                return true;
+                interactorPositions.Add(new InteractorPosition(interactor));
             }
-            return false;
         }
 
-        private bool StopScrolling(IXRInteractor interactor)
+        private void StopScrolling(IXRInteractor interactor)
         {
             if (interactorsScrolling.Remove(interactor))
             {
                 Debug.Log("SCROLLABLE: Stop Scrolling");
-                if (touchPoints.Remove(interactor))
+                for (int i = 0; i < interactorsScrolling.Count; i++)
                 {
-                    // Vector2 lastFrame = touchPoints[interactor];
-                    // Vector2 thisFrame = scrollRect.transform.InverseTransformPoint(interactor.GetAttachTransform(this).position);
+                    if (interactorPositions[i].interactor == interactor)
+                    {
+                        interactorPositions.RemoveAt(i);
+                        break;
+                    }
+                }
+
+                if (interactorsScrolling.Count == 0)
+                {
                     scrollRect.velocity = velocity;
                 }
-                return true;
             }
-            return false;
         }
     }
 }

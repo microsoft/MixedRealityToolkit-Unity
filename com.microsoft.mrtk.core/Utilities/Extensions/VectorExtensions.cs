@@ -162,6 +162,12 @@ namespace Microsoft.MixedReality.Toolkit
                    !float.IsInfinity(vector.x) && !float.IsInfinity(vector.y) && !float.IsInfinity(vector.z);
         }
 
+        public static bool IsValidVector(this Vector2 vector)
+        {
+            return !float.IsNaN(vector.x) && !float.IsNaN(vector.y) && 
+                   !float.IsInfinity(vector.x) && !float.IsInfinity(vector.y);
+        }
+
         /// <summary>
         /// Determines if the distance between two vectors is within a given tolerance.
         /// </summary>
