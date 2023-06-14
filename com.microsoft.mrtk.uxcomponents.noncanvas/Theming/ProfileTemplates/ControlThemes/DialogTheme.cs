@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     public class DialogTheme
     {
         [Tooltip("Backplate material for a dialog slate.")]
-        [SerializeField, Experimental]
+        [SerializeField]
         private Material backplateMaterial;
         public Material BackplateMaterial => backplateMaterial;
 

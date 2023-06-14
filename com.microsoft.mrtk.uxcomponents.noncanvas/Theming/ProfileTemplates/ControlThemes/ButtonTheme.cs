@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     public class ButtonTheme
     {
         [Tooltip("Material for highlighting the backplate.")]
-        [SerializeField, Experimental]
+        [SerializeField]
         private Material backplateHighlightMaterial;
         public Material BackplateHighlightMaterial => backplateHighlightMaterial;
 

@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     public class SpriteSetTheme
     {
         [Tooltip("An 'Add' icon.")]
-        [SerializeField, Experimental]
+        [SerializeField]
         private Sprite add;
         public Sprite Add => add;
 

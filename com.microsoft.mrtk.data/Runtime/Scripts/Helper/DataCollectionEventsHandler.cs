@@ -12,10 +12,18 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// supported event and can be used to expose these in the Unity Editor inspector
     /// on any Monobehaviour.
     /// </summary>
+    /// <remarks>
+    /// This is an experimental feature. This class is early in the cycle, it has 
+    /// been labeled as experimental to indicate that it is still evolving, and 
+    /// subject to change over time. Parts of the MRTK, such as this class, appear 
+    /// to have a lot of value even if the details haven’t fully been fleshed out. 
+    /// For these types of features, we want the community to see them and get 
+    /// value out of them early enough so to provide feedback. 
+    /// </remarks>
     [AddComponentMenu("MRTK/Data Binding/Data Collection Events Handler")]
     public class DataCollectionEventsHandler : DataCollectionEventsGOBase
     {
-        [SerializeField, FormerlySerializedAs("Attach")]
+        [SerializeField, Experimental, FormerlySerializedAs("Attach")]
         private UnityEvent attach = new UnityEvent();
 
         [SerializeField, FormerlySerializedAs("Detach")]

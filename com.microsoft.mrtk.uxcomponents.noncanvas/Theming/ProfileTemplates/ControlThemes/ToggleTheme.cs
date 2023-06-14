@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     public class ToggleTheme
     {
         [Tooltip("Backplate material for a toggleable control.")]
-        [SerializeField, Experimental]
+        [SerializeField]
         private Material backplateMaterial;
         public Material BackplateMaterial => backplateMaterial;
 

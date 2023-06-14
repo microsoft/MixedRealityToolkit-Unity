@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     {
 
         [Tooltip("Backplate material for a object bar.")]
-        [SerializeField, Experimental]
+        [SerializeField]
         private Material backplateMaterial;
         public Material BackplateMaterial => backplateMaterial;
 

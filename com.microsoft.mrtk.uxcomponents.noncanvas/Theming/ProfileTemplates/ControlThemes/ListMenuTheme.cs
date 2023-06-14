@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     public class ListMenuTheme
     {
         [Tooltip("Backplate material for a list menu.")]
-        [SerializeField, Experimental]
+        [SerializeField]
         private Material backplateMaterial;
         public Material BackplateMaterial => backplateMaterial;
     }

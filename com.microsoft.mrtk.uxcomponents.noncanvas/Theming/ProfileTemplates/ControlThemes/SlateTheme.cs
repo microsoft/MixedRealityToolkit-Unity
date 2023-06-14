@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     public class SlateTheme
     {
         [Tooltip("Backplate material for the title section of slate.")]
-        [SerializeField, Experimental]
+        [SerializeField]
         private Material titleBackplateMaterial;
         public Material TitleBackplateMaterial => titleBackplateMaterial;
 

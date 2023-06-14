@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     public class SliderTheme
     {
         [Tooltip("Material for the entire base of a slider.")]
-        [SerializeField, Experimental]
+        [SerializeField]
         private Material trackBaseVisualMaterial;
         public Material TrackBaseVisualMaterial => trackBaseVisualMaterial;
 
