@@ -103,7 +103,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (Reticle == null) { return; }
 
-            // Hide the cursor is the mouse isn't in use
+            // Hide the cursor if the mouse isn't in use
             if (!mouseInteractor.IsInUse)
             {
                 Reticle.SetActive(false);
@@ -141,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 else
                 {
-                    reticlePosition = mouseInteractor.rayOriginTransform.position + mouseInteractor.rayOriginTransform.forward * reticleDistance;
+                    reticlePosition = mouseInteractor.rayOriginTransform.position + mouseInteractor.rayOriginTransform.forward;
                 }
             }
 
