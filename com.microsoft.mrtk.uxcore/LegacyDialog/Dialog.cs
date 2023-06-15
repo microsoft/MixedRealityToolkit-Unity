@@ -10,11 +10,11 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
     /// Abstract class that presents a Dialog object.
     /// </summary>
     /// <remarks>
-    /// The <see cref="Microsoft.MixedReality.Toolkit.UX.Deprecated.Dialog>Legacy Dialog</see> is deprecated. Please migrate to the 
+    /// The <see cref="Microsoft.MixedReality.Toolkit.UX.Deprecated.Dialog">Legacy Dialog</see> is deprecated. Please migrate to the 
     /// new <see cref="Microsoft.MixedReality.Toolkit.UX.Dialog">Dialog</see>. If you'd like to continue using the 
-    /// <see cref="Microsoft.MixedReality.Toolkit.UX.Deprecated.Dialog">Legacy Dialog</see> implementation, it is recommend that the legacy code 
+    /// <see cref="Microsoft.MixedReality.Toolkit.UX.Deprecated.Dialog">Legacy Dialog</see> implementation, it is recommended that the legacy code 
     /// be copied to the application's code base, and maintained independently by the application developer. Otherwise, it is strongly recommended 
-    /// that the application be updated to use the new <see cref="Microsoft.MixedReality.Toolkit.UX.Dialog">Dialog</see> system.
+    /// that the application be updated to use the new <see cref="Microsoft.MixedReality.Toolkit.UX.DialogPool">DialogPool</see> system.
     /// </remarks>
     [Obsolete("This legacy dialog system has been deprecated. Please migrate to the new dialog system, see Microsoft.MixedReality.Toolkit.UX.DialogPool for more details.")]
     public abstract class Dialog : MonoBehaviour

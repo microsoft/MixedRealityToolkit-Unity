@@ -11,11 +11,11 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
     /// Handling click event and dismiss dialog
     /// </summary>
     /// <remarks>
-    /// This and the <see cref="Microsoft.MixedReality.Toolkit.UX.Deprecated.Dialog>Legacy Dialog</see> are deprecated. Please migrate to the 
+    /// This and the <see cref="Microsoft.MixedReality.Toolkit.UX.Deprecated.Dialog">Legacy Dialog</see> are deprecated. Please migrate to the 
     /// new <see cref="Microsoft.MixedReality.Toolkit.UX.Dialog">Dialog</see>. If you'd like to continue using the 
-    /// <see cref="Microsoft.MixedReality.Toolkit.UX.Deprecated.Dialog">Legacy Dialog</see> implementation, it is recommend that the legacy code 
+    /// <see cref="Microsoft.MixedReality.Toolkit.UX.Deprecated.Dialog">Legacy Dialog</see> implementation, it is recommended that the legacy code 
     /// be copied to the application's code base, and maintained independently by the application developer. Otherwise, it is strongly recommended 
-    /// that the application be updated to use the new <see cref="Microsoft.MixedReality.Toolkit.UX.Dialog">Dialog</see> system.
+    /// that the application be updated to use the new <see cref="Microsoft.MixedReality.Toolkit.UX.DialogPool">DialogPool</see> system.
     /// </remarks>
     [SerializeField, Tooltip("The TextMeshPro component for displaying text on the button itself.")]
     public class DialogButton : MonoBehaviour
