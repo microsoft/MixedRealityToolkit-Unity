@@ -273,7 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             private static readonly ProfilerMarker TryCalculateEntireHandPerfMarker =
                 new ProfilerMarker("[MRTK] SyntheticHandsSubsystem.TryCalculateEntireHand");
 
-            /// <summary/>
+            /// <summary>
             /// For a certain hand, query every Bone in the hand, and write all results to the
             /// handJoints collection. This will also mark handsQueriedThisFrame[handNode] = true.
             /// </summary>
@@ -368,7 +368,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             private static readonly ProfilerMarker UpdatehandshapePerfMarker =
                 new ProfilerMarker("[MRTK] SyntheticHandsSubsystem.Updatehandshape");
 
-            /// <summary/>
+            /// <summary>
             /// Given the current state of the various input actions,
             /// write the current local-space handshape into the currentHandshape array.
             /// </summary>

@@ -55,15 +55,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// How unselected the interactor must be to initiate a new hover or selection on a new target.
-        /// Separate from the hand controller's threshold for pinchedness, so that we can tune
-        /// overall pinchedness separately from the roll-off prevention.
+        /// Separate from the hand controller's threshold for pinching, so that we can tune
+        /// overall pinching threshold separately from the roll-off prevention.
         /// Should be [0,1].
         /// </summary>
         /// <remarks>
         /// May be made serialized + exposed in the future.
         /// Larger than the relaxation threshold on <see cref="GazePinchInteractor"/>, as fewer
         /// accidental activations will occur with rays.
-        /// <remarks>
+        /// </remarks>
         protected internal float relaxationThreshold = 0.5f;
 
         // Whether the hand has relaxed (i.e. fully unselected) pre-selection.
