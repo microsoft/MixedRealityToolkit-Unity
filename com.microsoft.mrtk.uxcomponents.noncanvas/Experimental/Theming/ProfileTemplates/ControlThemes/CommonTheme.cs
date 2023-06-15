@@ -7,7 +7,6 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UX.Experimental
 {
-
     /// <remarks>
     /// This is an experimental feature. This class is early in the cycle, it has 
     /// been labeled as experimental to indicate that it is still evolving, and 

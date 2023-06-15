@@ -14,12 +14,13 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
     /// A simple general use keyboard that provides an alternative to the native keyboard offered by each device.
     /// </summary>
     /// <remarks>
-    ///       This is an experimental feature. This class is early in the cycle, it has 
-    ///       been labeled as experimental to indicate that it is still evolving, and 
-    ///       subject to change over time. Parts of the MRTK, such as this class, appear 
-    ///       to have a lot of value even if the details haven’t fully been fleshed out. 
-    ///       For these types of features, we want the community to see them and get 
-    ///       value out of them early enough so to provide feedback. 
+    /// <remarks>
+    /// This is an experimental feature. This class is early in the cycle, it has 
+    /// been labeled as experimental to indicate that it is still evolving, and 
+    /// subject to change over time. Parts of the MRTK, such as this class, appear 
+    /// to have a lot of value even if the details haven’t fully been fleshed out. 
+    /// For these types of features, we want the community to see them and get 
+    /// value out of them early enough so to provide feedback. 
     /// 
     /// NOTE: This keyboard will not automatically appear when you select an InputField in your
     ///       Canvas. In order for the keyboard to appear you must call Keyboard.Instance.PresentKeyboard(string).
