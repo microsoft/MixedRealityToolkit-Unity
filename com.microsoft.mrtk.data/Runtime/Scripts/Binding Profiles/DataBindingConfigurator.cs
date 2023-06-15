@@ -10,7 +10,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// Automatically configures and adds DataConsumer components needed to manage all data bound and/or themable
     /// elements in a prefab
     /// </summary>
-  
     [Serializable]
     public class DataBindingConfigurator : IDataBindingConfigurator
     {
