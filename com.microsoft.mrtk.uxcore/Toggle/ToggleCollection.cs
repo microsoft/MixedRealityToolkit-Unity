@@ -54,11 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private bool allowSwitchOff = false;
 
         /// <summary>
-        /// Should the user be allowed to un-toggle the toggles?
+        /// Get or set if the user is allowed to un-toggle the toggle buttons.
         /// </summary>
-        /// <remarks>
-        /// Same name and behaviour as UnityUI's ToggleGroup.
-        /// </remarks>
         public bool AllowSwitchOff
         {
             get => allowSwitchOff;
@@ -98,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             get => onToggleSelected;
         }
 
-        // List of the actions for the toggles in ToggleCollection
+        // List of the actions for the toggles in ToggleCollection.
         private List<UnityAction<float>> toggleActions = new List<UnityAction<float>>();
 
         private void OnValidate()
@@ -131,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
             if (Toggles != null && toggleActions.Count == 0)
             {
-                // Add listeners to each toggle in ToggleCollection
+                // Add listeners to each toggle in ToggleCollection.
                 AddSelectionListeners();
 
                 // Force set initial selection in the toggle collection at start
