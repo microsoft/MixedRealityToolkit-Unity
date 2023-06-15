@@ -6,9 +6,9 @@ using Microsoft.MixedReality.Toolkit.Subsystems;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using static Microsoft.MixedReality.Toolkit.UX.NonNativeFunctionKey;
+using static Microsoft.MixedReality.Toolkit.UX.Experimental.NonNativeFunctionKey;
 
-namespace Microsoft.MixedReality.Toolkit.UX
+namespace Microsoft.MixedReality.Toolkit.UX.Experimental
 {
     /// <summary>
     /// A simple general use keyboard that provides an alternative to the native keyboard offered by each device.

@@ -3,6 +3,7 @@
 
 using Microsoft.MixedReality.Toolkit.Core.Tests;
 using Microsoft.MixedReality.Toolkit.Input.Tests;
+using Microsoft.MixedReality.Toolkit.UX.Experimental;
 using NUnit.Framework;
 using System.Collections;
 using System.Threading.Tasks;

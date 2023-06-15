@@ -4,7 +4,7 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UX
+namespace Microsoft.MixedReality.Toolkit.UX.Experimental
 {
     [CreateAssetMenu(fileName = "MRTK_UX_ThemeProfile", menuName = "MRTK/UX/Theme Profile")]
     public class UXThemeProfile : ScriptableObject

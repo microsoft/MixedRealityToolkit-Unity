@@ -8,7 +8,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Microsoft.MixedReality.Toolkit.UX
+namespace Microsoft.MixedReality.Toolkit.UX.Experimental
 {
     /// <summary>
     /// The VirtualizedScrollRectList is a helper component that allows you to

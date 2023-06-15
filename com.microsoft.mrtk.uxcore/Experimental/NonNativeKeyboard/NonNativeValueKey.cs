@@ -4,7 +4,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UX
+namespace Microsoft.MixedReality.Toolkit.UX.Experimental
 {
     /// <summary>
     /// Class representing a value key in the non native keyboard

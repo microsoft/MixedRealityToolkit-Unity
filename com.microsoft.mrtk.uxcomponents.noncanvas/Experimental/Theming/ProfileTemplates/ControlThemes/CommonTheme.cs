@@ -5,7 +5,7 @@ using System;
 using TMPro;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UX
+namespace Microsoft.MixedReality.Toolkit.UX.Experimental
 {
 
     /// <remarks>
@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     [Serializable]
     public class CommonTheme
     {
-        [SerializeField, Experimental]
+        [SerializeField]
         private TMP_StyleSheet textStyleSheet;
         public TMP_StyleSheet TextStyleSheet => textStyleSheet;
 

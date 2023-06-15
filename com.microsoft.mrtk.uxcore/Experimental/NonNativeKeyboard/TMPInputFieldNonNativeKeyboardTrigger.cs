@@ -4,7 +4,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UX
+namespace Microsoft.MixedReality.Toolkit.UX.Experimental
 {
     /// <summary>
     /// Class to bring up the non native keyboard for a MRTK TMP Input Field and routes the keyboard input into the input field.
