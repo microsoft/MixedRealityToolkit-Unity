@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         menuName = "MRTK/Accessibility/Object Role")]
     public class ObjectRole : ScriptableObject
     {
-        [SerializeField]
+        [SerializeField, Experimental]
         [Tooltip("Description of the role.")]
         private string description;
 
