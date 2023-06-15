@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     public abstract class DataCollectionItemPlacerGOBase : MonoBehaviour, IDataCollectionItemPlacer
     {
         [Tooltip("(Optional) Private request reference or ID that is provided with every request for collection items to correlate the PlaceItem calls to the original request.")]
-        [SerializeField]
+        [SerializeField, Experimental]
         protected string requestRef = "";
 
         [Tooltip("Enable this for placement strategies that depend on the order of child game objects instead of the index of the item.")]

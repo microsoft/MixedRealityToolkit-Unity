@@ -43,7 +43,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Build
             "Assets/Scenes/ToggleCollectionExample.unity",
             "Assets/Scenes/TopNavigationExample.unity",
             "Assets/Scenes/VanillaUGUIExample.unity",
-            "Assets/Scenes/VirtualizedScrollRectList.unity" };
+            "Assets/Scenes/Experimental/VirtualizedScrollRectList.unity",
+            "Assets/Scenes/Experimental/NonNativeKeyboard.unity" };
 
         private static string buildPath = "build";
 

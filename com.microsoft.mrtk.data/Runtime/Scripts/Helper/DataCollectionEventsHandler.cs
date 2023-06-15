@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     [AddComponentMenu("MRTK/Data Binding/Data Collection Events Handler")]
     public class DataCollectionEventsHandler : DataCollectionEventsGOBase
     {
-        [SerializeField, FormerlySerializedAs("Attach")]
+        [SerializeField, Experimental, FormerlySerializedAs("Attach")]
         private UnityEvent attach = new UnityEvent();
 
         [SerializeField, FormerlySerializedAs("Detach")]
