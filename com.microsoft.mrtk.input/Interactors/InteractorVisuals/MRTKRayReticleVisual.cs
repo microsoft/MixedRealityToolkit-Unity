@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Vector3 reticleNormal;
 
         /// <summary>
-        /// Determines whether a reticle should appear on all surfaces hit by the interactor or interactables only
+        /// Determines whether a reticle should appear on all surfaces hit by the interactor or interactables only.
         /// </summary>
         public ReticleVisibilitySettings VisibilitySettings
         {
@@ -173,9 +173,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// An enumeration used to control when a <see cref="Microsoft.MixedReality.Toolkit.Input.MRTKRayReticleVisual">MRTKRayReticleVisual</see> 
+        /// is visible. 
+        /// </summary>
         public enum ReticleVisibilitySettings
         {
+            /// <summary>
+            /// The reticle is only visible when it intersects an interactable object.
+            /// </summary> 
             InteractablesOnly,
+
+            /// <summary>
+            /// The reticle is visible anytime it intersects with another object, regardless of it being interactable.
+            /// </summary>
             AllValidSurfaces
         }
     }

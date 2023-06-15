@@ -19,6 +19,14 @@ using UnityEngine.Windows.Speech;
 
 namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 {
+    /// <summary>
+    /// A Unity subsystem that extends <see cref="Microsoft.MixedReality.Toolkit.Subsystems.KeywordRecognitionSubsystem">KeywordRecognitionSubsystem</see>
+    /// so to expose the keyword recognition services available on Windows platforms. This subsystem is enabled for Windows Standalone and
+    /// Universal Windows Applications. 
+    /// </summary>
+    /// <remarks>
+    /// This subsystem can be configured using the <see cref="Microsoft.MixedReality.Toolkit.Speech.Windows.WindowsKeywordRecognitionSubsystemConfig">WindowsKeywordRecognitionSubsystemConfig</see> Unity asset.
+    /// </remarks>
     [Preserve]
     [MRTKSubsystem(
         Name = "com.microsoft.mixedreality.windowskeywordrecognition",
@@ -41,6 +49,11 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             }
         }
 
+        /// <summary>
+        /// A subsystem provider used with <see cref="WindowsKeywordRecognitionSubsystem"/> that exposes methods on the
+        /// <see cref="Microsoft.MixedReality.OpenXR.SelectKeywordRecognizer">SelectKeywordRecognizer</see> and Unity's 
+        /// `KeywordRecognizer`. 
+        /// </summary>
         [Preserve]
         class WindowsKeywordRecognitionProvider : Provider
         {

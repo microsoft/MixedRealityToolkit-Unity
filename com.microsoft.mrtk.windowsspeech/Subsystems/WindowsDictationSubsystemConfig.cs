@@ -10,7 +10,7 @@ using UnityEngine.Windows.Speech;
 namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 {
     /// <summary>
-    /// The configuration object for WindowsDictationSubsystem.
+    /// The configuration object for <see cref="Microsoft.MixedReality.Toolkit.Speech.Windows.WindowsDictationSubsystem">WindowsDictationSubsystem</see>.
     /// </summary>
     [CreateAssetMenu(
         fileName = "WindowsDictationSubsystemConfig.asset",
