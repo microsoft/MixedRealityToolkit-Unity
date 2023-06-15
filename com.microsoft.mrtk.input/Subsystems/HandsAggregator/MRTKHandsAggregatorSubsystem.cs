@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// The MRTK implementation of a <cref see="HandsAggregatorSubsystem">, which supports
     /// lazy loading/reuse of hand data per-frame. This aggregator pulls skeletal joint data
-    /// from all actively running <cref see="HandsSubsystem">s.
+    /// from all actively running <cref see="HandsSubsystem"/>.
     /// </summary>
     [Preserve]
     [MRTKSubsystem(
