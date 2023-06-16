@@ -36,18 +36,23 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         readonly HashSetList<IXRInteractor> interactorsScrolling = new HashSetList<IXRInteractor>();
         readonly List<InteractorPosition> interactorPositions = new List<InteractorPosition>();
+        List<IXRSelectInteractable> cancelableSelection;
 
         private struct InteractorPosition
         {
+            public XRInteractionManager manager;
             public IXRInteractor interactor;
             public Vector3 lastPoint;
             public Vector3 startPoint;
+            public Vector2 scrollStart;
 
-            public InteractorPosition(IXRInteractor interactor)
+            public InteractorPosition(XRInteractionManager manager, IXRInteractor interactor)
             {
+                this.manager = manager;
                 this.interactor = interactor;
-                lastPoint = Vector2.positiveInfinity;
-                startPoint = Vector2.positiveInfinity;
+                lastPoint = Vector3.positiveInfinity;
+                startPoint = Vector3.positiveInfinity;
+                scrollStart = Vector2.positiveInfinity;
             }
         }        
 
@@ -62,10 +67,15 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 Vector2 dragDelta = Vector2.zero;
                 float displacementFromStart = 0;
+                IXRInteractor draggingIntector = null;
+                XRInteractionManager draggingManager = null;
+                Vector2 scrollDelta = Vector2.zero;
 
                 if (interactorPositions.Count > 0)
                 {
+
                     var interactorPosition = interactorPositions[0];
+                    Debug.Log($"SCROLLABLE: dragging ({interactorPosition.interactor})");
                     var thisPoint = scrollRect.transform.InverseTransformPoint(interactorPosition.interactor.GetAttachTransform(this).position);
 
                     if (!interactorPosition.startPoint.IsValidVector() ||
@@ -73,32 +83,35 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     {
                         interactorPosition.startPoint = thisPoint;
                         interactorPosition.lastPoint = thisPoint;
+                        interactorPosition.scrollStart = new Vector2(scrollRect.horizontalNormalizedPosition, scrollRect.verticalNormalizedPosition);
                     }
 
+                    draggingIntector = interactorPosition.interactor;
+                    draggingManager = interactorPosition.manager;
                     dragDelta = thisPoint - interactorPosition.lastPoint;
                     interactorPosition.lastPoint = thisPoint;
                     interactorPositions[0] = interactorPosition;
 
                     displacementFromStart = (thisPoint - interactorPosition.startPoint).magnitude / deadzone;
                     dragDelta *= Mathf.Clamp01(displacementFromStart);
+
+
+                    float contentHeight = scrollRect.content.rect.height - scrollRect.viewport.rect.height;
+                    float contentWidth = scrollRect.content.rect.width - scrollRect.viewport.rect.width;
+
+                    if (contentHeight > 0.0f)
+                    {
+                        scrollRect.verticalNormalizedPosition -= (dragDelta.y / contentHeight);
+                    }
+
+                    if (contentWidth > 0.0f)
+                    {
+                        scrollRect.horizontalNormalizedPosition -= (dragDelta.x / contentWidth);
+                    }
+
+                    scrollDelta = new Vector2(scrollRect.horizontalNormalizedPosition, scrollRect.verticalNormalizedPosition) - interactorPosition.scrollStart;
                 }
 
-                //Debug.Log(displacementFromStart.ToString("F3"));
-                //Debug.Log($"SCROLLABLE: Processing ({displacementFromStart.ToString("F3")})");
-
-
-                float contentHeight = scrollRect.content.rect.height - scrollRect.viewport.rect.height;
-                float contentWidth = scrollRect.content.rect.width - scrollRect.viewport.rect.width;
-
-                if (contentHeight > 0.0f)
-                {
-                    scrollRect.verticalNormalizedPosition -= (dragDelta.y / contentHeight);
-                }
-
-                if (contentWidth > 0.0f)
-                {
-                    scrollRect.horizontalNormalizedPosition -= (dragDelta.x / contentWidth);
-                }
 
                 if (displacementFromStart < 0.01f)
                 {
@@ -109,6 +122,29 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     velocity = dragDelta * (1.0f / Time.deltaTime);
                 }
 
+                if (scrollDelta.magnitude > 0.02f &&
+                    draggingIntector is IXRSelectInteractor selector &&
+                    selector.hasSelection)
+                {
+                    if (cancelableSelection == null)
+                    {
+                        cancelableSelection = new List<IXRSelectInteractable>(selector.interactablesSelected);
+                    }
+
+                    foreach (var interactable in selector.interactablesSelected)
+                    {
+                        cancelableSelection.Add(interactable);
+                    }
+
+                    draggingManager.SelectEnter(selector, this);
+
+                    foreach (var interactable in cancelableSelection)
+                    {
+                        draggingManager.SelectCancel(selector, interactable);
+                    }
+
+                    cancelableSelection.Clear();
+                }
 
                 // velocity += ((dragDelta * (1.0f / Time.deltaTime) * Selectedness()) - velocity) * 0.1f;
                 // velocity = newVelocity;             
@@ -206,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             if (args.interactorObject is IPokeInteractor)
             {
-                StartScrolling(args.interactorObject);
+                StartScrolling(args.manager, args.interactorObject);
             }
         }
 
@@ -222,7 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             if (!(args.interactorObject is IPokeInteractor))
             {
-                StartScrolling(args.interactorObject);
+                StartScrolling(args.manager, args.interactorObject);
             }
         }
 
@@ -234,12 +270,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
-        private void StartScrolling(IXRInteractor interactor)
+        private void StartScrolling(XRInteractionManager manager, IXRInteractor interactor)
         {
             if (interactorsScrolling.Add(interactor))
             {
                 Debug.Log("SCROLLABLE: Start Scrolling");
-                interactorPositions.Add(new InteractorPosition(interactor));
+                interactorPositions.Add(new InteractorPosition(manager, interactor));
             }
         }
 
@@ -248,9 +284,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
             if (interactorsScrolling.Remove(interactor))
             {
                 Debug.Log("SCROLLABLE: Stop Scrolling");
-                for (int i = 0; i < interactorsScrolling.Count; i++)
+                for (int i = 0; i < interactorPositions.Count; i++)
                 {
-                    if (interactorPositions[i].interactor == interactor)
+                    if (interactorPositions[i].interactor == interactor &&
+                        (!(interactor is IXRSelectInteractor selector) || !selector.hasSelection))
                     {
                         interactorPositions.RemoveAt(i);
                         break;
