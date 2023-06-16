@@ -14,6 +14,9 @@ using HandshapeId = Microsoft.MixedReality.Toolkit.Input.HandshapeTypes.Handshap
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// A Unity subsystem that enables articulated hand simulation.
+    /// </summary>    
     [Preserve]
     [MRTKSubsystem(
         Name = "com.microsoft.mixedreality.synthhands",
@@ -25,6 +28,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class SyntheticHandsSubsystem : HandsSubsystem
     {
         private SyntheticHandsProvider syntheticProvider;
+
+        /// <summary>
+        /// Get the subsystem provider for this object.
+        /// </summary>
         private SyntheticHandsProvider SyntheticProvider
         {
             get
@@ -392,6 +399,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// A subsystem provider for <see cref="SyntheticHandsSubsystem"/> that provides methods for getting and setting
+        /// the simulated hand poses, as well as methods for obtain hand joint poses.
+        /// </summary>
         [Preserve]
         class SyntheticHandsProvider : Provider
         {

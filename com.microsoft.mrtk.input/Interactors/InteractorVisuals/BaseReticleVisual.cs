@@ -107,6 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             customReticle = null;
             customReticleAttached = false;
+            variableReticle = null;
             return false;
         }
 

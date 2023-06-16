@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Vector3 reticleNormal;
 
         /// <summary>
-        /// Determines whether a reticle should appear on all surfaces hit by the interactor or interactables only
+        /// Determines whether a reticle should appear on all surfaces hit by the interactor or interactables only.
         /// </summary>
         public ReticleVisibilitySettings VisibilitySettings
         {
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set => visibilitySettings = value;
         }
 
-        protected void OnEnable()
+        private void OnEnable()
         {
             rayInteractor.selectEntered.AddListener(LocateTargetHitPoint);
 
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             UpdateReticle();
         }
 
-        protected void OnDisable()
+        private void OnDisable()
         {
             rayInteractor.selectEntered.RemoveListener(LocateTargetHitPoint);
 
@@ -96,20 +96,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         // If we have a reticle, set its position and rotation.
                         if (reticleRoot != null)
                         {
-                            reticleRoot.transform.SetPositionAndRotation(reticlePosition, Quaternion.LookRotation(reticleNormal, Vector3.up));
+                            if (reticleNormal != Vector3.zero)
+                            {
+                                reticleRoot.transform.SetPositionAndRotation(reticlePosition, Quaternion.LookRotation(reticleNormal, Vector3.up));
+                            }
+                            else
+                            {
+                                reticleRoot.transform.position = reticlePosition;
+                            }
                         }
 
                         // If the reticle is an IVariableSelectReticle, have the reticle update based on selectedness
                         if (VariableReticle != null)
                         {
-                            if (rayInteractor is IVariableSelectInteractor variableSelectInteractor)
-                            {
-                                VariableReticle.UpdateVisuals(variableSelectInteractor.SelectProgress);
-                            }
-                            else
-                            {
-                                VariableReticle.UpdateVisuals(rayInteractor.isSelectActive ? 1 : 0);
-                            }
+                            VariableReticle.UpdateVisuals(new VariableReticleUpdateArgs(rayInteractor, reticlePosition, reticleNormal));
                         }
                     }
                     else
@@ -173,9 +173,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// An enumeration used to control when a <see cref="Microsoft.MixedReality.Toolkit.Input.MRTKRayReticleVisual">MRTKRayReticleVisual</see> 
+        /// is visible. 
+        /// </summary>
         public enum ReticleVisibilitySettings
         {
+            /// <summary>
+            /// The reticle is only visible when it intersects an interactable object.
+            /// </summary> 
             InteractablesOnly,
+
+            /// <summary>
+            /// The reticle is visible anytime it intersects with another object, regardless of it being interactable.
+            /// </summary>
             AllValidSurfaces
         }
     }

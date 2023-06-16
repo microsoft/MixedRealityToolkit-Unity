@@ -214,8 +214,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
 
             var lineInfo = textInfo.lineInfo[prevChar.lineNumber];
-            ScrollView(textInfo, ref lineInfo, ref prevChar, ref nextChar);
-            UpdateCaret(textInfo, ref lineInfo, ref prevChar);
+            ScrollView(textInfo, in lineInfo, in prevChar, in nextChar);
+            UpdateCaret(textInfo, in lineInfo, in prevChar);
         }
 
         /// <summary>
@@ -226,8 +226,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </remarks>
         private void UpdateCaret(
             TMP_TextInfo textInfo,
-            ref TMP_LineInfo lineInfo,
-            ref TMP_CharacterInfo prevChar)
+            in TMP_LineInfo lineInfo,
+            in TMP_CharacterInfo prevChar)
         {
             // get line info
             float focusedLineWidth = lineInfo.width;
@@ -251,12 +251,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
             float caretPositionY = lineInfo.baseline - textInfo.lineInfo[0].baseline;
 
             // if at end of line, text info doesn't go to a new line info, so account for this.
-            if (AtEmptyNewLine(ref lineInfo, ref prevChar))
+            if (AtEmptyNewLine(in lineInfo, in prevChar))
             {
                 caretPositionX = focusedLineStart;
                 caretPositionY -= lineInfo.lineHeight;
             }
-            else if (AtStartOfLine(ref lineInfo, ref prevChar))
+            else if (AtStartOfLine(in lineInfo, in prevChar))
             {
                 caretPositionX = focusedLineStart;
             }
@@ -294,9 +294,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </remarks>
         private void ScrollView(
             TMP_TextInfo textInfo,
-            ref TMP_LineInfo lineInfo,
-            ref TMP_CharacterInfo prevChar,
-            ref TMP_CharacterInfo nextChar)
+            in TMP_LineInfo lineInfo,
+            in TMP_CharacterInfo prevChar,
+            in TMP_CharacterInfo nextChar)
         {
             // get line info
             float focusedLineWidth = lineInfo.width;
@@ -311,7 +311,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             float textPositionY = focusedLineOffset;
 
             // if at end of line, text info doesn't go to a new line info, so account for this.
-            if (AtEmptyNewLine(ref lineInfo, ref prevChar))
+            if (AtEmptyNewLine(in lineInfo, in prevChar))
             {
                 textPositionX = 0;
                 textPositionY += lineInfo.lineHeight;
@@ -339,7 +339,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// Is the cursor at the start of new empty line, that is not the very first line.
         /// </summary>
-        private bool AtEmptyNewLine(ref TMP_LineInfo lineInfo, ref TMP_CharacterInfo prevChar)
+        private bool AtEmptyNewLine(in TMP_LineInfo lineInfo, in TMP_CharacterInfo prevChar)
         {
             return prevChar.character == '\n' && prevChar.index == lineInfo.lastCharacterIndex;
         }
@@ -347,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// Is the cursor at a start of the line
         /// </summary>
-        private bool AtStartOfLine(ref TMP_LineInfo lineInfo, ref TMP_CharacterInfo prevChar)
+        private bool AtStartOfLine(in TMP_LineInfo lineInfo, in TMP_CharacterInfo prevChar)
         {
             return lineInfo.characterCount == 0 ? true : lineInfo.firstCharacterIndex > prevChar.index;
         }
@@ -355,7 +355,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// Is the cursor at the end of a line
         /// </summary>
-        private bool AtEndOfLine(ref TMP_LineInfo lineInfo, ref TMP_CharacterInfo prevChar)
+        private bool AtEndOfLine(in TMP_LineInfo lineInfo, in TMP_CharacterInfo prevChar)
         {
             return lineInfo.lastCharacterIndex <= prevChar.index;
         }

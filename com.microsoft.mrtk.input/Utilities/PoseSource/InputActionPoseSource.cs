@@ -8,24 +8,26 @@ using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    [Serializable]
-
     /// <summary>
-    /// A pose source which gets the pose composed of a tracked position and rotation input action
+    /// A pose source which gets the pose composed of a tracked position and rotation input action.
     /// </summary>
+    [Serializable]
     public class InputActionPoseSource : IPoseSource
     {
         [SerializeField]
+        [Tooltip("The input action property used when obtaining the tracking information for the current pose.")]
         InputActionProperty trackingStateActionProperty;
 
         [SerializeField]
+        [Tooltip("The input action property used when obtaining the position information for the current pose.")]
         InputActionProperty positionActionProperty;
 
         [SerializeField]
+        [Tooltip("The input action property used when obtaining the rotation information for the current pose.")]
         InputActionProperty rotationActionProperty;
 
         /// <summary>
-        /// Tries to get the pose in worldspace composed of the provided input action properties when the position and rotation are tracked
+        /// Tries to get the pose in world space composed of the provided input action properties when the position and rotation are tracked.
         /// </summary>
         public bool TryGetPose(out Pose pose)
         {

@@ -8,8 +8,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     public enum InterpolationType
     {
+        /// <summary>
+        /// Interpolation using Bézier parametric curve.
+        /// </summary>
         Bezier = 0,
-        CatmullRom,
-        Hermite,
+
+        /// <summary>
+        /// Interpolation using a Catmull–Rom spline.
+        /// </summary>
+        CatmullRom
     }
 }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using Unity.Profiling;
 using UnityEngine;
@@ -94,7 +95,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override bool CanHover(IXRHoverInteractable interactable)
         {
             // We stay hovering if we have selected anything.
-            bool stickyHover = !hasSelection || IsSelecting(interactable);
+            bool stickyHover = hasSelection && IsSelecting(interactable);
+            if (stickyHover)
+            {
+                return true;
+            }
 
             // We are ready to pinch if we are in the PinchReady position,
             // or if we are already selecting something.
@@ -108,13 +113,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // semi-pressing another.
             bool canHoverNew = !isNew || SelectProgress < relaxationThreshold;
 
-            return base.CanHover(interactable) && stickyHover && ready && canHoverNew;
+            return ready && base.CanHover(interactable) && canHoverNew;
         }
 
         /// <inheritdoc />
         public override bool CanSelect(IXRSelectInteractable interactable)
         {
             return base.CanSelect(interactable) && (!hasSelection || IsSelecting(interactable)) && isRelaxedBeforeSelect;
+        }
+
+        /// <inheritdoc />
+        public override void GetValidTargets(List<IXRInteractable> targets)
+        {
+            // When selection is active, force valid targets to be the current selection. This is done to ensure that selected objects remained hovered.
+            if (hasSelection && isActiveAndEnabled)
+            {
+                targets.Clear();
+                for (int i = 0; i < interactablesSelected.Count; i++)
+                {
+                    targets.Add(interactablesSelected[i]);
+                }
+            }
+            else
+            {
+                base.GetValidTargets(targets);
+            }
         }
 
         /// <inheritdoc />

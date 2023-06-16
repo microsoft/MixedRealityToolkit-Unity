@@ -10,7 +10,7 @@ using UnityEngine.Windows.Speech;
 namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 {
     /// <summary>
-    /// The configuration object for WindowsKeywordRecognitionSubsystem.
+    /// The configuration object for <see cref="Microsoft.MixedReality.Toolkit.Speech.Windows.WindowsKeywordRecognitionSubsystem">WindowsKeywordRecognitionSubsystem</see>.
     /// </summary>
     [CreateAssetMenu(
         fileName = "WindowsKeywordRecognitionSubsystemConfig.asset",

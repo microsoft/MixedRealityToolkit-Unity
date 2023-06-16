@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     {
 
         [Tooltip("A scriptable object that provides the theme to use for MRTK UX Controls")]
-        [SerializeField]
+        [SerializeField, Experimental]
         private ScriptableObject[] themeProfiles;
 
         [Tooltip("The ThemeProvider instance to modify.")]
