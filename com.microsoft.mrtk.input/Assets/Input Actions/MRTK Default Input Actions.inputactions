@@ -1239,6 +1239,94 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "MRTK Spatial Mouse",
+            "id": "d61a5015-577c-4668-b95f-2ab49dd82913",
+            "actions": [
+                {
+                    "name": "Position",
+                    "type": "Value",
+                    "id": "941c2402-6afd-4323-b6f9-3fac0ab630e5",
+                    "expectedControlType": "Vector3",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Select",
+                    "type": "Button",
+                    "id": "03075bc5-ac04-4deb-986e-20a2e8203b74",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "MouseMove",
+                    "type": "Value",
+                    "id": "68f39cfe-a99b-4b0c-9ff5-12f59905d3a9",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "MouseScroll",
+                    "type": "Value",
+                    "id": "ff47dab1-a950-4924-b86d-0dfe19d7ba0c",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f60a90eb-71b1-4c29-bf90-d45980b2056b",
+                    "path": "<XRHMD>/centerEyePosition",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "621f9734-1689-41a1-b9e4-ecd04939b8b8",
+                    "path": "<Mouse>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "861aef1b-f193-4c99-9f68-caabf2d22ecd",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseMove",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3a3379e8-1ad6-4435-8e72-c06c0b27ed31",
+                    "path": "<Mouse>/scroll",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseScroll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
