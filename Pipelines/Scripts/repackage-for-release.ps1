@@ -10,14 +10,6 @@
     The root folder of the project.
 .PARAMETER OutputDirectory
     Where should we place the output? Defaults to ".\artifacts"
-.PARAMETER BuildNumber
-    The fourth digit (revision) for the full version.
-.PARAMETER PreviewTag
-    The tag to append after the version, including the preview number (e.g. "internal.0" or "pre.100")
-.PARAMETER Revision
-    The revision number for the build.  (e.g. "230508.3" or "2") 
-.PARAMETER ReleasePackages
-    An array of the package names that are approved for release.  If the package isn't in this array, it will get labeled -pre
 #>
 param(
     [Parameter(Mandatory = $true)]
@@ -61,8 +53,6 @@ try {
         }
 
         $packageName = $packageName.Matches[0].Value
-        $packageFriendlyName = (Select-String -Pattern "`"displayName`": `"(.+)`"" -Path $_ | Select-Object -First 1).Matches.Groups[1].Value
-
         $packagePath = $_.Directory
 
         Write-Output ""
@@ -82,23 +72,57 @@ try {
 
         Write-Output "Version: $version   prerelease: $prerelease   tag: $tag   build: $build"
         
-        $versionHash[$packageName]=$version
+        $newVersion = "$($version)$($tag)"
+
+        $versionHash[$packageName]=$newVersion
 
         Write-Output " Version: $version"
         
-        Write-Output "Patching package version to $version$tag"
-        ((Get-Content -Path $_ -Raw) -Replace '("version": )"(?:[0-9.]+|%version%)-?[a-zA-Z0-9.]*', "`$1`"$version$tag") | Set-Content -Path $_ -NoNewline
+        Write-Output "Patching package version to $newVersion"
+        ((Get-Content -Path $_ -Raw) -Replace '("version": )"(?:[0-9.]+|%version%)-?[a-zA-Z0-9.]*', "`$1`"$newVersion") | Set-Content -Path $_ -NoNewline
 
-        Write-Output "Patching assembly version to $version$tag"
+        Write-Output "Patching assembly version to $newVersion"
         Get-ChildItem -Path $packagePath/AssemblyInfo.cs -Recurse | ForEach-Object {
             (Get-Content -Path $_ -Raw) -Replace '\[assembly:.AssemblyVersion\(.*', "[assembly: AssemblyVersion(`"$version.0`")]`r" | Set-Content -Path $_ -NoNewline
-            ((Get-Content -Path $_ -Raw) -Replace "assembly: AssemblyFileVersion\`(\`".*\`"", "assembly: AssemblyFileVersion(`"$version$tag`"") | Set-Content -Path $_ -NoNewline
-            ((Get-Content -Path $_ -Raw) -Replace "assembly: AssemblyInformationalVersion\`(\`".*\`"", "assembly: AssemblyInformationalVersion(`"$version$tag`"") | Set-Content -Path $_ -NoNewline
+            ((Get-Content -Path $_ -Raw) -Replace "assembly: AssemblyFileVersion\`(\`".*\`"", "assembly: AssemblyFileVersion(`"$newVersion`"") | Set-Content -Path $_ -NoNewline
+            ((Get-Content -Path $_ -Raw) -Replace "assembly: AssemblyInformationalVersion\`(\`".*\`"", "assembly: AssemblyInformationalVersion(`"$newVersion`"") | Set-Content -Path $_ -NoNewline
         }
+
+    }
+    # update all dependencies and repackage
+    Get-ChildItem -Path $packageSearchPath | ForEach-Object {
+        $currentPackageName = Select-String -Pattern "com\.microsoft\.mrtk\.\w+" -Path $_.FullName | Select-Object -First 1
+
+        if (-not $currentPackageName) {
+            return # this is not an MRTK package, so skip
+        }
+
+        $currentPackageName = $currentPackageName.Matches[0].Value
+        $packageFriendlyName = (Select-String -Pattern "`"displayName`": `"(.+)`"" -Path $_ | Select-Object -First 1).Matches.Groups[1].Value
+
+        $packagePath = $_.Directory
+
+        Write-Output "____________________________________________________________________________"
+        Write-Output "   Package: $($currentPackageName)"
+
+        foreach ($packageName in $versionHash.Keys) {
+            if ($currentPackageName -eq $packageName) {
+                continue
+            }
+
+            $searchRegex = "$($packageName)""\s*:.*""(.*)"""
+            $searchMatches = Select-String $searchRegex -InputObject (Get-Content -Path $_)
+            if ($searchMatches.Matches.Groups) {
+                $newVersion = $versionHash["$($packageName)"]
+                Write-Output "        Patching dependency $($packageName) from $($searchMatches.Matches.Groups[1].Value) to $($newVersion)"
+                (Get-Content -Path $_ -Raw) -Replace $searchRegex, "$($packageName)"": ""$($newVersion)""" | Set-Content -Path $_ -NoNewline
+            }
+        }
+
+        Write-Output "____________________________________________________________________________`n"
 
         Write-Output "Packing $packageFriendlyName to $OutputDirectory"
         npm pack $packagePath -pack-destination $OutputDirectory
-
     }
 }
 finally {
