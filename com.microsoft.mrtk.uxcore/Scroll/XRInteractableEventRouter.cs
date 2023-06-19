@@ -72,44 +72,28 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
     public interface IXRHoverInteractableParent : IXRInteractableEventRouteTarget
     {
-        void OnChildHoverEntering(HoverEnterEventArgs args);
-
         void OnChildHoverEntered(HoverEnterEventArgs args);
-
-        void OnChildHoverExiting(HoverExitEventArgs args);
 
         void OnChildHoverExited(HoverExitEventArgs args);
     }
 
     public interface IXRHoverInteractableChild : IXRInteractableEventRouteTarget
     {
-        void OnParentHoverEntering(HoverEnterEventArgs args);
-
         void OnParentHoverEntered(HoverEnterEventArgs args);
-
-        void OnParentHoverExiting(HoverExitEventArgs args);
 
         void OnParentHoverExited(HoverExitEventArgs args);
     }
 
     public interface IXRSelectInteractableParent : IXRInteractableEventRouteTarget
     {
-        void OnChildSelectEntering(SelectEnterEventArgs args);
-
         void OnChildSelectEntered(SelectEnterEventArgs args);
-
-        void OnChildSelectExiting(SelectExitEventArgs args);
 
         void OnChildSelectExited(SelectExitEventArgs args);
     }
 
     public interface IXRSelectInteractableChild : IXRInteractableEventRouteTarget
     {
-        void OnParentSelectEntering(SelectEnterEventArgs args);
-
         void OnParentSelectEntered(SelectEnterEventArgs args);
-
-        void OnnParentSelectExiting(SelectExitEventArgs args);
 
         void OnnParentSelectExited(SelectExitEventArgs args);
     }

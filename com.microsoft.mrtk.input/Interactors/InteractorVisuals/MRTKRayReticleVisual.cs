@@ -136,6 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Transform hitTargetTransform;
         private void LocateTargetHitPoint(SelectEnterEventArgs args)
         {
+            Debug.Log($"MRTKRayReticleVisual. LocateTargetHitPoint  ({this})");
             // If no hit, abort.
             if (!rayInteractor.TryGetCurrentRaycast(
                   out RaycastHit? raycastHit,
@@ -144,12 +145,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                   out _,
                   out bool isUIHitClosest))
             {
+                Debug.Log($"MRTKRayReticleVisual. LocateTargetHitPoint ABORT! ({this})");
                 return;
             }
 
             // Align the reticle with a UI hit if applicable
             if (raycastResult.HasValue && isUIHitClosest)
             {
+                Debug.Log($"MRTKRayReticleVisual. Setting hit target to UI transform  ({raycastResult.Value.gameObject.transform})");
                 hitTargetTransform = raycastResult.Value.gameObject.transform;
                 targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastResult.Value.worldPosition);
                 targetLocalHitNormal = hitTargetTransform.InverseTransformDirection(raycastResult.Value.worldNormal);
@@ -160,12 +163,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // In the case of affordances/handles, we can stick the ray right on to the handle.
                 if (args.interactableObject is ISnapInteractable snappable)
                 {
+                    Debug.Log($"MRTKRayReticleVisual. Setting hit target to snappable transform  ({snappable.HandleTransform})");
                     hitTargetTransform = snappable.HandleTransform;
                     targetLocalHitPoint = Vector3.zero;
                     targetLocalHitNormal = Vector3.up;
                 }
                 else
                 {
+                    Debug.Log($"MRTKRayReticleVisual. Setting hit target to collider transform  ({raycastHit.Value.collider.transform})");
                     hitTargetTransform = raycastHit.Value.collider.transform;
                     targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastHit.Value.point);
                     targetLocalHitNormal = hitTargetTransform.InverseTransformDirection(raycastHit.Value.normal);

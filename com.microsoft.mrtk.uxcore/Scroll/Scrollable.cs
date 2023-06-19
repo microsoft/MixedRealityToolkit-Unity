@@ -37,6 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         readonly HashSetList<IXRInteractor> interactorsScrolling = new HashSetList<IXRInteractor>();
         readonly List<InteractorPosition> interactorPositions = new List<InteractorPosition>();
         List<IXRSelectInteractable> cancelableSelection;
+        List<Collider> disabledColliders;
 
         private struct InteractorPosition
         {
@@ -58,6 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private Vector2 velocity;
 
+     
         /// <inheritdoc />
         public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
         {
@@ -75,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 {
 
                     var interactorPosition = interactorPositions[0];
-                    Debug.Log($"SCROLLABLE: dragging ({interactorPosition.interactor})");
+                    //Debug.Log($"SCROLLABLE: dragging ({interactorPosition.interactor})");
                     var thisPoint = scrollRect.transform.InverseTransformPoint(interactorPosition.interactor.GetAttachTransform(this).position);
 
                     if (!interactorPosition.startPoint.IsValidVector() ||
@@ -124,26 +126,70 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
                 if (scrollDelta.magnitude > 0.02f &&
                     draggingIntector is IXRSelectInteractor selector &&
-                    selector.hasSelection)
+                    selector.hasSelection &&
+                    (selector.interactablesSelected.Count > 1 || !selector.interactablesSelected.Contains(this)))
                 {
                     if (cancelableSelection == null)
                     {
-                        cancelableSelection = new List<IXRSelectInteractable>(selector.interactablesSelected);
+                        cancelableSelection = new List<IXRSelectInteractable>(selector.interactablesSelected.Count);
                     }
+
+                    if (disabledColliders == null)
+                    {
+                        disabledColliders = new List<Collider>(selector.interactablesSelected.Count);
+                    }
+
+                    IXRSelectInteractable thisInteractable = this;
 
                     foreach (var interactable in selector.interactablesSelected)
                     {
-                        cancelableSelection.Add(interactable);
+                        if (interactable != thisInteractable)
+                        {
+                            Debug.Log($"SCROLLABLE: Should cancel select on ({interactable})");
+                            cancelableSelection.Add(interactable);
+                        }
                     }
 
-                    draggingManager.SelectEnter(selector, this);
-
-                    foreach (var interactable in cancelableSelection)
+                    GetComponentsInChildren(includeInactive: false, disabledColliders);
+                    if (disabledColliders.Count > 0)
                     {
-                        draggingManager.SelectCancel(selector, interactable);
+                        foreach (var c in disabledColliders)
+                        {
+                            if (c.gameObject != gameObject)
+                            {
+                                Debug.Log($"SCROLLABLE: Disabling collider ({c})");
+                                c.enabled = false;
+                            }
+                        }
+                    }
+
+                    if (cancelableSelection.Count > 0)
+                    {
+                        selector.PreprocessInteractor(updatePhase);
+                        Debug.Log($"SCROLLABLE: Calling SelectEnter ({thisInteractable})");
+                        draggingManager.SelectEnter(selector, thisInteractable);
+
+                        foreach (var interactable in cancelableSelection)
+                        {
+                            if (interactable.isSelected &&
+                                interactable.interactorsSelecting.Contains(selector))
+                            {
+                                Debug.Log($"SCROLLABLE: Calling SelectCancel ({interactable})");
+                                draggingManager.SelectCancel(selector, interactable);
+                            }
+                        }
+                    }
+
+                    if (disabledColliders.Count > 0)
+                    {
+                        foreach (var c in disabledColliders)
+                        {
+                           //c.enabled = true;
+                        }
                     }
 
                     cancelableSelection.Clear();
+                    disabledColliders.Clear();
                 }
 
                 // velocity += ((dragDelta * (1.0f / Time.deltaTime) * Selectedness()) - velocity) * 0.1f;
@@ -183,19 +229,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         protected override void OnActivated(ActivateEventArgs args)
         {
-            Debug.Log("SCROLLABLE: Activated");
+            //Debug.Log("SCROLLABLE: Activated");
             base.OnActivated(args);
         }
 
         protected override void OnDeactivated(DeactivateEventArgs args)
         {
-            Debug.Log("SCROLLABLE: Deactived");
+            //Debug.Log("SCROLLABLE: Deactived");
             base.OnDeactivated(args);
-        }
-
-        public void OnChildHoverEntering(HoverEnterEventArgs args)
-        {
-            //Debug.Log("SCROLLABLE: Child Hover Entering");
         }
 
         public void OnChildHoverEntered(HoverEnterEventArgs args)
@@ -204,37 +245,21 @@ namespace Microsoft.MixedReality.Toolkit.UX
             this.IncreaseHoverCount(args);
         }
 
-        public void OnChildHoverExiting(HoverExitEventArgs args)
-        {
-            //Debug.Log("SCROLLABLE: Child Hover Exitting");
-        }
-
         public void OnChildHoverExited(HoverExitEventArgs args)
         {
             //Debug.Log("SCROLLABLE: Child Hover Exitted");
             this.DescreaseHoverCount(args);
         }
 
-
-        public void OnChildSelectEntering(SelectEnterEventArgs args)
-        {
-           // Debug.Log("SCROLLABLE: Child Select Entering");
-        }
-
         public void OnChildSelectEntered(SelectEnterEventArgs args)
         {
-            Debug.Log("SCROLLABLE: Child Select Entered");
+            //Debug.Log("SCROLLABLE: Child Select Entered");
             IncreaseSelectCount(args);
-        }
-
-        public void OnChildSelectExiting(SelectExitEventArgs args)
-        {
-            //Debug.Log("SCROLLABLE: Child Select Exitting");
         }
 
         public void OnChildSelectExited(SelectExitEventArgs args)
         {
-            Debug.Log("SCROLLABLE: Child Select Exitted");
+            //Debug.Log("SCROLLABLE: Child Select Exitted");
             DecreaseSelectCount(args);
         }
 
@@ -242,7 +267,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             if (args.interactorObject is IPokeInteractor)
             {
-                StartScrolling(args.manager, args.interactorObject);
+                StartScrollingWithInteractor(args.manager, args.interactorObject);
             }
         }
 
@@ -250,7 +275,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             if (args.interactorObject is IPokeInteractor)
             {
-                StopScrolling(args.interactorObject);
+                StopScrollingWithInteractor(args.interactorObject);
             }
         }
 
@@ -258,7 +283,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             if (!(args.interactorObject is IPokeInteractor))
             {
-                StartScrolling(args.manager, args.interactorObject);
+                StartScrollingWithInteractor(args.manager, args.interactorObject);
             }
         }
 
@@ -266,31 +291,59 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             if (!(args.interactorObject is IPokeInteractor))
             {
-                StopScrolling(args.interactorObject);
+                StopScrollingWithInteractor(args.interactorObject);
             }
         }
 
-        private void StartScrolling(XRInteractionManager manager, IXRInteractor interactor)
+        private void StartScrollingWithInteractor(XRInteractionManager manager, IXRInteractor interactor)
         {
             if (interactorsScrolling.Add(interactor))
             {
-                Debug.Log("SCROLLABLE: Start Scrolling");
+                Debug.Log($"SCROLLABLE: Start scrolling with interactor ({interactor})");
                 interactorPositions.Add(new InteractorPosition(manager, interactor));
+            }
+            else
+            {
+                Debug.Log($"SCROLLABLE: Already scrolling with interactor ({interactor})");
             }
         }
 
-        private void StopScrolling(IXRInteractor interactor)
+        private void StopScrollingWithInteractor(IXRInteractor interactor)
         {
-            if (interactorsScrolling.Remove(interactor))
+            if (interactorsScrolling.Contains(interactor))
             {
-                Debug.Log("SCROLLABLE: Stop Scrolling");
                 for (int i = 0; i < interactorPositions.Count; i++)
                 {
                     if (interactorPositions[i].interactor == interactor &&
-                        (!(interactor is IXRSelectInteractor selector) || !selector.hasSelection))
+                        (!(interactor is IXRSelectInteractor selector) || !selector.hasSelection) &&
+                        (!(interactor is IPokeInteractor poker) || !poker.hasHover))
                     {
+                        Debug.Log($"SCROLLABLE: Stop scrolling with interactor ({interactor})");
                         interactorPositions.RemoveAt(i);
+                        interactorsScrolling.Remove(interactor);
                         break;
+                    }
+                    else
+                    {
+                        Debug.Log($"SCROLLABLE: Can't stop scrolling with interactor ({interactor})");
+                        if (interactor is IXRSelectInteractor s)
+                        {
+                            foreach (var si in s.interactablesSelected)
+                            {
+                                Debug.Log($"SCROLLABLE: --------> still selected ({si})");
+
+                            }
+                        }
+
+                        if (interactor is IPokeInteractor p)
+                        {
+
+                            foreach (var si in p.interactablesHovered)
+                            {
+                                Debug.Log($"SCROLLABLE: --------> still hovered ({si})");
+
+                            }
+                        }
                     }
                 }
 
