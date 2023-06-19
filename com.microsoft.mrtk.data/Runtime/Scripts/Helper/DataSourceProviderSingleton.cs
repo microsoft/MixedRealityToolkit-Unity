@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     public class DataSourceProviderSingleton : MonoBehaviour, IDataSourceProvider
     {
         [Tooltip("Array of data sources that this provider can provide.")]
-        [SerializeField]
+        [SerializeField, Experimental]
         private DataSourceGOBase[] dataSources;
 
         // Check to see if we're about to be destroyed.

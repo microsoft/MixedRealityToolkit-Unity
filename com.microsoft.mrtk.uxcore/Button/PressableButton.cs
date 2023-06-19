@@ -29,11 +29,18 @@ namespace Microsoft.MixedReality.Toolkit.UX
         public bool SmoothSelectedness { get => smoothSelectedness; set => smoothSelectedness = value; }
 
         /// <summary>
-        /// Enum for defining space of plane distances.
+        /// An enumeration defining the coordinate space of plane distances.
         /// </summary>
         public enum SpaceMode
         {
+            /// <summary>
+            /// The world coordinate space system should be used.
+            // </summary>
             World,
+            
+            /// <summary>
+            /// The button's local coordinate space system should be used.
+            // </summary>
             Local
         }
 

@@ -19,7 +19,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// <summary>
     /// The Dialog script hydrates and controls the various sub-components
     /// of the dialog view.
-    /// </summary>
+    /// </summary> 
+    /// <remarks>
+    /// Dialogs are typically spawned, pooled, and killed
+    /// by <see cref="Microsoft.MixedReality.Toolkit.UX.DialogPool">DialogPools</see>. 
+    /// Generally, developers should not directly manage or instantiate instances of their dialogs,
+    /// as it is essential that they are pooled and managed correctly by a pooler.
+    /// </remarks>
     [AddComponentMenu("MRTK/UX/Dialog")]
     public class Dialog : MonoBehaviour, IDialog
     {

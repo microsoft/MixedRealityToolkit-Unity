@@ -4,7 +4,7 @@
 using System;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.UX
+namespace Microsoft.MixedReality.Toolkit.UX.Experimental
 {
     /// <summary>
     /// Wrapper around UnityEvent&lt;NonNativeKey&gt; for serialization

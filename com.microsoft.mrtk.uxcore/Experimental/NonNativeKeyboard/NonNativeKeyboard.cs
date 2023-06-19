@@ -1,20 +1,27 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+
 using Microsoft.MixedReality.Toolkit.Subsystems;
-using System;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-using static Microsoft.MixedReality.Toolkit.UX.NonNativeFunctionKey;
+using static Microsoft.MixedReality.Toolkit.UX.Experimental.NonNativeFunctionKey;
 
-namespace Microsoft.MixedReality.Toolkit.UX
+namespace Microsoft.MixedReality.Toolkit.UX.Experimental
 {
     /// <summary>
     /// A simple general use keyboard that provides an alternative to the native keyboard offered by each device.
     /// </summary>
-    ///  <remarks>
+    /// <remarks>
+    /// <remarks>
+    /// This is an experimental feature. This class is early in the cycle, it has 
+    /// been labeled as experimental to indicate that it is still evolving, and 
+    /// subject to change over time. Parts of the MRTK, such as this class, appear 
+    /// to have a lot of value even if the details haven’t fully been fleshed out. 
+    /// For these types of features, we want the community to see them and get 
+    /// value out of them early enough so to provide feedback. 
+    /// 
     /// NOTE: This keyboard will not automatically appear when you select an InputField in your
     ///       Canvas. In order for the keyboard to appear you must call Keyboard.Instance.PresentKeyboard(string).
     ///       To retrieve the input from the Keyboard, subscribe to the textEntered event. Note that
@@ -60,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// Fired when the user submits the text (i.e. when 'Enter' button is pressed and SubmitOnEnter is true).
         /// </summary>
-        [field: SerializeField, Tooltip("Fired when the user submits the text (i.e. when 'Enter' button is pressed and SubmitOnEnter is true).")]
+        [field: SerializeField, Experimental, Tooltip("Fired when the user submits the text (i.e. when 'Enter' button is pressed and SubmitOnEnter is true).")]
         public NonNativeKeyboardTextEvent OnTextSubmit { get; private set; }
 
         /// <summary>

@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
         [Tooltip("A collection of mappings between a view (consumer) key path and a data source key path.")]
-        [SerializeField]
+        [SerializeField, Experimental]
         private ViewToDataKeypathMap[] viewKeypathToDataKeypathMapper = null;
 
         public IDataKeyPathMapper DataKeyPathMapper { get { return _dataKeyPathMapperDictionary; } }
