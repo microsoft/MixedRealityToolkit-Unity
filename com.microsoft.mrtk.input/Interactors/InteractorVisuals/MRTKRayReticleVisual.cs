@@ -170,8 +170,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
                 else
                 {
-                    Debug.Log($"MRTKRayReticleVisual. Setting hit target to collider transform  ({raycastHit.Value.collider.transform})");
-                    hitTargetTransform = raycastHit.Value.collider.transform;
+                    // In the case of an IScrollable being selected, ensure that the reticle locks to the
+                    // scroller and not to the a list item within the scroller, such as a button.
+                    if (args.interactableObject is IScrollable)
+                    {
+                        hitTargetTransform = args.interactableObject.transform;
+                    }
+                    else
+                    {
+                        hitTargetTransform = raycastHit.Value.collider.transform;
+                    }
+
                     targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastHit.Value.point);
                     targetLocalHitNormal = hitTargetTransform.InverseTransformDirection(raycastHit.Value.normal);
                 }

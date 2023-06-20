@@ -1,9 +1,18 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+using System;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-namespace Microsoft.MixedReality.Toolkit.UX
+namespace Microsoft.MixedReality.Toolkit
 {
-    public class XRInteractableEventRouter : MonoBehaviour
+    /// <summary>
+    /// A Unity component that is capable to routing child events to other child and parent target objects that contain
+    /// a <see cref="IXRInteractableEventRouteTarget"/> component.
+    /// </summary>
+    [AddComponentMenu("MRTK/Core/Interactable Event Router")]
+    public class InteractableEventRouter : MonoBehaviour
     {
         private IXRInteractable[] interactables = null;
 
@@ -29,29 +38,120 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private void ConnectSourcesToTargets()
         {
-            IXRInteractable[] interactables = GetComponentsInChildren<IXRActivateInteractable>();
+            if (eventRoutes == null)
+            {
+                return;
+            }
+
+            IXRInteractable[] interactables = GetComponentsInChildren<IXRActivateInteractable>(includeInactive: true);
             for (int i = 0; i < eventRoutes.Length; i++)
             {
-                eventRoutes[i].OnEnabled(gameObject);
-                for (int j = 0; j < interactables.Length; j++)
+                var eventRoute = eventRoutes[i];
+                if (eventRoute != null)
                 {
-                    eventRoutes[i].Register(interactables[j]);
+                    eventRoute.OnEnabled(gameObject);
+                    for (int j = 0; j < interactables.Length; j++)
+                    {
+                        var interactable = interactables[j];
+                        if (IsEventRouterChild(interactable))
+                        {
+                            eventRoute.Register(interactables[j]);
+                        }
+                    }
+
                 }
             }
         }
 
+        /// <summary>
+        /// Get if the given interactable is the belongs to this event router. If there is
+        /// another event router between this and the interacble, false is returned.
+        /// </summary>
+        private bool IsEventRouterChild(IXRInteractable interactable)
+        {
+            return interactable is MonoBehaviour behaviour &&
+                behaviour.gameObject != gameObject &&
+                behaviour.GetComponentInParent<InteractableEventRouter>() == this;
+        }
+
         private void DisconnectSourcesFromTargets()
         {
-            if (interactables == null)
+            if (interactables == null || eventRoutes == null)
             {
                 return;
             }
 
             for (int i = 0; i < eventRoutes.Length; i++)
             {
-                for (int j = 0; j < interactables.Length; j++)
+                var eventRoute = eventRoutes[i];
+                if (eventRoute != null)
                 {
-                    eventRoutes[i].Unregister(interactables[j]);
+                    for (int j = 0; j < interactables.Length; j++)
+                    {
+                        eventRoute.Unregister(interactables[j]);
+                    }
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// Add the given event route type if not in the current set of routes.
+        /// </summary>
+        public void AddEventRoute<T>() where T : IXRInteractableEventRoute, new() 
+        {
+            bool add = true;
+            if (eventRoutes != null)
+            {
+                for (int i = 0; eventRoutes.Length > i; i++)
+                {
+                    if (eventRoutes[i] is T)
+                    {
+                        add = false;
+                        break;
+                    }
+                }
+            }
+
+            if (add)
+            {
+                if (eventRoutes == null)
+                {
+                    eventRoutes = new IXRInteractableEventRoute[1];
+                }
+                else
+                {
+                    Array.Resize(ref eventRoutes, eventRoutes.Length + 1);
+                }
+
+                eventRoutes[eventRoutes.Length - 1] = new T();
+            }
+        }
+
+        /// <summary>
+        /// Remove the given event route type if in the current set of routes.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public void RemoveEventRoute<T>() where T : IXRInteractableEventRoute, new()
+        {           
+            if (eventRoutes != null)
+            {
+                int remove;
+                for (remove = 0; remove < eventRoutes.Length; remove++)
+                {
+                    if (eventRoutes[remove] is T)
+                    {
+                        break;
+                    }
+                }
+
+                if (remove != eventRoutes.Length)
+                {
+                    for (int move = remove + 1; move < eventRoutes.Length; move++)
+                    {
+                        eventRoutes[move - 1] = eventRoutes[move];
+                    }
+                    Array.Resize(ref eventRoutes, eventRoutes.Length - 1);
                 }
             }
         }

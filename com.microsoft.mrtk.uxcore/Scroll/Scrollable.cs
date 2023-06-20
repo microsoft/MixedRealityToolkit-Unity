@@ -7,22 +7,28 @@ using UnityEngine;
 using UnityEngine.UI;
 using Unity.XR.CoreUtils.Collections;
 using UnityEngine.XR.Interaction.Toolkit;
-using Unity.XR.CoreUtils;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
     /// <summary>
-    /// Allows a <see cref="ScrollRect"/> to be scrolled by XRI interactors.
+    /// An <see cref="Microsoft.MixedReality.Toolkit.IScrollable">IScrollable</see> that allows a
+    /// <see href="https://docs.unity3d.com/Packages/com.unity.ugui@1.0/manual/script-ScrollRect.html">ScrollRect</see> to be scrolled by
+    /// Unity <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.3/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractor.html">IXRInteractors</see>.
     /// </summary>
-    public class Scrollable : MRTKBaseInteractable, IXRHoverInteractableParent, IXRSelectInteractableParent
+    /// <remarks>
+    /// In order to recevie child select and hover event, this <see cref="Scrollable"/> object requires a <see cref="InteractableEventRouter"/> component be
+    /// added to the Unity game object as well. 
+    /// </remarks>
+    [AddComponentMenu("MRTK/UX/Scrollable")]
+    [RequireComponent(typeof(InteractableEventRouter))]
+    public class Scrollable : MRTKBaseInteractable, IScrollable, IXRHoverInteractableParent, IXRSelectInteractableParent
     {
-
         [Tooltip("The scroll rect to scroll.")]
         [SerializeField]
         private ScrollRect scrollRect = null;
 
         /// <summary>
-        /// The <see cref="ScrollRect"/> to scroll.
+        /// The Unity <see href="https://docs.unity3d.com/Packages/com.unity.ugui@1.0/manual/script-ScrollRect.html">ScrollRect</see> to scroll.
         /// </summary>
         public ScrollRect ScrollRect
         {
@@ -30,14 +36,22 @@ namespace Microsoft.MixedReality.Toolkit.UX
             set => scrollRect = value;
         }
 
-        [Tooltip("The scroll rect to scroll.")]
+        [Tooltip("The divisor to apply to the magnitude of interactor's dragged movement vector.")]
         [SerializeField]
-        private float deadzone = 10.0f;
+        private float dragDivisor = 10.0f;
+
+        /// <summary>
+        /// The divisor to apply to the magnitude of interactor's dragged movement vector.
+        /// </summary>
+        public float DragDivisor
+        {
+            get => dragDivisor;
+            set => dragDivisor = value;
+        }
 
         readonly HashSetList<IXRInteractor> interactorsScrolling = new HashSetList<IXRInteractor>();
         readonly List<InteractorPosition> interactorPositions = new List<InteractorPosition>();
         List<IXRSelectInteractable> cancelableSelection;
-        List<Collider> disabledColliders;
 
         private struct InteractorPosition
         {
@@ -69,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 Vector2 dragDelta = Vector2.zero;
                 float displacementFromStart = 0;
-                IXRInteractor draggingIntector = null;
+                IXRInteractor draggingInteractor = null;
                 XRInteractionManager draggingManager = null;
                 Vector2 scrollDelta = Vector2.zero;
 
@@ -88,13 +102,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
                         interactorPosition.scrollStart = new Vector2(scrollRect.horizontalNormalizedPosition, scrollRect.verticalNormalizedPosition);
                     }
 
-                    draggingIntector = interactorPosition.interactor;
+                    draggingInteractor = interactorPosition.interactor;
                     draggingManager = interactorPosition.manager;
                     dragDelta = thisPoint - interactorPosition.lastPoint;
                     interactorPosition.lastPoint = thisPoint;
                     interactorPositions[0] = interactorPosition;
 
-                    displacementFromStart = (thisPoint - interactorPosition.startPoint).magnitude / deadzone;
+                    displacementFromStart = (thisPoint - interactorPosition.startPoint).magnitude / dragDivisor;
                     dragDelta *= Mathf.Clamp01(displacementFromStart);
 
 
@@ -125,18 +139,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 }
 
                 if (scrollDelta.magnitude > 0.02f &&
-                    draggingIntector is IXRSelectInteractor selector &&
+                    draggingInteractor is IXRSelectInteractor selector &&
                     selector.hasSelection &&
                     (selector.interactablesSelected.Count > 1 || !selector.interactablesSelected.Contains(this)))
                 {
                     if (cancelableSelection == null)
                     {
                         cancelableSelection = new List<IXRSelectInteractable>(selector.interactablesSelected.Count);
-                    }
-
-                    if (disabledColliders == null)
-                    {
-                        disabledColliders = new List<Collider>(selector.interactablesSelected.Count);
                     }
 
                     IXRSelectInteractable thisInteractable = this;
@@ -150,22 +159,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
                         }
                     }
 
-                    GetComponentsInChildren(includeInactive: false, disabledColliders);
-                    if (disabledColliders.Count > 0)
-                    {
-                        foreach (var c in disabledColliders)
-                        {
-                            if (c.gameObject != gameObject)
-                            {
-                                Debug.Log($"SCROLLABLE: Disabling collider ({c})");
-                                c.enabled = false;
-                            }
-                        }
-                    }
-
                     if (cancelableSelection.Count > 0)
                     {
-                        selector.PreprocessInteractor(updatePhase);
                         Debug.Log($"SCROLLABLE: Calling SelectEnter ({thisInteractable})");
                         draggingManager.SelectEnter(selector, thisInteractable);
 
@@ -180,16 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                         }
                     }
 
-                    if (disabledColliders.Count > 0)
-                    {
-                        foreach (var c in disabledColliders)
-                        {
-                           //c.enabled = true;
-                        }
-                    }
-
                     cancelableSelection.Clear();
-                    disabledColliders.Clear();
                 }
 
                 // velocity += ((dragDelta * (1.0f / Time.deltaTime) * Selectedness()) - velocity) * 0.1f;
@@ -198,68 +184,68 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
+#if UNITY_EDITOR
+        /// <summary>
+        /// While in editor, verify that the sibling <see cref="InteractableEventRouter"/> has the neccessary event routes so
+        /// child hover and select events are bubbled up to this component. Also, configure the scroll rect if not set.
+        /// </summary>
+        private void OnValidate()
+        {
+            var eventRouter = GetComponent<InteractableEventRouter>();
+            if (eventRouter != null)
+            {
+                eventRouter.AddEventRoute<HoverParentEventRoute>();
+                eventRouter.AddEventRoute<SelectParentEventRoute>();
+            }
+
+            if (scrollRect == null)
+            {
+                scrollRect = GetComponent<ScrollRect>();
+            }
+        }
+#endif
 
         protected override void OnHoverEntered(HoverEnterEventArgs args)
         {
-            //Debug.Log("SCROLLABLE: Hover Entered");
             base.OnHoverEntered(args);
             IncreaseHoverCount(args);
         }
 
         protected override void OnHoverExited(HoverExitEventArgs args)
         {
-            //Debug.Log("SCROLLABLE: Hover Exitted");
             base.OnHoverExited(args);
-            DescreaseHoverCount(args);
+            DecreaseHoverCount(args);
         }
 
         protected override void OnSelectEntered(SelectEnterEventArgs args)
         {
-            Debug.Log("SCROLLABLE: Select Entered");
             base.OnSelectEntered(args);
             IncreaseSelectCount(args);
         }
 
         protected override void OnSelectExited(SelectExitEventArgs args)
         {
-            Debug.Log("SCROLLABLE: Select Exitted");
             base.OnSelectExited(args);
             DecreaseSelectCount(args);
         }
 
-        protected override void OnActivated(ActivateEventArgs args)
-        {
-            //Debug.Log("SCROLLABLE: Activated");
-            base.OnActivated(args);
-        }
-
-        protected override void OnDeactivated(DeactivateEventArgs args)
-        {
-            //Debug.Log("SCROLLABLE: Deactived");
-            base.OnDeactivated(args);
-        }
-
         public void OnChildHoverEntered(HoverEnterEventArgs args)
         {
-           // Debug.Log("SCROLLABLE: Child Hover Entered");
-            this.IncreaseHoverCount(args);
+            IncreaseHoverCount(args);
         }
 
         public void OnChildHoverExited(HoverExitEventArgs args)
         {
-            //Debug.Log("SCROLLABLE: Child Hover Exitted");
-            this.DescreaseHoverCount(args);
+            DecreaseHoverCount(args);
         }
 
         public void OnChildSelectEntered(SelectEnterEventArgs args)
         {
-            //Debug.Log("SCROLLABLE: Child Select Entered");
             IncreaseSelectCount(args);
         }
 
         public void OnChildSelectExited(SelectExitEventArgs args)
         {
-            //Debug.Log("SCROLLABLE: Child Select Exitted");
             DecreaseSelectCount(args);
         }
 
@@ -271,7 +257,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
-        private void DescreaseHoverCount(HoverExitEventArgs args)
+        private void DecreaseHoverCount(HoverExitEventArgs args)
         {
             if (args.interactorObject is IPokeInteractor)
             {
@@ -310,40 +296,18 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private void StopScrollingWithInteractor(IXRInteractor interactor)
         {
-            if (interactorsScrolling.Contains(interactor))
+            if (!HasSelection(interactor) &&
+                !HasPokeHover(interactor) &&
+                interactorsScrolling.Contains(interactor))
             {
                 for (int i = 0; i < interactorPositions.Count; i++)
                 {
-                    if (interactorPositions[i].interactor == interactor &&
-                        (!(interactor is IXRSelectInteractor selector) || !selector.hasSelection) &&
-                        (!(interactor is IPokeInteractor poker) || !poker.hasHover))
+                    if (interactorPositions[i].interactor == interactor)
                     {
                         Debug.Log($"SCROLLABLE: Stop scrolling with interactor ({interactor})");
                         interactorPositions.RemoveAt(i);
                         interactorsScrolling.Remove(interactor);
                         break;
-                    }
-                    else
-                    {
-                        Debug.Log($"SCROLLABLE: Can't stop scrolling with interactor ({interactor})");
-                        if (interactor is IXRSelectInteractor s)
-                        {
-                            foreach (var si in s.interactablesSelected)
-                            {
-                                Debug.Log($"SCROLLABLE: --------> still selected ({si})");
-
-                            }
-                        }
-
-                        if (interactor is IPokeInteractor p)
-                        {
-
-                            foreach (var si in p.interactablesHovered)
-                            {
-                                Debug.Log($"SCROLLABLE: --------> still hovered ({si})");
-
-                            }
-                        }
                     }
                 }
 
@@ -352,6 +316,22 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     scrollRect.velocity = velocity;
                 }
             }
+        }
+
+        /// <summary>
+        /// Get if the given interactor has a selection.
+        /// </summary>
+        private bool HasSelection(IXRInteractor interactor)
+        {
+            return (interactor is IXRSelectInteractor selector) && selector.hasSelection;
+        }
+
+        /// <summary>
+        /// Get if the given interactor is a poke interactor and is hovering an interacble.
+        /// </summary>
+        private bool HasPokeHover(IXRInteractor interactor)
+        {
+            return (interactor is IPokeInteractor poker) && poker.hasHover;
         }
     }
 }

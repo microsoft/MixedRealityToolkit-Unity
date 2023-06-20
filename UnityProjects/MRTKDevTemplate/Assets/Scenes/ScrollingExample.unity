@@ -7955,6 +7955,7 @@ GameObject:
   - component: {fileID: 352806573}
   - component: {fileID: 352806572}
   - component: {fileID: 352806571}
+  - component: {fileID: 352806577}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -8185,7 +8186,7 @@ MonoBehaviour:
   disabledInteractorTypes:
   - reference: Microsoft.MixedReality.Toolkit.IGrabInteractor, Microsoft.MixedReality.Toolkit.Core
   scrollRect: {fileID: 352806575}
-  deadzone: 32
+  dragDivisor: 10
 --- !u!114 &352806575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8224,6 +8225,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 352806569}
   m_CullTransparentMesh: 1
+--- !u!114 &352806577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352806569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33899dd1111fc86498e4859f98dc9994, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventRoutes:
+  - rid: 4538478793802383372
+  - rid: 4538478793802383373
+  references:
+    version: 2
+    RefIds:
+    - rid: 4538478793802383372
+      type: {class: HoverParentEventRoute, ns: Microsoft.MixedReality.Toolkit, asm: Microsoft.MixedReality.Toolkit.Core}
+    - rid: 4538478793802383373
+      type: {class: SelectParentEventRoute, ns: Microsoft.MixedReality.Toolkit, asm: Microsoft.MixedReality.Toolkit.Core}
 --- !u!224 &355941664 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8376646494505211229, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
@@ -11622,10 +11645,11 @@ GameObject:
   - component: {fileID: 688579852}
   - component: {fileID: 688579851}
   - component: {fileID: 688579850}
-  - component: {fileID: 688579853}
   - component: {fileID: 688579855}
   - component: {fileID: 688579854}
   - component: {fileID: 688579856}
+  - component: {fileID: 688579858}
+  - component: {fileID: 688579857}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -11712,7 +11736,79 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 688579848}
   m_CullTransparentMesh: 1
---- !u!114 &688579853
+--- !u!114 &688579854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688579848}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e13188787cfbdc945b510e90e9251420, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thisCollider: {fileID: 688579855}
+  attachedRectTransform: {fileID: 688579849}
+  padding: {x: 0, y: 0}
+  forceUpdateEveryFrame: 0
+--- !u!65 &688579855
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688579848}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 277.66977, y: 152.03629, z: 20.727037}
+  m_Center: {x: 0, y: 0, z: 10.56081}
+--- !u!114 &688579856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688579848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b46a074d0bbb314e8a7e54a567c3e83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 0
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 0
+  m_TargetGraphic: {fileID: 0}
+  movableAxes: 0
+  onMoveDelta: 0.01
+--- !u!114 &688579857
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11725,15 +11821,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 35339495}
-  m_Colliders:
-  - {fileID: 688579855}
+  m_Colliders: []
   m_InteractionLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
   m_InteractionLayers:
     m_Bits: 1
   m_DistanceCalculationMode: 1
-  m_SelectMode: 1
+  m_SelectMode: 0
   m_CustomReticle: {fileID: 0}
   m_AllowGazeInteraction: 0
   m_AllowGazeSelect: 0
@@ -11882,40 +11977,10 @@ MonoBehaviour:
     onExited:
       m_PersistentCalls:
         m_Calls: []
-  disabledInteractorTypes:
-  - reference: Microsoft.MixedReality.Toolkit.IGrabInteractor, Microsoft.MixedReality.Toolkit.Core
+  disabledInteractorTypes: []
   scrollRect: {fileID: 688579851}
-  deadzone: 32
---- !u!114 &688579854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 688579848}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e13188787cfbdc945b510e90e9251420, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  thisCollider: {fileID: 688579855}
-  attachedRectTransform: {fileID: 688579849}
-  padding: {x: 0, y: 0}
-  forceUpdateEveryFrame: 0
---- !u!65 &688579855
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 688579848}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 277.66977, y: 152.03629, z: 20.727037}
-  m_Center: {x: 0, y: 0, z: 10.56081}
---- !u!114 &688579856
+  dragDivisor: 10
+--- !u!114 &688579858
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11924,40 +11989,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 688579848}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b46a074d0bbb314e8a7e54a567c3e83, type: 3}
+  m_Script: {fileID: 11500000, guid: 33899dd1111fc86498e4859f98dc9994, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 0
-  m_TargetGraphic: {fileID: 0}
-  movableAxes: 0
-  onMoveDelta: 0.01
+  eventRoutes:
+  - rid: 4538478793802383364
+  - rid: 4538478793802383365
+  references:
+    version: 2
+    RefIds:
+    - rid: 4538478793802383364
+      type: {class: HoverParentEventRoute, ns: Microsoft.MixedReality.Toolkit, asm: Microsoft.MixedReality.Toolkit.Core}
+    - rid: 4538478793802383365
+      type: {class: SelectParentEventRoute, ns: Microsoft.MixedReality.Toolkit, asm: Microsoft.MixedReality.Toolkit.Core}
 --- !u!224 &692873436 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8376646494505211229, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
@@ -12245,15 +12289,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventRoutes:
-  - rid: 4538478496705150976
-  - rid: 4538478496705150977
+  - rid: -2
+  - rid: -2
   references:
     version: 2
     RefIds:
-    - rid: 4538478496705150976
-      type: {class: HoverParentEventRoute, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
-    - rid: 4538478496705150977
-      type: {class: SelectParentEventRoute, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!224 &718172737 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8376646494505211229, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
@@ -14879,15 +14921,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventRoutes:
-  - rid: 4538478496705150979
-  - rid: 4538478496705150980
+  - rid: -2
+  - rid: -2
   references:
     version: 2
     RefIds:
-    - rid: 4538478496705150979
-      type: {class: HoverParentEventRoute, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
-    - rid: 4538478496705150980
-      type: {class: SelectParentEventRoute, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!224 &958639156 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8376646494505211229, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
@@ -20472,7 +20512,6 @@ GameObject:
   - component: {fileID: 1742074636}
   - component: {fileID: 1742074638}
   - component: {fileID: 1742074637}
-  - component: {fileID: 1742074639}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -20612,28 +20651,6 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!114 &1742074639
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1742074635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33899dd1111fc86498e4859f98dc9994, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventRoutes:
-  - rid: 4538478496103006208
-  - rid: 4538478496705150978
-  references:
-    version: 2
-    RefIds:
-    - rid: 4538478496103006208
-      type: {class: HoverParentEventRoute, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
-    - rid: 4538478496705150978
-      type: {class: SelectParentEventRoute, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
 --- !u!224 &1748588597 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8376646494505211229, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
@@ -22164,6 +22181,7 @@ GameObject:
   - component: {fileID: 1871826342}
   - component: {fileID: 1871826341}
   - component: {fileID: 1871826340}
+  - component: {fileID: 1871826345}
   m_Layer: 5
   m_Name: Scroll View
   m_TagString: Untagged
@@ -22394,7 +22412,7 @@ MonoBehaviour:
   disabledInteractorTypes:
   - reference: Microsoft.MixedReality.Toolkit.IGrabInteractor, Microsoft.MixedReality.Toolkit.Core
   scrollRect: {fileID: 1871826343}
-  deadzone: 32
+  dragDivisor: 10
 --- !u!114 &1871826343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22433,6 +22451,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1871826338}
   m_CullTransparentMesh: 1
+--- !u!114 &1871826345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1871826338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33899dd1111fc86498e4859f98dc9994, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventRoutes:
+  - rid: 4538478793802383370
+  - rid: 4538478793802383371
+  references:
+    version: 2
+    RefIds:
+    - rid: 4538478793802383370
+      type: {class: HoverParentEventRoute, ns: Microsoft.MixedReality.Toolkit, asm: Microsoft.MixedReality.Toolkit.Core}
+    - rid: 4538478793802383371
+      type: {class: SelectParentEventRoute, ns: Microsoft.MixedReality.Toolkit, asm: Microsoft.MixedReality.Toolkit.Core}
 --- !u!1001 &1885136279
 PrefabInstance:
   m_ObjectHideFlags: 0
