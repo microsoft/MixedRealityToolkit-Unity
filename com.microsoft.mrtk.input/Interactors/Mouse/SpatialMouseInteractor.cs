@@ -46,22 +46,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool IsInUse => hasSelection || (timeSinceLastMouseEvent < mouseHideThreshold);
 
-        private void Awake()
-        {
-            InputSystem.onDeviceChange +=
-               (device, change) =>
-               {
-                   switch (change)
-                   {
-                       case InputDeviceChange.Added:
-                           Debug.Log($"Device {device} was added");
-                           break;
-                       case InputDeviceChange.Removed:
-                           Debug.Log($"Device {device} was removed");
-                           break;
-                   }
-               };
-        }
         protected override void OnEnable()
         {
             base.OnEnable();
