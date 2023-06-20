@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -100,9 +101,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Hide the cursor if the mouse isn't in use
             if (!mouseInteractor.IsInUse)
             {
+                UnityEngine.Debug.Log("MouseNotUsed");
                 Reticle.SetActive(false);
                 return;
             }
+            UnityEngine.Debug.Log("MouseRendering");
 
             // Get all the line sample points
             if (!mouseInteractor.GetLinePoints(ref rayPositions, out rayPositionsCount))

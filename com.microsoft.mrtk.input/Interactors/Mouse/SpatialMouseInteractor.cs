@@ -46,12 +46,36 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool IsInUse => hasSelection || (timeSinceLastMouseEvent < mouseHideThreshold);
 
+        private void Awake()
+        {
+            InputSystem.onDeviceChange +=
+               (device, change) =>
+               {
+                   switch (change)
+                   {
+                       case InputDeviceChange.Added:
+                           Debug.Log($"Device {device} was added");
+                           break;
+                       case InputDeviceChange.Removed:
+                           Debug.Log($"Device {device} was removed");
+                           break;
+                   }
+               };
+        }
         protected override void OnEnable()
         {
             base.OnEnable();
-            
+
+            //test();
+
+            Debug.Log("Enabling");
+
             if (mouseMoveAction != null)
             {
+                Debug.Log("MouseMoveAction");
+                Debug.Log(mouseMoveAction);
+                Debug.Log(mouseMoveAction.action.controls);
+                Debug.Log(mouseMoveAction.action.controls.Count);
                 mouseMoveAction.action.performed += OnMouseMove;
                 mouseMoveAction.EnableDirectAction();
             }
@@ -63,6 +87,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             restoreLockState = Cursor.lockState;
             Cursor.lockState =  CursorLockMode.Locked;
+        }
+
+        System.Collections.IEnumerator test()
+        {
+            yield return null;
         }
 
         protected override void OnDisable()
@@ -90,6 +119,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void OnMouseMove(InputAction.CallbackContext context)
         {
+            Debug.Log("MouseMove");
             Vector2 mouseDelta = context.ReadValue<Vector2>();
 
             Vector3 screenPoint = Camera.main.WorldToViewportPoint(rayOriginTransform.position + rayOriginTransform.forward);
@@ -124,6 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void OnMouseScroll(InputAction.CallbackContext context)
         {
+            Debug.Log("MouseScroll");
             Vector2 scrollDelta = context.ReadValue<Vector2>();
 
             if (hasSelection)
