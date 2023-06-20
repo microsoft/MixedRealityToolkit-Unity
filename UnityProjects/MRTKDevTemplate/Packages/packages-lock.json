@@ -46,7 +46,7 @@
       "source": "local",
       "dependencies": {
         "com.microsoft.mrtk.core": "3.0.0",
-        "com.microsoft.mrtk.graphicstools.unity": "0.5.0",
+        "com.microsoft.mrtk.graphicstools.unity": "0.5.12",
         "com.unity.textmeshpro": "3.0.6"
       }
     },
@@ -108,7 +108,7 @@
       "source": "local",
       "dependencies": {
         "com.microsoft.mrtk.core": "3.0.0",
-        "com.microsoft.mrtk.graphicstools.unity": "0.5.0",
+        "com.microsoft.mrtk.graphicstools.unity": "0.5.12",
         "com.unity.inputsystem": "1.5.1",
         "com.unity.xr.arfoundation": "5.0.5",
         "com.unity.xr.interaction.toolkit": "2.3.0",
@@ -131,7 +131,7 @@
       "depth": 0,
       "source": "local",
       "dependencies": {
-        "com.microsoft.mrtk.graphicstools.unity": "0.5.0"
+        "com.microsoft.mrtk.graphicstools.unity": "0.5.12"
       }
     },
     "com.microsoft.mrtk.tools": {
@@ -153,7 +153,7 @@
       "depth": 0,
       "source": "local",
       "dependencies": {
-        "com.microsoft.mrtk.graphicstools.unity": "0.5.0",
+        "com.microsoft.mrtk.graphicstools.unity": "0.5.12",
         "com.microsoft.mrtk.uxcore": "3.0.0",
         "com.microsoft.mrtk.spatialmanipulation": "3.0.0",
         "com.microsoft.mrtk.standardassets": "3.0.0",
@@ -176,7 +176,7 @@
       "source": "local",
       "dependencies": {
         "com.microsoft.mrtk.core": "3.0.0",
-        "com.microsoft.mrtk.graphicstools.unity": "0.5.0",
+        "com.microsoft.mrtk.graphicstools.unity": "0.5.12",
         "com.unity.inputsystem": "1.5.1",
         "com.unity.textmeshpro": "3.0.6",
         "com.unity.xr.interaction.toolkit": "2.3.0"
