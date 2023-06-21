@@ -4825,7 +4825,6 @@ GameObject:
   - component: {fileID: 4091664850906067340}
   - component: {fileID: 4091664850906067343}
   - component: {fileID: 4091664850906067342}
-  - component: {fileID: 539048080602053043}
   - component: {fileID: 4091664850906067337}
   - component: {fileID: 6029233554234558129}
   m_Layer: 0
@@ -5140,7 +5139,7 @@ MonoBehaviour:
   <SelectThreshold>k__BackingField: 0.9
   <DeselectThreshold>k__BackingField: 0.1
   <TriggerOnRelease>k__BackingField: 1
-  <UseGazeDwell>k__BackingField: 0
+  <UseGazeDwell>k__BackingField: 1
   <GazeDwellTime>k__BackingField: 1
   <UseFarDwell>k__BackingField: 0
   <FarDwellTime>k__BackingField: 1
@@ -5178,56 +5177,6 @@ MonoBehaviour:
   <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &539048080602053043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4091664850906067339}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9b28fbe0dde38c48993d0bda344d7e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_InteractionManager: {fileID: 0}
-  m_InteractionLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_InteractionLayers:
-    m_Bits: 4294967295
-  m_AttachTransform: {fileID: 0}
-  m_KeepSelectedTargetValid: 1
-  m_DisableVisualsWhenBlockedInGroup: 1
-  m_StartingSelectedInteractable: {fileID: 0}
-  m_StartingTargetFilter: {fileID: 0}
-  m_HoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_HoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_SelectEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_SelectExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_StartingHoverFilters: []
-  m_StartingSelectFilters: []
-  m_OnHoverEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnHoverExited:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectEntered:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSelectExited:
-    m_PersistentCalls:
-      m_Calls: []
-  voiceCommandTriggerTime: 0.3
 --- !u!114 &4091664850906067337
 MonoBehaviour:
   m_ObjectHideFlags: 0

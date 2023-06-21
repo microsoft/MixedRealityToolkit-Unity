@@ -2277,22 +2277,6 @@ PrefabInstance:
       propertyPath: m_InteractionManager
       value: 
       objectReference: {fileID: 1152038354}
-    - target: {fileID: 4091664850906067342, guid: 05fbbb687f366c5499829e1b78065bd0, type: 3}
-      propertyPath: <UseGazeDwell>k__BackingField
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4091664850906067342, guid: 05fbbb687f366c5499829e1b78065bd0, type: 3}
-      propertyPath: <GazeDwellTime>k__BackingField
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4091664850906067342, guid: 05fbbb687f366c5499829e1b78065bd0, type: 3}
-      propertyPath: <VoiceRequiresFocus>k__BackingField
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4091664850906067342, guid: 05fbbb687f366c5499829e1b78065bd0, type: 3}
-      propertyPath: <SelectRequiresHover>k__BackingField
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05fbbb687f366c5499829e1b78065bd0, type: 3}
 --- !u!1001 &6674691430074130123
@@ -2354,14 +2338,6 @@ PrefabInstance:
       propertyPath: m_InteractionManager
       value: 
       objectReference: {fileID: 1152038354}
-    - target: {fileID: 8929517053719102693, guid: a9e596837c4fe174b9f4cd182c2203e4, type: 3}
-      propertyPath: <VoiceRequiresFocus>k__BackingField
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8929517053719102693, guid: a9e596837c4fe174b9f4cd182c2203e4, type: 3}
-      propertyPath: <SelectRequiresHover>k__BackingField
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9e596837c4fe174b9f4cd182c2203e4, type: 3}
 --- !u!1001 &7847039399880718462
@@ -2375,14 +2351,6 @@ PrefabInstance:
       propertyPath: m_InteractionManager
       value: 
       objectReference: {fileID: 1152038354}
-    - target: {fileID: 5941023475792674562, guid: 6102b26b85c007d41a8472c839272fee, type: 3}
-      propertyPath: <VoiceRequiresFocus>k__BackingField
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5941023475792674562, guid: 6102b26b85c007d41a8472c839272fee, type: 3}
-      propertyPath: <SelectRequiresHover>k__BackingField
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7847039400930239022, guid: 6102b26b85c007d41a8472c839272fee, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -2501,18 +2469,6 @@ PrefabInstance:
       propertyPath: m_InteractionManager
       value: 
       objectReference: {fileID: 1152038354}
-    - target: {fileID: 5879030968845645572, guid: e408c5b5ebddbab48a20adb8f2d31192, type: 3}
-      propertyPath: disabledInteractorTypes.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5879030968845645572, guid: e408c5b5ebddbab48a20adb8f2d31192, type: 3}
-      propertyPath: <VoiceRequiresFocus>k__BackingField
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5879030968845645572, guid: e408c5b5ebddbab48a20adb8f2d31192, type: 3}
-      propertyPath: <SelectRequiresHover>k__BackingField
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8787754652671033235, guid: e408c5b5ebddbab48a20adb8f2d31192, type: 3}
       propertyPath: m_RootOrder
       value: 1

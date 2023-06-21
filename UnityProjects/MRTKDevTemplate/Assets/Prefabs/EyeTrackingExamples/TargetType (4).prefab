@@ -327,7 +327,7 @@ MonoBehaviour:
   <SelectThreshold>k__BackingField: 0.9
   <DeselectThreshold>k__BackingField: 0.1
   <TriggerOnRelease>k__BackingField: 1
-  <UseGazeDwell>k__BackingField: 0
+  <UseGazeDwell>k__BackingField: 1
   <GazeDwellTime>k__BackingField: 1
   <UseFarDwell>k__BackingField: 0
   <FarDwellTime>k__BackingField: 1
