@@ -42,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         public void OnGazePinchExited()
         {
-            _material.color = _OnHoverColor;
+            _material.color = _IdleStateColor;
         }
 
         public void OnSelectEntered(SelectEnterEventArgs args)
