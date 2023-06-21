@@ -241,16 +241,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             // Rotate around the z axis
             transfPnt = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.z, Vector3.back) * transfPnt;
 
-            if ((navPos.z >= 0) && (transfPnt.z < 0))
+            if (navPos.z >= 0 && transfPnt.z < 0)
             {
                 ZoomOutStart();
             }
-            else if ((navPos.z <= 0) && (transfPnt.z > 0))
+            else if (navPos.z <= 0 && transfPnt.z > 0)
             {
                 ZoomInStart();
             }
 
-            navPos = transfPnt * 5f;
+            navPos = 5f * transfPnt;
         }
 
         // Update is called once per frame

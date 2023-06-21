@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using GLTFast.Schema;
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
@@ -52,21 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private void Awake()
         {
             SetUpAudio();
-        }
-
-        private void OnEnable()
-        {
-
-        }
-        
-        private void OnDisable()
-        {
-
-        }
-
-        private void Update()
-        {
-            
         }
 
         public void OnGazeHoverEntered()

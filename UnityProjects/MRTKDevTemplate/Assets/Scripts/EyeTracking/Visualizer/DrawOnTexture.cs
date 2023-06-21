@@ -3,14 +3,13 @@
 
 using Microsoft.MixedReality.Toolkit.Input;
 using System.Collections;
-using Unity.Collections;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
     /// <summary>
-    /// Basic example of how to use interactors to create a simple whiteboard-like drawing system.
+    /// Example of how to use interactors to create a heatmap of eye tracking data.
     /// Uses MRTKBaseInteractable, but not StatefulInteractable.
     /// </summary>
     [AddComponentMenu("MRTK/Examples/DrawOnTexture")]
@@ -109,7 +108,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             yield return null;
 
             StartCoroutine(ComputeHeatmapAt(posUV, false, false));
-            yield return null;
         }
 
         private IEnumerator ComputeHeatmapAt(Vector2 currPosUV, bool positiveX, bool positiveY)
@@ -139,7 +137,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     {
                         if (newColor.HasValue)
                         {
-                            _texture.SetPixel((int)(tx), (int)(ty), newColor.Value);
+                            _texture.SetPixel((int)tx, (int)ty, newColor.Value);
                         }
                     }
                     else

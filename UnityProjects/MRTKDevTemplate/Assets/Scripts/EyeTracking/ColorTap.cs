@@ -5,6 +5,8 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
+    using UnityEngine.XR.Interaction.Toolkit;
+
     public class ColorTap : MonoBehaviour
     {
         [SerializeField]
@@ -35,10 +37,20 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         public void OnGazePinchEntered()
         {
-            _material.color = _OnSelectColor;
+            _material.color = _OnHoverColor;
         }
 
         public void OnGazePinchExited()
+        {
+            _material.color = _OnHoverColor;
+        }
+
+        public void OnSelectEntered(SelectEnterEventArgs args)
+        {
+            _material.color = _OnSelectColor;
+        }
+
+        public void OnSelectExited(SelectExitEventArgs args)
         {
             _material.color = _OnHoverColor;
         }
