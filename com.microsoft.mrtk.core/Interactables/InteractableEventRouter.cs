@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit
                     for (int j = 0; j < interactables.Length; j++)
                     {
                         var interactable = interactables[j];
-                        if (IsEventRouterChild(interactable))
+                        if (IsValidChild(interactable))
                         {
                             eventRoute.Register(interactables[j]);
                         }
@@ -64,14 +64,11 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Get if the given interactable is the belongs to this event router. If there is
-        /// another event router between this and the interacble, false is returned.
+        /// Get if the given child interactable is valid. This will filter out references to this object.
         /// </summary>
-        private bool IsEventRouterChild(IXRInteractable interactable)
+        private bool IsValidChild(IXRInteractable interactable)
         {
-            return interactable is MonoBehaviour behaviour &&
-                behaviour.gameObject != gameObject &&
-                behaviour.GetComponentInParent<InteractableEventRouter>() == this;
+            return interactable is MonoBehaviour behaviour && behaviour.gameObject != gameObject;
         }
 
         private void DisconnectSourcesFromTargets()

@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// Unity <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.3/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractor.html">IXRInteractors</see>.
     /// </summary>
     /// <remarks>
-    /// In order to recevie child select and hover event, this <see cref="Scrollable"/> object requires a <see cref="InteractableEventRouter"/> component be
+    /// In order to receive child select and hover event, this <see cref="Scrollable"/> object requires a <see cref="InteractableEventRouter"/> component be
     /// added to the Unity game object as well. 
     /// </remarks>
     [AddComponentMenu("MRTK/UX/Scrollable")]
@@ -36,22 +36,100 @@ namespace Microsoft.MixedReality.Toolkit.UX
             set => scrollRect = value;
         }
 
-        [Tooltip("The divisor to apply to the magnitude of interactor's dragged movement vector.")]
+        [Tooltip("The scale factor to apply to the magnitude of interactor's dragged movement vector, the vector from start to end. The dragged magnitude is scaled by this amount. If the product is 1 or greater, the interactor's delta movement is applied directly to the scroll movement. If less than one, the interactor's delta movement is scaled by the product.")]
         [SerializeField]
-        private float dragDivisor = 10.0f;
+        private float deadZoneFactor = 0.1f;
 
         /// <summary>
-        /// The divisor to apply to the magnitude of interactor's dragged movement vector.
+        /// The scale factor to apply to the magnitude of interactor's dragged movement vector, the from vector start to end.
         /// </summary>
-        public float DragDivisor
+        /// <remarks>
+        /// The dragged magnitude is scaled by this amount. If the product is 1 or greater, the interactor's delta
+        /// movement is applied directly to the scroll movement. If less than one, the interactor's delta movement
+        /// is scaled by the product.
+        /// </remarks>
+        public float DeadZoneFactor
         {
-            get => dragDivisor;
-            set => dragDivisor = value;
+            get => deadZoneFactor;
+            set => deadZoneFactor = value;
+        }
+
+        [Tooltip("The scroll distance at which to cancel any child interactable's selection.")]
+        [SerializeField]
+        private float cancelSelectDistance = 0.05f;
+
+        /// <summary>
+        /// The scroll distance at which to cancel any child interactable's selection.
+        /// </summary>
+        /// <remarks>
+        /// After the 2D plane has been scrolled this total distance, and if there is an active child selection, the child
+        /// selection will be canceled.
+        /// </remarks>
+        public float CancelSelectDistance
+        {
+            get => cancelSelectDistance;
+            set => cancelSelectDistance = value;
         }
 
         readonly HashSetList<IXRInteractor> interactorsScrolling = new HashSetList<IXRInteractor>();
         readonly List<InteractorPosition> interactorPositions = new List<InteractorPosition>();
         List<IXRSelectInteractable> cancelableSelection;
+
+
+        /// <summary>
+        /// Get the transform that is backing this scrollable about.
+        /// </summary>
+        public Transform ScrollableTransform => scrollRect.transform;
+
+        /// <summary>
+        /// Get if the scrollable is currently scrolling
+        /// </summary>
+        public bool IsScrolling => interactorPositions.Count > 0;
+
+        /// <summary>
+        /// Get the interactor that is scrolling the transform
+        /// </summary>
+        public IXRInteractor ScrolllingInteractor
+        {
+            get
+            {
+                if (interactorPositions.Count > 0)
+                {
+                    return interactorPositions[0].interactor;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get the anchor position at the start of the scroll
+        /// </summary>
+        public Vector3 ScrollingAnchorPosition
+        {
+            get
+            {
+                if (interactorPositions.Count > 0)
+                {
+                    var interactorPosition = interactorPositions[0];
+                    if (!interactorPosition.startPoint.IsValidVector())
+                    {
+                        Debug.Log($"SCROLLABLE: ScrollingAnchorPosition using interactor attach point");
+                        return scrollRect.transform.InverseTransformPoint(interactorPosition.interactor.GetAttachTransform(this).position);
+                    }
+                    else
+                    {
+                        return interactorPosition.startPoint;
+                    }
+                }
+                else
+                {
+                    return Vector3.zero;
+                }
+            }
+        }
 
         private struct InteractorPosition
         {
@@ -89,7 +167,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
                 if (interactorPositions.Count > 0)
                 {
-
                     var interactorPosition = interactorPositions[0];
                     //Debug.Log($"SCROLLABLE: dragging ({interactorPosition.interactor})");
                     var thisPoint = scrollRect.transform.InverseTransformPoint(interactorPosition.interactor.GetAttachTransform(this).position);
@@ -108,7 +185,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     interactorPosition.lastPoint = thisPoint;
                     interactorPositions[0] = interactorPosition;
 
-                    displacementFromStart = (thisPoint - interactorPosition.startPoint).magnitude / dragDivisor;
+                    displacementFromStart = (thisPoint - interactorPosition.startPoint).magnitude * deadZoneFactor;
                     dragDelta *= Mathf.Clamp01(displacementFromStart);
 
 
@@ -126,6 +203,45 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     }
 
                     scrollDelta = new Vector2(scrollRect.horizontalNormalizedPosition, scrollRect.verticalNormalizedPosition) - interactorPosition.scrollStart;
+                    if (scrollDelta.magnitude > cancelSelectDistance &&
+                        draggingInteractor is IXRSelectInteractor selector &&
+                        selector.hasSelection &&
+                        (selector.interactablesSelected.Count > 1 || !selector.interactablesSelected.Contains(this)))
+                    {
+                        if (cancelableSelection == null)
+                        {
+                            cancelableSelection = new List<IXRSelectInteractable>(selector.interactablesSelected.Count);
+                        }
+
+                        IXRSelectInteractable thisInteractable = this;
+
+                        foreach (var interactable in selector.interactablesSelected)
+                        {
+                            if (interactable != thisInteractable)
+                            {
+                                Debug.Log($"SCROLLABLE: Should cancel select on ({interactable})");
+                                cancelableSelection.Add(interactable);
+                            }
+                        }
+
+                        if (cancelableSelection.Count > 0)
+                        {
+                            Debug.Log($"SCROLLABLE: Calling SelectEnter ({thisInteractable})");
+                            draggingManager.SelectEnter(selector, thisInteractable);
+
+                            foreach (var interactable in cancelableSelection)
+                            {
+                                if (interactable.isSelected &&
+                                    interactable.interactorsSelecting.Contains(selector))
+                                {
+                                    Debug.Log($"SCROLLABLE: Calling SelectCancel ({interactable})");
+                                    draggingManager.SelectCancel(selector, interactable);
+                                }
+                            }
+                        }
+
+                        cancelableSelection.Clear();
+                    }
                 }
 
 
@@ -138,45 +254,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     velocity = dragDelta * (1.0f / Time.deltaTime);
                 }
 
-                if (scrollDelta.magnitude > 0.02f &&
-                    draggingInteractor is IXRSelectInteractor selector &&
-                    selector.hasSelection &&
-                    (selector.interactablesSelected.Count > 1 || !selector.interactablesSelected.Contains(this)))
-                {
-                    if (cancelableSelection == null)
-                    {
-                        cancelableSelection = new List<IXRSelectInteractable>(selector.interactablesSelected.Count);
-                    }
-
-                    IXRSelectInteractable thisInteractable = this;
-
-                    foreach (var interactable in selector.interactablesSelected)
-                    {
-                        if (interactable != thisInteractable)
-                        {
-                            Debug.Log($"SCROLLABLE: Should cancel select on ({interactable})");
-                            cancelableSelection.Add(interactable);
-                        }
-                    }
-
-                    if (cancelableSelection.Count > 0)
-                    {
-                        Debug.Log($"SCROLLABLE: Calling SelectEnter ({thisInteractable})");
-                        draggingManager.SelectEnter(selector, thisInteractable);
-
-                        foreach (var interactable in cancelableSelection)
-                        {
-                            if (interactable.isSelected &&
-                                interactable.interactorsSelecting.Contains(selector))
-                            {
-                                Debug.Log($"SCROLLABLE: Calling SelectCancel ({interactable})");
-                                draggingManager.SelectCancel(selector, interactable);
-                            }
-                        }
-                    }
-
-                    cancelableSelection.Clear();
-                }
 
                 // velocity += ((dragDelta * (1.0f / Time.deltaTime) * Selectedness()) - velocity) * 0.1f;
                 // velocity = newVelocity;             
@@ -186,9 +263,18 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
 #if UNITY_EDITOR
         /// <summary>
-        /// While in editor, verify that the sibling <see cref="InteractableEventRouter"/> has the neccessary event routes so
-        /// child hover and select events are bubbled up to this component. Also, configure the scroll rect if not set.
+        /// Verfiy that this component's dependencies are met, and then try to fix dependencies where broken.
         /// </summary>
+        /// <remarks>
+        /// While in editor, verify that the sibling <see cref="InteractableEventRouter"/> has the neccessary event routes so
+        /// child hover and select events are bubbled up to this component.
+        ///
+        /// Also, to avoid this interactable from steal childern collider, this Unity interactor must have its collider manually
+        /// configure. This function will attempt to configure this interactor's collider property, and log a warning if the
+        /// collider configuration fails.
+        /// 
+        /// Finally, this will also configure the scroll rect if not set.
+        /// </remarks>
         private void OnValidate()
         {
             var eventRouter = GetComponent<InteractableEventRouter>();
@@ -196,6 +282,19 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 eventRouter.AddEventRoute<HoverParentEventRoute>();
                 eventRouter.AddEventRoute<SelectParentEventRoute>();
+            }
+
+            if (colliders.Count == 0)
+            {
+                var collider = GetComponent<Collider>();
+                if (collider == null)
+                {
+                    Debug.LogWarning($"The Scrollable, {name}, does not have its colliders configured. This may result in child interactors failling to function properly. Configure this Scrollable component's colliders to avoid failures.");
+                }
+                else
+                {
+                    colliders.Add(collider);
+                }
             }
 
             if (scrollRect == null)
@@ -285,12 +384,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             if (interactorsScrolling.Add(interactor))
             {
-                Debug.Log($"SCROLLABLE: Start scrolling with interactor ({interactor})");
                 interactorPositions.Add(new InteractorPosition(manager, interactor));
-            }
-            else
-            {
-                Debug.Log($"SCROLLABLE: Already scrolling with interactor ({interactor})");
             }
         }
 
@@ -304,7 +398,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 {
                     if (interactorPositions[i].interactor == interactor)
                     {
-                        Debug.Log($"SCROLLABLE: Stop scrolling with interactor ({interactor})");
+                        Debug.Log("SCROLLABLE: remove scrolling interactor");
                         interactorPositions.RemoveAt(i);
                         interactorsScrolling.Remove(interactor);
                         break;

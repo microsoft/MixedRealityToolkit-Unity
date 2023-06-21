@@ -134,9 +134,34 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Vector3 targetLocalHitPoint;
         private Vector3 targetLocalHitNormal;
         private Transform hitTargetTransform;
+
+        /// <summary>
+        /// Used to locate and lock the raycast hit data on a select
+        /// </summary>
         private void LocateTargetHitPoint(SelectEnterEventArgs args)
         {
-            Debug.Log($"MRTKRayReticleVisual. LocateTargetHitPoint  ({this})");
+            bool hitPointAndTransformUpdated = false;
+            bool hitNormalUpdated = false;
+
+            // In the case of affordances/handles, we can stick the ray right on to the handle.
+            if (args.interactableObject is ISnapInteractable snappable)
+            {
+                hitTargetTransform = snappable.HandleTransform;
+                targetLocalHitPoint = Vector3.zero;
+                targetLocalHitNormal = Vector3.up;
+                hitPointAndTransformUpdated = true;
+                hitNormalUpdated = true;
+            }
+
+            // In the case of an IScrollable being selected, ensure that the reticle locks to the
+            // scroller and not to the a list item within the scroller, such as a button.
+            if (args.interactableObject is IScrollable scrollable && scrollable.ScrolllingInteractor == (IXRInteractor)rayInteractor)
+            {
+                hitTargetTransform = scrollable.ScrollableTransform;
+                targetLocalHitPoint = scrollable.ScrollingAnchorPosition;
+                hitPointAndTransformUpdated = true;
+            }
+
             // If no hit, abort.
             if (!rayInteractor.TryGetCurrentRaycast(
                   out RaycastHit? raycastHit,
@@ -145,14 +170,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                   out _,
                   out bool isUIHitClosest))
             {
-                Debug.Log($"MRTKRayReticleVisual. LocateTargetHitPoint ABORT! ({this})");
                 return;
             }
 
             // Align the reticle with a UI hit if applicable
             if (raycastResult.HasValue && isUIHitClosest)
             {
-                Debug.Log($"MRTKRayReticleVisual. Setting hit target to UI transform  ({raycastResult.Value.gameObject.transform})");
                 hitTargetTransform = raycastResult.Value.gameObject.transform;
                 targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastResult.Value.worldPosition);
                 targetLocalHitNormal = hitTargetTransform.InverseTransformDirection(raycastResult.Value.worldNormal);
@@ -160,28 +183,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Otherwise, calculate the reticle pose based on the raycast hit.
             else if (raycastHit.HasValue)
             {
-                // In the case of affordances/handles, we can stick the ray right on to the handle.
-                if (args.interactableObject is ISnapInteractable snappable)
+                if (!hitPointAndTransformUpdated)
                 {
-                    Debug.Log($"MRTKRayReticleVisual. Setting hit target to snappable transform  ({snappable.HandleTransform})");
-                    hitTargetTransform = snappable.HandleTransform;
-                    targetLocalHitPoint = Vector3.zero;
-                    targetLocalHitNormal = Vector3.up;
-                }
-                else
-                {
-                    // In the case of an IScrollable being selected, ensure that the reticle locks to the
-                    // scroller and not to the a list item within the scroller, such as a button.
-                    if (args.interactableObject is IScrollable)
-                    {
-                        hitTargetTransform = args.interactableObject.transform;
-                    }
-                    else
-                    {
-                        hitTargetTransform = raycastHit.Value.collider.transform;
-                    }
-
+                    hitTargetTransform = raycastHit.Value.collider.transform;
                     targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastHit.Value.point);
+                }
+
+                if (!hitNormalUpdated)
+                {
                     targetLocalHitNormal = hitTargetTransform.InverseTransformDirection(raycastHit.Value.normal);
                 }
             }

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit
@@ -11,5 +12,24 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public interface IScrollable : IXRInteractable
     {
+        /// <summary>
+        /// Get the transform that is backing this scrollable about.
+        /// </summary>
+        Transform ScrollableTransform { get; }
+
+        /// <summary>
+        /// Get if the scrollable is currently scrolling
+        /// </summary>
+        bool IsScrolling { get; }
+
+        /// <summary>
+        /// Get the interactor that is scrolling the transform
+        /// </summary>
+        IXRInteractor ScrolllingInteractor { get; }
+
+        /// <summary>
+        /// Get the anchor position at the start of the scroll
+        /// </summary>
+        Vector3 ScrollingAnchorPosition { get; }
     }
 }
