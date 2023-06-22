@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
     [AddComponentMenu("MRTK/Accessibility/Accessible Object")]
     public class AccessibleObject : MonoBehaviour
     {
-        [SerializeField]
+        [SerializeField, Experimental]
         [Tooltip("What is the classification (ex: person, place, ui element, etc.) of this object?")]
         private AccessibleObjectClassification classification = null;
 

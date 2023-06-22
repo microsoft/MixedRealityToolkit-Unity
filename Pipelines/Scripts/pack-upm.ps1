@@ -61,9 +61,10 @@ Write-Output "Release packages: $releasePkgs"
 
 try {
     Push-Location $OutputDirectory
-
     $parseVersion = -not $Version
 
+
+    # loop through package directories, update package version, assembly version, and build version hash for updating dependencies
     Get-ChildItem -Path $ProjectRoot/*/package.json | ForEach-Object {
         $packageName = Select-String -Pattern "com\.microsoft\.mrtk\.\w+" -Path $_ | Select-Object -First 1
 
@@ -109,7 +110,7 @@ try {
         Write-Output "buildTag: $buildTag"
 
 
-        $versionHash[$packageName]=$Version
+        $versionHash[$packageName]="$Version-$buildTag"
 
         Write-Output " Version: $Version"
         Write-Output " suffix:  $suffix"
@@ -124,9 +125,48 @@ try {
             Add-Content -Path $_ -Value "[assembly: AssemblyInformationalVersion(`"$Version-$buildTag`")]"
         }
 
+
+    }
+
+    # update dependencies using the versionHash map
+    Get-ChildItem -Path $ProjectRoot/*/package.json | ForEach-Object {
+        $currentPackageName = Select-String -Pattern "com\.microsoft\.mrtk\.\w+" -Path $_ | Select-Object -First 1
+        if (-not $currentPackageName) {
+            return # this is not an MRTK package, so skip
+        }
+
+        $currentPackageName = $currentPackageName.Matches[0].Value
+        $packageFriendlyName = (Select-String -Pattern "`"displayName`": `"(.+)`"" -Path $_ | Select-Object -First 1).Matches.Groups[1].Value
+
+        $packagePath = $_.Directory
+        $docFolder = "$packagePath/Documentation~"
+
+        
+        Write-Output "____________________________________________________________________________"
+        Write-Output "   Package: $($currentPackageName)"
+
+        foreach ($packageName in $versionHash.Keys) {
+            if ($currentPackageName -eq $packageName) {
+                continue
+            }
+
+            $searchRegex = "$($packageName).*:.*""(.*)"""
+            $searchMatches = Select-String $searchRegex -InputObject (Get-Content -Path $_)
+            if ($searchMatches.Matches.Groups) {
+                $newVersion = $versionHash["$($packageName)"]
+                Write-Output "        Patching dependency $($packageName) from $($searchMatches.Matches.Groups[1].Value) to $($newVersion)"
+                (Get-Content -Path $_ -Raw) -Replace $searchRegex, "$($packageName)"": ""$($newVersion)""" | Set-Content -Path $_ -NoNewline
+            }
+        }
+
+        Write-Output "____________________________________________________________________________`n"
+
+        # build the package
         Write-Output "Packing $packageFriendlyName"
         npm pack $packagePath
 
+
+        # clean up
         if (Test-Path -Path $docFolder) {
             Write-Output "Cleaning up Documentation~ from $packageFriendlyName"
             # A documentation folder was created. Remove it.

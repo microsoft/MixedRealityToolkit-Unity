@@ -74,6 +74,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         protected MixedRealityTransform InitialWorldPose;
 
+        /// <summary>
+        /// Get flags that describe the type of transformations this constraint applies to.
+        /// </summary> 
         public abstract TransformFlags ConstraintType { get; }
 
         #endregion Properties

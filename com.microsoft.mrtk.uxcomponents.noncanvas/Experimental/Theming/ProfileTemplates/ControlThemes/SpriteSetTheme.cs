@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.UX
+namespace Microsoft.MixedReality.Toolkit.UX.Experimental
 {
     /// <summary>
     /// A set of sprites that can be selected via the name of the property
@@ -13,6 +13,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// This class is intended to be included in other theme ScriptableObject
     /// profiles that may want to allow for changing icon styles.
     /// </summary>
+    /// <remarks>
+    /// This is an experimental feature. This class is early in the cycle, it has 
+    /// been labeled as experimental to indicate that it is still evolving, and 
+    /// subject to change over time. Parts of the MRTK, such as this class, appear 
+    /// to have a lot of value even if the details haven’t fully been fleshed out. 
+    /// For these types of features, we want the community to see them and get 
+    /// value out of them early enough so to provide feedback. 
+    /// </remarks>
     public class SpriteSetTheme
     {
         [Tooltip("An 'Add' icon.")]

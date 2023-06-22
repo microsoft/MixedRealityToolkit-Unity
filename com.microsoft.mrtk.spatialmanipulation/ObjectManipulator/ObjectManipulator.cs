@@ -246,6 +246,24 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         [Implements(typeof(ITransformSmoothingLogic), TypeGrouping.ByNamespaceFlat)]
         private SystemType transformSmoothingLogicType = typeof(DefaultTransformSmoothingLogic);
 
+        /// <summary>
+        /// The concrete type of <see cref="TransformSmoothingLogic"/> to use for smoothing between transforms.
+        /// </summary>
+        /// <remarks>
+        /// Setting this field at runtime can be expensive. Use with caution. Best used at startup or when
+        /// instantiating ObjectManipulators from code.
+        /// </remarks>
+        public SystemType TransformSmoothingLogicType
+        {
+            get => transformSmoothingLogicType;
+            set
+            {
+                // Re-instantiating smoothing logics is expensive and can interrupt ongoing interactions.
+                transformSmoothingLogicType = value;
+                smoothingLogic ??= Activator.CreateInstance(transformSmoothingLogicType) as ITransformSmoothingLogic;
+            }
+        }
+
         [FormerlySerializedAs("smoothingActive")]
         [SerializeField]
         [Tooltip("Frame-rate independent smoothing for far interactions. Far smoothing is enabled by default.")]

@@ -4,6 +4,7 @@
 using TMPro;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UX;
+using Microsoft.MixedReality.Toolkit.UX.Experimental;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {

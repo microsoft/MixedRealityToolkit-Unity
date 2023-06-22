@@ -15,11 +15,19 @@ namespace Microsoft.MixedReality.Toolkit
     /// that specific class knows how to consume. The majority of DataConsumer classes can be serviced by this
     /// implementation of a binding profile.
     /// </summary>
+    /// <remarks>
+    /// This is an experimental feature. This class is early in the cycle, it has 
+    /// been labeled as experimental to indicate that it is still evolving, and 
+    /// subject to change over time. Parts of the MRTK, such as this class, appear 
+    /// to have a lot of value even if the details haven’t fully been fleshed out. 
+    /// For these types of features, we want the community to see them and get 
+    /// value out of them early enough so to provide feedback. 
+    /// </remarks>
     [Serializable]
     public class ClassDataBindingProfile : IClassDataBindingProfile
     {
         [Tooltip("Class name for the DataConsumer that this profile is designed to configure.")]
-        [SerializeField]
+        [SerializeField, Experimental]
         private string className;
         public string ClassName => className;
 

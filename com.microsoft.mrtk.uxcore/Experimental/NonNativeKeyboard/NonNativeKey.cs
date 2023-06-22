@@ -4,17 +4,25 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Microsoft.MixedReality.Toolkit.UX
+namespace Microsoft.MixedReality.Toolkit.UX.Experimental
 {
     /// <summary>
     /// Abstract class representing a key in the non native keyboard
     /// </summary>
+    /// <remarks>
+    /// This is an experimental feature. This class is early in the cycle, it has 
+    /// been labeled as experimental to indicate that it is still evolving, and 
+    /// subject to change over time. Parts of the MRTK, such as this class, appear 
+    /// to have a lot of value even if the details haven’t fully been fleshed out. 
+    /// For these types of features, we want the community to see them and get 
+    /// value out of them early enough so to provide feedback. 
+    /// </remarks>
     public abstract class NonNativeKey : MonoBehaviour
     {
         /// <summary>
         /// Reference to the GameObject's interactable component. 
         /// </summary>
-        [field: SerializeField, Tooltip("Reference to the GameObject's interactable component.")]
+        [field: SerializeField, Experimental, Tooltip("Reference to the GameObject's interactable component.")]
         protected StatefulInteractable Interactable { get; set; }
 
         /// <summary>

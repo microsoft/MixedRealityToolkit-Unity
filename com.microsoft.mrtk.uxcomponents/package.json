@@ -15,7 +15,7 @@
   },
   "unity": "2021.3",
   "dependencies": {
-    "com.microsoft.mrtk.graphicstools.unity": "0.4.0",
+    "com.microsoft.mrtk.graphicstools.unity": "0.5.12",
     "com.microsoft.mrtk.uxcore": "3.0.0",
     "com.microsoft.mrtk.spatialmanipulation": "3.0.0",
     "com.microsoft.mrtk.standardassets": "3.0.0",

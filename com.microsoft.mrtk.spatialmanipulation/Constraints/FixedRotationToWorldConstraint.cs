@@ -4,13 +4,17 @@
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
     /// <summary>
-    /// Component for fixing the rotation of a manipulated object relative to the world
-    /// We're looking to rework this system in the future. These existing components will be deprecated then.
+    /// Component for fixing the rotation of a manipulated object relative to the world.
     /// </summary>
+    /// <remarks>
+    /// MRTK's constraint system might be redesigned in the near future. When
+    /// this occurs, the old constraint components will be deprecated.
+    /// </remarks>
     public class FixedRotationToWorldConstraint : TransformConstraint
     {
         #region Properties
 
+        /// <inheritdoc />
         public override TransformFlags ConstraintType => TransformFlags.Rotate;
 
         #endregion Properties

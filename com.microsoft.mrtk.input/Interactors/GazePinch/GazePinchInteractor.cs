@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// An indirectly-targeted interactor that performs interactions driven by variable pinch distance.
     /// The valid targets of this interactor are harvested from the valid targets of the specified
-    /// <see cref="GazePinchInteractor.dependentInteractor">.
+    /// <see cref="GazePinchInteractor.dependentInteractor"/>.
     /// </summary>
     [AddComponentMenu("MRTK/Input/Gaze Pinch Interactor")]
     public class GazePinchInteractor :
