@@ -15567,23 +15567,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventRoutes:
-  - rid: 4538478805783412738
-  - rid: 4538478805783412739
-  - rid: 5356761794379776002
+  - rid: 5356761795612114948
+  - rid: 5356761795612114949
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 4538478805783412738
-      type: {class: HoverParentEventRoute, ns: Microsoft.MixedReality.Toolkit, asm: Microsoft.MixedReality.Toolkit.Core}
-      data: {}
-    - rid: 4538478805783412739
-      type: {class: SelectParentEventRoute, ns: Microsoft.MixedReality.Toolkit, asm: Microsoft.MixedReality.Toolkit.Core}
-      data: {}
-    - rid: 5356761794379776002
-      type: {class: ParentSelectEventsToChild, ns: Microsoft.MixedReality.Toolkit, asm: Microsoft.MixedReality.Toolkit.Core}
-      data: {}
+    - rid: 5356761795612114948
+      type: {class: BubbleChildHoverEvents, ns: Microsoft.MixedReality.Toolkit.Experimental, asm: Microsoft.MixedReality.Toolkit.Core}
+    - rid: 5356761795612114949
+      type: {class: BubbleChildSelectEvents, ns: Microsoft.MixedReality.Toolkit.Experimental, asm: Microsoft.MixedReality.Toolkit.Core}
 --- !u!1001 &353784996
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25928,23 +25920,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventRoutes:
-  - rid: 4538478793802383364
-  - rid: 4538478793802383365
-  - rid: 5356761794379776000
+  - rid: 5356761795612114944
+  - rid: 5356761795612114945
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 4538478793802383364
-      type: {class: HoverParentEventRoute, ns: Microsoft.MixedReality.Toolkit, asm: Microsoft.MixedReality.Toolkit.Core}
-      data: {}
-    - rid: 4538478793802383365
-      type: {class: SelectParentEventRoute, ns: Microsoft.MixedReality.Toolkit, asm: Microsoft.MixedReality.Toolkit.Core}
-      data: {}
-    - rid: 5356761794379776000
-      type: {class: ParentSelectEventsToChild, ns: Microsoft.MixedReality.Toolkit, asm: Microsoft.MixedReality.Toolkit.Core}
-      data: {}
+    - rid: 5356761795612114944
+      type: {class: BubbleChildHoverEvents, ns: Microsoft.MixedReality.Toolkit.Experimental, asm: Microsoft.MixedReality.Toolkit.Core}
+    - rid: 5356761795612114945
+      type: {class: BubbleChildSelectEvents, ns: Microsoft.MixedReality.Toolkit.Experimental, asm: Microsoft.MixedReality.Toolkit.Core}
 --- !u!224 &692873436 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8376646494505211229, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
@@ -62183,23 +62167,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventRoutes:
-  - rid: 4538478805783412736
-  - rid: 4538478805783412737
-  - rid: 5356761794379776001
+  - rid: 5356761795612114946
+  - rid: 5356761795612114947
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 4538478805783412736
-      type: {class: HoverParentEventRoute, ns: Microsoft.MixedReality.Toolkit, asm: Microsoft.MixedReality.Toolkit.Core}
-      data: {}
-    - rid: 4538478805783412737
-      type: {class: SelectParentEventRoute, ns: Microsoft.MixedReality.Toolkit, asm: Microsoft.MixedReality.Toolkit.Core}
-      data: {}
-    - rid: 5356761794379776001
-      type: {class: ParentSelectEventsToChild, ns: Microsoft.MixedReality.Toolkit, asm: Microsoft.MixedReality.Toolkit.Core}
-      data: {}
+    - rid: 5356761795612114946
+      type: {class: BubbleChildHoverEvents, ns: Microsoft.MixedReality.Toolkit.Experimental, asm: Microsoft.MixedReality.Toolkit.Core}
+    - rid: 5356761795612114947
+      type: {class: BubbleChildSelectEvents, ns: Microsoft.MixedReality.Toolkit.Experimental, asm: Microsoft.MixedReality.Toolkit.Core}
 --- !u!1001 &1878738747
 PrefabInstance:
   m_ObjectHideFlags: 0
