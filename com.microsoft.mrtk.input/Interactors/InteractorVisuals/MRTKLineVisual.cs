@@ -467,7 +467,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // the scroller and not to the a list item within the scroller, such as a button.
             if (args.interactableObject is IScrollable scrollable &&
                 scrollable.IsScrolling &&
-                scrollable.ScrolllingInteractor == (IXRInteractor)rayInteractor)
+                scrollable.ScrollingInteractor == (IXRInteractor)rayInteractor)
             {
                 hitTargetTransform = scrollable.ScrollableTransform;
                 targetLocalHitPoint = scrollable.ScrollingLocalAnchorPosition;
