@@ -10,7 +10,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Inputs;
 using UnityEngine.XR.Interaction.Toolkit.UI;
 
-namespace Microsoft.MixedReality.Toolkit.Input
+namespace Microsoft.MixedReality.Toolkit.Input.Experimental
 {
     [AddComponentMenu("Scripts/Microsoft/MRTK/Input/MRTK Spatial Mouse Interactor")]
     public class SpatialMouseInteractor : XRRayInteractor, IRayInteractor
@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeField]
         private InputActionProperty mouseMoveAction;
 
-        [SerializeField]
+        [SerializeField, Experimental]
         private InputActionProperty mouseScrollAction;
 
         [SerializeField]

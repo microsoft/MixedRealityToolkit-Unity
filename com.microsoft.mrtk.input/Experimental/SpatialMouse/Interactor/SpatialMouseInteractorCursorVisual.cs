@@ -6,11 +6,11 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.XR.Interaction.Toolkit;
 
-namespace Microsoft.MixedReality.Toolkit.Input
+namespace Microsoft.MixedReality.Toolkit.Input.Experimental
 {
     public class SpatialMouseInteractorCursorVisual : BaseReticleVisual
     {
-        [SerializeField]
+        [SerializeField, Experimental]
         [Tooltip("The ray interactor which this visual represents.")]
         private SpatialMouseInteractor mouseInteractor;
 
