@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Cached reference to hands aggregator for efficient per-frame use.
         /// </summary>
         [Obsolete("Deprecated, please use XRSubsystemHelpers.HandsAggregator instead.")]
-        protected HandsAggregatorSubsystem HandsAggregator => (HandsAggregatorSubsystem)XRSubsystemHelpers.HandsAggregator;
+        protected HandsAggregatorSubsystem HandsAggregator => XRSubsystemHelpers.HandsAggregator as HandsAggregatorSubsystem;
 
         /// <summary>
         /// How unselected the interactor must be to initiate a new hover or selection on a new target.
