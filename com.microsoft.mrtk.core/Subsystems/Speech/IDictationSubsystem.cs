@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Subsystems
 {
@@ -11,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
     /// MUST implement this interface, preferably with a direct 1:1 mapping
     /// between the provider surface and the subsystem surface.
     /// </summary>
-    public interface IDictationSubsystem
+    public interface IDictationSubsystem : ISubsystem
     {
         /// <summary>
         /// Start dictation with default configurations.

@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Cached reference to hands aggregator for efficient per-frame use.
         /// </summary>
         [Obsolete("Deprecated, please use XRSubsystemHelpers.HandsAggregator instead.")]
-        protected HandsAggregatorSubsystem HandsAggregator => XRSubsystemHelpers.HandsAggregator;
+        protected HandsAggregatorSubsystem HandsAggregator => (HandsAggregatorSubsystem)XRSubsystemHelpers.HandsAggregator;
 
         [SerializeField]
         [Tooltip("The hand on which to track the joint.")]

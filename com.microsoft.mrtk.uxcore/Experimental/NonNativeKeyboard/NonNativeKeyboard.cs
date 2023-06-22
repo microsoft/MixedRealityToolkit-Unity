@@ -236,7 +236,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
         /// <summary>
         /// The keyword recognition subsystem that was stopped by this component.
         /// </summary>
-        private KeywordRecognitionSubsystem keywordRecognitionSubsystem = null;
+        private IKeywordRecognitionSubsystem keywordRecognitionSubsystem = null;
 
         /// <summary>
         /// The inner text value set via the `Text` property

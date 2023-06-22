@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #region Properties
         
         [Obsolete("Deprecated, please use XRSubsystemHelpers.HandsAggregator instead.")]
-        protected HandsAggregatorSubsystem HandsAggregator => XRSubsystemHelpers.HandsAggregator;
+        protected HandsAggregatorSubsystem HandsAggregator => (HandsAggregatorSubsystem)XRSubsystemHelpers.HandsAggregator;
 
         #endregion Properties
 
