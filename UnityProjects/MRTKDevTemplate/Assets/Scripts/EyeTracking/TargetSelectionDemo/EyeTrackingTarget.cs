@@ -8,11 +8,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     using System.Collections;
 
     /// <summary>
-    /// TODO:
+    /// Handles events triggered from the attached <see cref="StatefulInteractable"/>
     /// </summary>
     public class EyeTrackingTarget : MonoBehaviour
     {
-
         [Tooltip("Visual effect (e.g., particle explosion or animation) that is played when a target is selected.")]
         [SerializeField]
         private GameObject _visualFxOnHit = null;
@@ -47,9 +46,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         private AudioSource _audioSource;
 
+        /// <summary>
+        /// The StatefulInteractable associated with this game object.
+        /// </summary>
+        private StatefulInteractable _interactable;
+
         private void Awake()
         {
             SetUpAudio();
+            _interactable = GetComponent<StatefulInteractable>();
         }
 
         public void OnGazeHoverEntered()
@@ -64,6 +69,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         public void OnTargetSelected()
         {
+            if (!_interactable.isHovered)
+            {
+                return;
+            }
+
             if (!_isValidTarget)
             {
                 PlayAudioOnHit(_audioFxIncorrectTarget);
@@ -71,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             }
 
             // Play audio clip
-            float audiocliplength = PlayAudioOnHit(_audioFxCorrectTarget);
+            float audioClipLength = PlayAudioOnHit(_audioFxCorrectTarget);
 
             // Play animation
             float animationLength = PlayAnimationOnHit();
@@ -79,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             // Destroy target
             gameObject.SetActive(true);
             gameObject.GetComponent<MeshRenderer>().enabled = false;
-            Destroy(gameObject, Mathf.Max(audiocliplength, animationLength));
+            Destroy(gameObject, Mathf.Max(audioClipLength, animationLength));
         }
 
         private void SetUpAudio()

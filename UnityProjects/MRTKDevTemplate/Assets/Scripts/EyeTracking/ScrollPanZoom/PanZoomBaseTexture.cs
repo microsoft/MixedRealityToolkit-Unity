@@ -61,8 +61,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 // Update new values for original ratio
                 originalRatio = new Vector3(scale.x, scale.y);
 
-                BoxCollider bcoll = textureRenderer.gameObject.GetComponent<BoxCollider>();
-                if (bcoll != null)
+                if (textureRenderer.gameObject.TryGetComponent<BoxCollider>(out var bcoll))
                 {
                     origColliderSize = bcoll.size;
                     MyCollider = bcoll;
@@ -130,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         public override int ZoomDir(bool zoomIn)
         {
-            return (zoomIn ? -1 : 1);
+            return zoomIn ? -1 : 1;
         }
 
         public override void ZoomIn()

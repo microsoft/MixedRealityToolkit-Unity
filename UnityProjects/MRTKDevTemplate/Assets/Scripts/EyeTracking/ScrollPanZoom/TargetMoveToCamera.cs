@@ -47,7 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         public void OnSelect()
         {
-            Debug.Log("Selected TargetMoveToCamera");
             if (isInNearFocusMode)
             {
                 ReturnHome();
@@ -87,7 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             if (inTransition)
             {
-                Vector3 destination = (isInNearFocusMode) ?
+                Vector3 destination = isInNearFocusMode ?
                     Camera.main.transform.position + (Camera.main.transform.forward * DistanceToCamera)
                     : originalPosition;
 
