@@ -6,8 +6,20 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.XR.Interaction.Toolkit;
 
-namespace Microsoft.MixedReality.Toolkit.Input
+namespace Microsoft.MixedReality.Toolkit.Input.Experimental
 {
+    /// <summary>
+    /// The cursor visual for a spatial mouse interactor. This behavior takes care of
+    /// positioning the cursor and hiding it when the mouse is not in use. 
+    /// </summary>
+    /// <remarks>
+    /// This is an experimental feature. This class is early in the cycle, it has 
+    /// been labeled as experimental to indicate that it is still evolving, and 
+    /// subject to change over time. Parts of the MRTK, such as this class, appear 
+    /// to have a lot of value even if the details haven’t fully been fleshed out. 
+    /// For these types of features, we want the community to see them and get 
+    /// value out of them early enough so to provide feedback. 
+    /// </remarks>
     public class SpatialMouseInteractorCursorVisual : BaseReticleVisual
     {
         [SerializeField, Experimental]
@@ -17,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeField]
         [Tooltip("The default distance of the reticle (cursor)")]
-        private float defaultDistance = 2.0f;
+        private float defaultDistance = 1.0f;
         
         /// <summary>
         /// See <see cref="MonoBehaviour"/>.
@@ -53,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Vector3 reticleNormal;
         private int endPositionInLine;
 
-        public void LocateTargetHitPoint(SelectEnterEventArgs args)
+        private void LocateTargetHitPoint(SelectEnterEventArgs args)
         {
             // If no hit, abort.
             if (!mouseInteractor.TryGetCurrentRaycast(
@@ -101,11 +113,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Hide the cursor if the mouse isn't in use
             if (!mouseInteractor.IsInUse)
             {
-                UnityEngine.Debug.Log("MouseNotUsed");
                 Reticle.SetActive(false);
                 return;
             }
-            UnityEngine.Debug.Log("MouseRendering");
 
             // Get all the line sample points
             if (!mouseInteractor.GetLinePoints(ref rayPositions, out rayPositionsCount))
@@ -121,14 +131,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 return;
             }
-            
+
+            // If the mouse is selecting an interactable, then position the cursor based on the target transform
             if (mouseInteractor.interactablesSelected.Count > 0)
             {
                 reticlePosition = hitTargetTransform.TransformPoint(targetLocalHitPoint);
             }
+            // otherwise, try getting reticlePosition from the ray hit or set it a default distance from the user
             else if (!mouseInteractor.TryGetHitInfo(out reticlePosition, out reticleNormal, out endPositionInLine, out bool isValidTarget))
             {
-                reticlePosition = mouseInteractor.rayOriginTransform.position + mouseInteractor.rayOriginTransform.forward;
+                reticlePosition = mouseInteractor.rayOriginTransform.position + mouseInteractor.rayOriginTransform.forward * defaultDistance;
             }
 
             // Mouse cursor should always face the user

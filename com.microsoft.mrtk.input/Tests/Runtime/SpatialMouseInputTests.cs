@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+
+using Microsoft.MixedReality.Toolkit.Input.Experimental;
 using Microsoft.MixedReality.Toolkit.Core.Tests;
 using NUnit.Framework;
 using System.Collections;

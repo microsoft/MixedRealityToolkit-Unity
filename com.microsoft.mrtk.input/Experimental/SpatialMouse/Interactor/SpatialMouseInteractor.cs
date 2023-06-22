@@ -10,31 +10,57 @@ using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Inputs;
 using UnityEngine.XR.Interaction.Toolkit.UI;
 
-namespace Microsoft.MixedReality.Toolkit.Input
+namespace Microsoft.MixedReality.Toolkit.Input.Experimental
 {
+    /// <summary>
+    /// An extension of XRRayInteractor which has extra functionality for handling spatial mouse movement and scrolling. 
+    /// </summary>
+    /// <remarks>
+    /// <remarks>
+    /// This is an experimental feature. This class is early in the cycle, it has 
+    /// been labeled as experimental to indicate that it is still evolving, and 
+    /// subject to change over time. Parts of the MRTK, such as this class, appear 
+    /// to have a lot of value even if the details haven’t fully been fleshed out. 
+    /// For these types of features, we want the community to see them and get 
+    /// value out of them early enough so to provide feedback. 
+    /// </remarks>
     [AddComponentMenu("Scripts/Microsoft/MRTK/Input/MRTK Spatial Mouse Interactor")]
     public class SpatialMouseInteractor : XRRayInteractor, IRayInteractor
     {
         [SerializeField, Experimental]
+        [Tooltip("The Input System action used for mouse movement. Must be a Vector2 Control.")]
         private InputActionProperty mouseMoveAction;
 
         [SerializeField]
+        [Tooltip("The Input System action used for mouse scrolling. Must be a Vector2 Control.")]
         private InputActionProperty mouseScrollAction;
 
+        /// <summary>
+        /// The scale factor to apply to the mouse deltas.
+        /// </summary>
         [SerializeField]
-        [Tooltip("The scale factor to apply to the mouse deltas")]
+        [Tooltip("The scale factor to apply to the mouse deltas.")]
         public float mouseSensitivity = .05f;
 
+        /// <summary>
+        /// The scale factor to apply to the mouse wheel.
+        /// </summary>
         [SerializeField]
-        [Tooltip("The scale factor to apply to the mouse wheel")]
+        [Tooltip("The scale factor to apply to the mouse wheel.")]
         public float mouseWheelSensitivity = .002f;
 
+        /// <summary>
+        /// The time (in seconds) of no mouse activity before hiding the mouse cursor.
+        /// </summary>
         [SerializeField]
-        [Tooltip("The time (in seconds) of no mouse activity before hiding the mouse cursor")]
+        [Tooltip("The time (in seconds) of no mouse activity before hiding the mouse cursor.")]
         public float mouseHideThreshold = 20.0f;
 
+        /// <summary>
+        /// he time (in seconds) of no mouse activity before reseting the mouse cursor to the center of the FoV.
+        /// </summary>
         [SerializeField]
-        [Tooltip("The time (in seconds) of no mouse activity before reseting the mouse cursor to the center of the FoV")]
+        [Tooltip("The time (in seconds) of no mouse activity before reseting the mouse cursor to the center of the FoV.")]
         public float mouseResetThreshold = 0.2f;
 
         private CursorLockMode restoreLockState;
@@ -50,16 +76,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnEnable();
 
-            //test();
-
-            Debug.Log("Enabling");
-
             if (mouseMoveAction != null)
             {
-                Debug.Log("MouseMoveAction");
-                Debug.Log(mouseMoveAction);
-                Debug.Log(mouseMoveAction.action.controls);
-                Debug.Log(mouseMoveAction.action.controls.Count);
                 mouseMoveAction.action.performed += OnMouseMove;
                 mouseMoveAction.EnableDirectAction();
             }
@@ -71,11 +89,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             restoreLockState = Cursor.lockState;
             Cursor.lockState =  CursorLockMode.Locked;
-        }
-
-        System.Collections.IEnumerator test()
-        {
-            yield return null;
         }
 
         protected override void OnDisable()
@@ -103,7 +116,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void OnMouseMove(InputAction.CallbackContext context)
         {
-            Debug.Log("MouseMove");
             Vector2 mouseDelta = context.ReadValue<Vector2>();
 
             Vector3 screenPoint = Camera.main.WorldToViewportPoint(rayOriginTransform.position + rayOriginTransform.forward);
@@ -138,7 +150,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private void OnMouseScroll(InputAction.CallbackContext context)
         {
-            Debug.Log("MouseScroll");
             Vector2 scrollDelta = context.ReadValue<Vector2>();
 
             if (hasSelection)

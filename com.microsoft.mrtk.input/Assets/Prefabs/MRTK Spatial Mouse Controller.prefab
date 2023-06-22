@@ -163,7 +163,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: -574040717827454360, guid: 94c24dfac525f5049a72166b6fdbdfce, type: 3}
+    m_Reference: {fileID: 6428155659162902554, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
   mouseScrollAction:
     m_UseReference: 1
     m_Action:
@@ -175,7 +175,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: -6089192128218944383, guid: 94c24dfac525f5049a72166b6fdbdfce, type: 3}
+    m_Reference: {fileID: 6404053549896120058, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
   mouseSensitivity: 0.05
   mouseWheelSensitivity: 0.002
   mouseHideThreshold: 20
@@ -204,7 +204,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5604401826787249420}
-  - component: {fileID: 5574744185190971328}
   - component: {fileID: 8777930775890352138}
   m_Layer: 0
   m_Name: MRTK Spatial Mouse Controller
@@ -229,20 +228,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5574744185190971328
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6862721871616905633}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 017c5e3933235514c9520e1dace2a4b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ActionAssets:
-  - {fileID: -944628639613478452, guid: 94c24dfac525f5049a72166b6fdbdfce, type: 3}
 --- !u!114 &8777930775890352138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -275,7 +260,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 8799710596249006613, guid: 94c24dfac525f5049a72166b6fdbdfce, type: 3}
+    m_Reference: {fileID: -681459848031527356, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
   m_RotationAction:
     m_UseReference: 0
     m_Action:
@@ -311,7 +296,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 6424860930752532860, guid: 94c24dfac525f5049a72166b6fdbdfce, type: 3}
+    m_Reference: {fileID: 924797614382256527, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
   m_SelectActionValue:
     m_UseReference: 0
     m_Action:
