@@ -1,14 +1,15 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Experimental;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
-using System.Collections.Specialized;
 
-namespace Microsoft.MixedReality.Toolkit.UX
+namespace Microsoft.MixedReality.Toolkit.UX.Experimental
 {
     /// <summary>
     /// An <see cref="Microsoft.MixedReality.Toolkit.IScrollable">IScrollable</see> that allows a
@@ -22,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// This is an experimental feature. This class is early in the cycle, it has 
     /// been labeled as experimental to indicate that it is still evolving, and 
     /// subject to change over time. Parts of the MRTK, such as this class, appear 
-    /// to have a lot of value even if the details haven�t fully been fleshed out. 
+    /// to have a lot of value even if the details haven't fully been fleshed out. 
     /// For these types of features, we want the community to see them and get 
     /// value out of them early enough so to provide feedback. 
     /// </remarks>
@@ -236,8 +237,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
             var eventRouter = GetComponent<InteractableEventRouter>();
             if (eventRouter != null)
             {
-                eventRouter.AddEventRoute<HoverParentEventRoute>();
-                eventRouter.AddEventRoute<SelectParentEventRoute>();
+                eventRouter.AddEventRoute<BubbleChildHoverEvents>();
+                eventRouter.AddEventRoute<BubbleChildSelectEvents>();
             }
 
             if (colliders.Count == 0)
@@ -369,7 +370,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             // Initialize the scroll goal to the current scroll rect position
             if (wasEmpty)
             {
-                scrollStart = scrollGoal = new Vector2(scrollRect.horizontalNormalizedPosition, scrollRect.verticalNormalizedPosition);
+                scrollStart = scrollGoal = scrollRect.normalizedPosition;
             }
         }
 
@@ -413,7 +414,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             data.UpdatePosition(data.Interactor.GetAttachTransform(this).position);
 
             // Determine if scrolling is active, and update drag delta
-            bool isScrolling = data.IsScrolling || data.TotalDistanceSquared > data.DeadZoneSquared;
+            bool isScrolling = data.IsScrolling || data.ScrollMovementSquareMagnitude > data.DeadZoneSquared;
             Vector2 dragDelta = isScrolling ? data.LocalPosition - data.LocalPreviousPosition : Vector2.zero;
             data.IsScrolling = isScrolling;
 
@@ -442,7 +443,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         private void CancelSelectionsIfNeeded(in ScrollingInteractorData data)
         {
-            var scrollerMovementSquared = (scrollStart - scrollGoal).sqrMagnitude;
+            var scrollerMovementSquared = data.ScrollMovementSquareMagnitude;
             if (scrollerMovementSquared > data.CancelSelectionDistanceSquared &&
                 data.Interactor is IXRSelectInteractor selector &&
                 IsSelectingChild(selector))
@@ -586,9 +587,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
             public float CancelSelectionDistanceSquared { get; private set; }
 
             /// <summary>
-            /// Get the total distance moved squared
+            /// Get the move vector of the scroll.
             /// </summary>
-            public float TotalDistanceSquared => (StartPosition - Position).sqrMagnitude;
+            public Vector2 LocalScrollMovement => (LocalStartPosition - LocalPosition);
+
+            /// <summary>
+            /// Get total scroll movement along the scroll plane, at world scale.
+            /// </summary>
+            public float ScrollMovementSquareMagnitude => LocalScrollMovement.Mul(ScrollRegion.lossyScale).sqrMagnitude;
 
             private bool positionInitialized;
 
