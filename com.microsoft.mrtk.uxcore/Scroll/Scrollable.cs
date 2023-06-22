@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// This is an experimental feature. This class is early in the cycle, it has 
     /// been labeled as experimental to indicate that it is still evolving, and 
     /// subject to change over time. Parts of the MRTK, such as this class, appear 
-    /// to have a lot of value even if the details haven’t fully been fleshed out. 
+    /// to have a lot of value even if the details havenï¿½t fully been fleshed out. 
     /// For these types of features, we want the community to see them and get 
     /// value out of them early enough so to provide feedback. 
     /// </remarks>
@@ -36,9 +36,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private Vector2 scrollVelocity;
 
         /// <summary>
-        /// The scoller goal;
+        /// The scroller's goal position
         /// </summary>
-        private Vector2 scrollGoal; 
+        private Vector2 scrollGoal;
+
+        /// <summary>
+        /// The scroller's position at the start of the scroll interaction.
+        /// </summary>
+        private Vector2 scrollStart;
 
         /// <summary>
         /// The list of interactors states tracking the interactor's positions and dead zones
@@ -46,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private readonly OrderedDictionary states = new OrderedDictionary();
 
         /// <summary>
-        /// A cache of interacbles who's selection should be canceled.
+        /// A cache of interactables whose selection should be canceled.
         /// </summary>
         List<IXRSelectInteractable> cancelableSelections;
 
@@ -79,18 +84,18 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         [SerializeField]
-        [Tooltip("Once the ScrollingInteractor moves this distance or more, this component will start chaning scroll position of the ScrollRect.")]
+        [Tooltip("Once the ScrollingInteractor moves this distance or more, this component will start changing scroll position of the ScrollRect.")]
         private float deadZone = 0.05f;
 
         /// <summary>
-        /// Once the <see cref="ScrolllingInteractor"/> moves this distance or more, this component will
+        /// Once the <see cref="ScrollingInteractor"/> moves this distance or more, this component will
         /// start changing scroll positions of the <see cref="ScrollRect"/>.
         /// </summary>
         /// <remarks>
-        /// When the <see cref="ScrolllingInteractor"/> moves this distance away from the starting point, the positions of <see cref="ScrollRect"/>
+        /// When the <see cref="ScrollingInteractor"/> moves this distance away from the starting point, the positions of <see cref="ScrollRect"/>
         /// will start being altered.
         ///
-        /// If <see cref="ScrolllingInteractor"/> implements <see cref="Microsoft.MixedReality.Toolkit.IPokeInteractor">IPokeInteractor</see>,
+        /// If <see cref="ScrollingInteractor"/> implements <see cref="Microsoft.MixedReality.Toolkit.IPokeInteractor">IPokeInteractor</see>,
         /// the <see cref="PokeDeadZone"/> property will be used instead.
         /// </remarks>
         public float DeadZone
@@ -110,7 +115,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// After the 2D plane has been scrolled this total distance, and if there is an active child selection, the child
         /// selection will be canceled.
         ///
-        /// If <see cref="ScrolllingInteractor"/> implements <see cref="Microsoft.MixedReality.Toolkit.IPokeInteractor">IPokeInteractor</see>, the <see cref="PokeCancelSelectDistance"/>
+        /// If <see cref="ScrollingInteractor"/> implements <see cref="Microsoft.MixedReality.Toolkit.IPokeInteractor">IPokeInteractor</see>, the <see cref="PokeCancelSelectDistance"/>
         /// property is used instead.
         /// </remarks>
         public float CancelSelectDistance
@@ -120,19 +125,19 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         [SerializeField]
-        [Tooltip("Once the ScrollingInteractor moves this distance or more, this component will start chaning scroll position of the ScrollRect. This only used if ScrolllingInteractor implements IPokeInteractor.")]
+        [Tooltip("Once the ScrollingInteractor moves this distance or more, this component will start changing scroll position of the ScrollRect. This only used if ScrollingInteractor implements IPokeInteractor.")]
 
         private float pokeDeadZone = 0.01f;
 
         /// <summary>
-        /// Once the <see cref="ScrolllingInteractor"/> moves this distance or more, this component will
+        /// Once the <see cref="ScrollingInteractor"/> moves this distance or more, this component will
         /// start changing scroll positions of the <see cref="ScrollRect"/>.
         /// </summary>
         /// <remarks>
-        /// When the <see cref="ScrolllingInteractor"/> moves this distance away from the starting point, the positions of <see cref="ScrollRect"/>
+        /// When the <see cref="ScrollingInteractor"/> moves this distance away from the starting point, the positions of <see cref="ScrollRect"/>
         /// will start being altered.
         ///
-        /// If <see cref="ScrolllingInteractor"/> does not implement <see cref="Microsoft.MixedReality.Toolkit.IPokeInteractor">IPokeInteractor</see>,
+        /// If <see cref="ScrollingInteractor"/> does not implement <see cref="Microsoft.MixedReality.Toolkit.IPokeInteractor">IPokeInteractor</see>,
         /// the <see cref="DeadZone"/> property will be used instead.
         /// </remarks>
         public float PokeDeadZone
@@ -141,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             set => deadZone = value;
         }
 
-        [Tooltip("The scroll distance at which to cancel any child interactable's selection. This only used if ScrolllingInteractor implements IPokeInteractor.")]
+        [Tooltip("The scroll distance at which to cancel any child interactable's selection. This only used if ScrollingInteractor implements IPokeInteractor.")]
         [SerializeField]
         private float pokeCancelSelectDistance = 0.05f;
 
@@ -152,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// After the 2D plane has been scrolled this total distance, and if there is an active child selection, the child
         /// selection will be canceled.
         ///
-        /// If <see cref="ScrolllingInteractor"/> does not implement <see cref="Microsoft.MixedReality.Toolkit.IPokeInteractor">IPokeInteractor</see>, the <see cref="CancelSelectDistance"/>
+        /// If <see cref="ScrollingInteractor"/> does not implement <see cref="Microsoft.MixedReality.Toolkit.IPokeInteractor">IPokeInteractor</see>, the <see cref="CancelSelectDistance"/>
         /// property is used instead.
         /// </remarks>
         public float PokeCancelSelectDistance
@@ -171,7 +176,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 if (states.Count > 0)
                 {
-                    return GetCurrentSrollingInteractionData().IsScrolling;
+                    return GetCurrentScrollingInteractionData().IsScrolling;
                 }
                 else
                 {
@@ -181,13 +186,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         /// <inheritdoc />
-        public IXRInteractor ScrolllingInteractor
+        public IXRInteractor ScrollingInteractor
         {
             get
             {
                 if (states.Count > 0)
                 {
-                    return GetCurrentSrollingInteractionData().Interactor;
+                    return GetCurrentScrollingInteractionData().Interactor;
                 }
                 else
                 {
@@ -197,13 +202,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         /// <inheritdoc />
-        public Vector3 ScrollingAnchorPosition
+        public Vector3 ScrollingLocalAnchorPosition
         {
             get
             {
                 if (states.Count > 0)
                 {
-                    return GetCurrentSrollingInteractionData().StartPosition;
+                    return scrollRect.transform.InverseTransformPoint(GetCurrentScrollingInteractionData().StartPosition);
                 }
                 else
                 {
@@ -214,13 +219,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
 #if UNITY_EDITOR
         /// <summary>
-        /// Verfiy that this component's dependencies are met, and then try to fix dependencies where broken.
+        /// Verify that this component's dependencies are met, and then try to fix dependencies where broken.
         /// </summary>
         /// <remarks>
-        /// While in editor, verify that the sibling <see cref="InteractableEventRouter"/> has the neccessary event routes so
+        /// While in editor, verify that the sibling <see cref="InteractableEventRouter"/> has the necessary event routes so
         /// child hover and select events are bubbled up to this component.
         ///
-        /// Also, to avoid this interactable from steal childern collider, this Unity interactor must have its collider manually
+        /// Also, to avoid this interactable from steal children collider, this Unity interactor must have its collider manually
         /// configure. This function will attempt to configure this interactor's collider property, and log a warning if the
         /// collider configuration fails.
         /// 
@@ -240,7 +245,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 var collider = GetComponent<Collider>();
                 if (collider == null)
                 {
-                    Debug.LogWarning($"The Scrollable, {name}, does not have its colliders configured. This may result in child interactors failling to function properly. Configure this Scrollable component's colliders to avoid failures.");
+                    Debug.LogWarning($"The Scrollable, {name}, does not have its colliders configured. This may result in child interactors being inaccessible by interaction managers. Configure this Scrollable component's colliders to avoid failures.");
                 }
                 else
                 {
@@ -352,19 +357,19 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private void StartScrollingWithInteractor(XRInteractionManager manager, IXRInteractor interactor)
         {
-            bool isPokeIntector = interactor is IPokeInteractor;
+            bool isPokeInteractor = interactor is IPokeInteractor;
             bool wasEmpty = states.Count == 0;
             states[interactor] = new ScrollingInteractorData(
                 manager,
                 interactor,
                 scrollRect.transform,
-                isPokeIntector ? pokeDeadZone : deadZone,
-                isPokeIntector ? pokeCancelSelectDistance : cancelSelectDistance);
+                isPokeInteractor ? pokeDeadZone : deadZone,
+                isPokeInteractor ? pokeCancelSelectDistance : cancelSelectDistance);
 
             // Initialize the scroll goal to the current scroll rect position
             if (wasEmpty)
             {
-                scrollGoal = new Vector2(scrollRect.horizontalNormalizedPosition, scrollRect.verticalNormalizedPosition);
+                scrollStart = scrollGoal = new Vector2(scrollRect.horizontalNormalizedPosition, scrollRect.verticalNormalizedPosition);
             }
         }
 
@@ -394,7 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
 
             // Get the active set of scrolling data
-            data = GetCurrentSrollingInteractionData();
+            data = GetCurrentScrollingInteractionData();
 
             // Validate the interactor is hovering or selecting something.
             // If not, remove interactor's state and abort.
@@ -437,7 +442,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         private void CancelSelectionsIfNeeded(in ScrollingInteractorData data)
         {
-            if (data.TotalDistanceSquared > data.CancelSelectionDistanceSquared &&
+            var scrollerMovementSquared = (scrollStart - scrollGoal).sqrMagnitude;
+            if (scrollerMovementSquared > data.CancelSelectionDistanceSquared &&
                 data.Interactor is IXRSelectInteractor selector &&
                 IsSelectingChild(selector))
             {
@@ -476,7 +482,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// Get the current ScrollingInteractorData.
         /// </summary>
-        private ScrollingInteractorData GetCurrentSrollingInteractionData()
+        private ScrollingInteractorData GetCurrentScrollingInteractionData()
         {
             return (ScrollingInteractorData)states[0];
         }
@@ -498,7 +504,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         /// <summary>
-        /// Get if the given interactor is a poke interactor and is hovering an interacble.
+        /// Get if the given interactor is a poke interactor and is hovering an interactable.
         /// </summary>
         private bool HasPokeHover(IXRInteractor interactor)
         {
@@ -515,7 +521,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         /// <summary>
-        /// The start of the interactor currectly scrolling through a scroll region.
+        /// A set of data tracking an interactor's manager and position as it scrolls through the scroll region of a <see cref="Scrollable"/> component.
         /// </summary>
         private struct ScrollingInteractorData
         {
@@ -607,7 +613,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
 
             /// <summary>
-            /// Set the interactor's scroll position, relaive to world space.
+            /// Set the interactor's scroll position, relative to world space.
             /// </summary>
             public void UpdatePosition(in Vector3 position)
             {

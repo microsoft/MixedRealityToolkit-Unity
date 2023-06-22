@@ -470,7 +470,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 scrollable.ScrolllingInteractor == (IXRInteractor)rayInteractor)
             {
                 hitTargetTransform = scrollable.ScrollableTransform;
-                targetLocalHitPoint = scrollable.ScrollingAnchorPosition;
+                targetLocalHitPoint = scrollable.ScrollingLocalAnchorPosition;
                 hitPointAndTransformUpdated = true;
             }
 
