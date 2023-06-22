@@ -47,7 +47,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
         private Vector2 scrollStart;
 
         /// <summary>
-        /// The list of interactors states tracking the interactor's positions and dead zones
+        /// The list of interactors states tracking the interactors' positions and dead zones
         /// </summary>
         private readonly OrderedDictionary states = new OrderedDictionary();
 

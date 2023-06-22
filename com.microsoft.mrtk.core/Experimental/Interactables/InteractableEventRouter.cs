@@ -67,7 +67,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
                             eventRoute.Register(interactables[j]);
                         }
                     }
-
                 }
             }
         }
@@ -286,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
     /// Only events originating from this type will be handled.
     /// </typeparam>
     /// <typeparam name="T">
-    /// The specialized type of <see cref="IXRInteractableEventRouteTarget"/> that will receieve events originating from an interactable component.
+    /// The specialized type of <see cref="IXRInteractableEventRouteTarget"/> that will receive events originating from an interactable component.
     /// </typeparam>
     /// <remarks> 
     /// This is an experimental feature. This class is early in the cycle, it has 
@@ -305,7 +304,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// <summary>
         /// Enable this event route by searching for <see cref="IXRInteractableEventRouteTarget"/>.
         /// </summary>
-        /// <param name="origin">The game object that will be queied when searching for components that implement <see cref="IXRInteractableEventRouteTarget"/>.</param>
+        /// <param name="origin">This game object will be queried for components that implement <see cref="IXRInteractableEventRouteTarget"/>.</param>
         public void OnEnabled(GameObject origin)
         {
             targets = GetTargets(origin);
@@ -313,9 +312,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
 
 
         /// <summary>
-        /// Starts listening to events from an unregistered <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>.
+        /// Starts listening to events from an unregistered 
+        /// <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>.
         /// </summary>
-        /// <param name="interactable">The interacble to register. Events will start being handled by this <see cref="IXRInteractableEventRoute"/>.</param>
+        /// <param name="interactable">The interactable to register. Events will start being handled by this <see cref="IXRInteractableEventRoute"/>.</param>
         public void Register(IXRInteractable interactable)
         {
             if (interactable is S source)
@@ -331,9 +331,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         }
 
         /// <summary>
-        /// Stop listening to events from a registered <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>.
+        /// Stop listening to events from a registered 
+        /// <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>.
         /// </summary>
-        /// <param name="interactable">The interacble to unregister. Events will no longer be handled by this <see cref="IXRInteractableEventRoute"/>.</param>
+        /// <param name="interactable">The interactable to unregister. Events will no longer be handled by this <see cref="IXRInteractableEventRoute"/>.</param>
         public void Unregister(IXRInteractable interactable)
         {
             if (interactable is S source)
@@ -381,14 +382,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
     }
 
     /// <summary>
-    /// A <see cref="InteractableEventRoute{S, T}"/> that targets game objects the are parents of interacbles.
+    /// A <see cref="InteractableEventRoute{S, T}"/> that targets game objects the are parents of interactables.
     /// </summary>
     /// <typeparam name="S">
-    /// The specialized type of <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see> that will be registered with this.
-    /// Only events originating from this type will be handled.
+    /// The specialized type of <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see> 
+    /// that will be registered with this. Only events originating from this type will be handled.
     /// </typeparam>
     /// <typeparam name="T">
-    /// The specialized type of <see cref="IXRInteractableEventRouteTarget"/> that will receieve the interacbles' events.
+    /// The specialized type of <see cref="IXRInteractableEventRouteTarget"/> that will receive interactable events.
     /// </typeparam>
     /// <remarks> 
     /// This is an experimental feature. This class is early in the cycle, it has 
@@ -411,14 +412,14 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
 
 
     /// <summary>
-    /// A <see cref="InteractableEventRoute{S, T}"/> that targets game objects the are children of interacbles.
+    /// A <see cref="InteractableEventRoute{S, T}"/> that targets game objects the are children of interactables.
     /// </summary>
     /// <typeparam name="S">
-    /// The specialized type of <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see> that will be registered with this.
-    /// Only events originating from this type will be handled.
+    /// The specialized type of <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>
+    /// that will be registered with this. Only events originating from this type will be handled.
     /// </typeparam>
     /// <typeparam name="T">
-    /// The specialized type of <see cref="IXRInteractableEventRouteTarget"/> that will receieve the interacbles' events.
+    /// The specialized type of <see cref="IXRInteractableEventRouteTarget"/> that will receive interactables events.
     /// </typeparam>
     /// <remarks> 
     /// This is an experimental feature. This class is early in the cycle, it has 
@@ -442,7 +443,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
 
     /// <summary>
     /// A <see cref="InteractableParentEventRoute{S, T}"/> that retransmits hover events from
-    /// child game objects up the heirarch, to the child game object's parents.
+    /// child game objects up the hierarchy, to the child game object's parents.
     /// </summary>
     /// <remarks> 
     /// This is an experimental feature. This class is early in the cycle, it has 
@@ -471,7 +472,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
 
     /// <summary>
     /// A <see cref="InteractableParentEventRoute{S, T}"/> that retransmits hover events from
-    /// child game objects down the heirarch, to the child game object's children.
+    /// child game objects down the hierarchy, to the child game object's children.
     /// </summary>
     /// <remarks> 
     /// This is an experimental feature. This class is early in the cycle, it has 
@@ -500,7 +501,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
 
     /// <summary>
     /// A <see cref="InteractableParentEventRoute{S, T}"/> that retransmits select events from
-    /// child game objects up the heirarch, to the child game object's parents.
+    /// child game objects up the hierarchy, to the child game object's parents.
     /// </summary>
     /// <remarks> 
     /// This is an experimental feature. This class is early in the cycle, it has 
@@ -529,7 +530,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
 
     /// <summary>
     /// A <see cref="InteractableParentEventRoute{S, T}"/> that retransmits select events from
-    /// child game objects down the heirarch, to the child game object's children.
+    /// child game objects down the hierarchy, to the child game object's children.
     /// </summary>
     /// <remarks> 
     /// This is an experimental feature. This class is early in the cycle, it has 
