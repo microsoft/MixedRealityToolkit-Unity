@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -22,7 +23,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
     [AddComponentMenu("MRTK/Core/Interactable Event Router")]
     public class InteractableEventRouter : MonoBehaviour
     {
-        private IXRInteractable[] interactables = null;
+        private readonly HashSet<IXRInteractable> activeInteractables = new HashSet<IXRInteractable>();
+        private readonly List<IXRInteractable> newInteractables = new List<IXRInteractable>();
+        private readonly List<InteractableEventRouterChildSource> childSources = new List<InteractableEventRouterChildSource>();
 
         [SerializeReference]
         [InterfaceSelector(true)]
@@ -31,18 +34,55 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
 
         private void OnEnable()
         {
+            if (eventRoutes != null)
+            {
+                for (int i = 0; i < eventRoutes.Length; i++)
+                {
+                    eventRoutes[i].OnEnabled(gameObject);
+                }
+            }
+
             ConnectSourcesToTargets();
+            ConnectChildSources();
         }
 
         private void OnDisable()
         {
+            DisconnectChildSources();
             DisconnectSourcesFromTargets();
         }
 
         private void OnTransformChildrenChanged()
         {
+            Refresh();
+        }
+
+        /// <summary>
+        /// Re-query for the list of child <see cref="IXRInteractableEventRouteTarget"/> components, and hook-up event handlers to these child objects.
+        /// </summary>
+        public void Refresh()
+        {
+            DisconnectChildSources();
             DisconnectSourcesFromTargets();
             ConnectSourcesToTargets();
+            ConnectChildSources();
+        }
+
+        private void ConnectChildSources()
+        {
+            GetComponentsInChildren(includeInactive: true, childSources);
+            for (int i = 0; i < childSources.Count; i++)
+            {
+                childSources[i].ChildrenChanged.AddListener(ConnectSourcesToTargets);
+            }
+        }
+
+        private void DisconnectChildSources()
+        {
+            for (int i = 0; i < childSources.Count; i++)
+            {
+                childSources[i].ChildrenChanged.RemoveListener(ConnectSourcesToTargets);
+            }
         }
 
         private void ConnectSourcesToTargets()
@@ -52,52 +92,47 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
                 return;
             }
 
-            IXRInteractable[] interactables = GetComponentsInChildren<IXRActivateInteractable>(includeInactive: true);
-            for (int i = 0; i < eventRoutes.Length; i++)
+            GetComponentsInChildren(includeInactive: true, newInteractables);
+            for (int i = 0; i < newInteractables.Count; i++)
             {
-                var eventRoute = eventRoutes[i];
-                if (eventRoute != null)
+                var interactable = newInteractables[i];
+                if (activeInteractables.Add(interactable) && IsValidChild(interactable))
                 {
-                    eventRoute.OnEnabled(gameObject);
-                    for (int j = 0; j < interactables.Length; j++)
+                    for (int j = 0; j < eventRoutes.Length; j++)
                     {
-                        var interactable = interactables[j];
-                        if (IsValidChild(interactable))
-                        {
-                            eventRoute.Register(interactables[j]);
-                        }
+                        eventRoutes[j].Register(interactable);
                     }
                 }
             }
         }
 
         /// <summary>
-        /// Get if the given child interactable is valid. This will filter out references to this object.
+        /// Determine if the given child interactable is valid. This will filter out references to this object, and block
+        /// interactables that are being managed by another <see cref="InteractableEventRouter"/>.
         /// </summary>
         private bool IsValidChild(IXRInteractable interactable)
         {
-            return interactable is MonoBehaviour behaviour && behaviour.gameObject != gameObject;
+            return interactable is MonoBehaviour behaviour &&
+                behaviour.GetComponentInParent<InteractableEventRouter>() == this &&
+                behaviour.gameObject != gameObject;
         }
 
         private void DisconnectSourcesFromTargets()
         {
-            if (interactables == null || eventRoutes == null)
+            if (eventRoutes == null)
             {
                 return;
             }
 
-            for (int i = 0; i < eventRoutes.Length; i++)
+            foreach (var interactable in activeInteractables)
             {
-                var eventRoute = eventRoutes[i];
-                if (eventRoute != null)
+                for (int j = 0; j < eventRoutes.Length; j++)
                 {
-                    for (int j = 0; j < interactables.Length; j++)
-                    {
-                        eventRoute.Unregister(interactables[j]);
-                    }
-
+                    eventRoutes[j].Unregister(interactable);
                 }
+
             }
+            activeInteractables.Clear();
         }
 
         /// <summary>

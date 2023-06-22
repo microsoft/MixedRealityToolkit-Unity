@@ -15567,14 +15567,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventRoutes:
-  - rid: 5356761795612114948
-  - rid: 5356761795612114949
+  - rid: 5356761795612114952
+  - rid: 5356761795612114953
   references:
     version: 2
     RefIds:
-    - rid: 5356761795612114948
+    - rid: 5356761795612114952
       type: {class: BubbleChildHoverEvents, ns: Microsoft.MixedReality.Toolkit.Experimental, asm: Microsoft.MixedReality.Toolkit.Core}
-    - rid: 5356761795612114949
+    - rid: 5356761795612114953
       type: {class: BubbleChildSelectEvents, ns: Microsoft.MixedReality.Toolkit.Experimental, asm: Microsoft.MixedReality.Toolkit.Core}
 --- !u!1001 &353784996
 PrefabInstance:
@@ -25920,14 +25920,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventRoutes:
-  - rid: 5356761795612114944
-  - rid: 5356761795612114945
+  - rid: 5356761795612114954
+  - rid: 5356761795612114955
   references:
     version: 2
     RefIds:
-    - rid: 5356761795612114944
+    - rid: 5356761795612114954
       type: {class: BubbleChildHoverEvents, ns: Microsoft.MixedReality.Toolkit.Experimental, asm: Microsoft.MixedReality.Toolkit.Core}
-    - rid: 5356761795612114945
+    - rid: 5356761795612114955
       type: {class: BubbleChildSelectEvents, ns: Microsoft.MixedReality.Toolkit.Experimental, asm: Microsoft.MixedReality.Toolkit.Core}
 --- !u!224 &692873436 stripped
 RectTransform:
@@ -26039,6 +26039,7 @@ GameObject:
   - component: {fileID: 709272535}
   - component: {fileID: 709272536}
   - component: {fileID: 709272537}
+  - component: {fileID: 709272538}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -26205,6 +26206,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &709272538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 709272534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab638e81f7d2ca34dbf7e36e0294ae12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  childrenChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!224 &718172737 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8376646494505211229, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
@@ -33505,6 +33521,7 @@ GameObject:
   - component: {fileID: 955345455}
   - component: {fileID: 955345457}
   - component: {fileID: 955345456}
+  - component: {fileID: 955345458}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -33671,6 +33688,21 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 1
+--- !u!114 &955345458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 955345454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab638e81f7d2ca34dbf7e36e0294ae12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  childrenChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!224 &958639156 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8376646494505211229, guid: c6b351a67ceb69140b199996bbbea156, type: 3}
@@ -56595,6 +56627,7 @@ GameObject:
   - component: {fileID: 1742074636}
   - component: {fileID: 1742074638}
   - component: {fileID: 1742074637}
+  - component: {fileID: 1742074639}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -56761,6 +56794,21 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &1742074639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742074635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab638e81f7d2ca34dbf7e36e0294ae12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  childrenChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &1746037064
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -62167,14 +62215,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventRoutes:
-  - rid: 5356761795612114946
-  - rid: 5356761795612114947
+  - rid: 5356761795612114950
+  - rid: 5356761795612114951
   references:
     version: 2
     RefIds:
-    - rid: 5356761795612114946
+    - rid: 5356761795612114950
       type: {class: BubbleChildHoverEvents, ns: Microsoft.MixedReality.Toolkit.Experimental, asm: Microsoft.MixedReality.Toolkit.Core}
-    - rid: 5356761795612114947
+    - rid: 5356761795612114951
       type: {class: BubbleChildSelectEvents, ns: Microsoft.MixedReality.Toolkit.Experimental, asm: Microsoft.MixedReality.Toolkit.Core}
 --- !u!1001 &1878738747
 PrefabInstance:
