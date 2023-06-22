@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.XR.Interaction.Toolkit;
 
-namespace Microsoft.MixedReality.Toolkit.Input.Experimental
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     public class SpatialMouseInteractorCursorVisual : BaseReticleVisual
     {
