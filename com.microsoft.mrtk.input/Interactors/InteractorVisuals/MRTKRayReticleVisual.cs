@@ -155,7 +155,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             // In the case of an IScrollable being selected, ensure that the reticle locks to the
             // scroller and not to the a list item within the scroller, such as a button.
-            if (args.interactableObject is IScrollable scrollable && scrollable.ScrolllingInteractor == (IXRInteractor)rayInteractor)
+            if (args.interactableObject is IScrollable scrollable &&
+                scrollable.IsScrolling &&
+                scrollable.ScrolllingInteractor == (IXRInteractor)rayInteractor)
             {
                 hitTargetTransform = scrollable.ScrollableTransform;
                 targetLocalHitPoint = scrollable.ScrollingAnchorPosition;

@@ -5,8 +5,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Unity.XR.CoreUtils.Collections;
 using UnityEngine.XR.Interaction.Toolkit;
+using System.Collections.Specialized;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
@@ -17,14 +17,42 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// </summary>
     /// <remarks>
     /// In order to receive child select and hover event, this <see cref="Scrollable"/> object requires a <see cref="InteractableEventRouter"/> component be
-    /// added to the Unity game object as well. 
+    /// added to the Unity game object as well.
+    /// 
+    /// This is an experimental feature. This class is early in the cycle, it has 
+    /// been labeled as experimental to indicate that it is still evolving, and 
+    /// subject to change over time. Parts of the MRTK, such as this class, appear 
+    /// to have a lot of value even if the details haven’t fully been fleshed out. 
+    /// For these types of features, we want the community to see them and get 
+    /// value out of them early enough so to provide feedback. 
     /// </remarks>
     [AddComponentMenu("MRTK/UX/Scrollable")]
     [RequireComponent(typeof(InteractableEventRouter))]
     public class Scrollable : MRTKBaseInteractable, IScrollable, IXRHoverInteractableParent, IXRSelectInteractableParent
     {
+        /// <summary>
+        /// The current scrollVelocity of the scroll, to be applied once scrolling is complete.
+        /// </summary>
+        private Vector2 scrollVelocity;
+
+        /// <summary>
+        /// The scoller goal;
+        /// </summary>
+        private Vector2 scrollGoal; 
+
+        /// <summary>
+        /// The list of interactors states tracking the interactor's positions and dead zones
+        /// </summary>
+        private readonly OrderedDictionary states = new OrderedDictionary();
+
+        /// <summary>
+        /// A cache of interacbles who's selection should be canceled.
+        /// </summary>
+        List<IXRSelectInteractable> cancelableSelections;
+
         [Tooltip("The scroll rect to scroll.")]
         [SerializeField]
+        [Experimental]
         private ScrollRect scrollRect = null;
 
         /// <summary>
@@ -36,22 +64,39 @@ namespace Microsoft.MixedReality.Toolkit.UX
             set => scrollRect = value;
         }
 
-        [Tooltip("The scale factor to apply to the magnitude of interactor's dragged movement vector, the vector from start to end. The dragged magnitude is scaled by this amount. If the product is 1 or greater, the interactor's delta movement is applied directly to the scroll movement. If less than one, the interactor's delta movement is scaled by the product.")]
         [SerializeField]
-        private float deadZoneFactor = 0.1f;
+        [Range(0, 1)]
+        [Tooltip("Enter amount representing amount of smoothing to apply to the movement. Smoothing of 0 means no smoothing. Max value means no change to value.")]
+        private float moveLerpTime = 0.001f;
 
         /// <summary>
-        /// The scale factor to apply to the magnitude of interactor's dragged movement vector, the from vector start to end.
+        /// Enter amount representing amount of smoothing to apply to the movement. Smoothing of 0 means no smoothing. Max value means no change to value.
+        /// </summary>
+        public float MoveLerpTime
+        {
+            get => moveLerpTime;
+            set => moveLerpTime = value;
+        }
+
+        [SerializeField]
+        [Tooltip("Once the ScrollingInteractor moves this distance or more, this component will start chaning scroll position of the ScrollRect.")]
+        private float deadZone = 0.05f;
+
+        /// <summary>
+        /// Once the <see cref="ScrolllingInteractor"/> moves this distance or more, this component will
+        /// start changing scroll positions of the <see cref="ScrollRect"/>.
         /// </summary>
         /// <remarks>
-        /// The dragged magnitude is scaled by this amount. If the product is 1 or greater, the interactor's delta
-        /// movement is applied directly to the scroll movement. If less than one, the interactor's delta movement
-        /// is scaled by the product.
+        /// When the <see cref="ScrolllingInteractor"/> moves this distance away from the starting point, the positions of <see cref="ScrollRect"/>
+        /// will start being altered.
+        ///
+        /// If <see cref="ScrolllingInteractor"/> implements <see cref="Microsoft.MixedReality.Toolkit.IPokeInteractor">IPokeInteractor</see>,
+        /// the <see cref="PokeDeadZone"/> property will be used instead.
         /// </remarks>
-        public float DeadZoneFactor
+        public float DeadZone
         {
-            get => deadZoneFactor;
-            set => deadZoneFactor = value;
+            get => deadZone;
+            set => deadZone = value;
         }
 
         [Tooltip("The scroll distance at which to cancel any child interactable's selection.")]
@@ -64,6 +109,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <remarks>
         /// After the 2D plane has been scrolled this total distance, and if there is an active child selection, the child
         /// selection will be canceled.
+        ///
+        /// If <see cref="ScrolllingInteractor"/> implements <see cref="Microsoft.MixedReality.Toolkit.IPokeInteractor">IPokeInteractor</see>, the <see cref="PokeCancelSelectDistance"/>
+        /// property is used instead.
         /// </remarks>
         public float CancelSelectDistance
         {
@@ -71,31 +119,75 @@ namespace Microsoft.MixedReality.Toolkit.UX
             set => cancelSelectDistance = value;
         }
 
-        readonly HashSetList<IXRInteractor> interactorsScrolling = new HashSetList<IXRInteractor>();
-        readonly List<InteractorPosition> interactorPositions = new List<InteractorPosition>();
-        List<IXRSelectInteractable> cancelableSelection;
+        [SerializeField]
+        [Tooltip("Once the ScrollingInteractor moves this distance or more, this component will start chaning scroll position of the ScrollRect. This only used if ScrolllingInteractor implements IPokeInteractor.")]
 
+        private float pokeDeadZone = 0.01f;
 
         /// <summary>
-        /// Get the transform that is backing this scrollable about.
+        /// Once the <see cref="ScrolllingInteractor"/> moves this distance or more, this component will
+        /// start changing scroll positions of the <see cref="ScrollRect"/>.
         /// </summary>
+        /// <remarks>
+        /// When the <see cref="ScrolllingInteractor"/> moves this distance away from the starting point, the positions of <see cref="ScrollRect"/>
+        /// will start being altered.
+        ///
+        /// If <see cref="ScrolllingInteractor"/> does not implement <see cref="Microsoft.MixedReality.Toolkit.IPokeInteractor">IPokeInteractor</see>,
+        /// the <see cref="DeadZone"/> property will be used instead.
+        /// </remarks>
+        public float PokeDeadZone
+        {
+            get => deadZone;
+            set => deadZone = value;
+        }
+
+        [Tooltip("The scroll distance at which to cancel any child interactable's selection. This only used if ScrolllingInteractor implements IPokeInteractor.")]
+        [SerializeField]
+        private float pokeCancelSelectDistance = 0.05f;
+
+        /// <summary>
+        /// The scroll distance at which to cancel any child interactable's selection.
+        /// </summary>
+        /// <remarks>
+        /// After the 2D plane has been scrolled this total distance, and if there is an active child selection, the child
+        /// selection will be canceled.
+        ///
+        /// If <see cref="ScrolllingInteractor"/> does not implement <see cref="Microsoft.MixedReality.Toolkit.IPokeInteractor">IPokeInteractor</see>, the <see cref="CancelSelectDistance"/>
+        /// property is used instead.
+        /// </remarks>
+        public float PokeCancelSelectDistance
+        {
+            get => pokeCancelSelectDistance;
+            set => pokeCancelSelectDistance = value;
+        }
+
+        /// <inheritdoc />
         public Transform ScrollableTransform => scrollRect.transform;
 
-        /// <summary>
-        /// Get if the scrollable is currently scrolling
-        /// </summary>
-        public bool IsScrolling => interactorPositions.Count > 0;
+        /// <inheritdoc />
+        public bool IsScrolling
+        {
+            get
+            {
+                if (states.Count > 0)
+                {
+                    return GetCurrentSrollingInteractionData().IsScrolling;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
 
-        /// <summary>
-        /// Get the interactor that is scrolling the transform
-        /// </summary>
+        /// <inheritdoc />
         public IXRInteractor ScrolllingInteractor
         {
             get
             {
-                if (interactorPositions.Count > 0)
+                if (states.Count > 0)
                 {
-                    return interactorPositions[0].interactor;
+                    return GetCurrentSrollingInteractionData().Interactor;
                 }
                 else
                 {
@@ -104,160 +196,19 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
-        /// <summary>
-        /// Get the anchor position at the start of the scroll
-        /// </summary>
+        /// <inheritdoc />
         public Vector3 ScrollingAnchorPosition
         {
             get
             {
-                if (interactorPositions.Count > 0)
+                if (states.Count > 0)
                 {
-                    var interactorPosition = interactorPositions[0];
-                    if (!interactorPosition.startPoint.IsValidVector())
-                    {
-                        Debug.Log($"SCROLLABLE: ScrollingAnchorPosition using interactor attach point");
-                        return scrollRect.transform.InverseTransformPoint(interactorPosition.interactor.GetAttachTransform(this).position);
-                    }
-                    else
-                    {
-                        return interactorPosition.startPoint;
-                    }
+                    return GetCurrentSrollingInteractionData().StartPosition;
                 }
                 else
                 {
                     return Vector3.zero;
                 }
-            }
-        }
-
-        private struct InteractorPosition
-        {
-            public XRInteractionManager manager;
-            public IXRInteractor interactor;
-            public Vector3 lastPoint;
-            public Vector3 startPoint;
-            public Vector2 scrollStart;
-
-            public InteractorPosition(XRInteractionManager manager, IXRInteractor interactor)
-            {
-                this.manager = manager;
-                this.interactor = interactor;
-                lastPoint = Vector3.positiveInfinity;
-                startPoint = Vector3.positiveInfinity;
-                scrollStart = Vector2.positiveInfinity;
-            }
-        }        
-
-        private Vector2 velocity;
-
-     
-        /// <inheritdoc />
-        public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
-        {
-            base.ProcessInteractable(updatePhase);
-
-            if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
-            {
-                Vector2 dragDelta = Vector2.zero;
-                float displacementFromStart = 0;
-                IXRInteractor draggingInteractor = null;
-                XRInteractionManager draggingManager = null;
-                Vector2 scrollDelta = Vector2.zero;
-
-                if (interactorPositions.Count > 0)
-                {
-                    var interactorPosition = interactorPositions[0];
-                    //Debug.Log($"SCROLLABLE: dragging ({interactorPosition.interactor})");
-                    var thisPoint = scrollRect.transform.InverseTransformPoint(interactorPosition.interactor.GetAttachTransform(this).position);
-
-                    if (!interactorPosition.startPoint.IsValidVector() ||
-                        !interactorPosition.lastPoint.IsValidVector())
-                    {
-                        interactorPosition.startPoint = thisPoint;
-                        interactorPosition.lastPoint = thisPoint;
-                        interactorPosition.scrollStart = new Vector2(scrollRect.horizontalNormalizedPosition, scrollRect.verticalNormalizedPosition);
-                    }
-
-                    draggingInteractor = interactorPosition.interactor;
-                    draggingManager = interactorPosition.manager;
-                    dragDelta = thisPoint - interactorPosition.lastPoint;
-                    interactorPosition.lastPoint = thisPoint;
-                    interactorPositions[0] = interactorPosition;
-
-                    displacementFromStart = (thisPoint - interactorPosition.startPoint).magnitude * deadZoneFactor;
-                    dragDelta *= Mathf.Clamp01(displacementFromStart);
-
-
-                    float contentHeight = scrollRect.content.rect.height - scrollRect.viewport.rect.height;
-                    float contentWidth = scrollRect.content.rect.width - scrollRect.viewport.rect.width;
-
-                    if (contentHeight > 0.0f)
-                    {
-                        scrollRect.verticalNormalizedPosition -= (dragDelta.y / contentHeight);
-                    }
-
-                    if (contentWidth > 0.0f)
-                    {
-                        scrollRect.horizontalNormalizedPosition -= (dragDelta.x / contentWidth);
-                    }
-
-                    scrollDelta = new Vector2(scrollRect.horizontalNormalizedPosition, scrollRect.verticalNormalizedPosition) - interactorPosition.scrollStart;
-                    if (scrollDelta.magnitude > cancelSelectDistance &&
-                        draggingInteractor is IXRSelectInteractor selector &&
-                        selector.hasSelection &&
-                        (selector.interactablesSelected.Count > 1 || !selector.interactablesSelected.Contains(this)))
-                    {
-                        if (cancelableSelection == null)
-                        {
-                            cancelableSelection = new List<IXRSelectInteractable>(selector.interactablesSelected.Count);
-                        }
-
-                        IXRSelectInteractable thisInteractable = this;
-
-                        foreach (var interactable in selector.interactablesSelected)
-                        {
-                            if (interactable != thisInteractable)
-                            {
-                                Debug.Log($"SCROLLABLE: Should cancel select on ({interactable})");
-                                cancelableSelection.Add(interactable);
-                            }
-                        }
-
-                        if (cancelableSelection.Count > 0)
-                        {
-                            Debug.Log($"SCROLLABLE: Calling SelectEnter ({thisInteractable})");
-                            draggingManager.SelectEnter(selector, thisInteractable);
-
-                            foreach (var interactable in cancelableSelection)
-                            {
-                                if (interactable.isSelected &&
-                                    interactable.interactorsSelecting.Contains(selector))
-                                {
-                                    Debug.Log($"SCROLLABLE: Calling SelectCancel ({interactable})");
-                                    draggingManager.SelectCancel(selector, interactable);
-                                }
-                            }
-                        }
-
-                        cancelableSelection.Clear();
-                    }
-                }
-
-
-                if (displacementFromStart < 0.01f)
-                {
-                    velocity = Vector2.zero;
-                }
-                else
-                {
-                    velocity = dragDelta * (1.0f / Time.deltaTime);
-                }
-
-
-                // velocity += ((dragDelta * (1.0f / Time.deltaTime) * Selectedness()) - velocity) * 0.1f;
-                // velocity = newVelocity;             
-                // scrollRect.velocity = new Vector2((dragDelta.x / contentWidth) * Selectedness(), (dragDelta.y / contentHeight) * Selectedness());
             }
         }
 
@@ -304,40 +255,59 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 #endif
 
+        /// <inheritdoc />
+        public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
+        {
+            base.ProcessInteractable(updatePhase);
+
+            if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic &&
+                UpdateScrolling(out ScrollingInteractorData data))
+            {
+                CancelSelectionsIfNeeded(in data);
+            }
+        }
+
+        /// <inheritdoc />
         protected override void OnHoverEntered(HoverEnterEventArgs args)
         {
             base.OnHoverEntered(args);
             IncreaseHoverCount(args);
         }
 
+        /// <inheritdoc />
         protected override void OnHoverExited(HoverExitEventArgs args)
         {
             base.OnHoverExited(args);
             DecreaseHoverCount(args);
         }
 
+        /// <inheritdoc />
         protected override void OnSelectEntered(SelectEnterEventArgs args)
         {
             base.OnSelectEntered(args);
             IncreaseSelectCount(args);
         }
 
+        /// <inheritdoc />
         protected override void OnSelectExited(SelectExitEventArgs args)
         {
             base.OnSelectExited(args);
             DecreaseSelectCount(args);
         }
 
+        /// <inheritdoc />
         public void OnChildHoverEntered(HoverEnterEventArgs args)
         {
             IncreaseHoverCount(args);
         }
 
+        /// <inheritdoc />
         public void OnChildHoverExited(HoverExitEventArgs args)
         {
             DecreaseHoverCount(args);
         }
 
+        /// <inheritdoc />
         public void OnChildSelectEntered(SelectEnterEventArgs args)
         {
             IncreaseSelectCount(args);
@@ -382,9 +352,19 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private void StartScrollingWithInteractor(XRInteractionManager manager, IXRInteractor interactor)
         {
-            if (interactorsScrolling.Add(interactor))
+            bool isPokeIntector = interactor is IPokeInteractor;
+            bool wasEmpty = states.Count == 0;
+            states[interactor] = new ScrollingInteractorData(
+                manager,
+                interactor,
+                scrollRect.transform,
+                isPokeIntector ? pokeDeadZone : deadZone,
+                isPokeIntector ? pokeCancelSelectDistance : cancelSelectDistance);
+
+            // Initialize the scroll goal to the current scroll rect position
+            if (wasEmpty)
             {
-                interactorPositions.Add(new InteractorPosition(manager, interactor));
+                scrollGoal = new Vector2(scrollRect.horizontalNormalizedPosition, scrollRect.verticalNormalizedPosition);
             }
         }
 
@@ -392,24 +372,121 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             if (!HasSelection(interactor) &&
                 !HasPokeHover(interactor) &&
-                interactorsScrolling.Contains(interactor))
+                states.Contains(interactor))
             {
-                for (int i = 0; i < interactorPositions.Count; i++)
+                states.Remove(interactor);
+                if (states.Count == 0)
                 {
-                    if (interactorPositions[i].interactor == interactor)
+                    scrollRect.velocity = scrollVelocity;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update the scrolling positions for the given data structure.
+        /// </summary>
+        private bool UpdateScrolling(out ScrollingInteractorData data)
+        {
+            if (states.Count == 0)
+            {
+                data = default;
+                return false;
+            }
+
+            // Get the active set of scrolling data
+            data = GetCurrentSrollingInteractionData();
+
+            // Validate the interactor is hovering or selecting something.
+            // If not, remove interactor's state and abort.
+            if (!HasPokeHover(data.Interactor) && !HasSelection(data.Interactor))
+            {
+                states.Remove(data.Interactor);
+                return false;
+            }
+
+            // Update the interactor's position
+            data.UpdatePosition(data.Interactor.GetAttachTransform(this).position);
+
+            // Determine if scrolling is active, and update drag delta
+            bool isScrolling = data.IsScrolling || data.TotalDistanceSquared > data.DeadZoneSquared;
+            Vector2 dragDelta = isScrolling ? data.LocalPosition - data.LocalPreviousPosition : Vector2.zero;
+            data.IsScrolling = isScrolling;
+
+            // Update scrolling positions
+            float contentWidth = scrollRect.content.rect.width - scrollRect.viewport.rect.width;
+            if (contentWidth > 0.0f)
+            {
+                scrollGoal.x -= dragDelta.x / contentWidth;
+                scrollRect.horizontalNormalizedPosition = Smoothing.SmoothTo(scrollRect.horizontalNormalizedPosition, scrollGoal.x, moveLerpTime, Time.deltaTime);
+            }
+
+            float contentHeight = scrollRect.content.rect.height - scrollRect.viewport.rect.height;
+            if (contentHeight > 0.0f)
+            {
+                scrollGoal.y -= dragDelta.y / contentHeight;
+                scrollRect.verticalNormalizedPosition = Smoothing.SmoothTo(scrollRect.verticalNormalizedPosition, scrollGoal.y, moveLerpTime, Time.deltaTime);
+            }
+
+            scrollVelocity = dragDelta * (1.0f / Time.deltaTime);
+            UpdateCurrentScrollingInteractionData(data);
+            return true;
+        }
+
+        /// <summary>
+        /// Cancel selection on child interactables being selected by the given data's interactor.
+        /// </summary>
+        private void CancelSelectionsIfNeeded(in ScrollingInteractorData data)
+        {
+            if (data.TotalDistanceSquared > data.CancelSelectionDistanceSquared &&
+                data.Interactor is IXRSelectInteractor selector &&
+                IsSelectingChild(selector))
+            {
+                if (cancelableSelections == null)
+                {
+                    cancelableSelections = new List<IXRSelectInteractable>(selector.interactablesSelected.Count);
+                }
+                else
+                {
+                    cancelableSelections.Clear();
+                }
+
+                foreach (var interactable in selector.interactablesSelected)
+                {
+                    if (interactable != (IXRSelectInteractable)this)
                     {
-                        Debug.Log("SCROLLABLE: remove scrolling interactor");
-                        interactorPositions.RemoveAt(i);
-                        interactorsScrolling.Remove(interactor);
-                        break;
+                        cancelableSelections.Add(interactable);
                     }
                 }
 
-                if (interactorsScrolling.Count == 0)
+                if (cancelableSelections.Count > 0)
                 {
-                    scrollRect.velocity = velocity;
+                    data.Manager.SelectEnter(selector, this);
+                    foreach (var interactable in cancelableSelections)
+                    {
+                        if (interactable.isSelected &&
+                            interactable.interactorsSelecting.Contains(selector))
+                        {
+                            data.Manager.SelectCancel(selector, interactable);
+                        }
+                    }
                 }
             }
+        }
+
+        /// <summary>
+        /// Get the current ScrollingInteractorData.
+        /// </summary>
+        private ScrollingInteractorData GetCurrentSrollingInteractionData()
+        {
+            return (ScrollingInteractorData)states[0];
+        }
+
+        /// <summary>
+        /// Update the current ScrollingInteractorData.
+        /// </summary>
+        private void UpdateCurrentScrollingInteractionData(in ScrollingInteractorData data)
+        {
+            states[0] = data;
         }
 
         /// <summary>
@@ -426,6 +503,124 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private bool HasPokeHover(IXRInteractor interactor)
         {
             return (interactor is IPokeInteractor poker) && poker.hasHover;
+        }
+
+        /// <summary>
+        /// Get if the interactor is selecting a child interactor.
+        /// </summary>
+        private bool IsSelectingChild(IXRSelectInteractor interactor)
+        {
+            return interactor.hasSelection &&
+                (interactor.interactablesSelected.Count > 1 || !interactor.interactablesSelected.Contains(this));
+        }
+
+        /// <summary>
+        /// The start of the interactor currectly scrolling through a scroll region.
+        /// </summary>
+        private struct ScrollingInteractorData
+        {
+            /// <summary>
+            /// Thw interactors manager
+            /// </summary>
+            public XRInteractionManager Manager { get; private set; }
+
+            /// <summary>
+            /// The interactor wanting to scroll
+            /// </summary>
+            public IXRInteractor Interactor { get; private set; }
+
+            /// <summary>
+            /// The scroll region the interactor is acting upon
+            /// </summary>
+            public Transform ScrollRegion { get; private set; }
+
+            /// <summary>
+            /// Get the interactor's previous position, relative to scroll regions coordinate space.
+            /// </summary>
+            public Vector3 LocalPreviousPosition { get; private set; }
+
+            /// <summary>
+            /// Get the interactor's previous position, relative to world space.
+            /// </summary>
+            public Vector3 PreviousPosition => ScrollRegion.TransformPoint(LocalPreviousPosition);
+
+            /// <summary>
+            /// Get the interactor's last sampled position, relative to world space.
+            /// </summary>
+            public Vector3 Position => ScrollRegion.TransformPoint(LocalPosition);
+
+            /// <summary>
+            /// Get the interactor's current position, relative to scroll regions coordinate space.
+            /// </summary>
+            public Vector3 LocalPosition { get; private set; }
+
+            /// <summary>
+            /// Get the interactor's current position, relative to world space.
+            /// </summary>
+            public Vector3 StartPosition => ScrollRegion.TransformPoint(LocalStartPosition);
+
+            /// <summary>
+            /// Get the interactor's starting position, relative to scroll regions coordinate space.
+            /// </summary>
+            public Vector3 LocalStartPosition { get; private set; }
+
+            /// <summary>
+            /// Get or set if the interactor has moving past the dead zone distance, and started scrolling
+            /// </summary>
+            public bool IsScrolling { get; set; }
+
+            /// <summary>
+            /// Get the dead zone distance for this interactor.
+            /// </summary>
+            public float DeadZoneSquared { get; private set; }
+
+            /// <summary>
+            /// Get the cancel selection distance for this interactor.
+            /// </summary>
+            public float CancelSelectionDistanceSquared { get; private set; }
+
+            /// <summary>
+            /// Get the total distance moved squared
+            /// </summary>
+            public float TotalDistanceSquared => (StartPosition - Position).sqrMagnitude;
+
+            private bool positionInitialized;
+
+            public ScrollingInteractorData(
+                XRInteractionManager manager,
+                IXRInteractor interactor,
+                Transform scrollRegion,
+                float deadZone,
+                float cancelSelectionDistance)
+            {
+
+                Manager = manager;
+                Interactor = interactor;
+                ScrollRegion = scrollRegion;
+                LocalPosition = Vector3.zero;
+                LocalStartPosition = Vector3.zero;
+                LocalPreviousPosition = Vector3.zero;
+                DeadZoneSquared = deadZone * deadZone;
+                CancelSelectionDistanceSquared = cancelSelectionDistance * cancelSelectionDistance;
+                IsScrolling = false;
+                positionInitialized = false;
+            }
+
+            /// <summary>
+            /// Set the interactor's scroll position, relaive to world space.
+            /// </summary>
+            public void UpdatePosition(in Vector3 position)
+            {
+                LocalPreviousPosition = LocalPosition;
+                LocalPosition = ScrollRegion.InverseTransformPoint(position);
+
+                if (!positionInitialized)
+                {
+                    positionInitialized = true;
+                    LocalPreviousPosition = LocalPosition;
+                    LocalStartPosition = LocalPosition;
+                }
+            }
         }
     }
 }
