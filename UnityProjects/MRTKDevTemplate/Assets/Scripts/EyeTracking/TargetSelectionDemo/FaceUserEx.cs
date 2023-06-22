@@ -65,8 +65,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             // Make also sure that the collider for hit tests is set 
             if (_objectWithCollider == null)
             {
-                Collider coll;
-                if (!TryGetComponent(out coll))
+                if (!TryGetComponent(out Collider coll))
                 {
                     coll = GetComponentInChildren<Collider>();
                 }
