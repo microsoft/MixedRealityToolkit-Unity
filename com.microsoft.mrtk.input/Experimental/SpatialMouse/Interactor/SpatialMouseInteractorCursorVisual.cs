@@ -55,7 +55,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Experimental
 
         private Vector3 targetLocalHitPoint;
         private Vector3 targetLocalHitNormal;
-        private float hitDistance;
         private Transform hitTargetTransform;
 
         // reusable lists of the points returned by the XRRayInteractor
@@ -80,13 +79,21 @@ namespace Microsoft.MixedReality.Toolkit.Input.Experimental
                 return;
             }
 
+            // Sanity check.
+            if (rayPositions == null ||
+                rayPositions.Length == 0 ||
+                rayPositionsCount == 0 ||
+                rayPositionsCount > rayPositions.Length)
+            {
+                return;
+            }
+
             // Record relevant data about the hit point.
             if (raycastResult.HasValue && isUIHitClosest)
             {
                 hitTargetTransform = raycastResult.Value.gameObject.transform;
                 targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastResult.Value.worldPosition);
                 targetLocalHitNormal = hitTargetTransform.InverseTransformDirection(raycastResult.Value.worldNormal);
-                hitDistance = (raycastResult.Value.worldPosition - rayPositions[0]).magnitude;
             }
             else if (raycastHit.HasValue)
             {
@@ -103,8 +110,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Experimental
                     targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastHit.Value.point);
                     targetLocalHitNormal = hitTargetTransform.InverseTransformPoint(raycastHit.Value.normal);
                 }
-
-                hitDistance = (raycastHit.Value.point - rayPositions[0]).magnitude;
             }
         }
 
