@@ -194,7 +194,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseReticle: {fileID: 1275538619}
   mouseInteractor: {fileID: 4681310561030822292}
-  defaultDistance: 2
+  defaultDistance: 1
 --- !u!1 &6862721871616905633
 GameObject:
   m_ObjectHideFlags: 0

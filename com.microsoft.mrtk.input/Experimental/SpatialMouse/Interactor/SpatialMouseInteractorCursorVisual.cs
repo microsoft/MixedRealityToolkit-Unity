@@ -22,19 +22,21 @@ namespace Microsoft.MixedReality.Toolkit.Input.Experimental
     /// </remarks>
     public class SpatialMouseInteractorCursorVisual : BaseReticleVisual
     {
-        [SerializeField, Experimental]
-        [Tooltip("The ray interactor which this visual represents.")]
-        private SpatialMouseInteractor mouseInteractor;
+        /// <summary>
+        /// The ray interactor which this visual represents.
+        /// </summary>
+        [field: SerializeField, Experimental, Tooltip("The ray interactor which this visual represents.")]
+        public SpatialMouseInteractor mouseInteractor;
 
 
         [SerializeField]
         [Tooltip("The default distance of the reticle (cursor)")]
-        private float defaultDistance = 1.0f;
+        private float defaultDistance = 1f;
         
         /// <summary>
         /// See <see cref="MonoBehaviour"/>.
         /// </summary>
-        protected void OnEnable()
+        protected virtual void OnEnable()
         {
             mouseInteractor.selectEntered.AddListener(LocateTargetHitPoint);
 
@@ -44,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Experimental
         /// <summary>
         /// See <see cref="MonoBehaviour"/>.
         /// </summary>
-        protected void OnDisable()
+        protected virtual void OnDisable()
         {
             mouseInteractor.selectEntered.RemoveListener(LocateTargetHitPoint);
 

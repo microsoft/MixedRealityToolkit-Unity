@@ -16,7 +16,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Experimental
     /// An extension of XRRayInteractor which has extra functionality for handling spatial mouse movement and scrolling. 
     /// </summary>
     /// <remarks>
-    /// <remarks>
     /// This is an experimental feature. This class is early in the cycle, it has 
     /// been labeled as experimental to indicate that it is still evolving, and 
     /// subject to change over time. Parts of the MRTK, such as this class, appear 
@@ -27,51 +26,54 @@ namespace Microsoft.MixedReality.Toolkit.Input.Experimental
     [AddComponentMenu("Scripts/Microsoft/MRTK/Input/MRTK Spatial Mouse Interactor")]
     public class SpatialMouseInteractor : XRRayInteractor, IRayInteractor
     {
-        [SerializeField, Experimental]
-        [Tooltip("The Input System action used for mouse movement. Must be a Vector2 Control.")]
-        private InputActionProperty mouseMoveAction;
-
-        [SerializeField]
-        [Tooltip("The Input System action used for mouse scrolling. Must be a Vector2 Control.")]
-        private InputActionProperty mouseScrollAction;
-
-        /// <summary>
-        /// The scale factor to apply to the mouse deltas.
-        /// </summary>
-        [SerializeField]
-        [Tooltip("The scale factor to apply to the mouse deltas.")]
-        public float mouseSensitivity = .05f;
-
-        /// <summary>
-        /// The scale factor to apply to the mouse wheel.
-        /// </summary>
-        [SerializeField]
-        [Tooltip("The scale factor to apply to the mouse wheel.")]
-        public float mouseWheelSensitivity = .002f;
-
-        /// <summary>
-        /// The time (in seconds) of no mouse activity before hiding the mouse cursor.
-        /// </summary>
-        [SerializeField]
-        [Tooltip("The time (in seconds) of no mouse activity before hiding the mouse cursor.")]
-        public float mouseHideThreshold = 20.0f;
-
-        /// <summary>
-        /// he time (in seconds) of no mouse activity before reseting the mouse cursor to the center of the FoV.
-        /// </summary>
-        [SerializeField]
-        [Tooltip("The time (in seconds) of no mouse activity before reseting the mouse cursor to the center of the FoV.")]
-        public float mouseResetThreshold = 0.2f;
+        #region Private Properties
 
         private CursorLockMode restoreLockState;
-
         private float timeSinceLastMouseEvent = Mathf.Infinity;
+
+        #endregion Private Properties
+
+        #region Serialized Fields
+        /// <summary>
+        /// The Input System action used for mouse movement. Must be a Vector2 Control.
+        /// </summary>
+        [field: SerializeField, Experimental, Tooltip("The Input System action used for mouse movement. Must be a Vector2 Control.")]
+        public InputActionProperty mouseMoveAction;
+
+        /// <summary>
+        /// The Input System action used for mouse scrolling. Must be a Vector2 Control.
+        /// </summary>
+        [field: SerializeField, Tooltip("The Input System action used for mouse scrolling. Must be a Vector2 Control.")]
+        public InputActionProperty mouseScrollAction;
+
+        [SerializeField]
+        [Tooltip("The scale factor to apply to the mouse deltas.")]
+        private float mouseSensitivity = .05f;
+
+        [SerializeField]
+        [Tooltip("The scale factor to apply to the mouse wheel.")]
+        private float mouseWheelSensitivity = .002f;
+
+        [SerializeField]
+        [Tooltip("The time (in seconds) of no mouse activity before hiding the mouse cursor.")]
+        private float mouseHideThreshold = 20.0f;
+
+        [SerializeField]
+        [Tooltip("The time (in seconds) of no mouse activity before reseting the mouse cursor to the center of the FoV.")]
+        private float mouseResetThreshold = 0.2f;
+
+        #endregion Serialized Fields
+
+        #region Public Properties
 
         /// <summary>
         /// Returns true if mouse is actively in use. Should be used to show/hide mouse-specific feedback (e.g. cursor).
         /// </summary>
         public bool IsInUse => hasSelection || (timeSinceLastMouseEvent < mouseHideThreshold);
 
+        #endregion Public Properties
+
+        /// <inheritdoc />
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -91,6 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Experimental
             Cursor.lockState =  CursorLockMode.Locked;
         }
 
+        /// <inheritdoc />
         protected override void OnDisable()
         {
             base.OnDisable();
