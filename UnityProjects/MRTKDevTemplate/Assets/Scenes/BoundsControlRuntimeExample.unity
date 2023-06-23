@@ -1321,7 +1321,7 @@ MonoBehaviour:
   darkGrayMaterial: {fileID: 2100000, guid: 4b78d3a2e1ab7c0499ce81ca8d18e7b5, type: 2}
   redMaterial: {fileID: 2100000, guid: db61b94b23e5fb444b86c231d13e46ef, type: 2}
   cyanMaterial: {fileID: 2100000, guid: 0c3570eeff29ef44e9fed596a4cc3ffd, type: 2}
-  boundsVisualsPrefab: {fileID: 5671351296789090341, guid: 7b542306e34a62f4c9a822fcb19b7d99, type: 3}
+  boundsVisualsPrefab: {fileID: 5671351296789090341, guid: ecbf05ce2121a744cb893e82377ba3cd, type: 3}
 --- !u!4 &1886794917
 Transform:
   m_ObjectHideFlags: 0

@@ -52,13 +52,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 cube.transform.position = cubePosition;
 
                 SetStatus("Instantiate BoundsControl");
+                var cm = cube.AddComponent<ConstraintManager>();
+                var om = cube.AddComponent<ObjectManipulator>();
                 boundsControl = cube.AddComponent<BoundsControl>();
                 boundsControl.BoundsVisualsPrefab = boundsVisualsPrefab;
                 //boundsControl.HideElementsInInspector = false;
                 //TODO: this looks like it would be controlled by stateful interactable or object manipulator?
                 //boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateOnStart;
-                var cm = cube.AddComponent<ConstraintManager>();
-                var om = cube.AddComponent<ObjectManipulator>();
                 yield return WaitForButtonPressOrCommand();
 
                 SetStatus("Set Target bounds override");
@@ -66,7 +66,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 var bc = newObject.AddComponent<BoxCollider>();
                 bc.center = new Vector3(.25f, 0, 0);
                 bc.size = new Vector3(0.162f, 0.1f, 1);
-                boundsControl.BoundsOverride = bc.transform; //TODO: check whether the collider is necessary
+                boundsControl.OverrideBounds = true;
+                boundsControl.BoundsOverride = bc.transform;
                 yield return WaitForButtonPressOrCommand();
 
                 SetStatus("Change target bounds override size");
@@ -74,17 +75,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 yield return WaitForButtonPressOrCommand();
 
                 SetStatus("Remove target bounds override");
+                boundsControl.OverrideBounds = false;
                 boundsControl.BoundsOverride = null;
                 Destroy(newObject);
-                newObject = null;
-                yield return WaitForButtonPressOrCommand();
-
-                SetStatus("HideElementsInInspector true");
-                //boundsControl.HideElementsInInspector = true;
-                yield return WaitForButtonPressOrCommand();
-
-                SetStatus("HideElementsInInspector false");
-                //boundsControl.HideElementsInInspector = false;
                 yield return WaitForButtonPressOrCommand();
 
                 SetStatus("FlattenAuto");
@@ -99,14 +92,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 boundsControl.FlattenMode = FlattenMode.Never;
                 yield return WaitForButtonPressOrCommand();
 
-                SetStatus("ShowWireframe false");
-                //boundsControl.LinksConfig.ShowWireFrame = false;
-                yield return WaitForButtonPressOrCommand();
-
-                SetStatus("ShowWireframe true");
-                //boundsControl.LinksConfig.ShowWireFrame = true;
-                yield return WaitForButtonPressOrCommand();
-
                 SetStatus("BoxPadding 0.2f");
                 boundsControl.BoundsPadding = 0.2f;
                 yield return WaitForButtonPressOrCommand();
@@ -115,50 +100,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 boundsControl.BoundsPadding = 0.0f;
                 yield return WaitForButtonPressOrCommand();
 
-                SetStatus("Set scale handle size 0.3");
-                //boundsControl.ScaleHandlesConfig.HandleSize = 0.3f;
-                yield return WaitForButtonPressOrCommand();
-
-                SetStatus("Set scale handle widget prefab");
-                //Debug.Assert(scaleWidget != null);
-                //boundsControl.ScaleHandlesConfig.HandlePrefab = scaleWidget;
-                yield return WaitForButtonPressOrCommand();
-
-                SetStatus("Handles red");
-                //boundsControl.ScaleHandlesConfig.HandleMaterial = redMaterial;
-                //boundsControl.RotationHandlesConfig.HandleMaterial = redMaterial;
-                yield return WaitForButtonPressOrCommand();
-
-                SetStatus("BBox material cyan");
-                Debug.Assert(cyanMaterial != null);
-                //boundsControl.BoxDisplayConfig.BoxMaterial = cyanMaterial;
-                yield return WaitForButtonPressOrCommand();
-
-                SetStatus("BBox grabbed material red");
-                //boundsControl.BoxDisplayConfig.BoxGrabbedMaterial = redMaterial;
-                //om.OnManipulationStarted.AddListener((med) => boundsControl.HighlightWires());
-                //om.OnManipulationEnded.AddListener((med) => boundsControl.UnhighlightWires());
-                yield return WaitForButtonPressOrCommand();
-
-                SetStatus("BBox material none");
-                //boundsControl.BoxDisplayConfig.BoxMaterial = null;
-                yield return WaitForButtonPressOrCommand();
-
                 SetStatus("Scale X and update rig");
                 cube.transform.localScale = new Vector3(2, 1, 1);
                 yield return WaitForButtonPressOrCommand();
 
                 SetStatus("Rotate 20 degrees and update rig");
                 cube.transform.localRotation = Quaternion.Euler(0, 20, 0);
-                //boundsControl.RotationHandlesConfig.ShowHandleForY = true;
-                yield return WaitForButtonPressOrCommand();
-
-                SetStatus("Wireframe radius 0.1");
-                //boundsControl.LinksConfig.WireframeEdgeRadius = 0.1f;
-                yield return WaitForButtonPressOrCommand();
-
-                SetStatus("Wireframe shape cylinder");
-                //boundsControl.LinksConfig.WireframeShape = WireframeType.Cylindrical;
                 yield return WaitForButtonPressOrCommand();
 
                 Destroy(cube);
@@ -186,12 +133,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     lastParent = cubechild.transform;
                 }
 
+                multiRoot.AddComponent<ConstraintManager>();
+                multiRoot.AddComponent<ObjectManipulator>();
                 boundsControl = multiRoot.AddComponent<BoundsControl>();
                 //boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateOnStart;
                 //boundsControl.HideElementsInInspector = false;
                 //boundsControl.LinksConfig.WireframeEdgeRadius = .05f;
-                multiRoot.AddComponent<ConstraintManager>();
-                multiRoot.AddComponent<ObjectManipulator>();
 
                 SetStatus("Randomize Child Scale for skewing");
                 yield return WaitForButtonPressOrCommand();
