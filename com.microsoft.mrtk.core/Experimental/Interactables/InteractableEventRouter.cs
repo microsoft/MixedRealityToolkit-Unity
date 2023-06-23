@@ -389,8 +389,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// registered <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>
         /// objects.
         /// </summary>
-        /// <param name="origin"></param>
-        /// <returns></returns>
+        /// <param name="origin">This game object will be queried for components that implement <see cref="IXRInteractableEventRouteTarget"/>.</param>
+        /// <returns>An array of specialized <see cref="IXRInteractableEventRouteTarget"/> components.</returns>
         protected abstract T[] GetTargets(GameObject origin);
 
         /// <summary>
