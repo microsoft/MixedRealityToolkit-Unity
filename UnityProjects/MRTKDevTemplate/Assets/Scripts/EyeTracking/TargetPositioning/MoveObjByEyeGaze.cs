@@ -143,11 +143,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
         {
-            if(!isSelected)
-            {
-                return;
-            }
-
             // Dynamic is effectively just your normal Update().
             if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
             {
@@ -260,16 +255,27 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         #region Hand input handler
         public void OnGrabSelectedEntered()
         {
-            Debug.Log("Grab Entered");
             HandDrag_Start();
         }
 
         public void OnGrabSelectedExited()
         {
-            Debug.Log("Grab Exited");
             HandDrag_Stop();
         }
+        #endregion
 
+        #region Voice input handler
+        public void OnVoiceSelectedEntered()
+        {
+            _isManipulatingUsingVoice = true;
+            DragAndDrop_Start();
+        }
+
+        public void OnVoiceSelectedExited()
+        {
+            DragAndDrop_Finish();
+
+        }
         #endregion
 
         /// <summary>
@@ -465,6 +471,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     }
                 }
 
+                _isManipulatingUsingVoice = false;
                 _objIsGrabbed = false;
                 DeactivatePreview();
 
