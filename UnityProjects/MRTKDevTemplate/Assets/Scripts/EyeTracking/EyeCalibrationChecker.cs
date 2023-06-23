@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 #if WINDOWS_UWP
+using System;
 using Windows.Perception;
 using Windows.Perception.People;
 using Windows.Perception.Spatial;
