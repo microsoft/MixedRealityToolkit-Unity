@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
         /// <summary>
         /// A cache of interactables whose selection should be canceled.
         /// </summary>
-        List<IXRSelectInteractable> cancelableSelections;
+        private List<IXRSelectInteractable> cancelableSelections;
 
         [Tooltip("The scroll rect to scroll.")]
         [SerializeField]
@@ -226,9 +226,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
         /// While in editor, verify that the sibling <see cref="InteractableEventRouter"/> has the necessary event routes so
         /// child hover and select events are bubbled up to this component.
         ///
-        /// Also, to avoid this interactable from steal children collider, this Unity interactor must have its collider manually
-        /// configure. This function will attempt to configure this interactor's collider property, and log a warning if the
-        /// collider configuration fails.
+        /// Also, to avoid this interactable from consuming colliders belonging to child interactables, this Unity interactor must
+        /// have its collider manually configured. This function will attempt to configure this interactor's collider property,
+        /// and log a warning if the collider configuration fails.
         /// 
         /// Finally, this will also configure the scroll rect if not set.
         /// </remarks>
