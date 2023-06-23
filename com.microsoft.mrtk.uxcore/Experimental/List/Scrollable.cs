@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
 
         [Tooltip("The scroll distance at which to cancel any child interactable's selection.")]
         [SerializeField]
-        private float cancelSelectDistance = 0.05f;
+        private float cancelSelectDistance = 0.06f;
 
         /// <summary>
         /// The scroll distance at which to cancel any child interactable's selection.
@@ -149,7 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
 
         [Tooltip("The scroll distance at which to cancel any child interactable's selection. This only used if ScrollingInteractor implements IPokeInteractor.")]
         [SerializeField]
-        private float pokeCancelSelectDistance = 0.05f;
+        private float pokeCancelSelectDistance = 0.02f;
 
         /// <summary>
         /// The scroll distance at which to cancel any child interactable's selection.

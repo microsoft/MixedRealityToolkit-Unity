@@ -15552,8 +15552,8 @@ MonoBehaviour:
   moveLerpTime: 0.001
   deadZone: 0.05
   cancelSelectDistance: 0.06
-  pokeDeadZone: 0.025
-  pokeCancelSelectDistance: 0.01
+  pokeDeadZone: 0.01
+  pokeCancelSelectDistance: 0.02
 --- !u!114 &352806578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25905,8 +25905,8 @@ MonoBehaviour:
   moveLerpTime: 0.001
   deadZone: 0.05
   cancelSelectDistance: 0.06
-  pokeDeadZone: 0.025
-  pokeCancelSelectDistance: 0.01
+  pokeDeadZone: 0.01
+  pokeCancelSelectDistance: 0.02
 --- !u!114 &688579858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62200,8 +62200,8 @@ MonoBehaviour:
   moveLerpTime: 0.001
   deadZone: 0.05
   cancelSelectDistance: 0.06
-  pokeDeadZone: 0.025
-  pokeCancelSelectDistance: 0.01
+  pokeDeadZone: 0.01
+  pokeCancelSelectDistance: 0.02
 --- !u!114 &1871826346
 MonoBehaviour:
   m_ObjectHideFlags: 0
