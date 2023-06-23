@@ -188,6 +188,7 @@
       "source": "local",
       "dependencies": {
         "com.microsoft.mrtk.core": "3.0.0",
+        "com.microsoft.mrtk.input": "3.0.0",
         "com.microsoft.mrtk.tts.windows": "1.0.1"
       }
     },
