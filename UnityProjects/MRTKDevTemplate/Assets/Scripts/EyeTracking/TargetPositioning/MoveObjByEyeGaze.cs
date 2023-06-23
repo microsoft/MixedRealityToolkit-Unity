@@ -8,6 +8,8 @@ using UnityEngine.Events;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 {
     using Input;
+    using Subsystems;
+    using UnityEngine.XR;
     using UnityEngine.XR.Interaction.Toolkit;
 
     public enum PlacementSurfaces
@@ -141,9 +143,48 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
         {
+            if(!isSelected)
+            {
+                return;
+            }
+
             // Dynamic is effectively just your normal Update().
             if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
             {
+                if (_isManipulatingUsingHands && _handInputEnabled)
+                {
+                    var handsSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<HandsSubsystem>();
+                    if (handsSubsystem != null)
+                    {
+                        XRNode[] hands = { XRNode.RightHand, XRNode.LeftHand };
+                        foreach (var hand in hands)
+                        {
+                            if (handsSubsystem.TryGetJoint(TrackedHandJoint.IndexTip, hand, out var palmJointPose))
+                            {
+                                Handedness handedness = hand == XRNode.RightHand ? Handedness.Right : Handedness.Left;
+                                if (_handPosAbsolute == Vector3.zero)
+                                {
+                                    _currEngagedHand = handedness;
+                                    _handPosAbsolute = palmJointPose.Pose.position;
+                                }
+                                else
+                                {
+                                    Vector3 oldHandPos = _handPosAbsolute;
+                                    _handPosRelative = new Vector3(oldHandPos.x - palmJointPose.Pose.position.x,
+                                        oldHandPos.y - palmJointPose.Pose.position.y,
+                                        oldHandPos.z - palmJointPose.Pose.position.z);
+                                    _handPosAbsolute = palmJointPose.Pose.position;
+
+                                    if (_handIsPinching && _currEngagedHand == handedness)
+                                    {
+                                        RelativeMoveUpdate(_handPosRelative);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
                 if (_objIsGrabbed && _useEyeSupportedTargetPlacement)
                 {
                     // Check whether the user is still looking within the proximity of the target
@@ -217,41 +258,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         }
 
         #region Hand input handler
-        /*void IMixedRealityHandJointHandler.OnHandJointsUpdated(InputEventData<IDictionary<TrackedHandJoint, MixedRealityPose>> eventData)
-        {
-            BasePoseProvider pose
-            Pose pose;
-            eventData.InputData.TryGetValue(TrackedHandJoint.Palm, out pose);
-
-            if ((pose != null) && (eventData.Handedness == _currEngagedHand) && _isManipulatingUsingHands)
-            {
-                if (_handPosAbsolute == Vector3.zero)
-                {
-                    _handPosAbsolute = pose.Position;
-                }
-                else
-                {
-                    Vector3 oldHandPos = _handPosAbsolute;
-                    _handPosRelative = new Vector3(oldHandPos.x - pose.Position.x, oldHandPos.y - pose.Position.y, oldHandPos.z - pose.Position.z);
-                    _handPosAbsolute = pose.Position;
-
-                    if (_handIsPinching)
-                    {
-                        RelativeMoveUpdate(_handPosRelative);
-                    }
-                }
-            }
-        }*/
-
-        /*void IMixedRealitySourceStateHandler.OnSourceLost(SourceStateEventData eventData)
-        {
-            if ((_currEngagedHand == Handedness.Right && eventData.Controller.ControllerHandedness == Handedness.Right) ||
-                (_currEngagedHand == Handedness.Left && eventData.Controller.ControllerHandedness == Handedness.Left))
-            {
-                HandDrag_Stop();
-            }
-        }*/
-
         public void OnGrabSelectedEntered()
         {
             Debug.Log("Grab Entered");
