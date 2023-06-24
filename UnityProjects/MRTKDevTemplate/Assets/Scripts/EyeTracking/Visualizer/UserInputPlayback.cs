@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 
 #if WINDOWS_UWP
@@ -14,8 +15,6 @@ using Windows.Storage;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 {
-    using TMPro;
-
     [AddComponentMenu("Scripts/MRTK/Examples/UserInputPlayback")]
     public class UserInputPlayback : MonoBehaviour
     {
@@ -63,12 +62,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
             if (fileExists)
             {
-                txt_LoadingUpdate.text = "File exists: " + uwpFileName;
+                _LoadingUpdateStatusText.text = "File exists: " + uwpFileName;
                 await UWP_ReadData(uwpLogFile);
             }
             else
             {
-                txt_LoadingUpdate.text = "Error: File does not exist! " + uwpFileName;
+                _LoadingUpdateStatusText.text = "Error: File does not exist! " + uwpFileName;
                 return false;
             }
 
@@ -86,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             }
             catch
             {
-                txt_LoadingUpdate.text = "Error: File could not be found.";
+                _LoadingUpdateStatusText.text = "Error: File could not be found.";
             }
 
             return false;
@@ -94,17 +93,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         private async Task<bool> UWP_ReadData(StorageFile logfile)
         {
-            using (var inputStream = await logfile.OpenReadAsync())
-            using (var classicStream = inputStream.AsStreamForRead())
-            using (var streamReader = new StreamReader(classicStream))
+            using var inputStream = await logfile.OpenReadAsync();
+            using var classicStream = inputStream.AsStreamForRead();
+            using var streamReader = new StreamReader(classicStream);
+            while (streamReader.Peek() >= 0)
             {
-                while (streamReader.Peek() >= 0)
-                {
-                    loggedLines.Add(streamReader.ReadLine());
-                }
-                txt_LoadingUpdate.text = "Finished loading log file. Lines: " + loggedLines.Count;
-                return true;
+                _loggedLines.Add(streamReader.ReadLine());
             }
+            _LoadingUpdateStatusText.text = "Finished loading log file. Lines: " + _loggedLines.Count;
+            return true;
         }
 #endif
 
@@ -189,7 +186,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 #if WINDOWS_UWP
         private async void LoadInUWP()
         {
-            txt_LoadingUpdate.text = "[Load.1] " + FileName;
+            _LoadingUpdateStatusText.text = "[Load.1] " + FileName;
             await UWP_Load();
         }
 #endif
@@ -199,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             get
             {
 #if WINDOWS_UWP
-                return "C:\\Data\\Users\\DefaultAccount\\Music\\MRTK_ET_Demo\\tester\\" + customFilename;
+                return "C:\\Data\\Users\\DefaultAccount\\Music\\MRTK_ET_Demo\\tester\\" + _customFilename;
 #else
                 return Application.persistentDataPath + "/" + _customFilename;
 #endif
@@ -261,9 +258,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 #if UNITY_EDITOR
                 Load();
 #elif WINDOWS_UWP
-                txt_LoadingUpdate.text = "[Load.2] " + FileName;
+                _LoadingUpdateStatusText.text = "[Load.2] " + FileName;
                 bool result = AsyncHelpers.RunSync<bool>(() => UWP_Load());
-                txt_LoadingUpdate.text = "[Load.2] Done. ";
+                _LoadingUpdateStatusText.text = "[Load.2] Done. ";
 #endif
                 _LoadingUpdateStatusText.text = "Loading done. Visualize data...";
 

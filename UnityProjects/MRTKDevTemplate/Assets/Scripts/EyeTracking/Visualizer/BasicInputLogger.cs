@@ -164,12 +164,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 #if WINDOWS_UWP
         public async void SaveLogs()
         {
-            if (isLogging)
+            if (IsLogging)
             {
-                if (buffer.Length > 0)
+                if (_buffer.Length > 0)
                 {
                     // Log buffer to the file
-                    await FileIO.AppendTextAsync(logFile, buffer.ToString());
+                    await FileIO.AppendTextAsync(logFile, _buffer.ToString());
                 }
             }
         }
