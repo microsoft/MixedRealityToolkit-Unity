@@ -42,11 +42,6 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
         private Vector2 scrollGoal;
 
         /// <summary>
-        /// The scroller's position at the start of the scroll interaction.
-        /// </summary>
-        private Vector2 scrollStart;
-
-        /// <summary>
         /// The list of interactors states tracking the interactors' positions and dead zones
         /// </summary>
         private readonly OrderedDictionary states = new OrderedDictionary();
@@ -370,7 +365,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
             // Initialize the scroll goal to the current scroll rect position
             if (wasEmpty)
             {
-                scrollStart = scrollGoal = scrollRect.normalizedPosition;
+                scrollGoal = scrollRect.normalizedPosition;
             }
         }
 
@@ -594,7 +589,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
             /// <summary>
             /// Get total scroll movement along the scroll plane, at world scale.
             /// </summary>
-            public float ScrollMovementSquareMagnitude => LocalScrollMovement.Mul(ScrollRegion.lossyScale).sqrMagnitude;
+            public float ScrollMovementSquareMagnitude => ScrollRegion.TransformVector(LocalScrollMovement).sqrMagnitude;
 
             private bool positionInitialized;
 
