@@ -314,6 +314,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
             IncreaseSelectCount(args);
         }
 
+        /// <inheritdoc/>
         public void OnChildSelectExited(SelectExitEventArgs args)
         {
             DecreaseSelectCount(args);

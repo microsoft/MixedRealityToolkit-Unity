@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Collections;
 using Microsoft.MixedReality.Toolkit.Core.Tests;
 using Microsoft.MixedReality.Toolkit.Input.Tests;
 using Microsoft.MixedReality.Toolkit.UX.Experimental;
 using NUnit.Framework;
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -17,9 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
     /// </summary>
     public class ScrollableTests : BaseRuntimeInputTests
     {
-        private const string VerticalAndHortizontalScrollTestPrefab = "5fded42d542378f4c9d2991767eb039b";
+        private const string VerticalAndHorizontalScrollTestPrefab = "5fded42d542378f4c9d2991767eb039b";
         private const string VerticalScrollTestPrefab = "fc9628599d466c44aa5453aba06c93ef";
-        private const string HortizontalScrollTestPrefab = "7eb6a6dd3c4be864da6b5a84c7976573";
+        private const string HorizontalScrollTestPrefab = "7eb6a6dd3c4be864da6b5a84c7976573";
         GameObject scrollObject;
         Scrollable scrollable;
         PressableButton firstPressableButton;
@@ -45,16 +45,16 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         }
 
         [UnityTest]
-        public IEnumerator TestCreationOfVerticalAndHortizontalScrollTestPrefab()
+        public IEnumerator TestCreationOfVerticalAndHorizontalScrollTestPrefab()
         {
-            yield return InitializeScrollObject(VerticalAndHortizontalScrollTestPrefab);
+            yield return InitializeScrollObject(VerticalAndHorizontalScrollTestPrefab);
             ValidateTestComponents();
         }
 
         [UnityTest]
         public IEnumerator TestCreationOfHorizontalScrollTestPrefab()
         {
-            yield return InitializeScrollObject(HortizontalScrollTestPrefab);
+            yield return InitializeScrollObject(HorizontalScrollTestPrefab);
             ValidateTestComponents();
         }
 
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         [UnityTest]
         public IEnumerator TestSmallHandRayMovementsDoNotCancelButtonSelection()
         {
-            yield return InitializeScrollObject(VerticalAndHortizontalScrollTestPrefab);
+            yield return InitializeScrollObject(VerticalAndHorizontalScrollTestPrefab);
             Vector3 smallMovement = scrollable.ScrollRect.transform.TransformDirection(new Vector3(1.0f, 0.0f, 0.0f)).normalized * -(scrollable.CancelSelectDistance);
 
             yield return ShowHand();
@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         [UnityTest]
         public IEnumerator TestHandRayMovementsCancelButtonSelection()
         {
-            yield return InitializeScrollObject(VerticalAndHortizontalScrollTestPrefab);
+            yield return InitializeScrollObject(VerticalAndHorizontalScrollTestPrefab);
             Vector3 smallMovement = scrollable.ScrollRect.transform.TransformDirection(new Vector3(1.0f, 0.0f, 0.0f)).normalized * -(scrollable.CancelSelectDistance + 0.02f);
 
             yield return ShowHand();
@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         [UnityTest]
         public IEnumerator TestSmallHandRayMovementsDoNotScroll()
         {
-            yield return InitializeScrollObject(VerticalAndHortizontalScrollTestPrefab);
+            yield return InitializeScrollObject(VerticalAndHorizontalScrollTestPrefab);
             Vector3 smallMovement = scrollable.ScrollRect.transform.TransformDirection(new Vector3(1.0f, 0.0f, 0.0f)).normalized * -(scrollable.DeadZone);
 
             yield return ShowHand();
@@ -140,7 +140,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         [UnityTest]
         public IEnumerator TestHandRayMovementsScrolls()
         {
-            yield return InitializeScrollObject(VerticalAndHortizontalScrollTestPrefab);
+            yield return InitializeScrollObject(VerticalAndHorizontalScrollTestPrefab);
             Vector3 smallMovement = scrollable.ScrollRect.transform.TransformDirection(new Vector3(1.0f, 0.0f, 0.0f)).normalized * -(scrollable.DeadZone + 0.02f);
 
             yield return ShowHand();
@@ -189,7 +189,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         [UnityTest]
         public IEnumerator TestHorizontalScrolling()
         {
-            yield return InitializeScrollObject(HortizontalScrollTestPrefab);
+            yield return InitializeScrollObject(HorizontalScrollTestPrefab);
             Vector3 smallMovement = scrollable.ScrollRect.transform.TransformDirection(new Vector3(1.0f, 0.0f, 0.0f)).normalized * -(scrollable.DeadZone * 2.0f);
 
             yield return ShowHand();
