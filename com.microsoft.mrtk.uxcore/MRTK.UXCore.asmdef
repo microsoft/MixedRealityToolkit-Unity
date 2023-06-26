@@ -8,6 +8,7 @@
         "Unity.InputSystem",
         "Unity.TextMeshPro",
         "Unity.XR.Interaction.Toolkit",
+        "Unity.XR.CoreUtils",
         "Microsoft.MixedReality.Toolkit.SpatialManipulation"
     ],
     "includePlatforms": [],

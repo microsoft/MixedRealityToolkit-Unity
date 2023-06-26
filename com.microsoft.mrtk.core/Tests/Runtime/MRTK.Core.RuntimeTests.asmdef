@@ -3,6 +3,7 @@
     "rootNamespace": "",
     "references": [
         "Microsoft.MixedReality.Toolkit.Core",
+        "Unity.XR.Interaction.Toolkit",
         "UnityEditor.TestRunner",
         "UnityEngine.TestRunner",
         "Microsoft.MixedReality.Toolkit.Core.TestUtilities"

@@ -447,6 +447,33 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void LocateTargetHitPoint(SelectEnterEventArgs args)
         {
+            // If no hit interactable, abort
+            if (args == null)
+            {
+                return;
+            }
+
+            bool hitPointAndTransformUpdated = false;
+
+            // In the case of affordances/handles, we can stick the ray right on to the handle.
+            if (args.interactableObject is ISnapInteractable snappable)
+            {
+                hitTargetTransform = snappable.HandleTransform;
+                targetLocalHitPoint = Vector3.zero;
+                hitPointAndTransformUpdated = true;
+            }
+
+            // In the case of an IScrollable being selected, ensure that the line visual locks to
+            // the scroller and not to the a list item within the scroller, such as a button.
+            if (args.interactableObject is IScrollable scrollable &&
+                scrollable.IsScrolling &&
+                scrollable.ScrollingInteractor == (IXRInteractor)rayInteractor)
+            {
+                hitTargetTransform = scrollable.ScrollableTransform;
+                targetLocalHitPoint = scrollable.ScrollingLocalAnchorPosition;
+                hitPointAndTransformUpdated = true;
+            }
+
             // If no hit, abort.
             if (!rayInteractor.TryGetCurrentRaycast(
                 out RaycastHit? raycastHit,
@@ -459,7 +486,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             // If we haven't even gotten any ray positions yet, abort.
-            if (rayPositions == null || rayPositionsCount <= 0) { return; }
+            if (rayPositions == null || rayPositionsCount <= 0)
+            {
+                return;
+            }
 
             // Record relevant data about the hit point.
             if (raycastResult.HasValue && isUIHitClosest)
@@ -470,19 +500,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else if (raycastHit.HasValue)
             {
-                // In the case of affordances/handles, we can stick the ray right on to the handle.
-                if (args.interactableObject is ISnapInteractable snappable)
-                {
-                    hitTargetTransform = snappable.HandleTransform;
-                    targetLocalHitPoint = Vector3.zero;
-                }
-                else
+                if (!hitPointAndTransformUpdated)
                 {
                     hitTargetTransform = raycastHit.Value.collider.transform;
                     targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastHit.Value.point);
                 }
 
-                hitDistance = (raycastHit.Value.point - rayPositions[0]).magnitude;
+                hitDistance = (hitTargetTransform.TransformPoint(targetLocalHitPoint) - rayPositions[0]).magnitude;
             }
         }
 
