@@ -6,14 +6,13 @@ using System.Collections;
 using System.Text;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
     /// This example script demonstrates various bounds control runtime configurations
     /// </summary>
-    public class BoundsControlRuntimeExample : MonoBehaviour//, IMixedRealitySpeechHandler
+    public class BoundsControlRuntimeExample : MonoBehaviour
     {
         public TextMeshPro statusText;
 
@@ -24,7 +23,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         public GameObject boundsVisualsPrefab;
 
         private bool speechTriggeredFlag;
-        private Vector3 cubePosition = new Vector3(0, 1, 2);
+        private Vector3 cubePosition = new Vector3(0, 1.2f, 2);
+        private Vector3 cubeSize = new Vector3(0.5f, 0.5f, 0.5f);
         private BoundsControl boundsControl;
 
         // Start is called before the first frame update
@@ -44,27 +44,24 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private IEnumerator Sequence()
         {
-
             {
                 var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 Debug.Assert(darkGrayMaterial != null);
                 cube.GetComponent<MeshRenderer>().material = darkGrayMaterial;
                 cube.transform.position = cubePosition;
+                cube.transform.localScale = cubeSize;
 
                 SetStatus("Instantiate BoundsControl");
                 var cm = cube.AddComponent<ConstraintManager>();
                 var om = cube.AddComponent<ObjectManipulator>();
                 boundsControl = cube.AddComponent<BoundsControl>();
                 boundsControl.BoundsVisualsPrefab = boundsVisualsPrefab;
-                //boundsControl.HideElementsInInspector = false;
-                //TODO: this looks like it would be controlled by stateful interactable or object manipulator?
-                //boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateOnStart;
                 yield return WaitForButtonPressOrCommand();
 
                 SetStatus("Set Target bounds override");
                 var newObject = new GameObject();
+                newObject.transform.position = new Vector3(0.8f, 0.8f, 1.8f);
                 var bc = newObject.AddComponent<BoxCollider>();
-                bc.center = new Vector3(.25f, 0, 0);
                 bc.size = new Vector3(0.162f, 0.1f, 1);
                 boundsControl.OverrideBounds = true;
                 boundsControl.BoundsOverride = bc.transform;
@@ -72,6 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
                 SetStatus("Change target bounds override size");
                 bc.size = new Vector3(0.5f, 0.1f, 1);
+                boundsControl.RecomputeBounds();
                 yield return WaitForButtonPressOrCommand();
 
                 SetStatus("Remove target bounds override");
@@ -136,9 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 multiRoot.AddComponent<ConstraintManager>();
                 multiRoot.AddComponent<ObjectManipulator>();
                 boundsControl = multiRoot.AddComponent<BoundsControl>();
-                //boundsControl.BoundsControlActivation = BoundsControlActivationType.ActivateOnStart;
-                //boundsControl.HideElementsInInspector = false;
-                //boundsControl.LinksConfig.WireframeEdgeRadius = .05f;
+                boundsControl.BoundsVisualsPrefab = boundsVisualsPrefab;
 
                 SetStatus("Randomize Child Scale for skewing");
                 yield return WaitForButtonPressOrCommand();
@@ -153,8 +149,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     childTransform.transform.localScale = new Vector3(baseScale * Random.Range(.5f, 2f), baseScale * Random.Range(.5f, 2f), baseScale * Random.Range(.5f, 2f));
                 }
 
-                //boundsControl.LinksConfig.WireframeEdgeRadius = 1f;
-                boundsControl.RecomputeBounds(); //TODO: check that this does the same thing
+                boundsControl.RecomputeBounds();
                 SetStatus("Delete GameObject");
                 yield return WaitForButtonPressOrCommand();
 
