@@ -10,41 +10,43 @@ namespace Microsoft.MixedReality.Toolkit
     /// The abstract interaction events that all proxy interactors support.
     /// Proxy interactors are used to map foreign interaction systems (like UnityUI)
     /// onto XRI interaction primitives.
+    /// </summary>
+    /// <remarks>
     /// Generally, input shims will call these functions to request the proxy to
     /// hover/select/etc the object on which the shim is placed.
-    /// </summary>
+    /// </remarks>
     public interface IProxyInteractor : IXRSelectInteractor, IXRHoverInteractor
     {
         /// <summary>
         /// Begin hovering the interactable. The interactable will receive
-        /// an OnHoverEntering/Entered, and the proxy interactor will include it in
+        /// <c>OnHoverEntering</c> and <c>OnHoverEntered</c> events, and the proxy interactor will include it in
         /// its list of valid targets.
         /// </summary>
         void StartHover(IXRHoverInteractable interactable);
 
         /// <summary>
         /// Begin hovering the interactable. The interactable will receive
-        /// an OnHoverEntering/Entered, and the proxy interactor will include it in
+        /// <c>OnHoverEntering</c> and <c>OnHoverEntered</c> events, and the proxy interactor will include it in
         /// its list of valid targets. Also includes the worldPosition of the pointer.
         /// </summary>
         void StartHover(IXRHoverInteractable interactable, Vector3 worldPosition);
 
         /// <summary>
         /// End hovering the interactable. The interactable will receive
-        /// an OnHoverExiting/Exited, and the proxy interactor will remove it from
+        /// <c>OnHoverExiting</c> and <c>OnHoverExited</c> events, and the proxy interactor will remove it from
         /// its list of valid targets.
         /// </summary>
         void EndHover(IXRHoverInteractable interactable);
 
         /// <summary>
         /// Begin selecting the interactable. The interactable will receive
-        /// an OnSelectEntering/Entered.
+        /// <c>OnSelectEntering</c> and <c>OnSelectEntered</c> events.
         /// </summary>
         void StartSelect(IXRSelectInteractable interactable);
 
-        // <summary>
+        /// <summary>
         /// Begin selecting the interactable. The interactable will receive
-        /// an OnSelectEntering/Entered. Also includes the worldPosition of the pointer.
+        /// <c>OnSelectEntering</c> and <c>OnSelectEntered</c> events. Also includes the worldPosition of the pointer.
         /// </summary>
         void StartSelect(IXRSelectInteractable interactable, Vector3 worldPosition);
 
@@ -56,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit
 
         /// <summary>
         /// End selecting the interactable. The interactable will receive
-        /// an OnSelectExiting/Exited. SuppressEvents will prevent StatefulInteractables
+        /// <c>OnSelectExiting</c> and <c>OnSelectExited</c> events. SuppressEvents will prevent StatefulInteractables
         /// from receiving click or toggle events.
         /// </summary>
         void EndSelect(IXRSelectInteractable interactable, bool suppressEvents = false);

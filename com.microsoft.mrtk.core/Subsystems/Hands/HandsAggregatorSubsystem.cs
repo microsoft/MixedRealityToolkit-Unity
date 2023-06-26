@@ -13,9 +13,10 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
     /// Subsystem for aggregating skeletal hand joint data from all available sources.
     /// Implementations can aggregate hand joint data from multiple APIs, or from multiple
     /// HandsSubsystems, or from any other source they choose.
-    /// Recommended use is for aggregating from all loaded HandsSubsystems.
-    /// See <cref see="MRTKHandsAggregatorSubsystem"> for the MRTK implementation.
     /// </summary>
+    /// <remarks>
+    /// Recommended use is for aggregating from all loaded HandsSubsystems. See <cref see="MRTKHandsAggregatorSubsystem" /> for the MRTK implementation.
+    /// </remarks>
     [Preserve]
     public class HandsAggregatorSubsystem :
         MRTKSubsystem<HandsAggregatorSubsystem,
