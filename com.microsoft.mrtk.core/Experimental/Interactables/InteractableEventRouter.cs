@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
+
 namespace Microsoft.MixedReality.Toolkit.Experimental
 {
     /// <summary>
-    /// A Unity component that is capable to routing child events to other child and parent target objects that contain
+    /// A Unity component that is capable of routing child events to other child and parent target objects that contain
     /// a <see cref="IXRInteractableEventRouteTarget"/> component.
     /// </summary>
     /// <remarks> 
@@ -32,20 +33,29 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         [Experimental]
         IXRInteractableEventRoute[] eventRoutes = null;
 
-        private void OnEnable()
+        /// <summary>
+        /// This function is called when the object becomes enabled and active.
+        /// </summary>
+        protected virtual void OnEnable()
         {
             EnableEventRoutes();
             ConnectAllEventRoutesToInteractables();
             ConnectChildSources();
         }
 
-        private void OnDisable()
+        /// <summary>
+        /// This function is called when the object becomes disabled or deactive.
+        /// </summary>
+        protected virtual void OnDisable()
         {
             DisconnectChildSources();
             DisconnectAllEventRoutesFromKnownInteractables();
         }
 
-        private void OnTransformChildrenChanged()
+        /// <summary>
+        /// Callback sent to the object after a Transform children change occurs.
+        /// </summary>
+        protected virtual void OnTransformChildrenChanged()
         {
             Refresh();
         }
@@ -62,6 +72,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
             ConnectChildSources();
         }
 
+        /// <summary>
+        /// Enable the current set of event routes.
+        /// </summary>
         private void EnableEventRoutes()
         {
             if (eventRoutes != null)
@@ -73,11 +86,18 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
             }
         }
 
+        /// <summary>
+        /// Enable a single event route.
+        /// </summary>
+        /// <param name="eventRoute">The event route to enable.</param>
         private void EnableEventRoute(IXRInteractableEventRoute eventRoute)
         {
             eventRoute.OnEnabled(gameObject);
         }
 
+        /// <summary>
+        /// Connect event handlers to <see cref="InteractableEventRouterChildSource"/> components in child game objects.
+        /// </summary>
         private void ConnectChildSources()
         {
             GetComponentsInChildren(includeInactive: true, childSources);
@@ -87,6 +107,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
             }
         }
 
+        /// <summary>
+        /// Disconnect event handlers from <see cref="InteractableEventRouterChildSource"/> components in child game objects.
+        /// </summary>
         private void DisconnectChildSources()
         {
             for (int i = 0; i < childSources.Count; i++)
@@ -95,6 +118,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
             }
         }
 
+        /// <summary>
+        /// Find all <see cref="IXRInteractableEventRouteTarget"/> components in child game objects, and register these components with
+        /// the current set of <see cref="IXRInteractableEventRoute"/> objects.
+        /// </summary>
         private void ConnectAllEventRoutesToInteractables()
         {
             GetComponentsInChildren(includeInactive: true, newInteractables);
@@ -111,6 +138,13 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
             }
         }
 
+
+        /// <summary>
+        /// Register the currently known <see cref="IXRInteractableEventRouteTarget"/> components with the specified <paramref name="eventRoute"/>.
+        /// </summary>
+        /// <param name="eventRoute">
+        /// The known <see cref="IXRInteractableEventRouteTarget"/> components with be registered with this <see cref="IXRInteractableEventRoute"/> object. 
+        /// </param>
         private void ConnectEventRouteToKnownInteractables(IXRInteractableEventRoute eventRoute)
         {
             if (eventRoute == null)
@@ -124,6 +158,9 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
             }
         }
 
+        /// <summary>
+        /// Unregister the currently known <see cref="IXRInteractableEventRouteTarget"/> components with all the known <see cref="IXRInteractableEventRoute"/> objects.
+        /// </summary>
         private void DisconnectAllEventRoutesFromKnownInteractables()
         {
             if (eventRoutes != null)
@@ -140,6 +177,12 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
             activeInteractables.Clear();
         }
 
+        /// <summary>
+        /// Unregister the currently known <see cref="IXRInteractableEventRouteTarget"/> components with the specified <paramref name="eventRoute"/>.
+        /// </summary>
+        /// <param name="eventRoute">
+        /// The known <see cref="IXRInteractableEventRouteTarget"/> components with be unregistered with this <see cref="IXRInteractableEventRoute"/> object. 
+        /// </param>
         private void DisconnectEventRouteFromKnownInteractables(IXRInteractableEventRoute eventRoute)
         {
             if (eventRoute == null)
@@ -166,6 +209,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// <summary>
         /// Add the given event route type if not in the current set of routes.
         /// </summary>
+        /// <typeparam name="T">The class type of the <see cref="IXRInteractableEventRoute"/> to add.</typeparam>
         public void AddEventRoute<T>() where T : IXRInteractableEventRoute, new() 
         {
             bool added = true;
@@ -206,7 +250,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// <summary>
         /// Remove the given event route type if in the current set of routes.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The class type of the <see cref="IXRInteractableEventRoute"/> to remove.</typeparam>
         public void RemoveEventRoute<T>() where T : IXRInteractableEventRoute, new()
         {
             if (eventRoutes != null)
@@ -284,7 +328,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
     /// <summary>
     /// This interface represents a target for events transmitted by <see cref="IXRInteractableEventRoute"/>.
     /// </summary>
-    /// <remarks> 
+    /// <remarks>
+    /// The <see cref="InteractableEventRouter"/> class will search for classes that
+    /// implement this interface.
+    /// 
+    /// 
     /// This is an experimental feature. This class is early in the cycle, it has 
     /// been labeled as experimental to indicate that it is still evolving, and 
     /// subject to change over time. Parts of the MRTK, such as this class, appear 

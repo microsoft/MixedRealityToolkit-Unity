@@ -298,6 +298,13 @@ namespace Microsoft.MixedReality.Toolkit
                    !float.IsInfinity(vector.x) && !float.IsInfinity(vector.y) && !float.IsInfinity(vector.z);
         }
 
+        /// <summary>
+        /// Validates that each 2D vector components is a number and is not infinite.
+        /// </summary>
+        /// <param name="vector">The 2D vector whose components will be tested.</param>
+        /// <returns>
+        /// `true` is all 2D vector components are a numbers and are not infinite, otherwise `false`.
+        /// </returns>
         public static bool IsValidVector(this Vector2 vector)
         {
             return !float.IsNaN(vector.x) && !float.IsNaN(vector.y) && 
