@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         }
 
         /// <summary>
-        /// This function is called when the object becomes disabled or deactive.
+        /// This function is called when the object becomes disabled or inactive.
         /// </summary>
         protected virtual void OnDisable()
         {
@@ -562,7 +562,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// <summary>
         /// FIlter targets that are being targeted by other <see cref="InteractableEventRouter"/> objects.
         /// </summary>
-        /// <param name="origin">The origin that is targetting <see cref="IXRInteractableEventRouteTarget"/>.</param>
+        /// <param name="origin">The origin that is targeting <see cref="IXRInteractableEventRouteTarget"/>.</param>
         private void FilterTargets(GameObject origin, List<T> targets)
         {
             for (int i = targets.Count - 1; i >= 0; i--)
