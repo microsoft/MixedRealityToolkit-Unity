@@ -156,8 +156,8 @@ PrefabInstance:
         and modify various bounds control properties.
 
 
-        Say "select" or press
-        ''1'' to advance to the next example'
+        Say "next" or press
+        Next button to advance to the next example.'
       objectReference: {fileID: 0}
     - target: {fileID: 2446705927233332293, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_margin.w
@@ -772,6 +772,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1952199377435673060, guid: 5e1e5c2fb89ded5469dd37ccbed1a896, type: 3}
+      propertyPath: speechRecognitionKeyword
+      value: next
+      objectReference: {fileID: 0}
+    - target: {fileID: 1952199377435673060, guid: 5e1e5c2fb89ded5469dd37ccbed1a896, type: 3}
+      propertyPath: <VoiceRequiresFocus>k__BackingField
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1952199377435673060, guid: 5e1e5c2fb89ded5469dd37ccbed1a896, type: 3}
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -892,8 +900,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.5
-  m_fontSizeBase: 0.5
+  m_fontSize: 0.32
+  m_fontSizeBase: 0.32
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -996,7 +1004,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.046, y: 1.79}
+  m_AnchoredPosition: {x: 0.046, y: 1.664}
   m_SizeDelta: {x: 0.6279, y: 0.2077}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &525252187

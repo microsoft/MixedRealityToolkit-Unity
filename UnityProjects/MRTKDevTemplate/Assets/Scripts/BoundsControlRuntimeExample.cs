@@ -27,7 +27,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private Vector3 cubeSize = new Vector3(0.5f, 0.5f, 0.5f);
         private BoundsControl boundsControl;
 
-        // Start is called before the first frame update
         protected virtual void Start()
         {
             StartCoroutine(Sequence());
@@ -38,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             Debug.Assert(statusText != null, "statusText on BoundsControlRuntimeExample should not be null");
             StringBuilder b = new StringBuilder();
             b.AppendLine($"{status}");
-            b.AppendLine($"Press Next or say 'select' to continue");
+            b.AppendLine($"Press Next or say 'next' to continue");
             statusText.text = b.ToString();
         }
 
@@ -52,10 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 cube.transform.localScale = cubeSize;
 
                 SetStatus("Instantiate BoundsControl");
-                var cm = cube.AddComponent<ConstraintManager>();
-                var om = cube.AddComponent<ObjectManipulator>();
-                boundsControl = cube.AddComponent<BoundsControl>();
-                boundsControl.BoundsVisualsPrefab = boundsVisualsPrefab;
+                boundsControl = InitializeBoundsControl(cube);
                 yield return WaitForButtonPressOrCommand();
 
                 SetStatus("Set Target bounds override");
@@ -70,6 +66,22 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 SetStatus("Change target bounds override size");
                 bc.size = new Vector3(0.5f, 0.1f, 1);
                 boundsControl.RecomputeBounds();
+                yield return WaitForButtonPressOrCommand();
+
+                SetStatus("RotateAnchor Object Origin");
+                boundsControl.RotateAnchor = RotateAnchorType.ObjectOrigin;
+                yield return WaitForButtonPressOrCommand();
+
+                SetStatus("RotateAnchor Bounds Center");
+                boundsControl.RotateAnchor = RotateAnchorType.BoundsCenter;
+                yield return WaitForButtonPressOrCommand();
+
+                SetStatus("ScaleAnchor Opposite Corner");
+                boundsControl.ScaleAnchor = ScaleAnchorType.OppositeCorner;
+                yield return WaitForButtonPressOrCommand();
+
+                SetStatus("ScaleAnchor Bounds Center");
+                boundsControl.ScaleAnchor = ScaleAnchorType.BoundsCenter;
                 yield return WaitForButtonPressOrCommand();
 
                 SetStatus("Remove target bounds override");
@@ -99,11 +111,31 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 yield return WaitForButtonPressOrCommand();
 
                 SetStatus("Scale X and update rig");
-                cube.transform.localScale = new Vector3(2, 1, 1);
+                cube.transform.localScale = new Vector3(1, 0.5f, 0.5f);
                 yield return WaitForButtonPressOrCommand();
 
                 SetStatus("Rotate 20 degrees and update rig");
                 cube.transform.localRotation = Quaternion.Euler(0, 20, 0);
+                yield return WaitForButtonPressOrCommand();
+
+                SetStatus("HandleType None");
+                boundsControl.EnabledHandles = HandleType.None;
+                yield return WaitForButtonPressOrCommand();
+
+                SetStatus("HandleType Resize");
+                boundsControl.EnabledHandles = HandleType.Resize;
+                yield return WaitForButtonPressOrCommand();
+
+                SetStatus("HandleType Rotation");
+                boundsControl.EnabledHandles = HandleType.Rotation;
+                yield return WaitForButtonPressOrCommand();
+
+                SetStatus("HandleType Scale");
+                boundsControl.EnabledHandles = HandleType.Scale;
+                yield return WaitForButtonPressOrCommand();
+
+                SetStatus("HandleType Translation");
+                boundsControl.EnabledHandles = HandleType.Translation;
                 yield return WaitForButtonPressOrCommand();
 
                 Destroy(cube);
@@ -123,6 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 for (int i = 0; i < numCubes; i++)
                 {
                     var cubechild = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    cubechild.GetComponent<MeshRenderer>().material = darkGrayMaterial;
                     cubechild.transform.localPosition = Random.insideUnitSphere + cubePosition + forwardOffset;
                     cubechild.transform.rotation = Quaternion.Euler(Random.insideUnitSphere * 360f);
                     cubechild.transform.parent = (lastParent != null) ? lastParent : multiRoot.transform;
@@ -131,10 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                     lastParent = cubechild.transform;
                 }
 
-                multiRoot.AddComponent<ConstraintManager>();
-                multiRoot.AddComponent<ObjectManipulator>();
-                boundsControl = multiRoot.AddComponent<BoundsControl>();
-                boundsControl.BoundsVisualsPrefab = boundsVisualsPrefab;
+                boundsControl = InitializeBoundsControl(multiRoot);
 
                 SetStatus("Randomize Child Scale for skewing");
                 yield return WaitForButtonPressOrCommand();
@@ -157,6 +187,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
 
             SetStatus("Done!");
+        }
+
+        private BoundsControl InitializeBoundsControl(GameObject target)
+        {
+            target.AddComponent<ConstraintManager>();
+            target.AddComponent<ObjectManipulator>();
+            var boundsControl = target.AddComponent<BoundsControl>();
+            boundsControl.BoundsVisualsPrefab = boundsVisualsPrefab;
+
+            return boundsControl;
         }
 
         private IEnumerator WaitForButtonPressOrCommand()
