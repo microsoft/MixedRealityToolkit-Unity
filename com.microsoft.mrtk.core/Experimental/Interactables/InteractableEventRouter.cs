@@ -160,7 +160,6 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         private bool IsValidChild(IXRInteractable interactable)
         {
             return interactable is MonoBehaviour behaviour &&
-                behaviour.GetComponentInParent<InteractableEventRouter>() == this &&
                 behaviour.gameObject != gameObject;
         }
 
@@ -453,12 +452,22 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         where S : IXRInteractable
         where T : IXRInteractableEventRouteTarget
     {
-        private T[] targets = null;
+        private List<T> targets = null;
 
         /// <inheritdoc/>
         public void OnEnabled(GameObject origin)
         {
-            targets = GetTargets(origin);
+            if (targets == null)
+            {
+                targets = new List<T>();
+            }
+            else
+            {
+                targets.Clear();
+            }
+
+            GetTargets(origin, targets);
+            FilterTargets(origin, targets);
         }
 
         /// <inheritdoc/>
@@ -472,7 +481,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
 
             if (interactable is S source)
             {
-                for (int i = 0; i < targets.Length; i++)
+                for (int i = 0; i < targets.Count; i++)
                 {
                     if (targets[i] is T target)
                     {
@@ -492,11 +501,31 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
 
             if (interactable is S source)
             {
-                for (int i = 0; i < targets.Length; i++)
+                for (int i = 0; i < targets.Count; i++)
                 {
                     if (targets[i] is T target)
                     {
                         Unregister(source, target);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// FIlter targets that are being targeted by other <see cref="InteractableEventRouter"/> objects.
+        /// </summary>
+        /// <param name="origin">The origin that is targetting <see cref="IXRInteractableEventRouteTarget"/>.</param>
+        private void FilterTargets(GameObject origin, List<T> targets)
+        {
+            for (int i = targets.Count - 1; i >= 0; i--)
+            {
+                var target = targets[i];
+                if (target is MonoBehaviour behaviour)
+                {
+                    var router = behaviour.GetComponentInParent<InteractableEventRouter>();
+                    if (router != null && router.gameObject != origin)
+                    {
+                        targets.RemoveAt(i);
                     }
                 }
             }
@@ -508,8 +537,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// objects.
         /// </summary>
         /// <param name="origin">This game object will be queried for components that implement <see cref="IXRInteractableEventRouteTarget"/>.</param>
-        /// <returns>An array of specialized <see cref="IXRInteractableEventRouteTarget"/> components.</returns>
-        protected abstract T[] GetTargets(GameObject origin);
+        /// <param name="targets">A list that should be filled with specialized <see cref="IXRInteractableEventRouteTarget"/> component objects.</param>
+        protected abstract void GetTargets(GameObject origin, List<T> targets);
 
         /// <summary>
         /// Add event handlers that will handle events from the <paramref name="source"/> and direct them to the <paramref name="target"/>.
@@ -564,10 +593,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// <param name="origin">
         /// The game object whose children will be queried for components that implement <see cref="IXRInteractableEventRouteTarget"/>.
         /// </param>
-        /// <returns>An array of specialized <see cref="IXRInteractableEventRouteTarget"/> components.</returns>
-        protected override T[] GetTargets(GameObject origin)
+        /// <param name="targets">A list that should be filled with specialized <see cref="IXRInteractableEventRouteTarget"/> component objects.</param>
+        protected override void GetTargets(GameObject origin, List<T> targets)
         {
-            return origin.GetComponentsInChildren<T>(includeInactive: true);
+            origin.GetComponentsInChildren<T>(includeInactive: true, targets);
         }
     }
 
@@ -602,10 +631,10 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// <param name="origin">
         /// The game object whose children will be queried for components that implement <see cref="IXRInteractableEventRouteTarget"/>.
         /// </param>
-        /// <returns>An array of specialized <see cref="IXRInteractableEventRouteTarget"/> components.</returns>
-        protected override T[] GetTargets(GameObject origin)
+        /// <param name="targets">A list that should be filled with specialized <see cref="IXRInteractableEventRouteTarget"/> component objects.</param>
+        protected override void GetTargets(GameObject origin, List<T> targets)
         {
-            return origin.GetComponentsInChildren<T>(includeInactive: true);
+            origin.GetComponentsInChildren<T>(includeInactive: true, targets);
         }
     }
 
