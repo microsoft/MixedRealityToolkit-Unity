@@ -10,7 +10,9 @@ TrueTypeFontImporter:
   includeFontData: 1
   fontNames:
   - Selawik
-  fallbackFontReferences: []
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 52767c1f1dd45304da1f49570e5e91ea, type: 3}
+  - {fileID: 12800000, guid: c090e1a3263a6914693f828f80a9f953, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1

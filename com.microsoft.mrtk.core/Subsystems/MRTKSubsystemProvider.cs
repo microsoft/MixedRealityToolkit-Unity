@@ -30,8 +30,19 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// </summary>
         public virtual void FixedUpdate() { }
 
+        /// <summary>
+        /// Destroys this instance of a Unity subsystem.
+        /// </summary>
         public override void Destroy() { }
+
+        /// <summary>
+        /// Starts an instance of a Unity subsystem.
+        /// </summary>
         public override void Start() { }
+
+        /// <summary>
+        /// Stops an instance of a Unity subsystem.
+        /// </summary>
         public override void Stop() { }
     }
 }

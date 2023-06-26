@@ -152,52 +152,52 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-        private static HandsAggregatorSubsystem handsAggregator = null;
+        private static IHandsAggregatorSubsystem handsAggregator = null;
 
         /// <summary>
         /// The currently loaded and running hands aggregator, if any.
         /// </summary>
-        public static HandsAggregatorSubsystem HandsAggregator
+        public static IHandsAggregatorSubsystem HandsAggregator
         {
             get
             {
                 if (handsAggregator == null || !handsAggregator.running)
                 {
-                    handsAggregator = GetFirstRunningSubsystem<HandsAggregatorSubsystem>();
+                    handsAggregator = GetFirstRunningSubsystem<IHandsAggregatorSubsystem>();
                 }
                 return handsAggregator;
             }
         }
         
-        private static DictationSubsystem dictationSubsystem = null;
+        private static IDictationSubsystem dictationSubsystem = null;
 
         /// <summary>
         /// The currently loaded and running dictation subsystem, if any.
         /// </summary>
-        public static DictationSubsystem DictationSubsystem
+        public static IDictationSubsystem DictationSubsystem
         {
             get
             {
                 if (dictationSubsystem == null || !dictationSubsystem.running)
                 {
-                    dictationSubsystem = GetFirstRunningSubsystem<DictationSubsystem>();
+                    dictationSubsystem = GetFirstRunningSubsystem<IDictationSubsystem>();
                 }
                 return dictationSubsystem;
             }
         }
 
-        private static KeywordRecognitionSubsystem keywordRecognitionSubsystem = null;
+        private static IKeywordRecognitionSubsystem keywordRecognitionSubsystem = null;
 
         /// <summary>
         /// The currently loaded and running keyword recognition subsystem, if any.
         /// </summary>
-        public static KeywordRecognitionSubsystem KeywordRecognitionSubsystem
+        public static IKeywordRecognitionSubsystem KeywordRecognitionSubsystem
         {
             get
             {
                 if (keywordRecognitionSubsystem == null || !keywordRecognitionSubsystem.running)
                 {
-                    keywordRecognitionSubsystem = GetFirstRunningSubsystem<KeywordRecognitionSubsystem>();
+                    keywordRecognitionSubsystem = GetFirstRunningSubsystem<IKeywordRecognitionSubsystem>();
                 }
                 return keywordRecognitionSubsystem;
             }

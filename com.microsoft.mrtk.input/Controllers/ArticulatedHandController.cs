@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// An XRController for binding to hand input. Able to support variable pinch
     /// select through the HandsAggregatorSubsystem.
     /// </summary>
-    [AddComponentMenu("MRTK/Input/Articulated Hand Controller")]
+    [AddComponentMenu("MRTK/Input/XR Controller (Articulated Hand)")]
     public class ArticulatedHandController : ActionBasedController
     {
         #region Associated hand select values
@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #region Properties
         
         [Obsolete("Deprecated, please use XRSubsystemHelpers.HandsAggregator instead.")]
-        protected HandsAggregatorSubsystem HandsAggregator => XRSubsystemHelpers.HandsAggregator;
+        protected HandsAggregatorSubsystem HandsAggregator => XRSubsystemHelpers.HandsAggregator as HandsAggregatorSubsystem;
 
         #endregion Properties
 

@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// look great on items that are vertically large, as items are curved at a
     /// GameObject level. Their contents will remain flat.
     /// </summary>
-    [AddComponentMenu("MRTX/Examples/Scroll Rect Curve")]
+    [AddComponentMenu("MRTK/Examples/Scroll Rect Curve")]
     public class ScrollRectCurve : MonoBehaviour
     {
         [SerializeField]

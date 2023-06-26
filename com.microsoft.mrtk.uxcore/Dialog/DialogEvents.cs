@@ -21,10 +21,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
     }
 
     /// <summary>
-    /// Button events emit these parameters. For subclassed dialogs
-    /// with custom buttons or other types of events, return
-    /// a <see cref="DialogButtonType.Other"/> with some additional
-    /// context in a subclassed <see cref="DialogButtonEventArgs" type.
+    /// Event arguments used when buttons in a <see cref="Microsoft.MixedReality.Toolkit.UX.IDialog">IDialog</see>
+    /// are clicked or activated.
     /// </summary>
     public class DialogButtonEventArgs : BaseDialogEventArgs
     {
@@ -45,6 +43,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
         public string ButtonText { get; set; }
     }
 
+    /// <summary>
+    /// Event arguments used a <see cref="Microsoft.MixedReality.Toolkit.UX.IDialog">IDialog</see>
+    /// is dismissed or closed.
+    /// </summary>
     public class DialogDismissedEventArgs : BaseDialogEventArgs
     {
         /// <summary>
@@ -53,5 +55,4 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public DialogButtonEventArgs Choice { get; set; }
     }
-
 }

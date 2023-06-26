@@ -6,8 +6,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UX
 {
     /// <summary>
-    /// A simple visuals script to provide a visual layer on top of
-    /// <see cref="PressableButton"/>.
+    /// A simple visuals script to provide a visual layer on top of a 
+    /// <see cref="Microsoft.MixedReality.Toolkit.UX.PressableButton">PressableButton</see>.
     /// </summary>
     [RequireComponent(typeof(PressableButton))]
     [ExecuteAlways]
@@ -17,6 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private PressableButton buttonState;
 
         [SerializeField]
+        [Tooltip("The front plate object that will move with the button displacement.")]
         private Transform movingVisuals;
 
         /// <summary>
@@ -24,16 +25,19 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public Transform MovingVisuals => movingVisuals;
 
-        protected void Awake()
+        private void Awake()
         {
             buttonState = GetComponent<PressableButton>();
         }
 
-        protected void LateUpdate()
+        private void LateUpdate()
         {
             UpdateMovingVisualsPosition();
         }
 
+        /// <summary>
+        /// Update the local position of the specified <see cref="MovingVisuals"/> transform.
+        /// </summary>
         protected virtual void UpdateMovingVisualsPosition()
         {
             if (movingVisuals != null)

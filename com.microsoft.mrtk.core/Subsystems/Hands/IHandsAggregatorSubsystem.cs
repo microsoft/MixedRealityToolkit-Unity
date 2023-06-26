@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Subsystems
@@ -20,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
     /// See <see cref="MRTKHandsAggregatorSubsystem"> for the MRTK implementation.
     /// </remarks>
     /// </summary>
-    public interface IHandsAggregatorSubsystem
+    public interface IHandsAggregatorSubsystem : ISubsystem
     {
         /// <summary>
         /// The playspace-local pose of the near interaction point.

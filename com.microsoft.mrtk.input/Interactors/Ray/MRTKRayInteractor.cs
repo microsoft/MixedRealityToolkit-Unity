@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using Unity.Profiling;
 using UnityEngine;
@@ -50,19 +51,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Cached reference to hands aggregator for efficient per-frame use.
         /// </summary>
         [Obsolete("Deprecated, please use XRSubsystemHelpers.HandsAggregator instead.")]
-        protected HandsAggregatorSubsystem HandsAggregator => XRSubsystemHelpers.HandsAggregator;
+        protected HandsAggregatorSubsystem HandsAggregator => XRSubsystemHelpers.HandsAggregator as HandsAggregatorSubsystem;
 
         /// <summary>
         /// How unselected the interactor must be to initiate a new hover or selection on a new target.
-        /// Separate from the hand controller's threshold for pinchedness, so that we can tune
-        /// overall pinchedness separately from the roll-off prevention.
+        /// Separate from the hand controller's threshold for pinching, so that we can tune
+        /// overall pinching threshold separately from the roll-off prevention.
         /// Should be [0,1].
         /// </summary>
         /// <remarks>
         /// May be made serialized + exposed in the future.
         /// Larger than the relaxation threshold on <see cref="GazePinchInteractor"/>, as fewer
         /// accidental activations will occur with rays.
-        /// <remarks>
+        /// </remarks>
         protected internal float relaxationThreshold = 0.5f;
 
         // Whether the hand has relaxed (i.e. fully unselected) pre-selection.
@@ -94,7 +95,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public override bool CanHover(IXRHoverInteractable interactable)
         {
             // We stay hovering if we have selected anything.
-            bool stickyHover = !hasSelection || IsSelecting(interactable);
+            bool stickyHover = hasSelection && IsSelecting(interactable);
+            if (stickyHover)
+            {
+                return true;
+            }
 
             // We are ready to pinch if we are in the PinchReady position,
             // or if we are already selecting something.
@@ -108,13 +113,31 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // semi-pressing another.
             bool canHoverNew = !isNew || SelectProgress < relaxationThreshold;
 
-            return base.CanHover(interactable) && stickyHover && ready && canHoverNew;
+            return ready && base.CanHover(interactable) && canHoverNew;
         }
 
         /// <inheritdoc />
         public override bool CanSelect(IXRSelectInteractable interactable)
         {
             return base.CanSelect(interactable) && (!hasSelection || IsSelecting(interactable)) && isRelaxedBeforeSelect;
+        }
+
+        /// <inheritdoc />
+        public override void GetValidTargets(List<IXRInteractable> targets)
+        {
+            // When selection is active, force valid targets to be the current selection. This is done to ensure that selected objects remained hovered.
+            if (hasSelection && isActiveAndEnabled)
+            {
+                targets.Clear();
+                for (int i = 0; i < interactablesSelected.Count; i++)
+                {
+                    targets.Add(interactablesSelected[i]);
+                }
+            }
+            else
+            {
+                base.GetValidTargets(targets);
+            }
         }
 
         /// <inheritdoc />

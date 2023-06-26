@@ -1,0 +1,76 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+# RC build producing release candidate packages.
+
+variables:
+  - template: Config/settings.yaml
+  - name: Version.Revision
+    value: $[counter(variables['MRTKVersion'], 1)]
+  - name: Version.DateCode
+    value: $[format('{0:yyMMdd}', pipeline.startTime)]
+  - name: Version.DateCodeRevision
+    value: $[counter(format('{0:yyMMdd}', pipeline.startTime), 0)]
+
+resources:
+  repositories:
+    - repository: PipelineTools
+      type: git
+      endpoint: ToolsAccess
+      name: tools.internal
+      ref: 78ecf591964ecf511b4c7a0cd84d98ce11e8be16
+    - repository: DocToolUnityProject
+      type: git
+      endpoint: ToolsAccess
+      name: lib.doctools
+      ref: f6dcb5efd248fbe486757cb5a7198aed81c180d5
+
+trigger: none # only manual runs
+
+jobs:
+  - job: UnityValidation
+    pool: Unity_2021.3.21f1_Pool
+    steps:
+      - checkout: self
+
+      - checkout: PipelineTools
+
+      - pwsh: Write-Host "##vso[build.updatebuildnumber]$(MRTKVersion)-$(ReleaseTagPrefix)$(MRTKReleaseTag).$(Version.DateCode).$(Version.DateCodeRevision)"
+        displayName: Set Build Number
+
+      - task: ComponentGovernanceComponentDetection@0
+        inputs:
+          scanType: Register
+          alertWarningLevel: Medium
+          failOnAlert: true
+
+      - template: Templates/unity.yaml
+        parameters:
+          Platform: Standalone
+
+      - template: Templates/unity.yaml
+        parameters:
+          Platform: UWP
+
+      - template: Templates/unity.yaml
+        parameters:
+          Platform: Android
+
+      - template: Templates/upm.yaml
+        parameters:
+          buildNumber: $(Version.Revision)
+          previewTag: $(MRTKReleaseTag)
+          publishToFeed: true
+
+  - job: DocsBinariesGeneration
+    pool: Unity_2021.3.21f1_Pool
+    steps:
+      - checkout: self
+
+      - checkout: PipelineTools
+
+      - checkout: DocToolUnityProject
+
+      - template: Templates/license-unity.yaml@PipelineTools
+
+      - template: Templates/docs.yaml

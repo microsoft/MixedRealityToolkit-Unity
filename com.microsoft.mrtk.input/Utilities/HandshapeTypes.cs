@@ -3,6 +3,9 @@
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// A static class containing types related to hand shapes.
+    /// </summary>
     public static class HandshapeTypes
 
     {

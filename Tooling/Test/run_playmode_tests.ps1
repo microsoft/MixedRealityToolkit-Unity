@@ -18,7 +18,7 @@ param(
     # Unity version override
     [Parameter(Mandatory = $false)]
     [string]
-    $unityVersion = "2020.3.35f1",
+    $unityVersion = "2021.3.21f1",
     # Path to your Unity Executable
     [ValidateScript({ [System.IO.File]::Exists($_) -and $_.EndsWith(".exe") })]
     [string]

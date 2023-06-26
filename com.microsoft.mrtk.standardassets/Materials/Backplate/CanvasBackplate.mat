@@ -2,15 +2,21 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: CanvasBackplate
   m_Shader: {fileID: 4800000, guid: 29b058829dc4dbf449bc59c038dfa631, type: 3}
-  m_ShaderKeywords: _EDGE_ONLY_ _GRADIENT_DISABLED_ _IRIDESCENCE_ENABLE_ _LINE_ENABLE_
-    _REFLECTED__ON _SMOOTH_EDGES_
+  m_ValidKeywords:
+  - _EDGE_ONLY_
+  - _GRADIENT_DISABLED_
+  - _IRIDESCENCE_ENABLE_
+  - _SMOOTH_EDGES_
+  m_InvalidKeywords:
+  - _LINE_ENABLE_
+  - _REFLECTED__ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -32,6 +38,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _Angle_: -45
     - _DstBlend: 0

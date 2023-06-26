@@ -7,9 +7,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
     /// <summary>
     /// Component for limiting the translation axes for ObjectManipulator
-    /// or BoundsControl
-    /// We're looking to rework this system in the future. These existing components will be deprecated then.
+    /// or BoundsControl.
     /// </summary>
+    /// <remarks>
+    /// MRTK's constraint system might be redesigned in the near future. When
+    /// this occurs, the old constraint components will be deprecated.
+    /// </remarks>
     public class MoveAxisConstraint : TransformConstraint
     {
         #region Properties
@@ -41,6 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             set => useLocalSpaceForConstraint = value;
         }
 
+        /// <inheritdoc />
         public override TransformFlags ConstraintType => TransformFlags.Move;
 
         #endregion Properties

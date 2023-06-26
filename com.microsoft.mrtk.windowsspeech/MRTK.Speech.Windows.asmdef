@@ -3,6 +3,7 @@
     "rootNamespace": "Microsoft.MixedReality.Toolkit.Speech.Windows",
     "references": [
         "Microsoft.MixedReality.Toolkit.Core",
+        "Microsoft.MixedReality.Toolkit.Input",
         "Microsoft.MixedReality.OpenXR",
         "Microsoft.MixedReality.Toolkit.TextToSpeech.Windows"
     ],

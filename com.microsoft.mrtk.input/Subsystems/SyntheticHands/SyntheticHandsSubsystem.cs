@@ -14,6 +14,9 @@ using HandshapeId = Microsoft.MixedReality.Toolkit.Input.HandshapeTypes.Handshap
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// A Unity subsystem that enables articulated hand simulation.
+    /// </summary>    
     [Preserve]
     [MRTKSubsystem(
         Name = "com.microsoft.mixedreality.synthhands",
@@ -25,6 +28,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class SyntheticHandsSubsystem : HandsSubsystem
     {
         private SyntheticHandsProvider syntheticProvider;
+
+        /// <summary>
+        /// Get the subsystem provider for this object.
+        /// </summary>
         private SyntheticHandsProvider SyntheticProvider
         {
             get
@@ -266,7 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             private static readonly ProfilerMarker TryCalculateEntireHandPerfMarker =
                 new ProfilerMarker("[MRTK] SyntheticHandsSubsystem.TryCalculateEntireHand");
 
-            /// <summary/>
+            /// <summary>
             /// For a certain hand, query every Bone in the hand, and write all results to the
             /// handJoints collection. This will also mark handsQueriedThisFrame[handNode] = true.
             /// </summary>
@@ -361,7 +368,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             private static readonly ProfilerMarker UpdatehandshapePerfMarker =
                 new ProfilerMarker("[MRTK] SyntheticHandsSubsystem.Updatehandshape");
 
-            /// <summary/>
+            /// <summary>
             /// Given the current state of the various input actions,
             /// write the current local-space handshape into the currentHandshape array.
             /// </summary>
@@ -392,6 +399,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// A subsystem provider for <see cref="SyntheticHandsSubsystem"/> that provides methods for getting and setting
+        /// the simulated hand poses, as well as methods for obtain hand joint poses.
+        /// </summary>
         [Preserve]
         class SyntheticHandsProvider : Provider
         {

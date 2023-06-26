@@ -215,7 +215,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6853218870844938225}
-  - component: {fileID: 8384892589113505615}
+  - component: {fileID: 6383762985148977517}
   m_Layer: 0
   m_Name: MRTK Gaze Controller
   m_TagString: Untagged
@@ -239,7 +239,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8384892589113505615
+--- !u!114 &6383762985148977517
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -248,12 +248,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7470888221916766567}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: caff514de9b15ad48ab85dcff5508221, type: 3}
+  m_Script: {fileID: 11500000, guid: b5ecb302c7ea48344b3a839df64a77a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_UpdateTrackingType: 0
   m_EnableInputTracking: 1
-  m_EnableInputActions: 0
+  m_EnableInputActions: 1
   m_ModelPrefab: {fileID: 0}
   m_ModelParent: {fileID: 0}
   m_Model: {fileID: 0}
@@ -266,7 +266,7 @@ MonoBehaviour:
       m_Name: Position
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: fda89e8e-c075-4a7a-bdef-27bc001b54e8
+      m_Id: a11daf2c-febf-4ea5-afe9-c21bed6bebe9
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -278,7 +278,7 @@ MonoBehaviour:
       m_Name: Rotation
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: a6a8d562-e822-45ff-87f9-d1c567b55dbe
+      m_Id: eaea1318-ea1f-4bd2-b48b-10fd58947d8d
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -290,7 +290,7 @@ MonoBehaviour:
       m_Name: Tracking State
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 2c5e456a-bd10-44f4-898b-85180df19c5c
+      m_Id: 3319b6e7-12b5-4837-b74d-60ab5ec07d59
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -302,7 +302,7 @@ MonoBehaviour:
       m_Name: Select
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 97f31792-62e2-4ad6-847b-146f13a713a5
+      m_Id: 10024e8c-255d-4073-a121-5542f80bc168
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -314,7 +314,7 @@ MonoBehaviour:
       m_Name: Select Action Value
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 0f64ca01-dd62-49f6-97c8-c8fcd0d44eb9
+      m_Id: 4c63a0cf-2a5f-48ca-a451-1ef0c0cf26fb
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -326,7 +326,7 @@ MonoBehaviour:
       m_Name: Activate
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 6b79f43f-864f-422b-8993-2107587433c0
+      m_Id: 881b42aa-b824-4843-87bf-bc236e9008da
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -338,7 +338,7 @@ MonoBehaviour:
       m_Name: Activate Action Value
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 2e1f3e93-7b4a-4afe-aba7-89ba19a075fe
+      m_Id: 0ebe3d4a-cd81-4ef5-b2c6-65a352d76d85
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -350,7 +350,7 @@ MonoBehaviour:
       m_Name: UI Press
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: f71a004e-471e-4d16-a0a4-c4f31546ad95
+      m_Id: fdd9436f-9d5f-4520-9218-ddba68887cde
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -362,7 +362,7 @@ MonoBehaviour:
       m_Name: UI Press Action Value
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 651976b9-bd15-4988-a20b-ca8a011f7c8c
+      m_Id: c72a535d-c2da-4cb3-98da-81626ee93196
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -374,7 +374,7 @@ MonoBehaviour:
       m_Name: Haptic Device
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: c9158dd3-cfbe-4a13-8f26-c24a77a49729
+      m_Id: 011ee523-7eef-407d-bb5d-6a53b9e6b9ac
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -386,7 +386,7 @@ MonoBehaviour:
       m_Name: Rotate Anchor
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 2b8598b6-3b69-47f7-8541-2c7d29b9a4ae
+      m_Id: 6a4860ad-abd1-482b-8c9a-455c86786c08
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -398,7 +398,7 @@ MonoBehaviour:
       m_Name: Directional Anchor Rotation
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 1339e3a3-e6a3-4baf-8905-1ad03cc965b3
+      m_Id: 4193cbb2-ece8-4ed4-8f86-9ff0d3ac5505
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -410,10 +410,46 @@ MonoBehaviour:
       m_Name: Translate Anchor
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 2b9f8ab7-0d8e-4147-9d23-3d6e04c6989a
+      m_Id: 3402d39b-eb4f-4b9f-b338-637f02b1eff5
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: 0}
   m_ButtonPressPoint: 0.5
+  fallbackPositionAction:
+    m_UseReference: 1
+    m_Action:
+      m_Name: Fallback Position
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 7f9b01c3-bf9d-45fc-95f8-35d381c29b65
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 6617357981711541546, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+  fallbackRotationAction:
+    m_UseReference: 1
+    m_Action:
+      m_Name: Fallback Rotation
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: d2fb4a7d-b89b-49b1-aa21-52addc67fde9
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 1272146141651074281, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}
+  fallbackTrackingStateAction:
+    m_UseReference: 1
+    m_Action:
+      m_Name: Fallback Tracking State
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: c03c5a83-1d35-43a6-a6f3-be7295e81e8a
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 5232793463981167437, guid: 18c412191cdc9274897f101c7fd5316f, type: 3}

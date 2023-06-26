@@ -13,6 +13,10 @@ using InputDevice = UnityEngine.XR.InputDevice;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// A Unity subsystem that extends <see cref="Microsoft.MixedReality.Toolkit.Subsystems.HandsSubsystem">HandsSubsystem</see>, and 
+    /// obtains hand joint poses from the Unity Engine's XR <see href="https://docs.unity3d.com/ScriptReference/XR.Hand.html">Hand</see> class.
+    /// </summary>
     [Preserve]
     [MRTKSubsystem(
         Name = "com.microsoft.mixedreality.xrsdkhands",
@@ -38,6 +42,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// A class that extends <see cref="Microsoft.MixedReality.Toolkit.Input.HandDataContainer">HandDataContainer</see>, and 
+        /// obtains hand joint poses from the Unity Engine's XR <see href="https://docs.unity3d.com/ScriptReference/XR.Hand.html">Hand</see> class.
+        /// </summary>
         private class XRSDKHandContainer : HandDataContainer
         {
             // The cached reference to the XRSDK tracked hand.
@@ -180,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             private static readonly ProfilerMarker TryCalculateEntireHandPerfMarker =
                 new ProfilerMarker("[MRTK] XRSDKHandsSubsystem.TryCalculateEntireHand");
 
-            /// <summary/>
+            /// <summary>
             /// For a certain hand, query every Bone in the hand, and write all results to the
             /// handJoints collection. This will also mark handsQueriedThisFrame[handNode] = true.
             /// </summary>
@@ -234,7 +242,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             private static readonly ProfilerMarker TryUpdateJointPerfMarker =
                 new ProfilerMarker("[MRTK] XRSDKHandsSubsystem.TryUpdateJoint");
 
-            /// <summary/>
+            /// <summary>
             /// Given a destination jointID, apply the Bone info to the correct struct
             /// in the handJoints collection.
             /// </summary>

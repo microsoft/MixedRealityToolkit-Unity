@@ -6,6 +6,11 @@ using UnityEngine.InputSystem;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// A configuration object for <see cref="Microsoft.MixedReality.Toolkit.Input.SyntheticHandsSubsystem">SyntheticHandsSubsystem</see>.
+    /// This class defines the Unity input actions that <see cref="Microsoft.MixedReality.Toolkit.Input.SyntheticHandsSubsystem">SyntheticHandsSubsystem</see>
+    /// uses when simulating articulated hands.
+    /// </summary>
     [CreateAssetMenu(fileName = "MRTKSyntheticHandsConfig.asset", menuName = "MRTK/Subsystems/MRTK Synthetic Hands Config")]
     public class SyntheticHandsConfig : BaseSubsystemConfig
     {
