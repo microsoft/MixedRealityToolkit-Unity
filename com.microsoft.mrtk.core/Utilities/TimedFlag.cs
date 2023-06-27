@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// <summary>
     /// Represents a flag that can be activated or deactivated, and whose active duration is tracked and 
     /// obtained via the <see cref="GetTimeElapsedSinceSetActive"/> function. Instances of this object
-    /// will also raise <see cref="OnEntered"> and <see cref "OnExited"> events when their activate state is altered.
+    /// will also raise <see cref="OnEntered"/> and <see cref "OnExited"/> events when their activate state is altered.
     /// </summary>
     [System.Serializable]
     public class TimedFlag

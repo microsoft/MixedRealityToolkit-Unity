@@ -285,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
 
     /// <summary>
     /// This interface represents an object that relays
-    /// <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>
+    /// <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%402.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>
     /// events from interactables to game objects that contain <see cref="IXRInteractableEventRouteTarget"/> components.
     /// </summary>
     /// <remarks> 
@@ -308,7 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
 
         /// <summary>
         /// Starts listening to events from an unregistered 
-        /// <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>.
+        /// <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%402.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>.
         /// </summary>
         /// <param name="interactable">
         /// The interactable to register. Events will start being handled by this <see cref="IXRInteractableEventRoute"/>.
@@ -317,7 +317,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
 
         /// <summary>
         /// Stop listening to events from a registered 
-        /// <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>.
+        /// <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%402.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>.
         /// </summary>
         /// <param name="interactable">
         /// The interactable to unregister. Events will no longer be handled by this <see cref="IXRInteractableEventRoute"/>.
@@ -346,7 +346,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
 
     /// <summary>
     /// A specialized <see cref="IXRInteractableEventRouteTarget"/> that represents a parent of a Unity
-    /// <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRHoverInteractable.html">IXRHoverInteractable</see>.
+    /// <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%402.0/api/UnityEngine.XR.Interaction.Toolkit.IXRHoverInteractable.html">IXRHoverInteractable</see>.
     /// </summary>
     /// <remarks> 
     /// This is an experimental feature. This class is early in the cycle, it has 
@@ -362,7 +362,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// When a child game object's interactable receives a "hover entered" event, this function will be invoked.
         /// </summary>
         /// <param name="args">
-        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@1.0/api/UnityEngine.XR.Interaction.Toolkit.HoverEnterEventArgs.html">HoverEnterEventArgs</see>
+        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.HoverEnterEventArgs.html">HoverEnterEventArgs</see>
         /// associated with the original interaction event.
         /// </param>
         void OnChildHoverEntered(HoverEnterEventArgs args);
@@ -371,7 +371,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// When a child game object's interactable receives a "hover exited" event, this function will be invoked.
         /// </summary>
         /// <param name="args">
-        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@1.0/api/UnityEngine.XR.Interaction.Toolkit.HoverExitEventArgs.html">HoverExitEventArgs</see>
+        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.HoverExitEventArgs.html">HoverExitEventArgs</see>
         /// associated with the original interaction event.
         /// </param>
         void OnChildHoverExited(HoverExitEventArgs args);
@@ -379,7 +379,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
 
     /// <summary>
     /// A specialized <see cref="IXRInteractableEventRouteTarget"/> that represents a child of a Unity
-    /// <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRHoverInteractable.html">IXRHoverInteractable</see>.
+    /// <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%402.0/api/UnityEngine.XR.Interaction.Toolkit.IXRHoverInteractable.html">IXRHoverInteractable</see>.
     /// </summary>
     /// <remarks> 
     /// This is an experimental feature. This class is early in the cycle, it has 
@@ -395,7 +395,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// When a parent game object's interactable receives a "hover entered" event, this function will be invoked.
         /// </summary>
         /// <param name="args">
-        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@1.0/api/UnityEngine.XR.Interaction.Toolkit.HoverEnterEventArgs.html">HoverEnterEventArgs</see>
+        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.HoverEnterEventArgs.html">HoverEnterEventArgs</see>
         /// associated with the original interaction event.
         /// </param>
         void OnParentHoverEntered(HoverEnterEventArgs args);
@@ -404,7 +404,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// When a parent game object's interactable receives a "hover exited" event, this function will be invoked.
         /// </summary>
         /// <param name="args">
-        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@1.0/api/UnityEngine.XR.Interaction.Toolkit.HoverExitEventArgs.html">HoverExitEventArgs</see>
+        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.HoverExitEventArgs.html">HoverExitEventArgs</see>
         /// associated with the original interaction event.
         /// </param>
         void OnParentHoverExited(HoverExitEventArgs args);
@@ -412,7 +412,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
 
     /// <summary>
     /// A specialized <see cref="IXRInteractableEventRouteTarget"/> that represents a parent of a Unity
-    /// <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRSelectInteractable.html">IXRSelectInteractable</see>.
+    /// <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%402.0/api/UnityEngine.XR.Interaction.Toolkit.IXRSelectInteractable.html">IXRSelectInteractable</see>.
     /// </summary>
     /// <remarks> 
     /// This is an experimental feature. This class is early in the cycle, it has 
@@ -428,7 +428,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// When a child game object's interactable receives a "select entered" event, this function will be invoked.
         /// </summary>
         /// <param name="args">
-        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@1.0/api/UnityEngine.XR.Interaction.Toolkit.SelectEnterEventArgs.html">SelectEnterEventArgs</see>
+        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.SelectEnterEventArgs.html">SelectEnterEventArgs</see>
         /// associated with the original interaction event.
         /// </param>
         void OnChildSelectEntered(SelectEnterEventArgs args);
@@ -437,7 +437,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// When a child game object's interactable receives a "select exited" event, this function will be invoked.
         /// </summary>
         /// <param name="args">
-        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@1.0/api/UnityEngine.XR.Interaction.Toolkit.SelectExitEventArgs.html">SelectExitEventArgs</see>
+        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.SelectExitEventArgs.html">SelectExitEventArgs</see>
         /// associated with the original interaction event.
         /// </param>
         void OnChildSelectExited(SelectExitEventArgs args);
@@ -445,7 +445,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
 
     /// <summary>
     /// A specialized <see cref="IXRInteractableEventRouteTarget"/> that represents a child of a Unity
-    /// <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRSelectInteractable.html">IXRSelectInteractable</see>.
+    /// <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%402.0/api/UnityEngine.XR.Interaction.Toolkit.IXRSelectInteractable.html">IXRSelectInteractable</see>.
     /// </summary>
     /// <remarks> 
     /// This is an experimental feature. This class is early in the cycle, it has 
@@ -461,7 +461,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// When a parent game object's interactable receives a "select entered" event, this function will be invoked.
         /// </summary>
         /// <param name="args">
-        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@1.0/api/UnityEngine.XR.Interaction.Toolkit.SelectEnterEventArgs.html">SelectEnterEventArgs</see>
+        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.SelectEnterEventArgs.html">SelectEnterEventArgs</see>
         /// associated with the original interaction event.
         /// </param>
         void OnParentSelectEntered(SelectEnterEventArgs args);
@@ -470,7 +470,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// When a parent game object's interactable receives a "select exited" event, this function will be invoked.
         /// </summary>
         /// <param name="args">
-        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@1.0/api/UnityEngine.XR.Interaction.Toolkit.SelectExitEventArgs.html">SelectExitEventArgs</see>
+        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.SelectExitEventArgs.html">SelectExitEventArgs</see>
         /// associated with the original interaction event.
         /// </param>
         void OnParentSelectExited(SelectExitEventArgs args);
@@ -478,11 +478,11 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
 
     /// <summary>
     /// A <see cref="IXRInteractableEventRoute"/> that relays
-    /// <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>
+    /// <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%402.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>
     /// events from interactables to game objects that contain <see cref="IXRInteractableEventRouteTarget"/> components.
     /// </summary>
     /// <typeparam name="S">
-    /// The specialized type of <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see> that will be registered.
+    /// The specialized type of <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%402.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see> that will be registered.
     /// Only events originating from this type will be handled.
     /// </typeparam>
     /// <typeparam name="T">
@@ -581,7 +581,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
 
         /// <summary>
         /// Search for and return all <see cref="IXRInteractableEventRouteTarget"/> objects that should receive events from the
-        /// registered <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>
+        /// registered <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%402.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>
         /// objects.
         /// </summary>
         /// <param name="origin">This game object will be queried for components that implement <see cref="IXRInteractableEventRouteTarget"/>.</param>
@@ -615,7 +615,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
     /// A <see cref="InteractableEventRoute{S, T}"/> that targets child game objects the are parents of interactables.
     /// </summary>
     /// <typeparam name="S">
-    /// The specialized type of <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see> 
+    /// The specialized type of <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%402.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see> 
     /// that will be registered with this. Only events originating from this type will be handled.
     /// </typeparam>
     /// <typeparam name="T">
@@ -635,7 +635,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
     {
         /// <summary>
         /// Search for and return all <see cref="IXRInteractableEventRouteTarget"/> objects that should receive events from the
-        /// registered <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>
+        /// registered <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%402.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>
         /// objects.
         /// </summary>
         /// <param name="origin">
@@ -653,7 +653,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
     /// A <see cref="InteractableEventRoute{S, T}"/> that targets child game objects the are children of interactables.
     /// </summary>
     /// <typeparam name="S">
-    /// The specialized type of <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>
+    /// The specialized type of <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%402.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>
     /// that will be registered with this. Only events originating from this type will be handled.
     /// </typeparam>
     /// <typeparam name="T">
@@ -673,7 +673,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
     {
         /// <summary>
         /// Search for and return all <see cref="IXRInteractableEventRouteTarget"/> objects that should receive events from the
-        /// registered <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit@2.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>
+        /// registered <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%402.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractable.html">IXRInteractable</see>
         /// objects.
         /// </summary>
         /// <param name="origin">

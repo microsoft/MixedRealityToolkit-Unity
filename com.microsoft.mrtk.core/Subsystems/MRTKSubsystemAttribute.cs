@@ -6,9 +6,9 @@ using System;
 namespace Microsoft.MixedReality.Toolkit.Subsystems
 {
     /// <summary>
-    /// Attribute marking a concrete, instantiatable MRTK subsystem.
+    /// Attribute marking a concrete and creatable MRTK subsystem.
     /// Subsystem classes marked with this attribute will be discoverable
-    /// to the <see cref="MRTKLifecycleManager"> and to the MRTK profile editor.
+    /// to the <see cref="MRTKLifecycleManager"/> and to the MRTK profile editor.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class MRTKSubsystemAttribute : Attribute, IMRTKSubsystemDescriptor
