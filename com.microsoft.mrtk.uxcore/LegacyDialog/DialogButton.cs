@@ -46,6 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
         public DialogButtonTypes ButtonTypeEnum => DialogProperty.Convert(ButtonContext.ButtonType);
 
         [SerializeField, Tooltip("The type description of the button.")]
+        [Obsolete]
         private DialogButtonContext buttonContext;
 
         /// <summary>
@@ -54,6 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
         [Obsolete("This legacy dialog system has been deprecated. Please migrate to the new dialog system, see Microsoft.MixedReality.Toolkit.UX.DialogPool for more details.")]
         public DialogButtonContext ButtonContext => buttonContext;
 
+        [Obsolete]
         private void OnValidate()
         {
             SetButtonContext(ButtonContext);

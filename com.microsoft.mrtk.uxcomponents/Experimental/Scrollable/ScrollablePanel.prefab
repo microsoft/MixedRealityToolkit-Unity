@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6449560764903005706}
   - component: {fileID: 6449560764903005709}
   - component: {fileID: 6449560764903005708}
-  - component: {fileID: 6449560764903005711}
+  - component: {fileID: 7928094702809170859}
   m_Layer: 5
   m_Name: ScrollablePanel
   m_TagString: Untagged
@@ -167,16 +167,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eventRoutes:
-  - rid: 4538478793802383364
-  - rid: 4538478793802383365
+  - rid: 5356761904432021508
+  - rid: 5356761904432021509
   references:
     version: 2
     RefIds:
-    - rid: 4538478793802383364
-      type: {class: HoverParentEventRoute, ns: Microsoft.MixedReality.Toolkit, asm: Microsoft.MixedReality.Toolkit.Core}
-    - rid: 4538478793802383365
-      type: {class: SelectParentEventRoute, ns: Microsoft.MixedReality.Toolkit, asm: Microsoft.MixedReality.Toolkit.Core}
---- !u!114 &6449560764903005711
+    - rid: 5356761904432021508
+      type: {class: BubbleChildHoverEvents, ns: Microsoft.MixedReality.Toolkit.Experimental, asm: Microsoft.MixedReality.Toolkit.Core}
+    - rid: 5356761904432021509
+      type: {class: BubbleChildSelectEvents, ns: Microsoft.MixedReality.Toolkit.Experimental, asm: Microsoft.MixedReality.Toolkit.Core}
+--- !u!114 &7928094702809170859
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -189,7 +189,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 0}
-  m_Colliders: []
+  m_Colliders:
+  - {fileID: 6449560764903005707}
   m_InteractionLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -347,7 +348,11 @@ MonoBehaviour:
         m_Calls: []
   disabledInteractorTypes: []
   scrollRect: {fileID: 6449560764903005705}
-  dragDivisor: 10
+  moveLerpTime: 0.001
+  deadZone: 0.05
+  cancelSelectDistance: 0.06
+  pokeDeadZone: 0.01
+  pokeCancelSelectDistance: 0.02
 --- !u!1 &6449560765081929051
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,6 +427,7 @@ GameObject:
   - component: {fileID: 6449560765461398682}
   - component: {fileID: 6449560765461398680}
   - component: {fileID: 6449560765461398683}
+  - component: {fileID: 5221883573527593057}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -446,7 +452,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.012010826, y: -0.048043303}
+  m_AnchoredPosition: {x: -0.046883296, y: -0.08190479}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &6449560765461398680
@@ -487,3 +493,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &5221883573527593057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6449560765461398685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab638e81f7d2ca34dbf7e36e0294ae12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  childrenChanged:
+    m_PersistentCalls:
+      m_Calls: []
