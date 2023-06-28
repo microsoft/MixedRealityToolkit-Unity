@@ -5,56 +5,57 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Collections.Generic;
 using System;
-using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Subsystems;
 
-public class KeywordRecognitionHandler : MonoBehaviour
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
-    [Serializable]
-    public struct KeywordEvent
+    public class KeywordRecognitionHandler : MonoBehaviour
     {
-        [SerializeField]
-        public string Keyword;
-
-        [SerializeField]
-        public UnityEvent Event;
-    }
-
-    [SerializeField]
-    private List<KeywordEvent> _keywords = new List<KeywordEvent>();
-    public List<KeywordEvent> Keywords
-    {
-        get => _keywords;
-        set
+        [Serializable]
+        public struct KeywordEvent
         {
-            _keywords = value;
+            [SerializeField]
+            public string Keyword;
+
+            [SerializeField]
+            public UnityEvent Event;
+        }
+
+        [SerializeField]
+        private List<KeywordEvent> _keywords = new List<KeywordEvent>();
+
+        public List<KeywordEvent> Keywords
+        {
+            get => _keywords;
+            set
+            {
+                _keywords = value;
+                UpdateKeywords();
+            }
+        }
+
+        private IKeywordRecognitionSubsystem _keywordRecognitionSubsystem;
+
+        private void Start()
+        {
+            _keywordRecognitionSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<IKeywordRecognitionSubsystem>();
+            if (_keywordRecognitionSubsystem == null)
+            {
+                Debug.LogWarning("No keyword subsystem detected.");
+            }
+
             UpdateKeywords();
         }
-    }
 
-    [SerializeField]
-    private UnityEvent GlobalEvent;
-    private KeywordRecognitionSubsystem _keywordRecognitionSubsystem;
-
-    private void Start()
-    {
-        _keywordRecognitionSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<KeywordRecognitionSubsystem>();
-        if (_keywordRecognitionSubsystem == null)
+        private void UpdateKeywords()
         {
-            // TODO log warning
-        }
-        UpdateKeywords();
-    }
-
-    private void UpdateKeywords()
-    {
-        foreach (var data in _keywords)
-        {
-            _keywordRecognitionSubsystem.CreateOrGetEventForKeyword(data.Keyword).AddListener(() =>
+            foreach (var data in _keywords)
             {
-                GlobalEvent?.Invoke();
-                data.Event?.Invoke();
-            });
+                _keywordRecognitionSubsystem.CreateOrGetEventForKeyword(data.Keyword).AddListener(() =>
+                {
+                    data.Event?.Invoke();
+                });
+            }
         }
     }
 }

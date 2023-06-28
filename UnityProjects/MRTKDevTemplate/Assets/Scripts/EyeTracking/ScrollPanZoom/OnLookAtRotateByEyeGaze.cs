@@ -5,7 +5,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 {
     using Input;
     using UnityEngine;
-    using UnityEngine.Serialization;
     using UnityEngine.XR.Interaction.Toolkit;
 
     /// <summary>

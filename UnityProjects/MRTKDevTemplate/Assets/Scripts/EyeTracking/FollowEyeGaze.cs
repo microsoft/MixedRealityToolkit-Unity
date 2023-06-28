@@ -1,16 +1,15 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using global::Unity.XR.CoreUtils;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Inputs;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
-    using global::Unity.XR.CoreUtils;
-    using System.Collections.Generic;
-    using UnityEngine.InputSystem;
-    using UnityEngine.XR.Interaction.Toolkit.Inputs;
-
     /// <summary>
     /// Sample for allowing the game object that this script is attached to follow the user's eye gaze
     /// at a given distance of "DefaultDistanceInMeters". 

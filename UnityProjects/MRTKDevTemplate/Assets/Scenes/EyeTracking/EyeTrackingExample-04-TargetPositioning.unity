@@ -222,7 +222,7 @@ MonoBehaviour:
           m_MethodName: PlayOneShot
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 8300000, guid: 175539ba68a64b84bbf06fa4460fb573, type: 3}
+            m_ObjectArgument: {fileID: 8300000, guid: 1cd58df2ed177f74cb6a1882c7e52079, type: 3}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -251,16 +251,13 @@ MonoBehaviour:
           m_MethodName: PlayOneShot
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 8300000, guid: 8944f7f2ae6803b4eb94f98205dc5de0, type: 3}
+            m_ObjectArgument: {fileID: 8300000, guid: 49bfc3418fff4924886a8b52a7569152, type: 3}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  GlobalEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &66248578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -886,7 +883,7 @@ MonoBehaviour:
           m_MethodName: PlayOneShot
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 8300000, guid: 175539ba68a64b84bbf06fa4460fb573, type: 3}
+            m_ObjectArgument: {fileID: 8300000, guid: 1cd58df2ed177f74cb6a1882c7e52079, type: 3}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -915,16 +912,13 @@ MonoBehaviour:
           m_MethodName: PlayOneShot
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 8300000, guid: 8944f7f2ae6803b4eb94f98205dc5de0, type: 3}
+            m_ObjectArgument: {fileID: 8300000, guid: 49bfc3418fff4924886a8b52a7569152, type: 3}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  GlobalEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &111582320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1574,7 +1568,7 @@ MonoBehaviour:
   - {fileID: 111582316}
   statusColorIdle: {r: 0, g: 0, b: 1, a: 1}
   statusColorAchieved: {r: 0, g: 1, b: 0, a: 1}
-  audioFxSuccess: {fileID: 8300000, guid: a6b09c39e07656a4ea00f66ffdf4e0eb, type: 3}
+  audioFxSuccess: {fileID: 8300000, guid: c6586241cbe52ba44b40351d74c9dc39, type: 3}
 --- !u!114 &132521881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2322,7 +2316,7 @@ MonoBehaviour:
   - {fileID: 66248574}
   statusColorIdle: {r: 0, g: 0, b: 1, a: 1}
   statusColorAchieved: {r: 0, g: 1, b: 0, a: 1}
-  audioFxSuccess: {fileID: 8300000, guid: a6b09c39e07656a4ea00f66ffdf4e0eb, type: 3}
+  audioFxSuccess: {fileID: 8300000, guid: c6586241cbe52ba44b40351d74c9dc39, type: 3}
 --- !u!82 &508791419
 AudioSource:
   m_ObjectHideFlags: 0
@@ -13472,7 +13466,7 @@ MonoBehaviour:
           m_MethodName: PlayOneShot
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 8300000, guid: 175539ba68a64b84bbf06fa4460fb573, type: 3}
+            m_ObjectArgument: {fileID: 8300000, guid: 1cd58df2ed177f74cb6a1882c7e52079, type: 3}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -13501,16 +13495,13 @@ MonoBehaviour:
           m_MethodName: PlayOneShot
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 8300000, guid: 8944f7f2ae6803b4eb94f98205dc5de0, type: 3}
+            m_ObjectArgument: {fileID: 8300000, guid: 49bfc3418fff4924886a8b52a7569152, type: 3}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  GlobalEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &1007007014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14851,7 +14842,7 @@ MonoBehaviour:
           m_MethodName: PlayOneShot
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 8300000, guid: 175539ba68a64b84bbf06fa4460fb573, type: 3}
+            m_ObjectArgument: {fileID: 8300000, guid: 1cd58df2ed177f74cb6a1882c7e52079, type: 3}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -14880,16 +14871,13 @@ MonoBehaviour:
           m_MethodName: PlayOneShot
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 8300000, guid: 8944f7f2ae6803b4eb94f98205dc5de0, type: 3}
+            m_ObjectArgument: {fileID: 8300000, guid: 49bfc3418fff4924886a8b52a7569152, type: 3}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  GlobalEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &1196524888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35484,7 +35472,7 @@ MonoBehaviour:
           m_MethodName: PlayOneShot
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 8300000, guid: 175539ba68a64b84bbf06fa4460fb573, type: 3}
+            m_ObjectArgument: {fileID: 8300000, guid: 1cd58df2ed177f74cb6a1882c7e52079, type: 3}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -35513,16 +35501,13 @@ MonoBehaviour:
           m_MethodName: PlayOneShot
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 8300000, guid: 8944f7f2ae6803b4eb94f98205dc5de0, type: 3}
+            m_ObjectArgument: {fileID: 8300000, guid: 49bfc3418fff4924886a8b52a7569152, type: 3}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  GlobalEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &1857432975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36153,7 +36138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   respawnReference: {fileID: 992256050}
-  audioFXOnRespawn: {fileID: 8300000, guid: c307a05c1b13ac14088a9bccdeb54c2b, type: 3}
+  audioFXOnRespawn: {fileID: 8300000, guid: ca1d2149dae1f1c46bd86eda5ac11494, type: 3}
 --- !u!82 &1939725778
 AudioSource:
   m_ObjectHideFlags: 0
@@ -36455,7 +36440,7 @@ MonoBehaviour:
           m_MethodName: PlayOneShot
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 8300000, guid: 175539ba68a64b84bbf06fa4460fb573, type: 3}
+            m_ObjectArgument: {fileID: 8300000, guid: 1cd58df2ed177f74cb6a1882c7e52079, type: 3}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
@@ -36484,16 +36469,13 @@ MonoBehaviour:
           m_MethodName: PlayOneShot
           m_Mode: 2
           m_Arguments:
-            m_ObjectArgument: {fileID: 8300000, guid: 8944f7f2ae6803b4eb94f98205dc5de0, type: 3}
+            m_ObjectArgument: {fileID: 8300000, guid: 49bfc3418fff4924886a8b52a7569152, type: 3}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  GlobalEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &2004111535
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37143,7 +37125,7 @@ MonoBehaviour:
   - {fileID: 2004111531}
   statusColorIdle: {r: 0, g: 0, b: 1, a: 1}
   statusColorAchieved: {r: 0, g: 1, b: 0, a: 1}
-  audioFxSuccess: {fileID: 8300000, guid: a6b09c39e07656a4ea00f66ffdf4e0eb, type: 3}
+  audioFxSuccess: {fileID: 8300000, guid: c6586241cbe52ba44b40351d74c9dc39, type: 3}
 --- !u!114 &2059103974
 MonoBehaviour:
   m_ObjectHideFlags: 0

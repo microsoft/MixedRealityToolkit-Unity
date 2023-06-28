@@ -5286,12 +5286,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 733f02f4e0ea0d546bc5f1a4ed2f1aaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _visualFxOnHit: {fileID: 5296429810764919413}
-  _audioFxCorrectTarget: {fileID: 8300000, guid: a6615feec9e8e5741ae39a33b095a9f4, type: 3}
-  _audioFxIncorrectTarget: {fileID: 8300000, guid: c307a05c1b13ac14088a9bccdeb54c2b, type: 3}
-  _isValidTarget: 1
-  _rotateByEulerAngles: {x: 0, y: 1, z: 1}
-  _speed: 1
+  visualEffectsOnHit: {fileID: 5296429810764919413}
+  audioFxCorrectTarget: {fileID: 8300000, guid: 50b629cc6a6feb0458f4b22b5c96eb91, type: 3}
+  audioFxIncorrectTarget: {fileID: 8300000, guid: ca1d2149dae1f1c46bd86eda5ac11494, type: 3}
+  isValidTarget: 1
+  rotateByEulerAngles: {x: 0, y: 0, z: 0}
+  speed: 1
 --- !u!114 &8278177351404225702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5322,6 +5322,3 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  GlobalEvent:
-    m_PersistentCalls:
-      m_Calls: []
