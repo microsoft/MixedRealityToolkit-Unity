@@ -6,18 +6,21 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
 {
+    /// <summary>
+    /// Class that contains settings which are applied to <see cref="Microsoft.MixedReality.Toolkit.CameraSettingsManager">CameraSettingsManager</see>.
+    /// </summary>
     [Serializable]
     [AddComponentMenu("MRTK/Core/Camera Settings")]
     public class CameraSettings
     {
         /// <summary>
-        /// Constructor.
+        /// Initializes a new instance of the <see cref="CameraSettings"/> class.
         /// </summary>
         public CameraSettings() : this(DisplayType.Transparent)
         { }
 
         /// <summary>
-        /// Constructor.
+        /// Initializes a new instance of the <see cref="CameraSettings"/> class.
         /// </summary>
         /// <param name="displayType">
         /// <see cref="DisplayType"/> value describing the device display.
@@ -46,7 +49,14 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
+        /// <summary>
+        /// The default clear mode used for opaque displays.
+        /// </summary>
         public static readonly CameraClearFlags DefaultClearModeOpaque = CameraClearFlags.Skybox;
+
+        /// <summary>
+        /// The default clear mode used for transparent displays.
+        /// </summary>
         public static readonly CameraClearFlags DefaultClearModeTransparent = CameraClearFlags.SolidColor;
 
         [SerializeField]

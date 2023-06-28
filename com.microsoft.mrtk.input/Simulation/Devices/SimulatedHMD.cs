@@ -95,6 +95,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         private static readonly ProfilerMarker UpdatePerfMarker =
             new ProfilerMarker("[MRTK] SimulatedHMD.Update");
 
+        private static readonly ProfilerMarker ChangePerfMarker =
+            new ProfilerMarker("[MRTK] SimulatedHMD.Change");
+
         /// <summary>
         /// Retrieves the playspace relative position of the simulated camera
         /// </summary>
@@ -124,8 +127,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
             {
                 if (simulatedHmd == null) { return; }
 
-                simulatedHmdState.isTracked = true;
-
                 // Perform smoothing on move delta.
                 // Yes; this isn't framerate independent. However; there's currently a Unity editor bug
                 // wherein the *polling rate* of your mouse can cause severe lagspikes in the
@@ -139,12 +140,34 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
                 // HMD poses are relative to the camera floor offset.
                 Transform origin = PlayspaceUtilities.XROrigin.CameraFloorOffsetObject.transform;
-                simulatedHmdState.centerEyePosition += Quaternion.Inverse(origin.rotation) * Camera.main.transform.rotation * (smoothedMoveDelta * moveSpeed);
+                Vector3 cameraPosition = simulatedHmdState.centerEyePosition + Quaternion.Inverse(origin.rotation) * Camera.main.transform.rotation * (smoothedMoveDelta * moveSpeed);
+
+                // Update camera rotation
+                cameraRotation += rotationDelta * rotationSensitivity;
+
+                Change(cameraPosition, Quaternion.Euler(cameraRotation));
+            }
+        }
+
+        /// <summary>
+        /// Force the input change to change to the given pose.
+        /// </summary>
+        public void Change(Vector3 position, Quaternion rotation)
+        {
+            using (ChangePerfMarker.Auto())
+            {
+                if (simulatedHmd == null) { return; }
+
+                simulatedHmdState.isTracked = true;
+                simulatedHmdState.trackingState = (int)(InputTrackingState.Position | InputTrackingState.Rotation);
+
+                simulatedHmdState.centerEyePosition = position;
                 simulatedHmdState.devicePosition = simulatedHmdState.centerEyePosition;
 
-                cameraRotation += rotationDelta * rotationSensitivity;
-                simulatedHmdState.centerEyeRotation = Quaternion.Euler(cameraRotation);
+                simulatedHmdState.centerEyeRotation = rotation;
                 simulatedHmdState.deviceRotation = simulatedHmdState.centerEyeRotation;
+
+                cameraRotation = rotation.eulerAngles;
 
                 InputState.Change(simulatedHmd, simulatedHmdState);
             }

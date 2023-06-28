@@ -2,14 +2,18 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Example2_Backplate_Highlight_32mm
   m_Shader: {fileID: 4800000, guid: 3dee60a1b8e777e4f8b15a53c35077c0, type: 3}
-  m_ShaderKeywords: _BLOB_ENABLE_2__ON _BLOB_ENABLE__ON _SMOOTH_EDGES__ON
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _BLOB_ENABLE_2__ON
+  - _BLOB_ENABLE__ON
+  - _SMOOTH_EDGES__ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -23,6 +27,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _Bevel_Radius_: 0.01
     - _Bias_: 0.5

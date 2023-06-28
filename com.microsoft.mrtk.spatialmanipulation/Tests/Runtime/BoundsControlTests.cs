@@ -196,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             }
 
             InputTestUtilities.SetHandAnchorPoint(Handedness.Right, Input.Simulation.ControllerAnchorPoint.Grab);
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             BoundsControl bc = InstantiateSceneAndDefaultBoundsControl(visualsPath);
             yield return null;
@@ -246,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         public IEnumerator TestNoHandlesToggleWhenMovingWithObjectManipulator([ValueSource(nameof(BoundsVisualsPrefabs))] string visualsPath)
         {
             InputTestUtilities.SetHandAnchorPoint(Handedness.Right, Input.Simulation.ControllerAnchorPoint.Grab);
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             BoundsControl bc = InstantiateSceneAndDefaultBoundsControl(visualsPath);
             yield return null;
@@ -297,6 +297,108 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             Assert.IsFalse(bc.HandlesActive, "Handles should not have been toggled.");
 
             TestUtilities.AssertAboutEqual(bc.transform.position, initialObjectPosition, $"Object should be placed generally in the same position! Actual position: {bc.transform.position:F5}, should be {initialObjectPosition}", 0.00001f);
+
+            Object.Destroy(bc.gameObject);
+            // Wait for a frame to give Unity a change to actually destroy the object
+            yield return null;
+            Assert.IsTrue(bc == null);
+        }
+
+        [UnityTest]
+        public IEnumerator TestManipulationCursor([ValueSource(nameof(BoundsVisualsPrefabs))] string visualsPath)
+        {
+            // Known left scale handle 
+            yield return HoverCursorRotation("ScaleHandle", new Vector3(0f, 180f, 45f), visualsPath);
+            // Known right scale handle
+            yield return HoverCursorRotation("ScaleHandle (1)", new Vector3(0f, 180f, 315f), visualsPath);
+            // Known bottom rotate handle
+            yield return HoverCursorRotation("RotateHandle (5)", new Vector3(0f, 180f, 90f), visualsPath);
+            // Known side rotate handle
+            yield return HoverCursorRotation("RotateHandle (10)", new Vector3(0f, 180f, 0f), visualsPath);
+        }
+
+        private bool ApproximatelyEquals(Vector3 a, Vector3 b, float tolerance = 0.1f)
+        {
+            return Mathf.Abs(a.x - b.x) <= tolerance
+                && Mathf.Abs(a.y - b.y) <= tolerance
+                && Mathf.Abs(a.z - b.z) <= tolerance;
+        }
+
+        private bool ApproximatelyEquals(Quaternion a, Quaternion b, float tolerance = 0.1f)
+        {
+            return Mathf.Abs(a.x - b.x) <= tolerance
+                && Mathf.Abs(a.y - b.y) <= tolerance
+                && Mathf.Abs(a.z - b.z) <= tolerance;
+        }
+
+        private IEnumerator HoverCursorRotation(string handleName, Vector3 expectedRotation, string visualsPath)
+        {
+            InputTestUtilities.SetHandAnchorPoint(Handedness.Right, Input.Simulation.ControllerAnchorPoint.Grab);
+
+            BoundsControl bc = InstantiateSceneAndDefaultBoundsControl(visualsPath);
+            yield return null;
+            Assert.IsNotNull(bc);
+
+            Assert.IsFalse(bc.HandlesActive, "Handles should start inactive by default");
+            bc.HandlesActive = true;
+
+            // Show internal, all should be visible now
+            var squeezableVisuals = bc.GetComponentInChildren<SqueezableBoxVisuals>();
+            if (squeezableVisuals != null)
+            {
+                squeezableVisuals.ShowInternalHandles = true;
+            }
+
+            // Grab the specified handle
+            BoundsHandleInteractable[] allHandles = bc.GetComponentsInChildren<BoundsHandleInteractable>();
+            BoundsHandleInteractable handle = null;
+            for (int i = 0; i < allHandles.Length && (handle == null); i++)
+            {
+                BoundsHandleInteractable nextHandle = allHandles[i];
+                if (nextHandle.transform.name.Equals(handleName)) handle = nextHandle;
+            }
+
+            // Set up test hand
+            TestHand hand = new TestHand(Handedness.Right);
+            Vector3 initialHandPosition = InputTestUtilities.InFrontOfUser(new Vector3(0.05f, -0.05f, 0.3f)); // orient hand so far interaction ray will hit button
+            yield return hand.Show(initialHandPosition);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            // Move it so the far ray hovers the handle
+            Assert.IsNotNull(handle);
+            yield return hand.AimAt(handle.transform.position);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            Assert.IsTrue(handle.isHovered, $"Handle should be hovered for {handleName}.");
+            SpatialManipulationReticle[] reticles = Object.FindObjectsOfType<SpatialManipulationReticle>();
+            Assert.AreEqual(reticles.Length, 1, "Cursor should appear.");
+            GameObject cursor = reticles[0].gameObject;
+            Assert.IsTrue(ApproximatelyEquals(cursor.transform.eulerAngles, expectedRotation), $"Cursor should be rotated for {handleName}.");
+            Quaternion worldRotation = cursor.transform.rotation;
+
+            // Select the handle
+            yield return hand.SetHandshape(HandshapeId.Pinch);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            Assert.IsTrue(handle.isSelected, $"Handle should be selected for {handleName}.");
+            Assert.IsTrue(handle.isHovered, $"Handle should be hovered for {handleName}.");
+            reticles = Object.FindObjectsOfType<SpatialManipulationReticle>();
+            Assert.AreEqual(reticles.Length, 1, $"Cursor should stay during select for {handleName}.");
+            cursor = reticles[0].gameObject;
+            Assert.IsTrue(ApproximatelyEquals(cursor.transform.eulerAngles, expectedRotation), $"Cursor should be rotated for {handleName}.");
+            Assert.IsTrue(ApproximatelyEquals(cursor.transform.rotation, worldRotation), $"Rotation should remain after select for {handleName}.");
+
+            // Move the handle
+            yield return hand.Move(Vector3.left);
+            yield return RuntimeTestUtilities.WaitForUpdates();
+
+            Assert.IsTrue(handle.isSelected, $"Handle should be selected for {handleName}.");
+            Assert.IsTrue(handle.isHovered, $"Handle should be hovered for {handleName}.");
+            reticles = Object.FindObjectsOfType<SpatialManipulationReticle>();
+            Assert.AreEqual(reticles.Length, 1, $"Cursor should stay during move for {handleName}.");
+            cursor = reticles[0].gameObject;
+            Assert.IsTrue(ApproximatelyEquals(cursor.transform.eulerAngles, expectedRotation), $"Cursor should be rotated for {handleName}.");
+            Assert.IsTrue(ApproximatelyEquals(cursor.transform.rotation, worldRotation), $"Rotation should remain after select for {handleName}.");
 
             Object.Destroy(bc.gameObject);
             // Wait for a frame to give Unity a change to actually destroy the object

@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     public abstract class DataConsumerGOBase : MonoBehaviour, IDataConsumer
     {
         [Tooltip("Data source types used to identify an appropriate data source for automatic attachment. If no type is provided, the first data source found in parents will be used.")]
-        [SerializeField]
+        [SerializeField, Experimental]
         private string[] dataSourceTypes;
         /// <summary>
         /// Data source types used to identify an appropriate data source for

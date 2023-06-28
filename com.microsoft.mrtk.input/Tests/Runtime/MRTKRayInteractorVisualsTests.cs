@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             }
 
             // Disable gaze interactions for this unit test;
-            InputTestUtilities.DisableGaze();
+            InputTestUtilities.DisableGazeInteractor();
 
             // set up cube with manipulation handler
             var testObject = GameObject.CreatePrimitive(PrimitiveType.Cube);

@@ -15,7 +15,7 @@
   },
   "unity": "2021.3",
   "dependencies": {
-    "com.unity.xr.interaction.toolkit": "2.2.0",
+    "com.unity.xr.interaction.toolkit": "2.3.0",
     "com.unity.xr.management": "4.2.1",
     "com.unity.xr.core-utils": "2.1.0"
   }
