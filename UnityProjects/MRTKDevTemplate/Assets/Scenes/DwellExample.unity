@@ -603,7 +603,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1299375459}
   - component: {fileID: 1299375458}
-  - component: {fileID: 1299375456}
   - component: {fileID: 1299375455}
   m_Layer: 0
   m_Name: PanelTitleText
@@ -704,14 +703,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 1299375458}
   m_maskType: 0
---- !u!222 &1299375456
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1299375454}
-  m_CullTransparentMesh: 0
 --- !u!23 &1299375458
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -881,7 +872,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1506208874}
   - component: {fileID: 1506208877}
-  - component: {fileID: 1506208876}
   - component: {fileID: 1506208875}
   m_Layer: 0
   m_Name: DebugText
@@ -1002,14 +992,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 1506208877}
   m_maskType: 0
---- !u!222 &1506208876
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1506208873}
-  m_CullTransparentMesh: 0
 --- !u!23 &1506208877
 MeshRenderer:
   m_ObjectHideFlags: 0
