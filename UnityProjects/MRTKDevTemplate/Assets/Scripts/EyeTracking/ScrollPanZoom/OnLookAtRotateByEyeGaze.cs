@@ -34,7 +34,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         [Tooltip("If the angle between 'Gaze to Target' and 'Camera to Target' is less than this value, do nothing. This is to prevent small jittery rotations.")]
         [SerializeField]
-        [FormerlySerializedAs("rotationThreshInDegrees")]
         private float rotationThresholdInDegrees = 5.0f;
 
         [Tooltip("Minimum horizontal rotation angle. This is to limit the rotation in different directions.")]

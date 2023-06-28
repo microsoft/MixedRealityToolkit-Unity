@@ -15,32 +15,26 @@ namespace Microsoft.MixedReality.Toolkit.Examples
     {
         [Tooltip("Visual effect (e.g., particle explosion or animation) that is played when a target is selected.")]
         [SerializeField]
-        [FormerlySerializedAs("_visualFxOnHit")]
         private GameObject visualEffectsOnHit = null;
 
         [Tooltip("Audio clip that is played when a target is selected.")]
         [SerializeField]
-        [FormerlySerializedAs("_audioFxCorrectTarget")]
         private AudioClip audioFxCorrectTarget = null;
 
         [Tooltip("Audio clip that is played when a wrong target is selected.")]
         [SerializeField]
-        [FormerlySerializedAs("_audioFxIncorrectTarget")]
         private AudioClip audioFxIncorrectTarget = null;
 
         [Tooltip("Manually indicate whether this is an incorrect target.")]
         [SerializeField]
-        [FormerlySerializedAs("_isValidTarget")]
         private bool isValidTarget = true;
 
         [Tooltip("Euler angles by which the object should be rotated by.")]
         [SerializeField]
-        [FormerlySerializedAs("_rotateByEulerAngles")]
         private Vector3 rotateByEulerAngles = Vector3.zero;
 
         [Tooltip("Rotation speed factor.")]
         [SerializeField]
-        [FormerlySerializedAs("_speed")]
         private float speed = 1f;
 
         /// <summary>

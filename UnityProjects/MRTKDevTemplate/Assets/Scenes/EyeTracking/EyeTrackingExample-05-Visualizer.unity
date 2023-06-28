@@ -959,16 +959,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useLiveInputStream: 0
   ShowVisMode: 0
-  _onlyShowForHitTargets: 0
-  _tmpltOrigins: {fileID: 0}
-  _tmpltDestinations: {fileID: 0}
-  _tmpltLinkOrigToOrig: {fileID: 0}
-  _tmpltLinkDestToDest: {fileID: 0}
-  _tmpltLinkOrigToDest: {fileID: 0}
-  _cursorDist: 2
-  nhist: 20
-  _textOutput: {fileID: 0}
-  _gazeInteractor: {fileID: 0}
+  onlyShowForHitTargets: 0
+  templateOrigins: {fileID: 0}
+  templateDestinations: {fileID: 0}
+  templateLinkOrigToOrig: {fileID: 0}
+  templateLinkDestToDest: {fileID: 0}
+  templateLinkOrigToDest: {fileID: 0}
+  cursorDist: 2
+  gazeInteractor: {fileID: 0}
+  numSamples: 20
+  textOutput: {fileID: 0}
 --- !u!114 &1232406737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -981,15 +981,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc6f7049651e8bc4eb6ce6985ebd3777, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _customFilename: mrtk_log_mostRecentET.csv
-  _EyeGazeVisualizer: {fileID: 1232406736}
-  _HeadGazeVisualizer: {fileID: 0}
-  heatmapRefs:
+  customFilename: mrtk_log_mostRecentET.csv
+  EyeGazeVisualizer: {fileID: 1232406736}
+  HeadGazeVisualizer: {fileID: 0}
+  heatmapReferences:
   - {fileID: 1018849797}
   - {fileID: 1524931721350790071}
-  _LoadingUpdateStatusText: {fileID: 947746751}
+  LoadingUpdateStatusText: {fileID: 947746751}
   NumSamples: 30
-  _replaySpeed: 1
+  replaySpeed: 1
 --- !u!1 &1396832894
 GameObject:
   m_ObjectHideFlags: 0
@@ -2135,6 +2135,10 @@ PrefabInstance:
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 9111033687875367441, guid: 0745c2d3ca133584e996e8cd69f6d0aa, type: 3}
+      propertyPath: gazeInteractor
+      value: 
+      objectReference: {fileID: 1517009107}
     - target: {fileID: 9111033687875367441, guid: 0745c2d3ca133584e996e8cd69f6d0aa, type: 3}
       propertyPath: _gazeInteractor
       value: 

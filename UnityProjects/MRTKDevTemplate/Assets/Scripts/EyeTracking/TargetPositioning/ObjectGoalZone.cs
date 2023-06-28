@@ -16,22 +16,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples
     {
         [Tooltip("Array of referenced game objects that are supposed to be placed within the collider of this target.).")]
         [SerializeField]
-        [FormerlySerializedAs("_objsToPlaceHere")]
         private GameObject[] objectsToPlaceHere = null;
 
         [Tooltip("Color of this object when 'idle' - waiting on the correct targets to be placed.")]
         [SerializeField]
-        [FormerlySerializedAs("_statusColorIdle")]
         private Color statusColorIdle = Color.blue;
 
         [Tooltip("Color of this object once all requested targets have been placed within the trigger zone.")]
         [SerializeField]
-        [FormerlySerializedAs("_statusColorAchieved")]
         private Color statusColorAchieved = Color.green;
 
         [Tooltip("Optional audio clip to be played once all requested objects have been correctly placed.")]
         [SerializeField]
-        [FormerlySerializedAs("_audioFxSuccess")]
         private AudioClip audioFxSuccess = null;
 
         private AudioSource audioSource;

@@ -537,9 +537,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b268bd191c96932468e080f69e2932db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _IdleStateColor: {r: 0, g: 0.7176471, b: 0.6745098, a: 0}
-  _OnHoverColor: {r: 0, g: 1, b: 0.79842067, a: 0}
-  _OnSelectColor: {r: 0, g: 0.30980393, b: 0.29803923, a: 0}
+  idleStateColor: {r: 0, g: 0.7176471, b: 0.6745098, a: 1}
+  onHoverColor: {r: 0.60784316, g: 1, b: 0.9529412, a: 1}
+  onSelectColor: {r: 0, g: 0.30980393, b: 0.29803923, a: 1}
 --- !u!4 &90326106 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7942278510844116557, guid: cea6f24b8f65d5444ba5379c831cce58, type: 3}
@@ -1372,7 +1372,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 22af01504e795b246ba8294b971269a5, type: 2}
+  - {fileID: 2100000, guid: 0c3570eeff29ef44e9fed596a4cc3ffd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1717,9 +1717,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b268bd191c96932468e080f69e2932db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _IdleStateColor: {r: 0, g: 0.7529412, b: 1, a: 0}
-  _OnHoverColor: {r: 0.6745098, g: 0.9098039, b: 1, a: 0}
-  _OnSelectColor: {r: 0, g: 0.3019608, b: 0.54901963, a: 0}
+  idleStateColor: {r: 0, g: 0.7529412, b: 1, a: 0}
+  onHoverColor: {r: 0.6745098, g: 0.9098039, b: 1, a: 0}
+  onSelectColor: {r: 0, g: 0.3019608, b: 0.54901963, a: 0}
 --- !u!1 &1027535233
 GameObject:
   m_ObjectHideFlags: 0
@@ -2134,9 +2134,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b268bd191c96932468e080f69e2932db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _IdleStateColor: {r: 1, g: 0.8784314, b: 0.4745098, a: 0}
-  _OnHoverColor: {r: 1, g: 1, b: 0.80784315, a: 0}
-  _OnSelectColor: {r: 0.67058825, g: 0.5529412, b: 0, a: 0}
+  idleStateColor: {r: 1, g: 0.8784314, b: 0.4745098, a: 0}
+  onHoverColor: {r: 1, g: 1, b: 0.80784315, a: 0}
+  onSelectColor: {r: 0.67058825, g: 0.5529412, b: 0, a: 0}
 --- !u!1001 &1077719795
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3127,9 +3127,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b268bd191c96932468e080f69e2932db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _IdleStateColor: {r: 0, g: 0.6901961, b: 0.1764706, a: 0}
-  _OnHoverColor: {r: 0.654902, g: 1, b: 0.6627451, a: 0}
-  _OnSelectColor: {r: 0, g: 0.32156864, b: 0.019607844, a: 0}
+  idleStateColor: {r: 0, g: 0.6901961, b: 0.1764706, a: 0}
+  onHoverColor: {r: 0.654902, g: 1, b: 0.6627451, a: 0}
+  onSelectColor: {r: 0, g: 0.32156864, b: 0.019607844, a: 0}
 --- !u!1 &1486523323
 GameObject:
   m_ObjectHideFlags: 0
@@ -3981,9 +3981,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b268bd191c96932468e080f69e2932db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _IdleStateColor: {r: 1, g: 0, b: 0.84705883, a: 0}
-  _OnHoverColor: {r: 0.98039216, g: 0.7882353, b: 1, a: 0}
-  _OnSelectColor: {r: 0.3529412, g: 0, b: 0.4627451, a: 0}
+  idleStateColor: {r: 1, g: 0, b: 0.84705883, a: 0}
+  onHoverColor: {r: 0.98039216, g: 0.7882353, b: 1, a: 0}
+  onSelectColor: {r: 0.3529412, g: 0, b: 0.4627451, a: 0}
 --- !u!1001 &7942278510934407703
 PrefabInstance:
   m_ObjectHideFlags: 0

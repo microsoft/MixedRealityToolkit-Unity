@@ -26,51 +26,43 @@ namespace Microsoft.MixedReality.Toolkit.Examples
     public class MoveObjectByEyeGaze : StatefulInteractable
     {
         [SerializeField]
-        [FormerlySerializedAs("_gazeInteractor")]
         private FuzzyGazeInteractor gazeInteractor;
 
         #region Serialized variables
 
         [Header("Eyes")]
         [SerializeField]
-        [FormerlySerializedAs("_useEyeSupportedTargetPlacement")]
         private bool useEyeSupportedTargetPlacement = false;
 
         [Tooltip("The user has to look away at least this far to enable the eye-supported target placement. " +
                  "This is to allow for local manual positioning using hand input.")]
         [SerializeField]
         [Range(1f, 10f)]
-        [FormerlySerializedAs("_minLookAwayDistToEnableEyeWarp")]
         private float minLookAwayDistToEnableEyeWarp = 5f;
 
         [Header("Hands")]
         [Tooltip("Use this to enforce only voice commands to move targets.")]
         [SerializeField]
-        [FormerlySerializedAs("_handInputEnabled")]
         private bool handInputEnabled = true;
 
         [Tooltip(
             "To control whether the hand motion is used 1:1 to move a target or to use different gains to allow for smaller hand motions.")]
         [SerializeField]
-        [FormerlySerializedAs("_handmapping")]
         private float handmapping = 1f;
 
         [Tooltip("Minimal amount of hand movement to trigger target repositioning.")]
         [SerializeField]
-        [FormerlySerializedAs("_deltaHandMovemThresh")]
         private float deltaHandMovementThreshold = 0.05f;
 
         [Header("Transitioning")]
         [Tooltip("Transparency of the target itself while dragging is active.")]
         [SerializeField]
         [Range(0, 1)]
-        [FormerlySerializedAs("transparencyInTransition")]
         private float transparencyInTransition = 130 / 255f;
 
         [Tooltip("Transparency of the target preview while dragging it around.")]
         [SerializeField]
         [Range(0, 1)]
-        [FormerlySerializedAs("_transparencyPreview")]
         private float transparencyPreview = 50 / 255f;
 
         [Tooltip(
@@ -78,20 +70,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             "The value should depend on the size of the target.")]
         [SerializeField]
         [Range(0, 1)]
-        [FormerlySerializedAs("_previewPlacemDistThresh")]
         private float previewPlacementDistanceThreshold = 0.05f;
 
         [Header("Constrained Movement")]
         [SerializeField]
-        [FormerlySerializedAs("_freezeX")]
         private bool freezeX = false;
 
         [SerializeField]
-        [FormerlySerializedAs("_freezeY")]
         private bool freezeY = false;
 
         [SerializeField]
-        [FormerlySerializedAs("_freezeZ")]
         private bool freezeZ = false;
 
         public Vector2 LocalMinMaxX = new Vector2(float.NegativeInfinity, float.PositiveInfinity);
@@ -101,7 +89,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         public PlacementSurfaces PlacementSurface = PlacementSurfaces.Horizontal;
 
         [SerializeField]
-        [FormerlySerializedAs("OnDrop")]
         private UnityEvent onDrop = null;
 
         #endregion

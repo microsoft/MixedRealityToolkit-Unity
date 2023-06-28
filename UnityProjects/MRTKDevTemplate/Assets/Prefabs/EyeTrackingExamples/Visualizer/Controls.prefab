@@ -559,11 +559,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5812ed0a484609c4aa8a0324c746f3b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  btn_StartRecording: {fileID: 8650713101073464895}
-  btn_StopRecording: {fileID: 6802997350238223167}
-  btn_StartPlayback_Inactive: {fileID: 0}
-  btn_StartPlayback: {fileID: 0}
-  btn_PausePlayback: {fileID: 0}
+  buttonStartRecording: {fileID: 8650713101073464895}
+  buttonStopRecording: {fileID: 6802997350238223167}
+  buttonStartPlaybackInactive: {fileID: 0}
+  buttonStartPlayback: {fileID: 0}
+  buttonPausePlayback: {fileID: 0}
 --- !u!114 &2087141182152323438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -578,7 +578,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AddTimestampToLogfileName: 0
   UserName: tester
-  sessionDescr: Session00
+  sessionDescription: Session00
   FilenameToUse: mrtk_log_mostRecentET
   logStructure: {fileID: 9111033687875367441}
 --- !u!114 &7861801676748397993
@@ -593,8 +593,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27406527dd719a842966cc058810b3d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _statusText: {fileID: 6649481268250478752}
-  _maxShowDurationInSeconds: 2
+  statusText: {fileID: 6649481268250478752}
+  maxShowDurationInSeconds: 2
 --- !u!114 &9111033687875367441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -607,7 +607,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9eb5b9915f466743a962aada351ce5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gazeInteractor: {fileID: 0}
+  gazeInteractor: {fileID: 0}
 --- !u!1 &7887614036856095578
 GameObject:
   m_ObjectHideFlags: 0

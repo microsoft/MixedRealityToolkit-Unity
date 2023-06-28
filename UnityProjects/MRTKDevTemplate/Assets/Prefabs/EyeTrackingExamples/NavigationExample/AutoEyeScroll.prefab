@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 913762020}
-  - component: {fileID: 913762022}
   - component: {fileID: 913762021}
+  - component: {fileID: 5273528282627450551}
   m_Layer: 5
   m_Name: ActiveEyeGazeRegion
   m_TagString: Untagged
@@ -38,7 +38,20 @@ RectTransform:
   m_AnchoredPosition: {x: -0.000061035156, y: -0.00012207031}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &913762022
+--- !u!65 &913762021
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 913762019}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 570, y: 570, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5273528282627450551
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -47,7 +60,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 913762019}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 873177eba03f4ea49b821630afb7d8b5, type: 3}
+  m_Script: {fileID: 11500000, guid: 70ab7633f98aede4aaf7fc6feb41d6b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 0}
@@ -61,7 +74,7 @@ MonoBehaviour:
   m_SelectMode: 0
   m_CustomReticle: {fileID: 0}
   m_AllowGazeInteraction: 1
-  m_AllowGazeSelect: 1
+  m_AllowGazeSelect: 0
   m_OverrideGazeTimeToSelect: 0
   m_GazeTimeToSelect: 0.5
   m_OverrideTimeToAutoDeselectGaze: 0
@@ -75,36 +88,10 @@ MonoBehaviour:
       m_Calls: []
   m_HoverEntered:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 913762022}
-        m_TargetAssemblyTypeName: Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PanZoomBase,
-          Assembly-CSharp
-        m_MethodName: OnFocusEnter
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_HoverExited:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 913762022}
-        m_TargetAssemblyTypeName: Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PanZoomBase,
-          Assembly-CSharp
-        m_MethodName: OnFocusExit
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_FirstSelectEntered:
     m_PersistentCalls:
       m_Calls: []
@@ -113,10 +100,36 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5273528282627450551}
+        m_TargetAssemblyTypeName: Microsoft.MixedReality.Toolkit.Examples.PanZoomBase,
+          Assembly-CSharp
+        m_MethodName: OnSelectEntered
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_SelectExited:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5273528282627450551}
+        m_TargetAssemblyTypeName: Microsoft.MixedReality.Toolkit.Examples.PanZoomBase,
+          Assembly-CSharp
+        m_MethodName: OnSelectExited
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_Activated:
     m_PersistentCalls:
       m_Calls: []
@@ -242,7 +255,7 @@ MonoBehaviour:
   <GazeDwellTime>k__BackingField: 1
   <UseFarDwell>k__BackingField: 0
   <FarDwellTime>k__BackingField: 1
-  allowSelectByVoice: 1
+  allowSelectByVoice: 0
   speechRecognitionKeyword: select
   <VoiceRequiresFocus>k__BackingField: 1
   <SelectRequiresHover>k__BackingField: 0
@@ -256,20 +269,7 @@ MonoBehaviour:
         m_Calls: []
   <OnClicked>k__BackingField:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 913762022}
-        m_TargetAssemblyTypeName: Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.PanZoomBase,
-          Assembly-CSharp
-        m_MethodName: OnSelected
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   <OnEnabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
@@ -277,28 +277,16 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   limitPanning: 1
-  rectTransfToNavigate: {fileID: 2264487539955952384}
-  refToViewPort: {fileID: 2362020299005470544}
+  invertPalmZoomDirection: 1
+  rectTransformToNavigate: {fileID: 2264487539955952384}
+  referenceToViewPort: {fileID: 2362020299005470544}
   autoGazeScrollIsActive: 1
   scrollSpeedHorizontal: 0
   scrollSpeedVertical: 0.3
   minDistFromCenterForAutoScroll: {x: 0.2, y: 0.2}
   useSkimProofing: 1
   skimProofUpdateSpeed: 5
-  customStartPos: {x: 0, y: 0}
---- !u!65 &913762021
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 913762019}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 570, y: 570, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
+  customStartPosition: {x: 0, y: 0}
 --- !u!1 &2362020298874071519
 GameObject:
   m_ObjectHideFlags: 0
@@ -421,8 +409,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2362020299460492380}
   m_HandleRect: {fileID: 2362020299460492377}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.35880792
+  m_Value: 1.0000001
+  m_Size: 0.3584632
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1503,7 +1491,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 0.000029942319, y: -512.9499}
+  m_AnchoredPosition: {x: 0.000029942319, y: -512.94995}
   m_SizeDelta: {x: 580, y: 1600}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &2362020300155552841

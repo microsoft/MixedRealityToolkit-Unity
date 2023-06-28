@@ -484,12 +484,11 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   disabledInteractorTypes: []
-  _heatmapLookUpTable: {fileID: 2800000, guid: 928ac8ab6d401a74bb04bc4c324aac8d, type: 3}
-  _drawBrushSize: 2000
-  _drawIntensity: 15
-  _minThreshDeltaHeatMap: 0.001
-  _useLiveInputStream: 1
-  _heatmapOverlayMaterialTemplate: {fileID: 2100000, guid: 59f9f6a428301fd40bddff62cb23acda, type: 2}
+  heatmapLookUpTable: {fileID: 2800000, guid: 928ac8ab6d401a74bb04bc4c324aac8d, type: 3}
+  drawBrushSize: 2000
+  drawIntensity: 15
+  minThreshDeltaHeatMap: 0.001
+  useLiveInputStream: 1
 --- !u!1 &3200108193205774659
 GameObject:
   m_ObjectHideFlags: 0

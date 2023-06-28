@@ -250,11 +250,11 @@ MonoBehaviour:
   speedY: 2
   inverseX: 0
   inverseY: 1
-  rotationThreshInDegrees: 5
-  minRotX: -10
-  maxRotX: 10
-  minRotY: -180
-  maxRotY: 180
+  rotationThresholdInDegrees: 5
+  minRotationX: -10
+  maxRotationX: 10
+  minRotationY: -180
+  maxRotationY: 180
 --- !u!1001 &7173684231817202327
 PrefabInstance:
   m_ObjectHideFlags: 0

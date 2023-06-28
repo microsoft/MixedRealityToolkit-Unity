@@ -586,23 +586,23 @@ MonoBehaviour:
   <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  _gazeInteractor: {fileID: 42435681}
-  _useEyeSupportedTargetPlacement: 1
-  _minLookAwayDistToEnableEyeWarp: 5
-  _handInputEnabled: 1
-  _handmapping: 2
-  _deltaHandMovemThresh: 0.05
-  _transparencyInTransition: 0.5
-  _transparencyPreview: 0.2
-  _previewPlacemDistThresh: 0.05
-  _freezeX: 0
-  _freezeY: 0
-  _freezeZ: 0
+  gazeInteractor: {fileID: 42435681}
+  useEyeSupportedTargetPlacement: 1
+  minLookAwayDistToEnableEyeWarp: 5
+  handInputEnabled: 1
+  handmapping: 2
+  deltaHandMovementThreshold: 0.05
+  transparencyInTransition: 0.50980395
+  transparencyPreview: 0.2
+  previewPlacementDistanceThreshold: 0.05
+  freezeX: 0
+  freezeY: 0
+  freezeZ: 0
   LocalMinMaxX: {x: -Infinity, y: Infinity}
   LocalMinMaxY: {x: -Infinity, y: Infinity}
   LocalMinMaxZ: {x: -Infinity, y: Infinity}
   PlacementSurface: 0
-  OnDrop:
+  onDrop:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 508791418}
@@ -1250,23 +1250,23 @@ MonoBehaviour:
   <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  _gazeInteractor: {fileID: 42435681}
-  _useEyeSupportedTargetPlacement: 1
-  _minLookAwayDistToEnableEyeWarp: 5
-  _handInputEnabled: 1
-  _handmapping: 2
-  _deltaHandMovemThresh: 0.05
-  _transparencyInTransition: 0.5
-  _transparencyPreview: 0.2
-  _previewPlacemDistThresh: 0.05
-  _freezeX: 0
-  _freezeY: 0
-  _freezeZ: 0
+  gazeInteractor: {fileID: 42435681}
+  useEyeSupportedTargetPlacement: 1
+  minLookAwayDistToEnableEyeWarp: 5
+  handInputEnabled: 1
+  handmapping: 2
+  deltaHandMovementThreshold: 0.05
+  transparencyInTransition: 0.50980395
+  transparencyPreview: 0.2
+  previewPlacementDistanceThreshold: 0.05
+  freezeX: 0
+  freezeY: 0
+  freezeZ: 0
   LocalMinMaxX: {x: -Infinity, y: Infinity}
   LocalMinMaxY: {x: -Infinity, y: Infinity}
   LocalMinMaxZ: {x: -Infinity, y: Infinity}
   PlacementSurface: 0
-  OnDrop:
+  onDrop:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 132521880}
@@ -1569,12 +1569,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4a9843675107d046af03666fac596ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _objsToPlaceHere:
+  objectsToPlaceHere:
   - {fileID: 1196524879}
   - {fileID: 111582316}
-  _statusColorIdle: {r: 0, g: 0, b: 1, a: 1}
-  _statusColorAchieved: {r: 0, g: 1, b: 0, a: 1}
-  _audioFxSuccess: {fileID: 8300000, guid: a6b09c39e07656a4ea00f66ffdf4e0eb, type: 3}
+  statusColorIdle: {r: 0, g: 0, b: 1, a: 1}
+  statusColorAchieved: {r: 0, g: 1, b: 0, a: 1}
+  audioFxSuccess: {fileID: 8300000, guid: a6b09c39e07656a4ea00f66ffdf4e0eb, type: 3}
 --- !u!114 &132521881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1753,7 +1753,7 @@ MonoBehaviour:
   <GazeDwellTime>k__BackingField: 1
   <UseFarDwell>k__BackingField: 0
   <FarDwellTime>k__BackingField: 1
-  allowSelectByVoice: 1
+  allowSelectByVoice: 0
   speechRecognitionKeyword: select
   <VoiceRequiresFocus>k__BackingField: 1
   <SelectRequiresHover>k__BackingField: 0
@@ -2317,12 +2317,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4a9843675107d046af03666fac596ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _objsToPlaceHere:
+  objectsToPlaceHere:
   - {fileID: 1007007010}
   - {fileID: 66248574}
-  _statusColorIdle: {r: 0, g: 0, b: 1, a: 1}
-  _statusColorAchieved: {r: 0, g: 1, b: 0, a: 1}
-  _audioFxSuccess: {fileID: 8300000, guid: a6b09c39e07656a4ea00f66ffdf4e0eb, type: 3}
+  statusColorIdle: {r: 0, g: 0, b: 1, a: 1}
+  statusColorAchieved: {r: 0, g: 1, b: 0, a: 1}
+  audioFxSuccess: {fileID: 8300000, guid: a6b09c39e07656a4ea00f66ffdf4e0eb, type: 3}
 --- !u!82 &508791419
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2597,7 +2597,7 @@ MonoBehaviour:
   <GazeDwellTime>k__BackingField: 1
   <UseFarDwell>k__BackingField: 0
   <FarDwellTime>k__BackingField: 1
-  allowSelectByVoice: 1
+  allowSelectByVoice: 0
   speechRecognitionKeyword: select
   <VoiceRequiresFocus>k__BackingField: 1
   <SelectRequiresHover>k__BackingField: 0
@@ -13836,23 +13836,23 @@ MonoBehaviour:
   <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  _gazeInteractor: {fileID: 42435681}
-  _useEyeSupportedTargetPlacement: 1
-  _minLookAwayDistToEnableEyeWarp: 5
-  _handInputEnabled: 1
-  _handmapping: 2
-  _deltaHandMovemThresh: 0.05
-  _transparencyInTransition: 0.5
-  _transparencyPreview: 0.2
-  _previewPlacemDistThresh: 0.05
-  _freezeX: 0
-  _freezeY: 0
-  _freezeZ: 0
+  gazeInteractor: {fileID: 42435681}
+  useEyeSupportedTargetPlacement: 1
+  minLookAwayDistToEnableEyeWarp: 5
+  handInputEnabled: 1
+  handmapping: 2
+  deltaHandMovementThreshold: 0.05
+  transparencyInTransition: 0.50980395
+  transparencyPreview: 0.2
+  previewPlacementDistanceThreshold: 0.05
+  freezeX: 0
+  freezeY: 0
+  freezeZ: 0
   LocalMinMaxX: {x: -Infinity, y: Infinity}
   LocalMinMaxY: {x: -Infinity, y: Infinity}
   LocalMinMaxZ: {x: -Infinity, y: Infinity}
   PlacementSurface: 0
-  OnDrop:
+  onDrop:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 508791418}
@@ -14688,23 +14688,23 @@ MonoBehaviour:
   <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  _gazeInteractor: {fileID: 42435681}
-  _useEyeSupportedTargetPlacement: 1
-  _minLookAwayDistToEnableEyeWarp: 5
-  _handInputEnabled: 1
-  _handmapping: 2
-  _deltaHandMovemThresh: 0.05
-  _transparencyInTransition: 0.5
-  _transparencyPreview: 0.2
-  _previewPlacemDistThresh: 0.05
-  _freezeX: 0
-  _freezeY: 0
-  _freezeZ: 0
+  gazeInteractor: {fileID: 42435681}
+  useEyeSupportedTargetPlacement: 1
+  minLookAwayDistToEnableEyeWarp: 5
+  handInputEnabled: 1
+  handmapping: 2
+  deltaHandMovementThreshold: 0.05
+  transparencyInTransition: 0.50980395
+  transparencyPreview: 0.2
+  previewPlacementDistanceThreshold: 0.05
+  freezeX: 0
+  freezeY: 0
+  freezeZ: 0
   LocalMinMaxX: {x: -Infinity, y: Infinity}
   LocalMinMaxY: {x: -Infinity, y: Infinity}
   LocalMinMaxZ: {x: -Infinity, y: Infinity}
   PlacementSurface: 0
-  OnDrop:
+  onDrop:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 132521880}
@@ -35848,23 +35848,23 @@ MonoBehaviour:
   <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  _gazeInteractor: {fileID: 42435681}
-  _useEyeSupportedTargetPlacement: 1
-  _minLookAwayDistToEnableEyeWarp: 5
-  _handInputEnabled: 1
-  _handmapping: 2
-  _deltaHandMovemThresh: 0.05
-  _transparencyInTransition: 0.5
-  _transparencyPreview: 0.2
-  _previewPlacemDistThresh: 0.05
-  _freezeX: 0
-  _freezeY: 0
-  _freezeZ: 0
+  gazeInteractor: {fileID: 42435681}
+  useEyeSupportedTargetPlacement: 1
+  minLookAwayDistToEnableEyeWarp: 5
+  handInputEnabled: 1
+  handmapping: 2
+  deltaHandMovementThreshold: 0.05
+  transparencyInTransition: 0.50980395
+  transparencyPreview: 0.2
+  previewPlacementDistanceThreshold: 0.05
+  freezeX: 0
+  freezeY: 0
+  freezeZ: 0
   LocalMinMaxX: {x: -Infinity, y: Infinity}
   LocalMinMaxY: {x: -Infinity, y: Infinity}
   LocalMinMaxZ: {x: -Infinity, y: Infinity}
   PlacementSurface: 0
-  OnDrop:
+  onDrop:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2059103973}
@@ -36152,8 +36152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f6139fd8f043674f9648c731164a673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _respawnReference: {fileID: 992256050}
-  _audioFXOnRespawn: {fileID: 8300000, guid: c307a05c1b13ac14088a9bccdeb54c2b, type: 3}
+  respawnReference: {fileID: 992256050}
+  audioFXOnRespawn: {fileID: 8300000, guid: c307a05c1b13ac14088a9bccdeb54c2b, type: 3}
 --- !u!82 &1939725778
 AudioSource:
   m_ObjectHideFlags: 0
@@ -36819,23 +36819,23 @@ MonoBehaviour:
   <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  _gazeInteractor: {fileID: 42435681}
-  _useEyeSupportedTargetPlacement: 1
-  _minLookAwayDistToEnableEyeWarp: 5
-  _handInputEnabled: 1
-  _handmapping: 2
-  _deltaHandMovemThresh: 0.05
-  _transparencyInTransition: 0.5
-  _transparencyPreview: 0.2
-  _previewPlacemDistThresh: 0.05
-  _freezeX: 0
-  _freezeY: 0
-  _freezeZ: 0
+  gazeInteractor: {fileID: 42435681}
+  useEyeSupportedTargetPlacement: 1
+  minLookAwayDistToEnableEyeWarp: 5
+  handInputEnabled: 1
+  handmapping: 2
+  deltaHandMovementThreshold: 0.05
+  transparencyInTransition: 0.50980395
+  transparencyPreview: 0.2
+  previewPlacementDistanceThreshold: 0.05
+  freezeX: 0
+  freezeY: 0
+  freezeZ: 0
   LocalMinMaxX: {x: -Infinity, y: Infinity}
   LocalMinMaxY: {x: -Infinity, y: Infinity}
   LocalMinMaxZ: {x: -Infinity, y: Infinity}
   PlacementSurface: 0
-  OnDrop:
+  onDrop:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2059103973}
@@ -37138,12 +37138,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4a9843675107d046af03666fac596ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _objsToPlaceHere:
+  objectsToPlaceHere:
   - {fileID: 1857432971}
   - {fileID: 2004111531}
-  _statusColorIdle: {r: 0, g: 0, b: 1, a: 1}
-  _statusColorAchieved: {r: 0, g: 1, b: 0, a: 1}
-  _audioFxSuccess: {fileID: 8300000, guid: a6b09c39e07656a4ea00f66ffdf4e0eb, type: 3}
+  statusColorIdle: {r: 0, g: 0, b: 1, a: 1}
+  statusColorAchieved: {r: 0, g: 1, b: 0, a: 1}
+  audioFxSuccess: {fileID: 8300000, guid: a6b09c39e07656a4ea00f66ffdf4e0eb, type: 3}
 --- !u!114 &2059103974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37322,7 +37322,7 @@ MonoBehaviour:
   <GazeDwellTime>k__BackingField: 1
   <UseFarDwell>k__BackingField: 0
   <FarDwellTime>k__BackingField: 1
-  allowSelectByVoice: 1
+  allowSelectByVoice: 0
   speechRecognitionKeyword: select
   <VoiceRequiresFocus>k__BackingField: 1
   <SelectRequiresHover>k__BackingField: 0

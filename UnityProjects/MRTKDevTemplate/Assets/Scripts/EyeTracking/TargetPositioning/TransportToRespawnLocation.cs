@@ -17,12 +17,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples
     {
         [SerializeField]
         [Tooltip("The referenced game objects acts as a placeholder for the respawn location.")]
-        [FormerlySerializedAs("_respawnReference")]
         private GameObject respawnReference = null;
 
         [SerializeField]
         [Tooltip("Optional audio clip which is played when the target is respawned.")]
-        [FormerlySerializedAs("_audioFXOnRespawn")]
         private AudioClip audioFXOnRespawn = null;
 
         private AudioSource audioSource = null;

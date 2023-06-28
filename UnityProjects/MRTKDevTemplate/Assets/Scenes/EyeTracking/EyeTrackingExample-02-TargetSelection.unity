@@ -182,17 +182,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9cdbe8099344f40aa2a2e84cee186e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetTemplates:
+  targetTemplates:
   - {fileID: 1994953953}
   - {fileID: 83036831}
-  _targetSizeInVisAngle: {x: 1.4, y: 1.4, z: 1.4}
-  _keepVisAngleSizeConstant: 0
-  _keepTargetsFacingTheCam: 0
-  _hideTemplatesOnStartup: 1
-  _radialLayoutNumTargets: 5
-  _radialLayoutRadiusInVisAngle:
+  targetSizeInVisualAngle: {x: 1.4, y: 1.4, z: 1.4}
+  keepVisualAngleSizeConstant: 0
+  keepTargetsFacingTheCamera: 0
+  hideTemplatesOnStartup: 1
+  radialLayoutNumTargets: 5
+  radialLayoutRadiusInVisualAngle:
   - 6
-  _showTargetAtGroupCenter: 0
+  showTargetAtGroupCenter: 0
 --- !u!1 &291758147
 GameObject:
   m_ObjectHideFlags: 0
@@ -1984,19 +1984,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d9cdbe8099344f40aa2a2e84cee186e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _targetTemplates:
+  targetTemplates:
   - {fileID: 1994953953}
   - {fileID: 83036831}
   - {fileID: 1049795151}
   - {fileID: 465517194}
-  _targetSizeInVisAngle: {x: 1.8, y: 1.8, z: 1.8}
-  _keepVisAngleSizeConstant: 0
-  _keepTargetsFacingTheCam: 0
-  _hideTemplatesOnStartup: 1
-  _radialLayoutNumTargets: 8
-  _radialLayoutRadiusInVisAngle:
+  targetSizeInVisualAngle: {x: 1.8, y: 1.8, z: 1.8}
+  keepVisualAngleSizeConstant: 1
+  keepTargetsFacingTheCamera: 0
+  hideTemplatesOnStartup: 1
+  radialLayoutNumTargets: 10
+  radialLayoutRadiusInVisualAngle:
   - 11
-  _showTargetAtGroupCenter: 0
+  showTargetAtGroupCenter: 0
 --- !u!1 &1938345301
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,13 +17,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         #region Serialized variables
         [Tooltip("Rotation speed factor that will be multiplied with the delta time. Recommended values: 1 or 2.")]
         [SerializeField]
-        [FormerlySerializedAs("Speed")]
         private float speed = 2f;
 
         [Tooltip("If the angle between 'Gaze to Target' and 'Camera to Target' is less than this value, do nothing. This is to prevent small jittery rotations.")]
         [SerializeField]
         [Min(0f)]
-        [FormerlySerializedAs("RotationThreshInDegrees")]
         private float rotationThresholdInDegrees = 3f;
         #endregion
 
