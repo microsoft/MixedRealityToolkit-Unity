@@ -7,21 +7,40 @@ using UnityEngine.XR;
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
-    /// This example demonstrates how to turn pointers on and off by 
+    /// This example demonstrates how to turn interactors on and off by 
     /// specifying custom behaviors.
     /// </summary>
     [RequireComponent(typeof(InteractorBehaviorControls))]
-    [AddComponentMenu("MRTK/Examples/Disable Pointers")]
-    public class DisablePointers : MonoBehaviour
+    [AddComponentMenu("MRTK/Examples/Disable Interactors")]
+    public class DisableInteractors : MonoBehaviour
     {
-        public PressableButton GazeToggle;
-        public PressableButton GrabToggle;
-        public PressableButton PokeToggle;
-        public PressableButton HandRayToggle;
-        public PressableButton ControllerRayToggle;
+        [SerializeField]
+        [Tooltip("The button to toggle Gaze input on and off.")]
+        private PressableButton gazeToggle;
 
-        public PressableButton VRToggle;
-        public PressableButton HololensToggle;
+        [SerializeField]
+        [Tooltip("The button to toggle Grab input on and off.")]
+        private PressableButton grabToggle;
+
+        [SerializeField]
+        [Tooltip("The button to toggle Poke input on and off.")]
+        private PressableButton pokeToggle;
+
+        [SerializeField]
+        [Tooltip("The button to toggle Hand Ray input on and off.")]
+        private PressableButton handRayToggle;
+
+        [SerializeField]
+        [Tooltip("The button to toggle Controller Ray input on and off.")]
+        private PressableButton controllerRayToggle;
+
+        [SerializeField]
+        [Tooltip("The button to activate VR device specific pointer types.")]
+        private PressableButton VRToggle;
+
+        [SerializeField]
+        [Tooltip("The button to activate Hololens device specific pointer types.")]
+        private PressableButton hololensToggle;
 
         private InteractorBehaviorControls interactorBehaviorControls;
 
@@ -83,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             interactorBehaviorControls.SetVR();
 
             SetToggleActive(VRToggle, true);
-            SetToggleActive(HololensToggle, false);
+            SetToggleActive(hololensToggle, false);
         }
 
         public void SetHololensModeActive()
@@ -91,32 +110,32 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             interactorBehaviorControls.SetHololens();
 
             SetToggleActive(VRToggle, false);
-            SetToggleActive(HololensToggle, true);
+            SetToggleActive(hololensToggle, true);
         }
 
         private void OnPokeToggled(bool isActive)
         {
-            SetToggleActive(PokeToggle, isActive);
+            SetToggleActive(pokeToggle, isActive);
         }
 
         private void OnHandRayToggled(bool isActive)
         {
-            SetToggleActive(HandRayToggle, isActive);
+            SetToggleActive(handRayToggle, isActive);
         }
 
         private void OnGrabToggled(bool isActive)
         {
-            SetToggleActive(GrabToggle, isActive);
+            SetToggleActive(grabToggle, isActive);
         }
 
         private void OnGazeToggled(bool isActive)
         {
-            SetToggleActive(GazeToggle, isActive);
+            SetToggleActive(gazeToggle, isActive);
         }
 
         private void OnControllerRayToggled(bool isActive)
         {
-            SetToggleActive(ControllerRayToggle, isActive);
+            SetToggleActive(controllerRayToggle, isActive);
         }
 
         private void SetToggleActive(PressableButton toggle, bool isActive)

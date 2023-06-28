@@ -5,7 +5,7 @@ using Microsoft.MixedReality.Toolkit.Subsystems;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     using Speech.Windows;
 
@@ -24,7 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// Gets or sets the audio source where speech will be played.
         /// </summary>
         public AudioSource AudioSource { get { return audioSource; } set { audioSource = value; } }
-
 
         /// <summary>
         /// Gets or sets the voice that will be used to generate speech. To use a non en-US voice, set this to Other.
@@ -101,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             {
                 Debug.LogError("Cannot find a running TextToSpeechSubsystem. Please check the MRTK profile settings " +
                                "(Project Settings -> MRTK3) and/or ensure a TextToSpeechSubsystem is running.");
-                OnSpeakFaulted?.Invoke("");
+                OnSpeakFaulted?.Invoke("Cannot find a running TextToSpeechSubsystem.");
             }
         }
     }

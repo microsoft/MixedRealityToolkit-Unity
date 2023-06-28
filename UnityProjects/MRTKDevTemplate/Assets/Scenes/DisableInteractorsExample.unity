@@ -4372,13 +4372,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2446705927233332293, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_text
-      value: "<size=11><b>Disable Pointer Examples</b></size>\r\n\nThis scene demonstrates
-        how to turn interactors like the hand ray, gaze, grab, and poke pointers
-        on and off from code.\n\n<size=\"9\"><b>How to use</b></size>\nClick on the
-        toggle buttons under \u201CToggle Pointers\u201D to turn different rays on
-        / off. You can also set the UI to certain common modes used by HoloLens 2
-        (Grab, Poke, Line pointers) and VR (Line and teleport pointers only).  If
-        you get stuck, say \"reset example\".\n\nHave a look at InteractorBehaviorControls
+      value: "<size=11><b>Disable Interactors Examples</b></size>\r\n\nThis scene
+        demonstrates how to turn interactors like the hand ray, gaze, grab, and poke
+        pointers on and off from code.\n\n<size=\"9\"><b>How to use</b></size>\nClick
+        on the toggle buttons under \u201CToggle Pointers\u201D to turn different
+        rays on / off. You can also set the UI to certain common modes used by HoloLens
+        2 (Grab, Poke, Line pointers) and VR (Line and teleport pointers only). 
+        If you get stuck, say \"reset example\".\n\nHave a look at InteractorBehaviorControls
         to see how to to enable / disable the various Interactors. \r"
       objectReference: {fileID: 0}
     - target: {fileID: 2446705927233332293, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
@@ -8270,7 +8270,7 @@ GameObject:
   - component: {fileID: 2133586271}
   - component: {fileID: 2133586272}
   m_Layer: 0
-  m_Name: DisablePointers
+  m_Name: DisableInteractors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8303,13 +8303,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9d0655fe12576e4085bf0deac5aefd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GazeToggle: {fileID: 2088872735}
-  GrabToggle: {fileID: 1528448815}
-  PokeToggle: {fileID: 1972411871}
-  HandRayToggle: {fileID: 1651317826}
-  ControllerRayToggle: {fileID: 1097863755}
+  gazeToggle: {fileID: 2088872735}
+  grabToggle: {fileID: 1528448815}
+  pokeToggle: {fileID: 1972411871}
+  handRayToggle: {fileID: 1651317826}
+  controllerRayToggle: {fileID: 1097863755}
   VRToggle: {fileID: 1144015121}
-  HololensToggle: {fileID: 1275618357}
+  hololensToggle: {fileID: 1275618357}
 --- !u!114 &2133586272
 MonoBehaviour:
   m_ObjectHideFlags: 0
