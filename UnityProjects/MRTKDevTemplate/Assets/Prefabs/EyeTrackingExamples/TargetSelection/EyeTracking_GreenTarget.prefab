@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 5482834646519813981}
   - component: {fileID: 8289819128855617247}
   m_Layer: 0
-  m_Name: TargetType (4)
+  m_Name: EyeTracking_GreenTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

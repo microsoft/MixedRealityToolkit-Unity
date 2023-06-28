@@ -4829,7 +4829,7 @@ GameObject:
   - component: {fileID: 920865073573836204}
   - component: {fileID: 8270335104292374827}
   m_Layer: 0
-  m_Name: TargetType (2)
+  m_Name: EyeTracking_PurpleTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

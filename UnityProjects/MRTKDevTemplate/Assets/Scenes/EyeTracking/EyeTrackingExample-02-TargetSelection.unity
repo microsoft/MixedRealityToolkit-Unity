@@ -2271,7 +2271,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4091664850906067339, guid: 05fbbb687f366c5499829e1b78065bd0, type: 3}
       propertyPath: m_Name
-      value: TargetType (1)
+      value: EyeTracking_BlueTarget
       objectReference: {fileID: 0}
     - target: {fileID: 4091664850906067342, guid: 05fbbb687f366c5499829e1b78065bd0, type: 3}
       propertyPath: m_InteractionManager
@@ -2332,7 +2332,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6674691429645067329, guid: a9e596837c4fe174b9f4cd182c2203e4, type: 3}
       propertyPath: m_Name
-      value: TargetType (4)
+      value: EyeTracking_GreenTarget
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a9e596837c4fe174b9f4cd182c2203e4, type: 3}
@@ -2393,7 +2393,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7847039400930239025, guid: 6102b26b85c007d41a8472c839272fee, type: 3}
       propertyPath: m_Name
-      value: TargetType (3)
+      value: EyeTracking_YellowTarget
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6102b26b85c007d41a8472c839272fee, type: 3}
@@ -2511,7 +2511,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8787754652671033260, guid: e408c5b5ebddbab48a20adb8f2d31192, type: 3}
       propertyPath: m_Name
-      value: TargetType (2)
+      value: EyeTracking_PurpleTarget
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e408c5b5ebddbab48a20adb8f2d31192, type: 3}

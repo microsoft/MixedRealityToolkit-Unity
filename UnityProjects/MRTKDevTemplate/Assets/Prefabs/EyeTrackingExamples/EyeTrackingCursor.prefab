@@ -199,7 +199,7 @@ GameObject:
   - component: {fileID: 6257935012351440671}
   - component: {fileID: 8364151238423769580}
   m_Layer: 0
-  m_Name: MockSpatialCursor
+  m_Name: EyeTrackingCursor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
