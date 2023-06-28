@@ -7,12 +7,12 @@ using UnityEngine.XR;
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
-    /// This example demonstrates how to turn pointers on and off by 
+    /// This example demonstrates how to turn interactors on and off by 
     /// specifying custom behaviors.
     /// </summary>
     [RequireComponent(typeof(InteractorBehaviorControls))]
-    [AddComponentMenu("MRTK/Examples/Disable Pointers")]
-    public class DisablePointers : MonoBehaviour
+    [AddComponentMenu("MRTK/Examples/Disable Interactors")]
+    public class DisableInteractors : MonoBehaviour
     {
         [SerializeField]
         [Tooltip("The button to toggle Gaze input on and off.")]
