@@ -4,10 +4,9 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     using global::Unity.XR.CoreUtils;
-    using System;
     using System.Collections.Generic;
     using UnityEngine.InputSystem;
     using UnityEngine.XR.Interaction.Toolkit.Inputs;
@@ -22,50 +21,60 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         [SerializeField]
         private float _defaultDistanceInMeters = 2f;
 
-        [SerializeField] private Color _idleStateColor;
-        [SerializeField] private Color _hightlightStateColor;
+        [SerializeField]
+        private Color _idleStateColor;
 
-        private Material _material;
+        [SerializeField]
+        private Color _hightlightStateColor;
 
+        private Material material;
 
-        [SerializeField] private ActionBasedController _gazeController;
-        [SerializeField] private InputActionProperty _gazeTranslationAction;
-        //[SerializeField] private InputActionProperty _gazeRotationAction;
+        [SerializeField]
+        private ActionBasedController _gazeController;
 
-        private IGazeInteractor _gazeInteractor;
-        private List<IXRInteractable> _targets;
+        [SerializeField]
+        private InputActionProperty _gazeTranslationAction;
+
+        private IGazeInteractor gazeInteractor;
+        private List<IXRInteractable> targets;
 
         private void Awake()
         {
-            _material = GetComponent<Renderer>().material;
+            material = GetComponent<Renderer>().material;
 
-            //_gazeController.model = transform;
-            _gazeInteractor = _gazeController.GetComponentInChildren<IGazeInteractor>();
+            gazeInteractor = _gazeController.GetComponentInChildren<IGazeInteractor>();
 
-            _targets = new List<IXRInteractable>();
+            targets = new List<IXRInteractable>();
         }
 
         private void OnEnable()
         {
-            if (_gazeTranslationAction == null || _gazeTranslationAction.action == null) { return; }
+            if (_gazeTranslationAction == null || _gazeTranslationAction.action == null)
+            {
+                return;
+            }
+
             _gazeTranslationAction.action.performed += FollowEyeGazeAction;
             _gazeTranslationAction.EnableDirectAction();
         }
         
         private void OnDisable()
         {
-            if (_gazeTranslationAction == null || _gazeTranslationAction.action == null) { return; }
+            if (_gazeTranslationAction == null || _gazeTranslationAction.action == null)
+            {
+                return;
+            }
+
             _gazeTranslationAction.DisableDirectAction();
             _gazeTranslationAction.action.performed -= FollowEyeGazeAction;
-            
         }
 
         private void Update()
         {
-            _targets.Clear();
+            targets.Clear();
 
-            _gazeInteractor.GetValidTargets(_targets);
-            _material.color = _targets.Count > 0 ? _hightlightStateColor : _idleStateColor;
+            gazeInteractor.GetValidTargets(targets);
+            material.color = targets.Count > 0 ? _hightlightStateColor : _idleStateColor;
 
             // Note: A better workflow would be to create and attach a prefab to the MRTK Gaze Controller object.
             // Doing this will parent the cursor to the gaze controller transform and be updated automatically.

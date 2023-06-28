@@ -3,11 +3,10 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     using Input;
     using System;
-    using System.Security.Cryptography;
 
     /// <summary>
     /// This visualizer can be used to represent pointer input data, e.g., from a handheld controller,
@@ -26,66 +25,66 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         [SerializeField]
         private bool useLiveInputStream = false;
 
-        private bool _showOrigins = false;
-        private bool _showDestinations = false;
-        private bool _showLinkD2D = false; // Destination to destination
-        private bool _showLinkO2D = false; // Origin to destination
+        private bool showOrigins = false;
+        private bool showDestinations = false;
+        private bool showLinkD2D = false; // Destination to destination
+        private bool showLinkO2D = false; // Origin to destination
 
         public VisModes ShowVisMode;
-        private VisModes _showVisMode; // Using a private showTrace to detect when the item is changed in the Editor to trigger an vis update
+        private VisModes showVisMode; // Using a private showTrace to detect when the item is changed in the Editor to trigger an vis update
 
         [SerializeField]
-        private bool _onlyShowForHitTargets = false;
+        private bool onlyShowForHitTargets = false;
 
         [SerializeField]
         [Tooltip("Template for visualizing vector origin, e.g., a colored sphere.")]
-        private ParticleHeatmap _tmpltOrigins = null;
+        private ParticleHeatmap templateOrigins = null;
 
         [SerializeField]
         [Tooltip("Template for visualizing hit pos, e.g., a colored sphere.")]
-        private ParticleHeatmap _tmpltDestinations = null;
+        private ParticleHeatmap templateDestinations = null;
 
         [SerializeField]
         [Tooltip("Template for visualizing connecting lines between vector origins - Should be a line renderer.")]
-        private GameObject _tmpltLinkOrigToOrig = null;
+        private GameObject templateLinkOrigToOrig = null;
 
         [SerializeField]
         [Tooltip("Template for visualizing connecting lines between vector destinations - Should be a line renderer.")]
-        private GameObject _tmpltLinkDestToDest = null;
+        private GameObject templateLinkDestToDest = null;
 
         [SerializeField]
         [Tooltip("Template for visualizing the vector between vector origin and destination - Should be a line renderer.")]
-        private GameObject _tmpltLinkOrigToDest = null;
+        private GameObject templateLinkOrigToDest = null;
 
         [SerializeField]
         [Tooltip("Distance to default to in case of no hit target.")]
-        private float _cursorDist = 2f;
-
-        public float nhist = 20; // Sample-based. Better to make it time-based.
-        public TextMesh _textOutput;
-
-        // Private variables
-        private ParticleHeatmap _samplesOrigins;
-        private ParticleHeatmap _samplesDestinations;
-
-        private GameObject[] _samplesLinkOrigToOrig;
-        private GameObject[] _samplesLinkDestToDest;
-        private GameObject[] _samplesLinkOrigToDest;
-
-        private int _currentItemIndex = 0;
-        private VisModes _rememberState = VisModes.ShowOnlyDestinations;
-        private bool _isPaused = false;
-        private int _numberOfTraceSamples;
+        private float cursorDist = 2f;
 
         [SerializeField]
-        private FuzzyGazeInteractor _gazeInteractor;
+        private FuzzyGazeInteractor gazeInteractor;
 
+        public int numSamples = 20; // Sample-based. Better to make it time-based.
+        public TextMesh textOutput;
+
+        // Private variables
+        private ParticleHeatmap samplesOrigins;
+        private ParticleHeatmap samplesDestinations;
+
+        private GameObject[] samplesLinkOrigToOrig;
+        private GameObject[] samplesLinkDestToDest;
+        private GameObject[] samplesLinkOrigToDest;
+
+        private int currentItemIndex = 0;
+        private VisModes rememberState = VisModes.ShowOnlyDestinations;
+        private bool isPaused = false;
+        private int numberOfTraceSamples;
+        
         private void Start()
         {
-            AmountOfSamples = (int)nhist;
+            AmountOfSamples = numSamples;
 
-            if (_textOutput != null)
-                _textOutput.text = "";
+            if (textOutput != null)
+                textOutput.text = "";
 
             SetActive_DataVis(ShowVisMode);
 
@@ -96,12 +95,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         public void ResetVisualizations()
         {
             ResetVis();
-            Debug.Log(">>INIT VIS ARRAY " + _numberOfTraceSamples);
-            InitPointClouds(ref _samplesOrigins, _tmpltOrigins);
-            InitPointClouds(ref _samplesDestinations, _tmpltDestinations);
-            InitVisArrayObj(ref _samplesLinkOrigToOrig, _tmpltLinkOrigToOrig, _numberOfTraceSamples);
-            InitVisArrayObj(ref _samplesLinkDestToDest, _tmpltLinkDestToDest, _numberOfTraceSamples);
-            InitVisArrayObj(ref _samplesLinkOrigToDest, _tmpltLinkOrigToDest, _numberOfTraceSamples);
+            Debug.Log(">>INIT VIS ARRAY " + numberOfTraceSamples);
+            InitPointClouds(ref samplesOrigins, templateOrigins);
+            InitPointClouds(ref samplesDestinations, templateDestinations);
+            InitVisArrayObj(ref samplesLinkOrigToOrig, templateLinkOrigToOrig, numberOfTraceSamples);
+            InitVisArrayObj(ref samplesLinkDestToDest, templateLinkDestToDest, numberOfTraceSamples);
+            InitVisArrayObj(ref samplesLinkOrigToDest, templateLinkOrigToDest, numberOfTraceSamples);
         }
 
         private void InitPointClouds(ref ParticleHeatmap pointCloud, ParticleHeatmap templateParticleSystem)
@@ -117,15 +116,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 pointCloud = null;
         }
 
-        private void InitVisArrayObj(ref GameObject[] array, GameObject template, int nrOfSamples)
+        private void InitVisArrayObj(ref GameObject[] array, GameObject template, int numOfSamples)
         {
             if (template != null)
             {
                 // Initialize array of game objects to represent loaded data
-                array = new GameObject[nrOfSamples];
+                array = new GameObject[numOfSamples];
 
                 // Instantiate copies of the provided template at (0,0,0) - later we simply change the position
-                for (int i = 0; i < _numberOfTraceSamples; i++)
+                for (int i = 0; i < numberOfTraceSamples; i++)
                 {
                     array[i] = Instantiate(template, Vector3.zero, Quaternion.identity) as GameObject;
                     array[i].transform.SetParent(transform, false);
@@ -139,12 +138,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         private void ResetVis()
         {
-            ResetPointCloudVis(ref _samplesOrigins);
-            ResetPointCloudVis(ref _samplesDestinations);
+            ResetPointCloudVis(ref samplesOrigins);
+            ResetPointCloudVis(ref samplesDestinations);
 
-            ResetVis(ref _samplesLinkOrigToOrig);
-            ResetVis(ref _samplesLinkDestToDest);
-            ResetVis(ref _samplesLinkOrigToDest);
+            ResetVis(ref samplesLinkOrigToOrig);
+            ResetVis(ref samplesLinkDestToDest);
+            ResetVis(ref samplesLinkOrigToDest);
         }
 
         private void ResetVis(ref GameObject[] array)
@@ -170,7 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         {
             Debug.Log("SetDataVis: " + visMode);
 
-            _showVisMode = visMode;
+            showVisMode = visMode;
             switch (visMode)
             {
                 case VisModes.ShowNone:
@@ -187,28 +186,28 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         private void SetActive_DataVis(bool showOrigins, bool showDest, bool showO2O, bool showD2D, bool showO2D)
         {
-            _showOrigins = showOrigins;
-            _showDestinations = showDest;
-            _showLinkO2D = showO2O;
-            _showLinkD2D = showD2D;
-            _showLinkO2D = showO2D;
+            this.showOrigins = showOrigins;
+            showDestinations = showDest;
+            showLinkO2D = showO2O;
+            showLinkD2D = showD2D;
+            showLinkO2D = showO2D;
 
-            SetActive_PointCloudVis(ref _samplesOrigins, showOrigins);
-            SetActive_PointCloudVis(ref _samplesDestinations, showDest);
+            SetActive_PointCloudVis(ref samplesOrigins, showOrigins);
+            SetActive_PointCloudVis(ref samplesDestinations, showDest);
 
-            SetActive_DataVis(ref _samplesLinkOrigToOrig, showO2O);
+            SetActive_DataVis(ref samplesLinkOrigToOrig, showO2O);
 
             Debug.Log("Set up D2D links: " + showD2D);
-            SetActive_DataVis(ref _samplesLinkDestToDest, showD2D);
+            SetActive_DataVis(ref samplesLinkDestToDest, showD2D);
 
-            if (_samplesLinkOrigToDest != null)
+            if (samplesLinkOrigToDest != null)
             {
-                for (int i = 0; i < _samplesLinkOrigToDest.Length; i++)
+                for (int i = 0; i < samplesLinkOrigToDest.Length; i++)
                 {
-                    _samplesLinkOrigToDest[i].SetActive(true);
+                    samplesLinkOrigToDest[i].SetActive(true);
                 }
             }
-            SetActive_DataVis(ref _samplesLinkOrigToDest, showO2D);
+            SetActive_DataVis(ref samplesLinkOrigToDest, showO2D);
         }
 
 
@@ -253,47 +252,47 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         Vector3? _lastDestination;
         public void UpdateDataVis(Ray cursorRay)
         {
-            _currentItemIndex++;
-            if (_currentItemIndex >= _numberOfTraceSamples)
-                _currentItemIndex = 0;
+            currentItemIndex++;
+            if (currentItemIndex >= numberOfTraceSamples)
+                currentItemIndex = 0;
 
             try
             {
                 // Vector origin
-                UpdateVis_PointCloud(ref _samplesOrigins, _currentItemIndex, cursorRay.origin, _showOrigins);
+                UpdateVis_PointCloud(ref samplesOrigins, currentItemIndex, cursorRay.origin, showOrigins);
 
                 // Vector destination / hit pos
                 Vector3? v = PerformHitTest(cursorRay);
 
-                if (!v.HasValue && !_onlyShowForHitTargets)
+                if (!v.HasValue && !onlyShowForHitTargets)
                 {
-                    v = cursorRay.origin + cursorRay.direction.normalized * _cursorDist;
+                    v = cursorRay.origin + cursorRay.direction.normalized * cursorDist;
                 }
 
-                UpdateVis_PointCloud(ref _samplesDestinations, _currentItemIndex, v.Value, _showDestinations);
+                UpdateVis_PointCloud(ref samplesDestinations, currentItemIndex, v.Value, showDestinations);
 
 
                 // ... Vector destinations 
-                if (_samplesDestinations != null && _samplesLinkDestToDest != null)
+                if (samplesDestinations != null && samplesLinkDestToDest != null)
                 {
                     Vector3? pos1 = _lastDestination;
                     Vector3? pos2 = v.Value;
 
                     if ((pos1.HasValue) && (pos2.HasValue))
                     {
-                        UpdateConnectorLines(ref _samplesLinkDestToDest, _currentItemIndex, pos1.Value, pos2.Value, _showLinkD2D);
+                        UpdateConnectorLines(ref samplesLinkDestToDest, currentItemIndex, pos1.Value, pos2.Value, showLinkD2D);
                     }
                 }
 
                 _lastDestination = v.Value;
-                if ((_samplesDestinations != null) && (_samplesLinkOrigToDest != null))
+                if (samplesDestinations != null && samplesLinkOrigToDest != null)
                 {
                     Vector3? pos1 = cursorRay.origin;
                     Vector3? pos2 = v.Value;
 
-                    if (pos1.HasValue && (pos2.HasValue))
+                    if (pos1.HasValue && pos2.HasValue)
                     {
-                        UpdateConnectorLines(ref _samplesLinkOrigToDest, _currentItemIndex, pos1.Value, pos2.Value, _showLinkO2D);
+                        UpdateConnectorLines(ref samplesLinkOrigToDest, currentItemIndex, pos1.Value, pos2.Value, showLinkO2D);
                     }
                 }
             }
@@ -315,30 +314,30 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         private void Update()
         {
-            if (ShowVisMode != _showVisMode)
+            if (ShowVisMode != showVisMode)
             {
                 SetActive_DataVis(ShowVisMode);
             }
 
-            if (!_isPaused && useLiveInputStream)
+            if (!isPaused && useLiveInputStream)
             {
-                UpdateDataVis(new Ray(_gazeInteractor.rayOriginTransform.position, _gazeInteractor.rayOriginTransform.forward));
+                UpdateDataVis(new Ray(gazeInteractor.rayOriginTransform.position, gazeInteractor.rayOriginTransform.forward));
             }
         }
 
         public int AmountOfSamples
         {
-            get { return _numberOfTraceSamples; }
+            get { return numberOfTraceSamples; }
             set
             {
-                _numberOfTraceSamples = value;
+                numberOfTraceSamples = value;
                 ResetVisualizations();
             }
         }
 
         public void ToggleAppState()
         {
-            SetAppState(!_isPaused);
+            SetAppState(!isPaused);
         }
 
         public void PauseApp()
@@ -353,19 +352,19 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         public void SetAppState(bool pauseIt)
         {
-            _isPaused = pauseIt;
-            if (_textOutput != null)
+            isPaused = pauseIt;
+            if (textOutput != null)
             {
                 if (pauseIt)
                 {
-                    _rememberState = _showVisMode;
-                    _textOutput.text = "Paused...";
+                    rememberState = showVisMode;
+                    textOutput.text = "Paused...";
                     SetActive_DataVis(VisModes.ShowAll);
                 }
                 else
                 {
-                    _textOutput.text = "";
-                    SetActive_DataVis(_rememberState);
+                    textOutput.text = "";
+                    SetActive_DataVis(rememberState);
                 }
             }
         }

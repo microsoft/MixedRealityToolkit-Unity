@@ -1,27 +1,26 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
     /// This script allows to zoom into and pan the texture of a GameObject. 
     /// It also allows for scrolling by restricting panning to one direction.  
     /// </summary>
-    [AddComponentMenu("Scripts/MRTK/Examples/ScrollRectTransf")]
-    public class ScrollRectTransf : PanZoomBaseRectTransf
+    [AddComponentMenu("Scripts/MRTK/Examples/ScrollRectTransform")]
+    public class ScrollRectTransform : PanZoomBaseRectTransform
     {
         // Scroll
         [Tooltip("RectTransform from, for example, your TextMeshPro game object.")]
         [SerializeField]
-        private RectTransform rectTransfToNavigate = null;
+        private RectTransform rectTransformToNavigate = null;
 
         [Tooltip("Reference to the viewport restricting the viewbox. This is important for identifying the max constrains for panning.")]
         [SerializeField]
-        private RectTransform refToViewPort = null;
+        private RectTransform referenceToViewPort = null;
 
         [Tooltip("Ability to scroll using your eye gaze without any additional input (e.g., air tap or button presses).")]
         [SerializeField]
@@ -47,14 +46,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         [SerializeField]
         [Range(0, 10)]
         private float skimProofUpdateSpeed = 5f;
-
+        
         // The base PanAndZoom class can also be used with UV textures for which the dimensions are different to a RectTransform.
         // To allow to keep the speed values that users can assign consistent, let's internally convert the values.
         private float convertSpeedToUVSpace = -200.0f;
 
         [Tooltip("Custom anchor start position.")]
         [SerializeField]
-        public Vector2 customStartPos;
+        public Vector2 customStartPosition;
 
         protected override void Start()
         {
@@ -65,10 +64,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             minDistFromCenterForAutoPan = minDistFromCenterForAutoScroll;
             useSkimProof = useSkimProofing;
 
-            navRectTransf = rectTransfToNavigate;
-            viewportRectTransf = refToViewPort;
+            navigationRectTransform = rectTransformToNavigate;
+            viewportRectTransform = referenceToViewPort;
 
-            navRectTransf.anchoredPosition = customStartPos;
+            navigationRectTransform.anchoredPosition = customStartPosition;
             isScrollText = true;
 
             base.Start();
@@ -76,9 +75,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         private void UpdatePivot()
         {
-            navRectTransf.pivot = new Vector2(0, 1);
-            navRectTransf.anchorMin = new Vector2(0, 1);
-            navRectTransf.anchorMax = new Vector2(0, 1);
+            navigationRectTransform.pivot = new Vector2(0f, 1f);
+            navigationRectTransform.anchorMin = new Vector2(0f, 1f);
+            navigationRectTransform.anchorMax = new Vector2(0f, 1f);
         }
 
         public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
@@ -96,9 +95,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 UpdateValues(ref minDistFromCenterForAutoPan, minDistFromCenterForAutoScroll);
                 UpdateValues(ref useSkimProof, useSkimProofing);
 
-                if (UpdateValues(ref skimproof_UpdateSpeedFromUser, skimProofUpdateSpeed))
+                if (UpdateValues(ref skimProofUpdateSpeedFromUser, skimProofUpdateSpeed))
                 {
-                    SetSkimProofUpdateSpeed(skimproof_UpdateSpeedFromUser);
+                    SetSkimProofUpdateSpeed(skimProofUpdateSpeedFromUser);
                 }
             }
         }

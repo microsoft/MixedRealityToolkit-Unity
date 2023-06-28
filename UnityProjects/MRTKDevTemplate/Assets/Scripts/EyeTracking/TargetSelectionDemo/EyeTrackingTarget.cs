@@ -3,9 +3,10 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     using System.Collections;
+    using UnityEngine.Serialization;
 
     /// <summary>
     /// Handles events triggered from the attached <see cref="StatefulInteractable"/>
@@ -14,74 +15,80 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     {
         [Tooltip("Visual effect (e.g., particle explosion or animation) that is played when a target is selected.")]
         [SerializeField]
-        private GameObject _visualFxOnHit = null;
+        [FormerlySerializedAs("_visualFxOnHit")]
+        private GameObject visualEffectsOnHit = null;
 
         [Tooltip("Audio clip that is played when a target is selected.")]
         [SerializeField]
-        private AudioClip _audioFxCorrectTarget = null;
+        [FormerlySerializedAs("_audioFxCorrectTarget")]
+        private AudioClip audioFxCorrectTarget = null;
 
         [Tooltip("Audio clip that is played when a wrong target is selected.")]
         [SerializeField]
-        private AudioClip _audioFxIncorrectTarget = null;
+        [FormerlySerializedAs("_audioFxIncorrectTarget")]
+        private AudioClip audioFxIncorrectTarget = null;
 
         [Tooltip("Manually indicate whether this is an incorrect target.")]
         [SerializeField]
-        private bool _isValidTarget = true;
+        [FormerlySerializedAs("_isValidTarget")]
+        private bool isValidTarget = true;
 
         [Tooltip("Euler angles by which the object should be rotated by.")]
         [SerializeField]
-        private Vector3 _rotateByEulerAngles = Vector3.zero;
+        [FormerlySerializedAs("_rotateByEulerAngles")]
+        private Vector3 rotateByEulerAngles = Vector3.zero;
 
         [Tooltip("Rotation speed factor.")]
         [SerializeField]
-        private float _speed = 1f;
+        [FormerlySerializedAs("_speed")]
+        private float speed = 1f;
 
         /// <summary>
         /// Coroutine that plays when the game object is hovered over.
         /// </summary>
-        private Coroutine _rotationCoroutine;
+        private Coroutine rotationCoroutine;
 
         /// <summary>
         /// Internal audio source associated with the game object.
         /// </summary>
-        private AudioSource _audioSource;
+        private AudioSource audioSource;
 
         /// <summary>
         /// The StatefulInteractable associated with this game object.
         /// </summary>
-        private StatefulInteractable _interactable;
+        private StatefulInteractable interactable;
 
         private void Awake()
         {
             SetUpAudio();
-            _interactable = GetComponent<StatefulInteractable>();
+            interactable = GetComponent<StatefulInteractable>();
         }
 
         public void OnGazeHoverEntered()
         {
-            _rotationCoroutine = StartCoroutine(RotateTarget());
+            rotationCoroutine = StartCoroutine(RotateTarget());
         }
 
         public void OnGazeHoverExited()
         {
-            StopCoroutine(_rotationCoroutine);
+            StopCoroutine(rotationCoroutine);
         }
 
         public void OnTargetSelected()
         {
-            if (!_interactable.isHovered)
+            if (!interactable.isHovered)
             {
                 return;
             }
 
-            if (!_isValidTarget)
+            if (!isValidTarget)
             {
-                PlayAudioOnHit(_audioFxIncorrectTarget);
+                PlayAudioOnHit(audioFxIncorrectTarget);
                 return;
             }
 
             // Play audio clip
-            float audioClipLength = PlayAudioOnHit(_audioFxCorrectTarget);
+            float audioClipLength = PlayAudioOnHit(audioFxCorrectTarget);
 
             // Play animation
             float animationLength = PlayAnimationOnHit();
@@ -94,10 +101,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         private void SetUpAudio()
         {
-            _audioSource = gameObject.EnsureComponent<AudioSource>();
+            audioSource = gameObject.EnsureComponent<AudioSource>();
 
-            _audioSource.playOnAwake = false;
-            _audioSource.enabled = true;
+            audioSource.playOnAwake = false;
+            audioSource.enabled = true;
         }
 
         /// <summary>
@@ -105,15 +112,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         private float PlayAudioOnHit(AudioClip audioClip)
         {
-            if (audioClip == null || _audioSource == null)
+            if (audioClip == null || audioSource == null)
             {
                 return 0f;
             }
 
             // Play the given audio clip
-            _audioSource.clip = audioClip;
-            _audioSource.PlayOneShot(_audioSource.clip);
-            return _audioSource.clip.length;
+            audioSource.clip = audioClip;
+            audioSource.PlayOneShot(audioSource.clip);
+            return audioSource.clip.length;
         }
 
         /// <summary>
@@ -121,13 +128,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         private float PlayAnimationOnHit()
         {
-            if (_visualFxOnHit == null)
+            if (visualEffectsOnHit == null)
             {
                 return 0f;
             }
 
-            _visualFxOnHit.SetActive(true);
-            return _visualFxOnHit.GetComponent<ParticleSystem>().main.duration;
+            visualEffectsOnHit.SetActive(true);
+            return visualEffectsOnHit.GetComponent<ParticleSystem>().main.duration;
         }
 
         /// <summary>
@@ -137,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             while (true)
             {
-                transform.eulerAngles += _speed * _rotateByEulerAngles;
+                transform.eulerAngles += speed * rotateByEulerAngles;
                 yield return null;
             }
         }

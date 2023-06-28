@@ -3,25 +3,25 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     [AddComponentMenu("Scripts/MRTK/Examples/UserInputRecorderUIController")]
     public class UserInputRecorderUIController : MonoBehaviour
     {
         [SerializeField]
-        private GameObject btn_StartRecording = null;
+        private GameObject buttonStartRecording = null;
 
         [SerializeField]
-        private GameObject btn_StopRecording = null;
+        private GameObject buttonStopRecording = null;
 
         [SerializeField]
-        private GameObject btn_StartPlayback_Inactive = null;
+        private GameObject buttonStartPlaybackInactive = null;
 
         [SerializeField]
-        private GameObject btn_StartPlayback = null;
+        private GameObject buttonStartPlayback = null;
 
         [SerializeField]
-        private GameObject btn_PausePlayback = null;
+        private GameObject buttonPausePlayback = null;
 
         public void Start()
         {
@@ -42,14 +42,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         private void RecordingUI_Reset(bool reset)
         {
-            if (btn_StopRecording != null)
+            if (buttonStopRecording != null)
             {
-                btn_StopRecording.SetActive(!reset);
+                buttonStopRecording.SetActive(!reset);
             }
 
-            if (btn_StartRecording != null)
+            if (buttonStartRecording != null)
             {
-                btn_StartRecording.SetActive(reset);
+                buttonStartRecording.SetActive(reset);
             }
         }
         #endregion
@@ -64,9 +64,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         {
             ResetPlayback(active, false);
 
-            if (btn_StartPlayback_Inactive != null)
+            if (buttonStartPlaybackInactive != null)
             {
-                btn_StartPlayback_Inactive.SetActive(!active);
+                buttonStartPlaybackInactive.SetActive(!active);
             }
         }
 
@@ -84,14 +84,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         private void ResetPlayback(bool showPlayBtn, bool showPauseBtn)
         {
-            if (btn_StartPlayback != null)
+            if (buttonStartPlayback != null)
             {
-                btn_StartPlayback.SetActive(showPlayBtn);
+                buttonStartPlayback.SetActive(showPlayBtn);
             }
 
-            if (btn_PausePlayback != null)
+            if (buttonPausePlayback != null)
             {
-                btn_PausePlayback.SetActive(showPauseBtn);
+                buttonPausePlayback.SetActive(showPauseBtn);
             }
         }
         #endregion

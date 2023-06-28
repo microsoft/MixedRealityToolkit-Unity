@@ -6,7 +6,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
     /// Example of how to use interactors to create a heatmap of eye tracking data.
@@ -17,61 +17,59 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
     internal class DrawOnTexture : MRTKBaseInteractable
     {
         [SerializeField]
-        private Texture2D _heatmapLookUpTable;
+        private Texture2D heatmapLookUpTable;
 
         [SerializeField]
-        private float _drawBrushSize = 2000.0f; // aka spread
+        private float drawBrushSize = 2000.0f; // aka spread
 
         [SerializeField]
-        private float _drawIntensity = 15.0f; // aka amplitude
+        private float drawIntensity = 15.0f; // aka amplitude
 
         [SerializeField]
-        private float _minThreshDeltaHeatMap = 0.001f; // Mostly for performance to reduce spreading heatmap for small values.
+        private float minThreshDeltaHeatMap = 0.001f; // Mostly for performance to reduce spreading heatmap for small values.
 
         [SerializeField]
-        private bool _useLiveInputStream = false;
-
-        private Renderer _renderer;
+        private bool useLiveInputStream = false;
 
         // The internal texture reference we will modify.
         // Bound to the renderer on this GameObject.
-        private Texture2D _texture;
+        private Texture2D texture;
 
         private void Start()
         {
-            _renderer = GetComponent<Renderer>();
-
             SetupTexture();
         }
 
         private void SetupTexture()
         {
+            Renderer rendererComponent = GetComponent<Renderer>();
+
             // Create new texture and bind it to renderer/material.
-            _texture = new Texture2D(_renderer.material.mainTexture.width, _renderer.material.mainTexture.width, TextureFormat.RGBA32, false);
-            _texture.hideFlags = HideFlags.HideAndDontSave;
+            texture = new Texture2D(rendererComponent.material.mainTexture.width, rendererComponent.material.mainTexture.width, TextureFormat.RGBA32, false);
+            texture.hideFlags = HideFlags.HideAndDontSave;
             
-            for (int ix = 0; ix < _texture.width; ix++)
+            for (int ix = 0; ix < texture.width; ix++)
             {
-                for (int iy = 0; iy < _texture.height; iy++)
+                for (int iy = 0; iy < texture.height; iy++)
                 {
-                    _texture.SetPixel(ix, iy, Color.clear);
+                    texture.SetPixel(ix, iy, Color.clear);
                 }
             }
-            _texture.Apply(false);
+            texture.Apply(false);
 
-            _renderer.material.SetTexture("_MainTex", _texture);
+            rendererComponent.material.SetTexture("_MainTex", texture);
         }
 
         protected override void OnDestroy()
         {
-            Destroy(_texture);
+            Destroy(texture);
             base.OnDestroy();
         }
 
         public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
         {   
             // Dynamic is effectively just your normal Update().
-            if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic && _useLiveInputStream)
+            if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic && useLiveInputStream)
             {
                 foreach (var interactor in interactorsHovering)
                 {
@@ -115,29 +113,29 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             yield return null;
 
             // Determine the center of our to be drawn 'blob'
-            var center = new Vector2(currPosUV.x * _texture.width, currPosUV.y * _texture.height);
-            int signX = (positiveX) ? 1 : -1;
-            int signY = (positiveY) ? 1 : -1;
-            int startX = (positiveX) ? 0 : 1;
-            int startY = (positiveY) ? 0 : 1;
+            var center = new Vector2(currPosUV.x * texture.width, currPosUV.y * texture.height);
+            int signX = positiveX ? 1 : -1;
+            int signY = positiveY ? 1 : -1;
+            int startX = positiveX ? 0 : 1;
+            int startY = positiveY ? 0 : 1;
 
-            for (int dx = startX; dx < _texture.width; dx++)
+            for (int dx = startX; dx < texture.width; dx++)
             {
-                float tx = currPosUV.x * _texture.width + dx * signX;
-                if ((tx < 0) || (tx >= _texture.width))
+                float tx = currPosUV.x * texture.width + dx * signX;
+                if ((tx < 0) || (tx >= texture.width))
                     break;
 
-                for (int dy = startY; dy < _texture.height; dy++)
+                for (int dy = startY; dy < texture.height; dy++)
                 {
-                    float ty = currPosUV.y * _texture.height + dy * signY;
-                    if ((ty < 0) || (ty >= _texture.height))
+                    float ty = currPosUV.y * texture.height + dy * signY;
+                    if ((ty < 0) || (ty >= texture.height))
                         break;
 
                     if (ComputeHeatmapColorAt(new Vector2(tx, ty), center, out Color? newColor))
                     {
                         if (newColor.HasValue)
                         {
-                            _texture.SetPixel((int)tx, (int)ty, newColor.Value);
+                            texture.SetPixel((int)tx, (int)ty, newColor.Value);
                         }
                     }
                     else
@@ -146,30 +144,30 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     }
                 }
             }
-            _texture.Apply(false);
+            texture.Apply(false);
         }
 
-        private bool ComputeHeatmapColorAt(Vector2 currPnt, Vector2 origPivot, out Color? col)
+        private bool ComputeHeatmapColorAt(Vector2 currentPoint, Vector2 originalPivot, out Color? col)
         {
             col = null;
 
-            float spread = _drawBrushSize;
-            float amplitude = _drawIntensity;
-            float distCenterToCurrPnt = Vector2.Distance(origPivot, currPnt) / spread;
+            float spread = drawBrushSize;
+            float amplitude = drawIntensity;
+            float distCenterToCurrPnt = Vector2.Distance(originalPivot, currentPoint) / spread;
 
             float B = 2f;
             float scaledInterest = 1f / (1f + Mathf.Pow(Mathf.Epsilon, -(B * distCenterToCurrPnt)));
             float delta = scaledInterest / amplitude;
-            if (delta < _minThreshDeltaHeatMap)
+            if (delta < minThreshDeltaHeatMap)
                 return false;
 
-            Color baseColor = _texture.GetPixel((int)currPnt.x, (int)currPnt.y);
+            Color baseColor = texture.GetPixel((int)currentPoint.x, (int)currentPoint.y);
             float normalizedInterest = Mathf.Clamp01(baseColor.a + delta);
 
             // Get color from given heatmap ramp
-            if (_heatmapLookUpTable != null)
+            if (heatmapLookUpTable != null)
             {
-                col = _heatmapLookUpTable.GetPixel((int)(normalizedInterest * (_heatmapLookUpTable.width - 1)), 0);
+                col = heatmapLookUpTable.GetPixel((int)(normalizedInterest * (heatmapLookUpTable.width - 1)), 0);
                 col = new Color(col.Value.r, col.Value.g, col.Value.b, normalizedInterest);
             }
             else
@@ -195,17 +193,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 Vector3 halfSize = gameObject.transform.localScale * 0.5f;
 
                 // Let's transform back to the origin: Translate & Rotate
-                Vector3 transfHitPnt = hitPosition - center;
+                Vector3 transformHitPoint = hitPosition - center;
 
                 // Rotate around the y axis
-                transfHitPnt = Quaternion.AngleAxis(-(gameObject.transform.rotation.eulerAngles.y - 180f), Vector3.up) * transfHitPnt;
+                transformHitPoint = Quaternion.AngleAxis(-(gameObject.transform.rotation.eulerAngles.y - 180f), Vector3.up) * transformHitPoint;
 
                 // Rotate around the x axis
-                transfHitPnt = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.x, Vector3.right) * transfHitPnt;
+                transformHitPoint = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.x, Vector3.right) * transformHitPoint;
 
                 // Normalize the transformed hit point to as UV coordinates are in [0,1].
-                float uvx = 1f - (Mathf.Clamp(transfHitPnt.x, -halfSize.x, halfSize.x) + halfSize.x) / (2f * halfSize.x);
-                float uvy = (Mathf.Clamp(transfHitPnt.y, -halfSize.y, halfSize.y) + halfSize.y) / (2f * halfSize.y);
+                float uvx = 1f - (Mathf.Clamp(transformHitPoint.x, -halfSize.x, halfSize.x) + halfSize.x) / (2f * halfSize.x);
+                float uvy = (Mathf.Clamp(transformHitPoint.y, -halfSize.y, halfSize.y) + halfSize.y) / (2f * halfSize.y);
                 hitPointUV = new Vector2(uvx, uvy);
             }
             catch (UnityEngine.Assertions.AssertionException)

@@ -4,15 +4,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     [RequireComponent(typeof(ParticleSystem))]
     [AddComponentMenu("Scripts/MRTK/Examples/ParticleHeatmap")]
     public class ParticleHeatmap : MonoBehaviour
     {
-        [SerializeField]
-        private Gradient colorGradient = null;
-
         [SerializeField]
         private int maxNumberOfParticles = 100;
 
@@ -56,40 +53,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             }
 
             particleDecalDataIndex++;
-        }
-
-        public Vector3? GetPositionOfParticle(int index)
-        {
-            if ((index >= particleData.Count) || (index < 0))
-                return null;
-            return particleData[index].position;
-        }
-
-        [SerializeField]
-        private float _colorScaleTweaker = 0.1f;
-
-        private float DetermineNormalizedIntensity(Vector3 pos, float radius)
-        {
-            float tmpIntensity = 0;
-
-            foreach (ParticleHeatmapParticleData point in particleData)
-            {
-                if (pos != point.position)
-                {
-                    float dist = Vector3.Distance(pos, point.position);
-                    float tmpInt2 = 1f - Mathf.Clamp01(dist / radius);
-                    tmpIntensity += tmpInt2 * _colorScaleTweaker;
-                }
-            }
-            return Mathf.Clamp01(tmpIntensity);
-        }
-
-        private void UpdateColorForAllParticles()
-        {
-            foreach (ParticleHeatmapParticleData particle in particleData)
-            {
-                particle.color = colorGradient.Evaluate(DetermineNormalizedIntensity(particle.position, particle.radiusInMeter));
-            }
         }
 
         public void DisplayParticles()

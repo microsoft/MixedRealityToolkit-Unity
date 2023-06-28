@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
     /// This class allows to change the render mode on-the-fly. This is, for example, useful when trying to show a semi-transparent preview of an 

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
     /// This script allows to zoom into and pan the texture of a GameObject. 
@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         [Tooltip("Underlying aspect ratio of the loaded texture to correctly determine scaling.")]
         [SerializeField]
-        private float defaultAspectRatio = 1.0f;
+        private float defaultAspectRatio = 1f;
 
         private float aspectRatio = -1f;
 
@@ -61,10 +61,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 // Update new values for original ratio
                 originalRatio = new Vector3(scale.x, scale.y);
 
-                if (textureRenderer.gameObject.TryGetComponent<BoxCollider>(out var bcoll))
+                if (textureRenderer.gameObject.TryGetComponent<BoxCollider>(out var boxCollider))
                 {
-                    origColliderSize = bcoll.size;
-                    MyCollider = bcoll;
+                    originalColliderSize = boxCollider.size;
+                    MyCollider = boxCollider;
                 }
             }
         }
@@ -134,19 +134,19 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         public override void ZoomIn()
         {
-            if (isZooming)
+            if (IsZooming)
             {
-                ZoomInOut(zoomDir * zoomSpeed, cursorPos);
+                ZoomInOut(zoomDirection * zoomSpeed, cursorPosition);
 
                 // Panning across entire target (-0.5, +0.5) to move target of interest towards center while zooming in
-                PanHorizontally(ComputePanSpeed(cursorPos.x, panSpeedLeftRight, minDistFromCenterForAutoPan.x));
-                PanVertically(ComputePanSpeed(cursorPos.y, panSpeedUpDown, minDistFromCenterForAutoPan.y));
+                PanHorizontally(ComputePanSpeed(cursorPosition.x, panSpeedLeftRight, minDistFromCenterForAutoPan.x));
+                PanVertically(ComputePanSpeed(cursorPosition.y, panSpeedUpDown, minDistFromCenterForAutoPan.y));
             }
         }
 
         public override void ZoomOut()
         {
-            if (isZooming)
+            if (IsZooming)
             {
                 ZoomInOut(zoomSpeed, new Vector2(0.5f, 0.5f));
             }
@@ -165,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             newScale = LimitScaling(newScale);
 
             // Update the offset based on the scale diff and the zoom pivot.
-            offsetRate_Zoom = (oldScale - newScale) * pivot;
+            offsetRateZoom = (oldScale - newScale) * pivot;
 
             // Update the texture's scale to the computed value.
             scale = newScale;
@@ -181,24 +181,24 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             Vector3 halfsize = gameObject.transform.lossyScale * 0.5f;
 
             // Let's transform back to the origin: Translate & Rotate
-            Vector3 transfHitPnt = hitPosition - center;
+            Vector3 transformHitPoint = hitPosition - center;
 
             // Rotate around the y axis
-            transfHitPnt = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.y, Vector3.down) * transfHitPnt;
+            transformHitPoint = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.y, Vector3.down) * transformHitPoint;
 
             // Rotate around the x axis
-            transfHitPnt = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.x, Vector3.left) * transfHitPnt;
+            transformHitPoint = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.x, Vector3.left) * transformHitPoint;
 
             // Rotate around the z axis
-            transfHitPnt = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.z, Vector3.back) * transfHitPnt;
+            transformHitPoint = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.z, Vector3.back) * transformHitPoint;
 
             // Rotate around the z axis
-            transfHitPnt = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.z, Vector3.forward) * transfHitPnt;
+            transformHitPoint = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.z, Vector3.forward) * transformHitPoint;
 
             // Normalize the transformed hit point to as UV coordinates are in [0,1].
-            float uvx = (Mathf.Clamp(transfHitPnt.x, -halfsize.x, halfsize.x) + halfsize.x) / (2f * halfsize.x);
-            float uvy = (Mathf.Clamp(transfHitPnt.y, -halfsize.y, halfsize.y) + halfsize.y) / (2f * halfsize.y);
-            cursorPos = new Vector2(uvx, uvy);
+            float uvx = (Mathf.Clamp(transformHitPoint.x, -halfsize.x, halfsize.x) + halfsize.x) / (2f * halfsize.x);
+            float uvy = (Mathf.Clamp(transformHitPoint.y, -halfsize.y, halfsize.y) + halfsize.y) / (2f * halfsize.y);
+            cursorPosition = new Vector2(uvx, uvy);
 
             return true;
         }

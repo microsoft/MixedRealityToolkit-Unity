@@ -3,52 +3,57 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
+    using UnityEngine.Serialization;
+
     /// <summary>
     /// The associated game object will turn depending on the user's 
     /// eye gaze: The currently looked at part will move towards the 
     /// front, facing the user.
     /// </summary>
-    public class FaceUserEx : MonoBehaviour
+    public class FaceUser : MonoBehaviour
     {
         #region Serialized variables
         [Tooltip("Rotation speed factor that will be multiplied with the delta time. Recommended values: 1 or 2.")]
         [SerializeField]
-        private float Speed = 2f;
+        [FormerlySerializedAs("Speed")]
+        private float speed = 2f;
 
         [Tooltip("If the angle between 'Gaze to Target' and 'Camera to Target' is less than this value, do nothing. This is to prevent small jittery rotations.")]
         [SerializeField]
-        private float RotationThreshInDegrees = 3f;
+        [Min(0f)]
+        [FormerlySerializedAs("RotationThreshInDegrees")]
+        private float rotationThresholdInDegrees = 3f;
         #endregion
 
-        private GameObject _targetToRotate = null;
-        private GameObject _objectWithCollider = null;
-        private bool _finishedReturningToOrig = true;
-        private bool _finishedFacingUser = false;
-        private bool _turnToUser = false;
-        private Vector3 _origForwardNormalized = Vector3.zero;
+        private GameObject targetToRotate = null;
+        private GameObject objectWithCollider = null;
+        private bool finishedReturningToOrigal = true;
+        private bool finishedFacingUser = false;
+        private bool turnToUser = false;
+        private Vector3 originalForwardNormalized = Vector3.zero;
 
         private void OnEnable()
         {
             Reset();
             InitialSetup();
-            _turnToUser = true;
+            turnToUser = true;
         }
 
         private void OnDisable()
         {
-            _turnToUser = false;
+            turnToUser = false;
         }
 
         private void Reset()
         {
-            _targetToRotate = null;
-            _objectWithCollider = null;
-            _finishedReturningToOrig = true;
-            _finishedFacingUser = false;
-            _turnToUser = false;
-            _origForwardNormalized = Vector3.zero;
+            targetToRotate = null;
+            objectWithCollider = null;
+            finishedReturningToOrigal = true;
+            finishedFacingUser = false;
+            turnToUser = false;
+            originalForwardNormalized = Vector3.zero;
         }
 
         /// <summary>
@@ -57,13 +62,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private void InitialSetup()
         {
             // Make sure that the target to rotate is set
-            if (_targetToRotate == null)
+            if (targetToRotate == null)
             {
-                _targetToRotate = gameObject;
+                targetToRotate = gameObject;
             }
 
             // Make also sure that the collider for hit tests is set 
-            if (_objectWithCollider == null)
+            if (objectWithCollider == null)
             {
                 if (!TryGetComponent(out Collider coll))
                 {
@@ -72,65 +77,65 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
                 if (coll != null)
                 {
-                    _objectWithCollider = GetComponentInChildren<Collider>().gameObject;
+                    objectWithCollider = GetComponentInChildren<Collider>().gameObject;
                 }
             }
 
             // Let's remember the original orientation of the target to later return to this after a rotation.
-            _origForwardNormalized = _targetToRotate.transform.forward.normalized;
+            originalForwardNormalized = targetToRotate.transform.forward.normalized;
         }
 
         // Update is called once per frame
         public void Update()
         {
             // Update target rotation
-            Vector3 TargetToCam = (Camera.main.transform.position - _targetToRotate.transform.position).normalized;
-            Vector3 TargetForw = -_targetToRotate.transform.forward.normalized;
+            Vector3 TargetToCamera = (Camera.main.transform.position - targetToRotate.transform.position).normalized;
+            Vector3 targetForward = -targetToRotate.transform.forward.normalized;
 
             // If user looks at the game object, slowly turn towards the user
-            if (_turnToUser && (!_finishedFacingUser))
+            if (turnToUser && !finishedFacingUser)
             {
-                TurnToUser(TargetToCam, TargetForw);
+                TurnToUser(TargetToCamera, targetForward);
             }
             // If user is not looking at the game object anymore, slowly return to original orientation
-            else if ((!_turnToUser) && (!_finishedReturningToOrig))
+            else if (!turnToUser && !finishedReturningToOrigal)
             {
-                ReturnToOriginalRotation(TargetForw);
+                ReturnToOriginalRotation(targetForward);
             }
         }
 
         private void TurnToUser(Vector3 targetToCam, Vector3 targetForward)
         {
             // Checking whether to stop rotating once we get close enough to our final destination
-            if (Mathf.Abs(Vector3.Angle(targetForward, targetToCam)) < RotationThreshInDegrees)
+            if (Mathf.Abs(Vector3.Angle(targetForward, targetToCam)) < rotationThresholdInDegrees)
             {
-                _finishedFacingUser = true;
+                finishedFacingUser = true;
                 return;
             }
 
             // If we haven't reached our destination yet, let's continue rotating towards the user/camera
-            Quaternion rotateTowardsCamera = Quaternion.LookRotation(_targetToRotate.transform.position - Camera.main.transform.position);
-            _targetToRotate.transform.rotation = Quaternion.Slerp(_targetToRotate.transform.rotation, rotateTowardsCamera, Speed * Time.deltaTime);
+            Quaternion rotateTowardsCamera = Quaternion.LookRotation(targetToRotate.transform.position - Camera.main.transform.position);
+            targetToRotate.transform.rotation = Quaternion.Slerp(targetToRotate.transform.rotation, rotateTowardsCamera, speed * Time.deltaTime);
 
             // Increase size
-            _targetToRotate.transform.localScale = _targetToRotate.transform.localScale;
+            targetToRotate.transform.localScale = targetToRotate.transform.localScale;
 
-            _finishedReturningToOrig = false;
+            finishedReturningToOrigal = false;
         }
 
         private void ReturnToOriginalRotation(Vector3 targetForward)
         {
             // Checking whether to stop rotating once we get close enough to our original orientation
-            if (Mathf.Abs(Vector3.Angle(targetForward, _origForwardNormalized) - 180f) < RotationThreshInDegrees)
+            if (Mathf.Abs(Vector3.Angle(targetForward, originalForwardNormalized) - 180f) < rotationThresholdInDegrees)
             {
-                _finishedReturningToOrig = true;
+                finishedReturningToOrigal = true;
                 return;
             }
 
             // Otherwise let's continue rotating towards the original orientation
-            Quaternion rotateBackToDefault = Quaternion.LookRotation(_origForwardNormalized);
-            _targetToRotate.transform.rotation = Quaternion.Slerp(_targetToRotate.transform.rotation, rotateBackToDefault, Speed * Time.deltaTime);
-            _finishedFacingUser = false;
+            Quaternion rotateBackToDefault = Quaternion.LookRotation(originalForwardNormalized);
+            targetToRotate.transform.rotation = Quaternion.Slerp(targetToRotate.transform.rotation, rotateBackToDefault, speed * Time.deltaTime);
+            finishedFacingUser = false;
         }
     }
 }

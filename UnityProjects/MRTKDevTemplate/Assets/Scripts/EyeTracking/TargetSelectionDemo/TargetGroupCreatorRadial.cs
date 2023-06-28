@@ -4,8 +4,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
+    using UnityEngine.Serialization;
+
     /// <summary>
     /// Handles the creation of a group of targets based on a list of given templates.
     /// </summary>
@@ -15,43 +17,43 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         #region Variables
         [Tooltip("Target templates from which the group of targets will be created.")]
         [SerializeField]
-        private GameObject[] _targetTemplates = null;
+        private GameObject[] targetTemplates = null;
 
         [Tooltip("The size of targets in visual angle.")]
         [SerializeField]
-        private Vector3 _targetSizeInVisAngle = new Vector3(1f, 1f, 0.01f);
+        private Vector3 targetSizeInVisualAngle = new Vector3(1f, 1f, 0.01f);
 
         [Tooltip("If true, the target sizes will be continuously adjusted to keep the size in visual angle constant.")]
         [SerializeField]
-        private bool _keepVisAngleSizeConstant = true;
+        private bool keepVisualAngleSizeConstant = true;
 
         [Tooltip("If true, the targets will keep facing the user.")]
         [SerializeField]
-        private bool _keepTargetsFacingTheCam = true;
+        private bool keepTargetsFacingTheCamera = true;
 
         [Tooltip("If true, the templates will be hidden on startup.")]
         [SerializeField]
-        private bool _hideTemplatesOnStartup = true;
+        private bool hideTemplatesOnStartup = true;
 
         [Tooltip("Number of targets per ring.")]
         [SerializeField]
-        private int _radialLayoutNumTargets = 8;
+        private int radialLayoutNumTargets = 8;
 
         [Tooltip("An array of radii for the concentric rings.")]
         [SerializeField]
-        private float[] _radialLayoutRadiusInVisAngle = new float[] { 2, 3 };
+        private float[] radialLayoutRadiusInVisualAngle = { 2f, 3f };
 
         [Tooltip("If true, show a target also at the center of the rings.")]
         [SerializeField]
-        private bool _showTargetAtGroupCenter = false;
+        private bool showTargetAtGroupCenter = false;
 
-        private List<GameObject> _instantiatedTargets;
+        private List<GameObject> instantiatedTargets;
         #endregion
 
         private void Start()
         {
             // Hide the template game objects
-            if (_hideTemplatesOnStartup)
+            if (hideTemplatesOnStartup)
                 HideTemplates();
 
             // Instantiate targets in a radial layout
@@ -60,10 +62,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         private void Update()
         {
-            if (_keepVisAngleSizeConstant)
+            if (keepVisualAngleSizeConstant)
                 KeepConstantVisAngleTargetSize();
 
-            if (_keepTargetsFacingTheCam)
+            if (keepTargetsFacingTheCamera)
                 KeepFacingTheCamera();
         }
 
@@ -72,11 +74,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         private void HideTemplates()
         {
-            if (_targetTemplates != null)
+            if (targetTemplates != null)
             {
-                foreach (GameObject tobj in _targetTemplates)
+                foreach (GameObject template in targetTemplates)
                 {
-                    tobj.SetActive(false);
+                    template.SetActive(false);
                 }
             }
         }
@@ -86,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         private void CreateNewTargets_RadialLayout()
         {
-            _instantiatedTargets = new List<GameObject>();
+            instantiatedTargets = new List<GameObject>();
 
             // Set target size
             float dist = Vector3.Distance(Camera.main.transform.position, transform.position);
@@ -96,20 +98,20 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             transform.localRotation = Quaternion.Euler(Vector3.zero);
 
             // Let's make sure we have some templates to work with
-            if (_targetTemplates?.Length > 0)
+            if (targetTemplates?.Length > 0)
             {
                 // Show a target at the center of the target group
-                if (_showTargetAtGroupCenter)
-                    InstantiateRadialLayoutedTarget(0, dist, 0);
+                if (showTargetAtGroupCenter)
+                    InstantiateRadialLayoutedTarget(0f, dist, 0);
 
                 // Instantiate and place the remaining targets
                 // Create different number of rings based on the amount of given radii
-                for (int ir = 0; ir < _radialLayoutRadiusInVisAngle.Length; ir++)
+                for (int ir = 0; ir < radialLayoutRadiusInVisualAngle.Length; ir++)
                 {
                     // Per ring create a given number of targets
-                    for (int it = 0; it < _radialLayoutNumTargets; it++)
+                    for (int it = 0; it < radialLayoutNumTargets; it++)
                     {
-                        InstantiateRadialLayoutedTarget(_radialLayoutRadiusInVisAngle[ir], dist, it);
+                        InstantiateRadialLayoutedTarget(radialLayoutRadiusInVisualAngle[ir], dist, it);
                     }
                 }
 
@@ -125,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             get
             {
-                return _instantiatedTargets?.ToArray();
+                return instantiatedTargets?.ToArray();
             }
         }
 
@@ -134,8 +136,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         private GameObject GetRandomTemplate()
         {
-            int num = Random.Range(0, _targetTemplates.Length);
-            return _targetTemplates[num];
+            int num = Random.Range(0, targetTemplates.Length);
+            return targetTemplates[num];
         }
 
         /// <summary>
@@ -149,13 +151,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             GameObject target = Instantiate(GetRandomTemplate());
 
             // Position
-            float xnew = transform.position.x + EyeTrackingDemoUtils.VisAngleInDegreesToMeters(radius, viewingDist) * Mathf.Cos(iTarget * 360 * Mathf.Deg2Rad / _radialLayoutNumTargets);
-            float ynew = transform.position.y + EyeTrackingDemoUtils.VisAngleInDegreesToMeters(radius, viewingDist) * Mathf.Sin(iTarget * 360 * Mathf.Deg2Rad / _radialLayoutNumTargets);
-            target.transform.localPosition = new Vector3(xnew, ynew, transform.position.z);
+            float xPosition = transform.position.x + EyeTrackingUtilities.VisAngleInDegreesToMeters(radius, viewingDist) * Mathf.Cos(iTarget * 360 * Mathf.Deg2Rad / radialLayoutNumTargets);
+            float yPosition = transform.position.y + EyeTrackingUtilities.VisAngleInDegreesToMeters(radius, viewingDist) * Mathf.Sin(iTarget * 360 * Mathf.Deg2Rad / radialLayoutNumTargets);
+            target.transform.localPosition = new Vector3(xPosition, yPosition, transform.position.z);
 
             // Scale
             float dist2 = Vector3.Distance(Camera.main.transform.position, target.transform.position);
-            Vector3 tmpTargetSizeInMeters = EyeTrackingDemoUtils.VisAngleInDegreesToMeters(_targetSizeInVisAngle, dist2);
+            Vector3 tmpTargetSizeInMeters = EyeTrackingUtilities.VisAngleInDegreesToMeters(targetSizeInVisualAngle, dist2);
             target.transform.localScale = tmpTargetSizeInMeters;
 
             // Name it
@@ -167,7 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             target.SetActive(true);
 
             // Add it to our list of instantiated targets
-            _instantiatedTargets.Add(target);
+            instantiatedTargets.Add(target);
         }
 
         /// <summary>
@@ -176,12 +178,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private void KeepConstantVisAngleTargetSize()
         {
             // Note: We could improve performance by checking the delta camera movement. If below thresh -> Don't update.
-            foreach (GameObject gobj in _instantiatedTargets)
+            foreach (GameObject target in instantiatedTargets)
             {
-                if (gobj != null)
+                if (target != null)
                 {
-                    float distObjToCam = Vector3.Distance(Camera.main.transform.position, gobj.transform.position);
-                    gobj.transform.localScale = EyeTrackingDemoUtils.VisAngleInDegreesToMeters(_targetSizeInVisAngle, distObjToCam);
+                    float distObjToCam = Vector3.Distance(Camera.main.transform.position, target.transform.position);
+                    target.transform.localScale = EyeTrackingUtilities.VisAngleInDegreesToMeters(targetSizeInVisualAngle, distObjToCam);
                 }
             }
         }

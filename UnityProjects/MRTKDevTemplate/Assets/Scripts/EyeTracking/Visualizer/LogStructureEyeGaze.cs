@@ -3,17 +3,15 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     using Input;
 
     [AddComponentMenu("Scripts/MRTK/Examples/LogStructureEyeGaze")]
     public class LogStructureEyeGaze : LogStructure
     {
-        //private IMixedRealityEyeGazeProvider EyeTrackingProvider => eyeTrackingProvider ?? (eyeTrackingProvider = CoreServices.InputSystem?.EyeGazeProvider);
-        //private IMixedRealityEyeGazeProvider eyeTrackingProvider = null;
         [SerializeField]
-        private FuzzyGazeInteractor _gazeInteractor;
+        private FuzzyGazeInteractor gazeInteractor;
 
         public override string[] GetHeaderColumns()
         {
@@ -50,9 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             // Let's prepare all the data we wanna log
 
             // Eye gaze hit position
-            Vector3? eyeHitPos = _gazeInteractor.PreciseHitResult.raycastHit.point;
-            //if (EyeTrackingProvider?.GazeTarget != null && EyeTrackingProvider.IsEyeTrackingEnabledAndValid)
-            //    eyeHitPos = _gazeInteractor.PreciseHitResult.raycastHit.point;
+            Vector3? eyeHitPos = gazeInteractor.PreciseHitResult.raycastHit.point;
 
             object[] data = new object[]
             { 
@@ -65,25 +61,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 0,
 
                 // Smoothed eye gaze signal 
-                //EyeTrackingProvider.IsEyeTrackingEnabledAndValid ? EyeTrackingProvider.GazeOrigin.x : 0,
-                //EyeTrackingProvider.IsEyeTrackingEnabledAndValid ? EyeTrackingProvider.GazeOrigin.y : 0,
-                //EyeTrackingProvider.IsEyeTrackingEnabledAndValid ? EyeTrackingProvider.GazeOrigin.z : 0,
+                gazeInteractor.rayOriginTransform.position.x,
+                gazeInteractor.rayOriginTransform.position.y,
+                gazeInteractor.rayOriginTransform.position.z,
 
-                //EyeTrackingProvider.IsEyeTrackingEnabledAndValid ? EyeTrackingProvider.GazeDirection.x : 0,
-                //EyeTrackingProvider.IsEyeTrackingEnabledAndValid ? EyeTrackingProvider.GazeDirection.y : 0,
-                //EyeTrackingProvider.IsEyeTrackingEnabledAndValid ? EyeTrackingProvider.GazeDirection.z : 0,
+                gazeInteractor.rayOriginTransform.forward.x,
+                gazeInteractor.rayOriginTransform.forward.y,
+                gazeInteractor.rayOriginTransform.forward.z,
 
-                _gazeInteractor.rayOriginTransform.position.x,
-                _gazeInteractor.rayOriginTransform.position.y,
-                _gazeInteractor.rayOriginTransform.position.z,
-
-                _gazeInteractor.rayOriginTransform.forward.x,
-                _gazeInteractor.rayOriginTransform.forward.y,
-                _gazeInteractor.rayOriginTransform.forward.z,
-
-                (eyeHitPos != null) ? eyeHitPos.Value.x : float.NaN,
-                (eyeHitPos != null) ? eyeHitPos.Value.y : float.NaN,
-                (eyeHitPos != null) ? eyeHitPos.Value.z : float.NaN,
+                eyeHitPos.HasValue ? eyeHitPos.Value.x : float.NaN,
+                eyeHitPos.HasValue ? eyeHitPos.Value.y : float.NaN,
+                eyeHitPos.HasValue ? eyeHitPos.Value.z : float.NaN
             };
 
             return data;

@@ -4,8 +4,12 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
+    /// <summary>
+    /// This script allows the user to move a GameObject to the center of their view,
+    /// and return it back to the original position.
+    /// </summary>
     [AddComponentMenu("Scripts/MRTK/Examples/TargetMoveToCamera")]
     public class TargetMoveToCamera : OnLookAtRotateByEyeGaze
     {
@@ -17,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private float speed = 1f;
 
         [SerializeField]
-        private float minDistToStopTransition = 1f;
+        private float minDistanceToStopTransition = 1f;
 
         [SerializeField]
         private bool setToAutoRotateIfFocused = true;
@@ -89,10 +93,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 Vector3 destination = isInNearFocusMode ?
                     Camera.main.transform.position + (Camera.main.transform.forward * DistanceToCamera)
                     : originalPosition;
-
-                Vector3 incr = speed * Time.deltaTime * (destination - gameObject.transform.position);
-
-                if (Vector3.Distance(destination, transform.position) < minDistToStopTransition)
+                
+                if (Vector3.Distance(destination, transform.position) < minDistanceToStopTransition)
                 {
                     gameObject.transform.position = new Vector3(destination.x, destination.y, destination.z);
                     inTransition = false;
@@ -102,8 +104,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 }
                 else
                 {
+                    Vector3 step = speed * Time.deltaTime * (destination - gameObject.transform.position);
                     Vector3 oldPos = gameObject.transform.position;
-                    gameObject.transform.position = new Vector3(oldPos.x + incr.x, oldPos.y + incr.y, oldPos.z + incr.z);
+                    gameObject.transform.position = new Vector3(oldPos.x + step.x, oldPos.y + step.y, oldPos.z + step.z);
                 }
             }
         }

@@ -6,91 +6,13 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
     /// General useful utility functions.
     /// </summary>
-    public static class EyeTrackingDemoUtils
+    public static class EyeTrackingUtilities
     {
-        /// <summary>
-        /// Returns a correctly formatted filename removing invalid characters if necessary.
-        /// </summary>
-        /// <param name="unvalidatedFilename">The unvalidated filename</param>
-        /// <returns>Validated filename.</returns>
-        public static string GetValidFilename(string unvalidatedFilename)
-        {
-            char[] invalidChars = new char[] { '/', ':', '*', '?', '"', '<', '>', '|', '\\' };
-            string formattedFilename = unvalidatedFilename;
-
-            foreach (char invalidChar in invalidChars)
-            {
-                formattedFilename = formattedFilename.Replace(invalidChar.ToString(), "");
-            }
-
-            return formattedFilename;
-        }
-
-        /// <summary>
-        /// Returns the full name of a given GameObject in the scene graph.
-        /// </summary>
-        public static string GetFullName(GameObject go)
-        {
-            return GetFullName(go, out bool _);
-        }
-
-        /// <summary>
-        /// Returns the full name of a given GameObject in the scene graph.
-        /// </summary>
-        public static string GetFullName(GameObject go, out bool valid)
-        {
-            valid = false;
-            if (go != null)
-            {
-                string goName = go.name;
-                Transform g = go.transform;
-                while (g.parent != null)
-                {
-                    goName = Path.Combine(g.parent.name, goName);
-                    g = g.transform.parent;
-                }
-                valid = true;
-                return goName;
-            }
-            return string.Empty;
-        }
-
-        /// <summary>
-        /// Normalize the given value based on the provided min and max values.
-        /// </summary>
-        public static float Normalize(float value, float min, float max)
-        {
-            if (value > max)
-                return 1;
-            if (value < min)
-                return 0;
-
-            return (value - min) / (max - min);
-        }
-
-        /// <summary>
-        /// Shuffles the entries in a given array and returns the shuffled array.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        public static T[] RandomizeListOrder<T>(T[] array)
-        {
-            T[] arr = (T[])array.Clone();
-
-            for (int i = 0; i < arr.Length; i++)
-            {
-                T temp = arr[i];
-                int randomIndex = UnityEngine.Random.Range(i, arr.Length);
-                arr[i] = arr[randomIndex];
-                arr[randomIndex] = temp;
-            }
-            return arr;
-        }
-
         /// <summary>
         /// Returns the metric size in meters of a given Vector3 in visual angle in degrees and a given viewing distance in meters.
         /// </summary>
@@ -111,16 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <param name="distInMeters">In meters.</param>
         public static float VisAngleInDegreesToMeters(float visAngleInDegrees, float distInMeters)
         {
-            return (2 * Mathf.Tan(Mathf.Deg2Rad * visAngleInDegrees / 2) * distInMeters);
-        }
-
-        /// <summary>
-        /// Loads a Unity scene with the given name.
-        /// </summary>
-        /// <param name="sceneToBeLoaded">Name of the scene to be loaded.</param>
-        public static IEnumerator LoadNewScene(string sceneToBeLoaded)
-        {
-            return LoadNewScene(sceneToBeLoaded, 0.5f);
+            return 2f * Mathf.Tan(Mathf.Deg2Rad * visAngleInDegrees / 2f) * distInMeters;
         }
 
         /// <summary>
@@ -135,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         }
 
         /// <summary>
-        /// Change the color of game object "gobj".
+        /// Change the color of game object "gameObject".
         /// </summary>
         /// <param name="originalColor">Enter "null" in case you're passing the original object and want to save the original color.</param>
         public static void GameObject_ChangeColor(GameObject gobj, Color newColor, ref Color? originalColor, bool onlyApplyToRootObj)
@@ -177,29 +90,29 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         }
 
         /// <summary>
-        /// Change the transparency of game object "gobj" with a transparency value between 0 and 1;
+        /// Change the transparency of game object "gameObject" with a transparency value between 0 and 1;
         /// </summary>
-        public static void GameObject_ChangeTransparency(GameObject gobj, float newTransparency)
+        public static void GameObject_ChangeTransparency(GameObject gameObject, float newTransparency)
         {
-            float origTransp = 0; // just a dummy variable to reuse the following function
-            GameObject_ChangeTransparency(gobj, newTransparency, ref origTransp);
+            float originalTransparency = 0; // just a dummy variable to reuse the following function
+            GameObject_ChangeTransparency(gameObject, newTransparency, ref originalTransparency);
         }
 
         /// <summary>
-        /// Change the transparency of game object "gobj" with a transparency value between 0 and 255 with the option to 
+        /// Change the transparency of game object "gameObject" with a transparency value between 0 and 255 with the option to 
         /// receive the original transparency value back.
         /// </summary>
         /// <param name="transparency">Expected values range from 0 (fully transparent) to 1 (fully opaque).</param>
         /// <param name="originalTransparency">Input "-1" if you don't know the original transparency yet.</param>
-        public static void GameObject_ChangeTransparency(GameObject gobj, float transparency, ref float originalTransparency)
+        public static void GameObject_ChangeTransparency(GameObject gameObject, float transparency, ref float originalTransparency)
         {
             try
             {
                 // Go through renderers in main object
-                Renderers_ChangeTransparency(gobj.GetComponents<Renderer>(), transparency, ref originalTransparency);
+                Renderers_ChangeTransparency(gameObject.GetComponents<Renderer>(), transparency, ref originalTransparency);
 
                 // Go through renderers in children objects
-                Renderers_ChangeTransparency(gobj.GetComponentsInChildren<Renderer>(), transparency, ref originalTransparency);
+                Renderers_ChangeTransparency(gameObject.GetComponentsInChildren<Renderer>(), transparency, ref originalTransparency);
             }
             catch (System.Exception)
             {
@@ -217,13 +130,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             for (int i = 0; i < renderers.Length; i++)
             {
-                Material[] mats = renderers[i].materials;
-                foreach (Material mat in mats)
+                Material[] materials = renderers[i].materials;
+                foreach (Material mat in materials)
                 {
-                    Color c = mat.color;
+                    Color color = mat.color;
 
-                    if (originalTransparency == -1)
-                        originalTransparency = c.a;
+                    if (originalTransparency == -1f)
+                        originalTransparency = color.a;
 
                     if (transparency < 1)
                     {
@@ -234,7 +147,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                         ChangeRenderMode.ChangeRenderModes(mat, ChangeRenderMode.BlendMode.Opaque);
                     }
 
-                    mat.color = new Color(c.r, c.g, c.b, transparency);
+                    mat.color = new Color(color.r, color.g, color.b, transparency);
                 }
             }
         }

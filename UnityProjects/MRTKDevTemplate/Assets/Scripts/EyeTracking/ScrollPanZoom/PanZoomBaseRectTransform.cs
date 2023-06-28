@@ -1,33 +1,31 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit.Input;
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
     /// This script allows to zoom into and pan the texture of a GameObject. 
     /// It also allows for scrolling by restricting panning to one direction.  
     /// </summary>
-    [AddComponentMenu("Scripts/MRTK/Examples/PanZoomBaseRectTransf")]
-    public class PanZoomBaseRectTransf : PanZoomBase
+    [AddComponentMenu("Scripts/MRTK/Examples/PanZoomBaseRectTransform")]
+    public class PanZoomBaseRectTransform : PanZoomBase
     {
-        internal RectTransform navRectTransf = null;
-        internal RectTransform viewportRectTransf = null;
+        internal RectTransform navigationRectTransform = null;
+        internal RectTransform viewportRectTransform = null;
         internal bool isScrollText = false;
 
-        private bool IsValid => navRectTransf != null;
+        private bool IsValid => navigationRectTransform != null;
         
         public override void Initialize()
         {
             if (IsValid)
             {
-                offset = navRectTransf.anchoredPosition; // pivot
-                scale = navRectTransf.localScale;
+                offset = navigationRectTransform.anchoredPosition; // pivot
+                scale = navigationRectTransform.localScale;
                 originalRatio = new Vector3(scale.x, scale.y);
-                dynaZoomInvert = -1;
+                dynamicZoomInvert = -1;
             }
         }
 
@@ -39,14 +37,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             // If the UV cursor is close to the center of the image, prevent continuous movements to limit distractions
             if (Mathf.Abs(centeredVal) < minDistFromCenterForAutoPan)
             {
-                return 0;
+                return 0f;
             }
-            else
-            {
-                float normalizedVal = (centeredVal - Mathf.Sign(centeredVal) * minDistFromCenterForAutoPan) / (Mathf.Sign(centeredVal) * (0.5f - minDistFromCenterForAutoPan));
-                float speed = normalizedVal * normalizedVal * maxSpeed * Mathf.Sign(centeredVal);
-                return speed;
-            }
+
+            float normalizedVal = (centeredVal - Mathf.Sign(centeredVal) * minDistFromCenterForAutoPan) / (Mathf.Sign(centeredVal) * (0.5f - minDistFromCenterForAutoPan));
+            float speed = normalizedVal * normalizedVal * maxSpeed * Mathf.Sign(centeredVal);
+            return speed;
         }
 
         public override int ZoomDir(bool zoomIn)
@@ -56,16 +52,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         public override void ZoomIn()
         {
-            ZoomInOut_RectTransform(zoomDir * zoomSpeed, cursorPos);
+            ZoomInOut_RectTransform(zoomDirection * zoomSpeed, cursorPosition);
 
             // Panning across entire target (-0.5, +0.5) to move target of interest towards center while zooming in
-            PanHorizontally(ComputePanSpeed(cursorPos.x, panSpeedLeftRight, minDistFromCenterForAutoPan.x));
-            PanVertically(ComputePanSpeed(cursorPos.y, panSpeedUpDown, minDistFromCenterForAutoPan.y));
+            PanHorizontally(ComputePanSpeed(cursorPosition.x, panSpeedLeftRight, minDistFromCenterForAutoPan.x));
+            PanVertically(ComputePanSpeed(cursorPosition.y, panSpeedUpDown, minDistFromCenterForAutoPan.y));
         }
 
         public override void ZoomOut()
         {
-            ZoomInOut_RectTransform(zoomDir * zoomSpeed, new Vector2(0.5f, 0.5f));
+            ZoomInOut_RectTransform(zoomDirection * zoomSpeed, new Vector2(0.5f, 0.5f));
         }
 
         public override void UpdatePanZoom()
@@ -73,37 +69,37 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             offset = LimitPanning();
 
             // Assign new values
-            navRectTransf.anchoredPosition = offset; // pivot
-            navRectTransf.localScale = new Vector3(scale.x, scale.y, 1);
+            navigationRectTransform.anchoredPosition = offset; // pivot
+            navigationRectTransform.localScale = new Vector3(scale.x, scale.y, 1f);
         }
 
         private Vector2 LimitPanning()
         {
-            if (limitPanning && (navRectTransf.rect.size.x != 0) && (navRectTransf.rect.size.y != 0))
+            if (limitPanning && navigationRectTransform.rect.size.x != 0f && navigationRectTransform.rect.size.y != 0f)
             {
                 // Limit offsets to prevent the image to float out of the viewport
                 // Assuming the pivot being at the center
                 if (!isScrollText)
                 {
 
-                    float leftBounds = navRectTransf.rect.width * (scale.x - 1f) / 2f;
+                    float leftBounds = navigationRectTransform.rect.width * (scale.x - 1f) / 2f;
                     float rightBounds = -leftBounds;
                     offset.x = Mathf.Clamp(offset.x, Mathf.Min(leftBounds, rightBounds), Mathf.Max(leftBounds, rightBounds));
 
-                    float lowerBounds = navRectTransf.rect.height * (scale.y - 1f) / 2f;
+                    float lowerBounds = navigationRectTransform.rect.height * (scale.y - 1f) / 2f;
                     float upperBounds = -lowerBounds;
                     offset.y = Mathf.Clamp(offset.y, Mathf.Min(lowerBounds, upperBounds), Mathf.Max(lowerBounds, upperBounds));
 
-                    if (viewportRectTransf != null)
+                    if (viewportRectTransform != null)
                     {
-                        Vector2 actualSize = (scale * navRectTransf.rect.size);
+                        Vector2 actualSize = (scale * navigationRectTransform.rect.size);
 
-                        if (actualSize.x < viewportRectTransf.rect.width)
+                        if (actualSize.x < viewportRectTransform.rect.width)
                         {
                             offset.x = 0f;
                         }
 
-                        if (actualSize.y < viewportRectTransf.rect.height)
+                        if (actualSize.y < viewportRectTransform.rect.height)
                         {
                             offset.y = 0f;
                         }
@@ -111,26 +107,26 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 }
 
                 // Assuming the pivot being at the top left
-                if (isScrollText && viewportRectTransf != null)
+                if (isScrollText && viewportRectTransform != null)
                 {
-                    float leftBounds = navRectTransf.rect.width * (scale.x - 1f) / 2f;
+                    float leftBounds = navigationRectTransform.rect.width * (scale.x - 1f) / 2f;
                     float rightBounds = -leftBounds;
                     offset.x = Mathf.Clamp(offset.x, Mathf.Min(leftBounds, rightBounds), Mathf.Max(leftBounds, rightBounds));
 
-                    float lowerBounds = navRectTransf.rect.height * scale.y - viewportRectTransf.rect.height;
+                    float lowerBounds = navigationRectTransform.rect.height * scale.y - viewportRectTransform.rect.height;
                     float upperBounds = 0f;
                     offset.y = Mathf.Clamp(offset.y, Mathf.Min(lowerBounds, upperBounds), Mathf.Max(lowerBounds, upperBounds));
 
 
-                    Vector2 actualSize = (scale * navRectTransf.rect.size);
-                    Vector2 tmpOffset = (viewportRectTransf.rect.size - actualSize) / 2f;
+                    Vector2 actualSize = (scale * navigationRectTransform.rect.size);
+                    Vector2 tmpOffset = (viewportRectTransform.rect.size - actualSize) / 2f;
 
-                    if (actualSize.x < viewportRectTransf.rect.width)
+                    if (actualSize.x < viewportRectTransform.rect.width)
                     {
                         offset.x = tmpOffset.x;
                     }
 
-                    if (actualSize.y < viewportRectTransf.rect.height)
+                    if (actualSize.y < viewportRectTransform.rect.height)
                     {
                         offset.y = tmpOffset.y;
                     }
@@ -152,10 +148,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
             // Update the offset based on the scale diff and the zoom pivot.
 
-            // Transform cursor pos in hitbox [0,1] to image space [-0.5, 0.5]
-            Vector2 transfCursorPos = cursorPos - new Vector2(0.5f, 0.5f);
-            pivot = transfCursorPos * navRectTransf.rect.size;
-            offsetRate_Zoom = (oldScale - newScale) * pivot;
+            // Transform cursor position in hitbox [0,1] to image space [-0.5, 0.5]
+            Vector2 transformCursorPosition = cursorPosition - new Vector2(0.5f, 0.5f);
+            pivot = transformCursorPosition * navigationRectTransform.rect.size;
+            offsetRateZoom = (oldScale - newScale) * pivot;
 
             // Update the texture's scale to the computed value.
             scale = newScale;
@@ -171,18 +167,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             Vector3 halfsize = gameObject.transform.lossyScale * 0.5f;
 
             // Let's transform back to the origin: Translate & Rotate
-            Vector3 transfHitPnt = hitPosition - center;
+            Vector3 transformHitPoint = hitPosition - center;
 
             // Rotate around the y axis
-            transfHitPnt = Quaternion.AngleAxis(-(gameObject.transform.rotation.eulerAngles.y - 180f), Vector3.up) * transfHitPnt;
+            transformHitPoint = Quaternion.AngleAxis(-(gameObject.transform.rotation.eulerAngles.y - 180f), Vector3.up) * transformHitPoint;
 
             // Rotate around the x axis
-            transfHitPnt = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.x, Vector3.right) * transfHitPnt;
+            transformHitPoint = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.x, Vector3.right) * transformHitPoint;
 
             // Normalize the transformed hit point to as UV coordinates are in [0,1].
-            float uvx = 1f - (Mathf.Clamp(transfHitPnt.x, -halfsize.x, halfsize.x) + halfsize.x) / (2f * halfsize.x);
-            float uvy = (Mathf.Clamp(transfHitPnt.y, -halfsize.y, halfsize.y) + halfsize.y) / (2f * halfsize.y);
-            cursorPos = new Vector2(uvx, uvy);
+            float uvx = 1f - (Mathf.Clamp(transformHitPoint.x, -halfsize.x, halfsize.x) + halfsize.x) / (2f * halfsize.x);
+            float uvy = (Mathf.Clamp(transformHitPoint.y, -halfsize.y, halfsize.y) + halfsize.y) / (2f * halfsize.y);
+            cursorPosition = new Vector2(uvx, uvy);
 
             return true;
         }

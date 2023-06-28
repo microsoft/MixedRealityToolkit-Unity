@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     using Input;
     using Subsystems;
+    using UnityEngine.Serialization;
     using UnityEngine.XR;
     using UnityEngine.XR.Interaction.Toolkit;
 
@@ -18,63 +18,81 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         Vertical
     }
 
-    [AddComponentMenu("Scripts/MRTK/Examples/MoveObjByEyeGaze")]
-    public class MoveObjByEyeGaze : StatefulInteractable
+    /// <summary>
+    /// This script allows the user to move a GameObject, using ray or grab interactors to directly move
+    /// the GameObject, or eye gaze to place the GameObject at the preview object's location.
+    /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/MoveObjectByEyeGaze")]
+    public class MoveObjectByEyeGaze : StatefulInteractable
     {
         [SerializeField]
-        private FuzzyGazeInteractor _gazeInteractor;
+        [FormerlySerializedAs("_gazeInteractor")]
+        private FuzzyGazeInteractor gazeInteractor;
 
         #region Serialized variables
 
         [Header("Eyes")]
         [SerializeField]
-        private bool _useEyeSupportedTargetPlacement = false;
+        [FormerlySerializedAs("_useEyeSupportedTargetPlacement")]
+        private bool useEyeSupportedTargetPlacement = false;
 
         [Tooltip("The user has to look away at least this far to enable the eye-supported target placement. " +
                  "This is to allow for local manual positioning using hand input.")]
         [SerializeField]
         [Range(1f, 10f)]
-        private float _minLookAwayDistToEnableEyeWarp = 5f;
+        [FormerlySerializedAs("_minLookAwayDistToEnableEyeWarp")]
+        private float minLookAwayDistToEnableEyeWarp = 5f;
 
         [Header("Hands")]
         [Tooltip("Use this to enforce only voice commands to move targets.")]
         [SerializeField]
-        private bool _handInputEnabled = true;
+        [FormerlySerializedAs("_handInputEnabled")]
+        private bool handInputEnabled = true;
 
         [Tooltip(
             "To control whether the hand motion is used 1:1 to move a target or to use different gains to allow for smaller hand motions.")]
         [SerializeField]
-        private float _handmapping = 1f;
+        [FormerlySerializedAs("_handmapping")]
+        private float handmapping = 1f;
 
         [Tooltip("Minimal amount of hand movement to trigger target repositioning.")]
         [SerializeField]
-        private float _deltaHandMovemThresh = 0.05f;
+        [FormerlySerializedAs("_deltaHandMovemThresh")]
+        private float deltaHandMovementThreshold = 0.05f;
 
         [Header("Transitioning")]
         [Tooltip("Transparency of the target itself while dragging is active.")]
         [SerializeField]
         [Range(0, 1)]
-        private float _transparencyInTransition = 130 / 255f;
+        [FormerlySerializedAs("transparencyInTransition")]
+        private float transparencyInTransition = 130 / 255f;
 
         [Tooltip("Transparency of the target preview while dragging it around.")]
         [SerializeField]
         [Range(0, 1)]
-        private float _transparencyPreview = 50 / 255f;
+        [FormerlySerializedAs("_transparencyPreview")]
+        private float transparencyPreview = 50 / 255f;
 
         [Tooltip(
             "Minimal distance between the old and new preview. This is to prevent the preview to always follow the eye gaze immediately. " +
             "The value should depend on the size of the target.")]
         [SerializeField]
         [Range(0, 1)]
-        private float _previewPlacemDistThresh = 0.05f;
+        [FormerlySerializedAs("_previewPlacemDistThresh")]
+        private float previewPlacementDistanceThreshold = 0.05f;
 
         [Header("Constrained Movement")]
         [SerializeField]
-        private bool _freezeX = false;
+        [FormerlySerializedAs("_freezeX")]
+        private bool freezeX = false;
 
-        [SerializeField] private bool _freezeY = false;
+        [SerializeField]
+        [FormerlySerializedAs("_freezeY")]
+        private bool freezeY = false;
 
-        [SerializeField] private bool _freezeZ = false;
+        [SerializeField]
+        [FormerlySerializedAs("_freezeZ")]
+        private bool freezeZ = false;
 
         public Vector2 LocalMinMaxX = new Vector2(float.NegativeInfinity, float.PositiveInfinity);
         public Vector2 LocalMinMaxY = new Vector2(float.NegativeInfinity, float.PositiveInfinity);
@@ -83,62 +101,63 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         public PlacementSurfaces PlacementSurface = PlacementSurfaces.Horizontal;
 
         [SerializeField]
-        private UnityEvent OnDrop = null;
+        [FormerlySerializedAs("OnDrop")]
+        private UnityEvent onDrop = null;
 
         #endregion
 
         #region Private variables
 
-        private GameObject _previewGameObject;
+        private GameObject previewGameObject;
 
         private bool
-            _onlyEyeWarpOnRelease =
+            onlyEyeWarpOnRelease =
                 true; // Only warp the currently grabbed target to the current look at location once the user releases the pinch gesture.        
 
-        private float _originalTransparency = -1f;
-        private bool _originalUseGravity = false;
-        private float _originalDrag = 1f;
+        private float originalTransparency = -1f;
+        private bool originalUseGravity = false;
+        private float originalDrag = 1f;
 
-        private bool _onlyTransitionToPlausibleDestinations = true;
-        private Vector3? _plausibleLocation;
-        private bool _placePreviewAtHitPoint = true;
+        private bool onlyTransitionToPlausibleDestinations = true;
+        private Vector3? plausibleLocation;
+        private bool placePreviewAtHitPoint = true;
 
-        private bool _manualTargetManip = false;
+        private bool manualTargetManipulation = false;
 
-        private Vector3 _initalGazeDir;
-        private static bool _isManipulatingUsingHands = false;
-        private static bool _isManipulatingUsingVoice = false;
-        private Vector3 _handPosAbsolute;
-        private Vector3 _handPosRelative;
-        private Vector3 _initialHandPos;
-        private static bool _handIsPinching = false;
-        private Handedness _currEngagedHand = Handedness.None;
-        private bool _objIsGrabbed = false;
+        private Vector3 initalGazeDirection;
+        private static bool isManipulatingUsingHands = false;
+        private static bool isManipulatingUsingVoice = false;
+        private Vector3 handPositionAbsolute;
+        private Vector3 handPositionRelative;
+        private Vector3 initialHandPosition;
+        private static bool handIsPinching = false;
+        private Handedness currentEngagedHand = Handedness.None;
+        private bool objectIsGrabbed = false;
 
-        private Ray? _headPrevRay;
-        private float _headDeltaDirThresh = 0.05f;
-        private float _headSmoothf = 0.1f;
-        private bool _headIsInMotion;
-        private float _headDeltaDirf = 0f;
+        private Ray? headPreviousRay;
+        private float headDeltaDirectionThreshold = 0.05f;
+        private float headSmoothf = 0.1f;
+        private bool headIsInMotion;
+        private float headDeltaDirectionf = 0f;
 
-        private int ConstrX => _freezeX ? 0 : 1;
-        private int ConstrY => _freezeY ? 0 : 1;
-        private int ConstrZ => _freezeZ ? 0 : 1;
+        private int ConstraintX => freezeX ? 0 : 1;
+        private int ConstraintY => freezeY ? 0 : 1;
+        private int ConstraintZ => freezeZ ? 0 : 1;
 
         Vector3? _prevPreviewPos;
 
         // The values represent the maximum angle that the surface can be offset from the 'up' vector to be considered for horizontal placement.
         // For example, if a surface is slanted by 40 degrees targets may slid off and hence we may consider this an invalid offset angle.
-        private readonly float _maxDiffAngleForHorizontalPlacem = 20f;
+        private readonly float maxDiffAngleForHorizontalPlacement = 20f;
 
         // The values represents the minimal angle that the surface must be offset from the 'up' vector to be considered for vertical placement.
-        private readonly float _minDiffAngleForVerticalPlacem = 50f;
+        private readonly float minDiffAngleForVerticalPlacement = 50f;
 
         #endregion
 
         public override float Selectedness()
         {
-            return _objIsGrabbed ? 1f : base.Selectedness();
+            return objectIsGrabbed ? 1f : base.Selectedness();
         }
 
         public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
@@ -146,7 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             // Dynamic is effectively just your normal Update().
             if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
             {
-                if (_isManipulatingUsingHands && _handInputEnabled)
+                if (isManipulatingUsingHands && handInputEnabled)
                 {
                     var handsSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<HandsSubsystem>();
                     if (handsSubsystem != null)
@@ -157,22 +176,22 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                             if (handsSubsystem.TryGetJoint(TrackedHandJoint.IndexTip, hand, out var palmJointPose))
                             {
                                 Handedness handedness = hand == XRNode.RightHand ? Handedness.Right : Handedness.Left;
-                                if (_handPosAbsolute == Vector3.zero)
+                                if (handPositionAbsolute == Vector3.zero)
                                 {
-                                    _currEngagedHand = handedness;
-                                    _handPosAbsolute = palmJointPose.Pose.position;
+                                    currentEngagedHand = handedness;
+                                    handPositionAbsolute = palmJointPose.Pose.position;
                                 }
                                 else
                                 {
-                                    Vector3 oldHandPos = _handPosAbsolute;
-                                    _handPosRelative = new Vector3(oldHandPos.x - palmJointPose.Pose.position.x,
+                                    Vector3 oldHandPos = handPositionAbsolute;
+                                    handPositionRelative = new Vector3(oldHandPos.x - palmJointPose.Pose.position.x,
                                         oldHandPos.y - palmJointPose.Pose.position.y,
                                         oldHandPos.z - palmJointPose.Pose.position.z);
-                                    _handPosAbsolute = palmJointPose.Pose.position;
+                                    handPositionAbsolute = palmJointPose.Pose.position;
 
-                                    if (_handIsPinching && _currEngagedHand == handedness)
+                                    if (handIsPinching && currentEngagedHand == handedness)
                                     {
-                                        RelativeMoveUpdate(_handPosRelative);
+                                        RelativeMoveUpdate(handPositionRelative);
                                     }
                                 }
                             }
@@ -180,58 +199,58 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     }
                 }
 
-                if (_objIsGrabbed && _useEyeSupportedTargetPlacement)
+                if (objectIsGrabbed && useEyeSupportedTargetPlacement)
                 {
                     // Check whether the user is still looking within the proximity of the target
                     if (IsLookingAwayFromTarget() && IsLookingAwayFromPreview())
                     {
-                        if (_gazeInteractor.PreciseHitResult.targetInteractable != null &&
-                            _gazeInteractor.PreciseHitResult.raycastHit.transform.gameObject !=
+                        if (gazeInteractor.PreciseHitResult.targetInteractable != null &&
+                            gazeInteractor.PreciseHitResult.raycastHit.transform.gameObject !=
                             this) // To prevent trying to place it on itself
                         {
-                            _plausibleLocation = null;
+                            plausibleLocation = null;
 
-                            if (_onlyTransitionToPlausibleDestinations)
+                            if (onlyTransitionToPlausibleDestinations)
                             {
                                 if (IsDestinationPlausible())
                                 {
-                                    _plausibleLocation = _gazeInteractor.PreciseHitResult.raycastHit.point;
+                                    plausibleLocation = gazeInteractor.PreciseHitResult.raycastHit.point;
                                 }
                                 else
                                 {
-                                    _plausibleLocation = GetValidPlacementLocation(_gazeInteractor.PreciseHitResult.raycastHit.transform.gameObject);
+                                    plausibleLocation = GetValidPlacementLocation(gazeInteractor.PreciseHitResult.raycastHit.transform.gameObject);
                                 }
                             }
                             else
                             {
-                                _plausibleLocation = _gazeInteractor.PreciseHitResult.raycastHit.point;
+                                plausibleLocation = gazeInteractor.PreciseHitResult.raycastHit.point;
                             }
 
                             // Only show preview and place target in plausible locations
-                            if (_plausibleLocation.HasValue)
+                            if (plausibleLocation.HasValue)
                             {
                                 ActivatePreview();
 
                                 // Update preview position
-                                if (_placePreviewAtHitPoint)
+                                if (placePreviewAtHitPoint)
                                 {
-                                    _previewGameObject.transform.position = _plausibleLocation.Value;
+                                    previewGameObject.transform.position = plausibleLocation.Value;
                                 }
                                 else
                                 {
                                     if (PlacementSurface == PlacementSurfaces.Horizontal)
                                     {
-                                        _previewGameObject.transform.position = _plausibleLocation.Value +
-                                            _previewGameObject.transform.localScale.y * Vector3.up /
+                                        previewGameObject.transform.position = plausibleLocation.Value +
+                                            previewGameObject.transform.localScale.y * Vector3.up /
                                             2;
                                     }
                                     else
                                     {
-                                        _previewGameObject.transform.position =
-                                            _plausibleLocation.Value;
+                                        previewGameObject.transform.position =
+                                            plausibleLocation.Value;
                                     }
 
-                                    _prevPreviewPos = _previewGameObject.transform.position;
+                                    _prevPreviewPos = previewGameObject.transform.position;
                                 }
                             }
                             else
@@ -267,7 +286,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         #region Voice input handler
         public void OnVoiceSelectedEntered()
         {
-            _isManipulatingUsingVoice = true;
+            isManipulatingUsingVoice = true;
             DragAndDrop_Start();
         }
 
@@ -283,12 +302,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         private void HandDrag_Start()
         {
-            if (_handInputEnabled && !_isManipulatingUsingHands && !_isManipulatingUsingVoice)
+            if (handInputEnabled && !isManipulatingUsingHands && !isManipulatingUsingVoice)
             {
-                _isManipulatingUsingHands = true;
-                _handIsPinching = true;
-                _handPosRelative = Vector3.zero;
-                _handPosAbsolute = Vector3.zero;
+                isManipulatingUsingHands = true;
+                handIsPinching = true;
+                handPositionRelative = Vector3.zero;
+                handPositionAbsolute = Vector3.zero;
                 DragAndDrop_Start();
             }
         }
@@ -298,13 +317,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         private void HandDrag_Stop()
         {
-            if (_isManipulatingUsingHands)
+            if (isManipulatingUsingHands)
             {
-                _isManipulatingUsingHands = false;
-                _handIsPinching = false;
-                _handPosRelative = Vector3.zero;
+                isManipulatingUsingHands = false;
+                handIsPinching = false;
+                handPositionRelative = Vector3.zero;
                 DragAndDrop_Finish();
-                _currEngagedHand = Handedness.None;
+                currentEngagedHand = Handedness.None;
             }
         }
 
@@ -314,7 +333,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         private bool IsLookingAwayFromTarget()
         {
             // First, let's check if the target is still hit by the eye gaze cursor
-            if (_gazeInteractor.PreciseHitResult.targetInteractable.transform.gameObject == this)
+            if (gazeInteractor.PreciseHitResult.targetInteractable != null && gazeInteractor.PreciseHitResult.targetInteractable.transform.gameObject == this)
             {
                 return false;
             }
@@ -324,7 +343,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
             // **Note for potential improvement**: It would be better to make this dependent on the target's boundary 
             // instead of its center. The way it is implemented right now may cause problems for large-scale targets.
-            return distanceBetweenTargetAndCurrHitPos > _minLookAwayDistToEnableEyeWarp;
+            return distanceBetweenTargetAndCurrHitPos > minLookAwayDistToEnableEyeWarp;
         }
 
         /// <summary>
@@ -340,22 +359,22 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             Vector3 eyes2PrevPreview = _prevPreviewPos.Value - Camera.main.transform.position;
             Vector3 eye2HitPos = Camera.main.transform.forward;
 
-            float distance = EyeTrackingDemoUtils.VisAngleInDegreesToMeters(Vector3.Angle(eyes2PrevPreview, eye2HitPos), eye2HitPos.magnitude);
+            float distance = EyeTrackingUtilities.VisAngleInDegreesToMeters(Vector3.Angle(eyes2PrevPreview, eye2HitPos), eye2HitPos.magnitude);
 
-            if (distance < _previewPlacemDistThresh)
+            if (distance < previewPlacementDistanceThreshold)
             {
                 return false;
             }
 
             // Check if the target is still hit by the eye gaze cursor
-            if (_gazeInteractor.PreciseHitResult.raycastHit.transform.gameObject == _previewGameObject)
+            if (gazeInteractor.PreciseHitResult.raycastHit.transform.gameObject == previewGameObject)
             {
                 return false;
             }
 
             // Check whether the user is still looking within the proximity of the target
-            float distanceBetweenTargetAndCurrHitPos = Angle_ToCurrHitTarget(_previewGameObject);
-            if (distanceBetweenTargetAndCurrHitPos > _minLookAwayDistToEnableEyeWarp)
+            float distanceBetweenTargetAndCurrHitPos = Angle_ToCurrHitTarget(previewGameObject);
+            if (distanceBetweenTargetAndCurrHitPos > minLookAwayDistToEnableEyeWarp)
             {
                 return true;
             }
@@ -371,8 +390,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         {
             if (PlacementSurface == PlacementSurfaces.Horizontal)
             {
-                float angle = Vector3.Angle(_gazeInteractor.PreciseHitResult.raycastHit.normal, Vector3.up);
-                if (angle < _maxDiffAngleForHorizontalPlacem) // If the angle is more than for example 20 degrees off from the up vector
+                float angle = Vector3.Angle(gazeInteractor.PreciseHitResult.raycastHit.normal, Vector3.up);
+                if (angle < maxDiffAngleForHorizontalPlacement) // If the angle is more than for example 20 degrees off from the up vector
                 {
                     return true;
                 }
@@ -380,10 +399,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
             else if (PlacementSurface == PlacementSurfaces.Vertical)
             {
-                float angle = Vector3.Angle(_gazeInteractor.PreciseHitResult.raycastHit.normal, gameObject.transform.up);
-                if (angle > _minDiffAngleForVerticalPlacem)
+                float angle = Vector3.Angle(gazeInteractor.PreciseHitResult.raycastHit.normal, gameObject.transform.up);
+                if (angle > minDiffAngleForVerticalPlacement)
                 {
-                    gameObject.transform.forward = -_gazeInteractor.PreciseHitResult.raycastHit.normal;
+                    gameObject.transform.forward = -gazeInteractor.PreciseHitResult.raycastHit.normal;
                     return true;
                 }
             }
@@ -408,15 +427,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         private void ActivatePreview()
         {
-            if (_previewGameObject == null)
+            if (previewGameObject == null)
             {
-                _previewGameObject = Instantiate(gameObject);
-                _previewGameObject.GetComponent<Collider>().enabled = false;
-                EyeTrackingDemoUtils.GameObject_ChangeTransparency(_previewGameObject, _transparencyPreview);
-                _placePreviewAtHitPoint = false;
+                previewGameObject = Instantiate(gameObject);
+                previewGameObject.GetComponent<Collider>().enabled = false;
+                EyeTrackingUtilities.GameObject_ChangeTransparency(previewGameObject, transparencyPreview);
+                placePreviewAtHitPoint = false;
             }
 
-            _previewGameObject.SetActive(true);
+            previewGameObject.SetActive(true);
         }
 
         /// <summary>
@@ -424,11 +443,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         private void DeactivatePreview()
         {
-            if (_previewGameObject != null)
+            if (previewGameObject != null)
             {
-                _previewGameObject.SetActive(false);
-                Destroy(_previewGameObject);
-                _previewGameObject = null;
+                previewGameObject.SetActive(false);
+                Destroy(previewGameObject);
+                previewGameObject = null;
             }
         }
 
@@ -437,17 +456,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         public void DragAndDrop_Start()
         {
-            if (!_objIsGrabbed && isHovered)
+            if (!objectIsGrabbed && isHovered)
             {
-                _objIsGrabbed = true;
-                EyeTrackingDemoUtils.GameObject_ChangeTransparency(gameObject, _transparencyInTransition, ref _originalTransparency);
-                _initialHandPos = _handPosAbsolute;
-                _initalGazeDir = new Vector3(Camera.main.transform.forward.x, Camera.main.transform.forward.y, Camera.main.transform.forward.z);
+                objectIsGrabbed = true;
+                EyeTrackingUtilities.GameObject_ChangeTransparency(gameObject, transparencyInTransition, ref originalTransparency);
+                initialHandPosition = handPositionAbsolute;
+                initalGazeDirection = new Vector3(Camera.main.transform.forward.x, Camera.main.transform.forward.y, Camera.main.transform.forward.z);
 
                 if (TryGetComponent<Rigidbody>(out var rbody))
                 {
-                    _originalUseGravity = rbody.useGravity;
-                    _originalDrag = rbody.drag;
+                    originalUseGravity = rbody.useGravity;
+                    originalDrag = rbody.drag;
 
                     rbody.useGravity = false;
                     rbody.drag = float.PositiveInfinity;
@@ -460,29 +479,29 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         public void DragAndDrop_Finish()
         {
-            if (_objIsGrabbed)
+            if (objectIsGrabbed)
             {
-                if (_onlyEyeWarpOnRelease)
+                if (onlyEyeWarpOnRelease)
                 {
-                    _manualTargetManip = true;
-                    if (_plausibleLocation.HasValue)
+                    manualTargetManipulation = true;
+                    if (plausibleLocation.HasValue)
                     {
-                        MoveTargetTo(_plausibleLocation.Value);
+                        MoveTargetTo(plausibleLocation.Value);
                     }
                 }
 
-                _isManipulatingUsingVoice = false;
-                _objIsGrabbed = false;
+                isManipulatingUsingVoice = false;
+                objectIsGrabbed = false;
                 DeactivatePreview();
 
-                EyeTrackingDemoUtils.GameObject_ChangeTransparency(gameObject, _originalTransparency);
+                EyeTrackingUtilities.GameObject_ChangeTransparency(gameObject, originalTransparency);
                 if (TryGetComponent<Rigidbody>(out var rbody))
                 {
-                    rbody.useGravity = _originalUseGravity;
-                    rbody.drag = _originalDrag;
+                    rbody.useGravity = originalUseGravity;
+                    rbody.drag = originalDrag;
                 }
 
-                OnDrop.Invoke();
+                onDrop.Invoke();
             }
         }
 
@@ -491,7 +510,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         private void RelativeMoveUpdate(Vector3 relativeMovement)
         {
-            _manualTargetManip = false;
+            manualTargetManipulation = false;
             MoveTargetBy(relativeMovement);
         }
 
@@ -500,7 +519,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         public float Angle_InitialGazeToCurrGazeDir()
         {
-            return Vector3.Angle(_initalGazeDir, Camera.main.transform.forward);
+            return Vector3.Angle(initalGazeDirection, Camera.main.transform.forward);
         }
 
         /// <summary>
@@ -508,12 +527,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         public float Angle_ToCurrHitTarget(GameObject gobj)
         {
-            if (_gazeInteractor.PreciseHitResult.targetInteractable != null)
+            if (gazeInteractor.PreciseHitResult.targetInteractable != null)
             {
                 // Target is currently hit
-                if (_gazeInteractor.PreciseHitResult.targetInteractable.transform.gameObject == gobj)
+                if (gazeInteractor.PreciseHitResult.targetInteractable.transform.gameObject == gobj)
                 {
-                    _initalGazeDir = new Vector3(Camera.main.transform.forward.x, Camera.main.transform.forward.y, Camera.main.transform.forward.z);
+                    initalGazeDirection = new Vector3(Camera.main.transform.forward.x, Camera.main.transform.forward.y, Camera.main.transform.forward.z);
                     return 0.0f;
                 }
 
@@ -530,45 +549,45 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             Vector3 pos = Camera.main.transform.position;
             Vector3 forward = Camera.main.transform.forward;
 
-            if (_headPrevRay != null)
+            if (headPreviousRay != null)
             {
-                float deltaPos = Vector3.Distance(_headPrevRay.Value.origin, pos);
-                float deltaDir = Vector3.Distance(_headPrevRay.Value.direction, forward);
+                float deltaPos = Vector3.Distance(headPreviousRay.Value.origin, pos);
+                float deltaDir = Vector3.Distance(headPreviousRay.Value.direction, forward);
                 if (deltaPos != 0f && deltaDir != 0f)
                 {
-                    _headDeltaDirf = deltaDir * _headSmoothf + _headDeltaDirf * (1f - _headSmoothf);
+                    headDeltaDirectionf = deltaDir * headSmoothf + headDeltaDirectionf * (1f - headSmoothf);
 
-                    _headIsInMotion = _headDeltaDirf > _headDeltaDirThresh;
+                    headIsInMotion = headDeltaDirectionf > headDeltaDirectionThreshold;
                 }
             }
             else
-                _headIsInMotion = false;
+                headIsInMotion = false;
 
-            _headPrevRay = new Ray(pos, forward);  // Update recent head move
+            headPreviousRay = new Ray(pos, forward);  // Update recent head move
 
-            return _headIsInMotion;
+            return headIsInMotion;
         }
 
         public void MoveTargetBy(Vector3 delta)
         {
             // Check that this game object is currently selected
-            if (_objIsGrabbed)
+            if (objectIsGrabbed)
             {
                 // Discrete gaze-supported target movement
                 // Check whether the user is still looking within the proximity of the target
                 bool headIsInMotion = HeadIsInMotion();
                 if (headIsInMotion)
                 {
-                    _initialHandPos = _handPosAbsolute;
+                    initialHandPosition = handPositionAbsolute;
                 }
 
-                float deltaHand = Vector3.Distance(_initialHandPos, _handPosAbsolute);
+                float deltaHand = Vector3.Distance(initialHandPosition, handPositionAbsolute);
                 float angleToCurrHitTarget = Angle_ToCurrHitTarget(gameObject);
 
                 // If manipulated via manual controller:
                 if (ShouldObjBeWarped(deltaHand, angleToCurrHitTarget, headIsInMotion))
                 {
-                    Vector3 hitPosition = _gazeInteractor.PreciseHitResult.raycastHit.point;
+                    Vector3 hitPosition = gazeInteractor.PreciseHitResult.raycastHit.point;
 
                     // Discrete cursor-based target movement
                     if (PlacementSurface == PlacementSurfaces.Horizontal)
@@ -580,20 +599,20 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
                     // Constrain in y-direction
                     gameObject.transform.position = new Vector3(
-                        (((ConstrX + 1) % 2) * objp.x) + (ConstrX * hitPosition.x),
-                        (((ConstrY + 1) % 2) * objp.y) + (ConstrY * hitPosition.y),
-                        (((ConstrZ + 1) % 2) * objp.z) + (ConstrZ * hitPosition.z));
+                        (((ConstraintX + 1) % 2) * objp.x) + (ConstraintX * hitPosition.x),
+                        (((ConstraintY + 1) % 2) * objp.y) + (ConstraintY * hitPosition.y),
+                        (((ConstraintZ + 1) % 2) * objp.z) + (ConstraintZ * hitPosition.z));
 
                     ConstrainMovement();
 
-                    _initialHandPos = _handPosAbsolute;
+                    initialHandPosition = handPositionAbsolute;
                 }
                 else
                 {
                     // Continuous manual target movement
                     Vector3 oldPos = gameObject.transform.position;
-                    Vector3 d = new Vector3(-delta.x * ConstrX, -delta.y * ConstrY, -delta.z * ConstrZ);
-                    gameObject.transform.position = oldPos + d * _handmapping;
+                    Vector3 d = new Vector3(-delta.x * ConstraintX, -delta.y * ConstraintY, -delta.z * ConstraintZ);
+                    gameObject.transform.position = oldPos + d * handmapping;
 
                     ConstrainMovement();
                 }
@@ -626,17 +645,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         public void MoveTargetTo(Vector3 destination)
         {
             // Check that this game object is currently selected
-            if (_objIsGrabbed)
+            if (objectIsGrabbed)
             {
                 // Discrete gaze-supported target movement
                 // Check whether the user is still looking within the proximity of the target
                 bool headIsInMotion = HeadIsInMotion();
                 if (headIsInMotion)
                 {
-                    _initialHandPos = _handPosAbsolute;
+                    initialHandPosition = handPositionAbsolute;
                 }
 
-                float deltaHand = Vector3.Distance(_initialHandPos, _handPosAbsolute);
+                float deltaHand = Vector3.Distance(initialHandPosition, handPositionAbsolute);
 
                 // Handle manipulation via hands/manual controllers
                 if (ShouldObjBeWarped(deltaHand, Angle_ToCurrHitTarget(gameObject), headIsInMotion))
@@ -651,24 +670,24 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
                     // Constrain movement
                     gameObject.transform.position = new Vector3(
-                        ((ConstrX + 1) % 2 * objp.x) + (ConstrX * destination.x),
-                        ((ConstrY + 1) % 2 * objp.y) + (ConstrY * destination.y),
-                        ((ConstrZ + 1) % 2 * objp.z) + (ConstrZ * destination.z));
+                        ((ConstraintX + 1) % 2 * objp.x) + (ConstraintX * destination.x),
+                        ((ConstraintY + 1) % 2 * objp.y) + (ConstraintY * destination.y),
+                        ((ConstraintZ + 1) % 2 * objp.z) + (ConstraintZ * destination.z));
 
-                    _initialHandPos = _handPosAbsolute;
+                    initialHandPosition = handPositionAbsolute;
                 }
             }
         }
 
         private bool ShouldObjBeWarped(float deltaHand, float distTargetAndHitPos, bool headIsInMotion)
         {
-            return (_manualTargetManip && _previewGameObject != null && _previewGameObject.activeSelf) ||
-                   (!_onlyEyeWarpOnRelease &&
+            return (manualTargetManipulation && previewGameObject != null && previewGameObject.activeSelf) ||
+                   (!onlyEyeWarpOnRelease &&
                     // If manipulated via hands, head and eyes:
                     (deltaHand >
-                     _deltaHandMovemThresh) && // 1. Check that *hand* moved sufficiently to indicate the user's intent to move the target
+                     deltaHandMovementThreshold) && // 1. Check that *hand* moved sufficiently to indicate the user's intent to move the target
                     (distTargetAndHitPos >
-                     _minLookAwayDistToEnableEyeWarp) && // 2. Check that *eye gaze* is sufficiently far away from the selected target
+                     minLookAwayDistToEnableEyeWarp) && // 2. Check that *eye gaze* is sufficiently far away from the selected target
                     !headIsInMotion); // 3. Check that *head* is not currently moving as this would otherwise cause the target to be moved automatically
         }
     }

@@ -6,7 +6,7 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     [AddComponentMenu("Scripts/MRTK/Examples/UserInputRecorder")]
     public class UserInputRecorder : CustomInputLogger
@@ -33,15 +33,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         }
         #endregion
 
-        private EyeTrackingTarget prevTarget = null;
-
         public override string GetHeader()
         {
             if (logStructure != null)
             {
-                string[] header_columns = logStructure.GetHeaderColumns();
-                string header_format = GetStringFormat(header_columns);
-                return string.Format(header_format, header_columns);
+                string[] headerColumns = logStructure.GetHeaderColumns();
+                string headerFormat = GetStringFormat(headerColumns);
+                return string.Format(headerFormat, headerColumns);
             }
             else
                 return "";
@@ -55,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 // UserId
                 UserName,
                 // SessionType
-                sessionDescr,
+                sessionDescription,
                 // Timestamp
                 (DateTime.UtcNow - TimerStart).TotalMilliseconds
             };
@@ -74,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         protected override string GetFileName()
         {
-            return !string.IsNullOrEmpty(FilenameToUse) ? FilenameToUse : $"{sessionDescr}-{UserName}";
+            return !string.IsNullOrEmpty(FilenameToUse) ? FilenameToUse : $"{sessionDescription}-{UserName}";
         }
 
         public static string GetStringFormat(object[] data)
@@ -90,14 +88,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         public void UpdateLog(string inputType, string inputStatus, EyeTrackingTarget intendedTarget)
         {
-            if ((Instance != null) && (IsLogging))
+            if (Instance != null && IsLogging)
             {
                 if (logStructure != null)
                 {
                     object[] data = MergeObjArrays(GetData_Part1(), logStructure.GetData(inputType, inputStatus, intendedTarget));
                     string data_format = GetStringFormat(data);
                     Instance.CustomAppend(String.Format(data_format, data));
-                    prevTarget = intendedTarget;
                 }
             }
         }
@@ -118,9 +115,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         public override void OnDestroy()
         {
             // Disable listening to user input
-            if (UserInputRecorder.Instance != null)
+            if (Instance != null)
             {
-                UserInputRecorder.Instance.StopLoggingAndSave();
+                Instance.StopLoggingAndSave();
             }
 
             base.OnDestroy();

@@ -1,17 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     using Input;
     using UnityEngine;
+    using UnityEngine.Serialization;
     using UnityEngine.XR.Interaction.Toolkit;
 
     /// <summary>
     /// The associated game object will turn depending on which part of the object is looked at: 
     /// The currently looked at part will move towards the front facing the user.
     /// </summary>
-    //[RequireComponent(typeof(EyeTrackingTarget))]
     [AddComponentMenu("Scripts/MRTK/Examples/OnLookAtRotateByEyeGaze")]
     public class OnLookAtRotateByEyeGaze : StatefulInteractable
     {
@@ -34,23 +34,24 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         [Tooltip("If the angle between 'Gaze to Target' and 'Camera to Target' is less than this value, do nothing. This is to prevent small jittery rotations.")]
         [SerializeField]
-        private float rotationThreshInDegrees = 5.0f;
+        [FormerlySerializedAs("rotationThreshInDegrees")]
+        private float rotationThresholdInDegrees = 5.0f;
 
         [Tooltip("Minimum horizontal rotation angle. This is to limit the rotation in different directions.")]
         [SerializeField]
-        private float minRotX = -10.0f;
+        private float minRotationX = -10.0f;
 
         [Tooltip("Maximum horizontal rotation angle. This is to limit the rotation in different directions.")]
         [SerializeField]
-        private float maxRotX = 10.0f;
+        private float maxRotationX = 10.0f;
 
         [Tooltip("Minimal vertical rotation angle. This is to limit the rotation in different directions.")]
         [SerializeField]
-        private float minRotY = -180.0f;
+        private float minRotationY = -180.0f;
 
         [Tooltip("Maximum vertical rotation angle. This is to limit the rotation in different directions.")]
         [SerializeField]
-        private float maxRotY = 180.0f;
+        private float maxRotationY = 180.0f;
         #endregion
 
         public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
@@ -63,44 +64,44 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     if (interactor is FuzzyGazeInteractor gaze)
                     {
                         Vector3 TargetToHit = (gameObject.transform.position - gaze.PreciseHitResult.raycastHit.point).normalized;
-                        Vector3 TargetToCam = (gameObject.transform.position - Camera.main.transform.position).normalized;
+                        Vector3 TargetToCamera = (gameObject.transform.position - Camera.main.transform.position).normalized;
 
                         float angle1x = Mathf.Atan2(TargetToHit.y, TargetToHit.z);
                         float angle1y = Mathf.Atan2(TargetToHit.x * Mathf.Cos(angle1x), TargetToHit.z);
                         float angle1z = Mathf.Atan2(Mathf.Cos(angle1x), Mathf.Sin(angle1x) * Mathf.Sin(angle1y));
 
-                        float angle2x = Mathf.Atan2(TargetToCam.y, TargetToCam.z);
-                        float angle2y = Mathf.Atan2(TargetToCam.x * Mathf.Cos(angle2x), TargetToCam.z);
+                        float angle2x = Mathf.Atan2(TargetToCamera.y, TargetToCamera.z);
+                        float angle2y = Mathf.Atan2(TargetToCamera.x * Mathf.Cos(angle2x), TargetToCamera.z);
 
-                        if (angle1y > 0 && angle1z < 0)
+                        if (angle1y > 0f && angle1z < 0f)
                         {
                             angle1y -= Mathf.PI;
                         }
-                        else if (angle1y < 0 && angle1z < 0)
+                        else if (angle1y < 0f && angle1z < 0f)
                         {
                             angle1y += Mathf.PI;
                         }
 
-                        float rotx = angle1x - angle2x;
-                        float roty = angle1y - angle2y;
-                        float newRotX = transform.eulerAngles.x, newRotY = transform.eulerAngles.y;
+                        float rotationX = angle1x - angle2x;
+                        float rotationY = angle1y - angle2y;
+                        float newRotationX = transform.eulerAngles.x, newRotY = transform.eulerAngles.y;
 
                         // Restrict the rotation to a given angle range for x.
-                        if (Mathf.Abs(rotx) > (Mathf.Deg2Rad * rotationThreshInDegrees))
+                        if (Mathf.Abs(rotationX) > (Mathf.Deg2Rad * rotationThresholdInDegrees))
                         {
-                            float stepx = speedX * (inverseX ? -1 : 1) * rotx;
-                            newRotX = ClampAngleInDegree(transform.eulerAngles.x + stepx, minRotX, maxRotX);
+                            float stepx = speedX * (inverseX ? -1f : 1f) * rotationX;
+                            newRotationX = ClampAngleInDegree(transform.eulerAngles.x + stepx, minRotationX, maxRotationX);
                         }
 
                         // Restrict the rotation to a given angle range for y.
-                        if (Mathf.Abs(roty) > (Mathf.Deg2Rad * rotationThreshInDegrees))
+                        if (Mathf.Abs(rotationY) > (Mathf.Deg2Rad * rotationThresholdInDegrees))
                         {
-                            float stepy = speedY * (inverseY ? -1 : 1) * roty;
-                            newRotY = ClampAngleInDegree(transform.eulerAngles.y + stepy, minRotY, maxRotY);
+                            float stepy = speedY * (inverseY ? -1f : 1f) * rotationY;
+                            newRotY = ClampAngleInDegree(transform.eulerAngles.y + stepy, minRotationY, maxRotationY);
                         }
 
                         // Assign the computed Euler angles.
-                        transform.eulerAngles = new Vector3(newRotX, newRotY, transform.eulerAngles.z);
+                        transform.eulerAngles = new Vector3(newRotationX, newRotY, transform.eulerAngles.z);
                         return;
                     }
                 }
@@ -119,14 +120,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             }
 
             // Wrap around angle to stay within [-180, 180] degrees
-            if (angleInDegree > 180)
+            if (angleInDegree > 180f)
             {
-                angleInDegree -= 360;
+                angleInDegree -= 360f;
             }
 
-            if (angleInDegree < -180)
+            if (angleInDegree < -180f)
             {
-                angleInDegree += 360;
+                angleInDegree += 360f;
             }
 
             // Final checks on min and max range

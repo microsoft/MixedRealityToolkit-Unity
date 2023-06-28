@@ -10,7 +10,7 @@ using UnityEngine;
 using Windows.Storage;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     public abstract class BasicInputLogger : MonoBehaviour
     {
@@ -22,18 +22,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             Debug.Log("New user name: " + name);
         }
 
-        public void SetSessionDescr(string descr)
+        public void SetSessionDescription(string description)
         {
-            sessionDescr = descr;
-            Debug.Log("New session name: " + descr);
+            sessionDescription = description;
+            Debug.Log("New session name: " + description);
         }
 
         public string UserName = "tester";
 
         [SerializeField]
-        protected string sessionDescr = "Session00";
+        protected string sessionDescription = "Session00";
 
-        public string LogDirectory => "MRTK_ET_Demo" + "/" + UserName;
+        public string LogDirectory => "MRTK_ET_Demo/" + UserName;
 
         public abstract string GetHeader();
 
@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         internal bool IsLogging = false;
         protected abstract string GetFileName();
-        private StringBuilder _buffer = null;
+        private StringBuilder buffer = null;
 
 #if WINDOWS_UWP
         protected virtual async void CreateNewLogFile()
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                         }
 
                         sessionFolder = await logRootFolder.GetFolderAsync(LogDirectory);
-                        logFile = await sessionFolder.CreateFileAsync(Filename, CreationCollisionOption.ReplaceExisting);
+                        logFile = await sessionFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
 
                         Debug.Log(string.Format("*** Create log file to: {0} -- \n -- {1}", sessionFolder.Name, sessionFolder.Path));
                         Debug.Log(string.Format("*** The log file path is: {0} -- \n -- {1}", logFile.Name, logFile.Path));
@@ -90,13 +90,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
 
         void CheckIfInitialized()
         {
-            if (_buffer == null)
+            if (buffer == null)
                 ResetLog();
         }
 
         public void ResetLog()
         {
-            _buffer = new StringBuilder();
+            buffer = new StringBuilder();
 #if WINDOWS_UWP
             CreateNewLogFile();
 #endif
@@ -118,7 +118,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             if (IsLogging)
             {
                 // post IO to a separate thread.
-                _buffer.AppendLine(msg);
+                buffer.AppendLine(msg);
                 return true;
             }
             return false;
@@ -142,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                         }
 
                         sessionFolder = await logRootFolder.GetFolderAsync(LogDirectory);
-                        logFile = await sessionFolder.GetFileAsync(Filename);
+                        logFile = await sessionFolder.GetFileAsync(filename);
 
 
                     }
@@ -166,10 +166,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
         {
             if (IsLogging)
             {
-                if (_buffer.Length > 0)
+                if (buffer.Length > 0)
                 {
                     // Log buffer to the file
-                    await FileIO.AppendTextAsync(logFile, _buffer.ToString());
+                    await FileIO.AppendTextAsync(logFile, buffer.ToString());
                 }
             }
         }
@@ -181,7 +181,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
                 string path = Application.persistentDataPath + "/" + Filename;
 
                 Debug.Log("SAVE LOGS to " + path);
-                File.WriteAllText(path, _buffer.ToString());
+                File.WriteAllText(path, buffer.ToString());
             }
         }
 #endif

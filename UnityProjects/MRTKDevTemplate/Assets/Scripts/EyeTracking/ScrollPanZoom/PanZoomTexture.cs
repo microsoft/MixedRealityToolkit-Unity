@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
     /// This script allows to scroll a texture both horizontally and vertically.
@@ -109,9 +109,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 UpdateValues(ref minDistFromCenterForAutoPan, panMinDistFromCenter);
                 UpdateValues(ref useSkimProof, useSkimProofing);
 
-                if (UpdateValues(ref skimproof_UpdateSpeedFromUser, skimProofUpdateSpeed))
+                if (UpdateValues(ref skimProofUpdateSpeedFromUser, skimProofUpdateSpeed))
                 {
-                    SetSkimProofUpdateSpeed(skimproof_UpdateSpeedFromUser);
+                    SetSkimProofUpdateSpeed(skimProofUpdateSpeedFromUser);
                 }
             }
         }

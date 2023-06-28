@@ -4,12 +4,13 @@
 using System;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     public abstract class CustomInputLogger : BasicInputLogger
     {
         [Tooltip("The data will be saved as CSV files.")]
-        protected string Filename = null;
+        protected string filename = null;
+
         protected static DateTime TimerStart;
 
         protected bool PrintedHeader = false;

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     using Subsystems;
     using UnityEngine.XR;
@@ -73,7 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// The idle size of the GameObject's collider if not being looked at.
         /// </summary>
-        internal Vector3? origColliderSize = null;
+        internal Vector3? originalColliderSize = null;
 
         /// <summary>
         /// Timed zoom: Once triggered, a zoom in/out will be performed for the given 
@@ -89,35 +89,34 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <summary>
         /// Speed to indicate how quickly the signal is updated after skimming across the content. 
         /// </summary>
-        internal float skimproof_UpdateSpeedFromUser;
+        internal float skimProofUpdateSpeedFromUser;
 
         // Private variables        
-        protected Vector2 cursorPos = new Vector2(0.5f, 0.5f);
+        protected Vector2 cursorPosition = new Vector2(0.5f, 0.5f);
         protected Vector2 scale;
         protected Vector2 offset = Vector2.zero;
-        protected Vector2 offsetRate_Zoom = Vector2.zero;
-        protected Vector2 offsetRate_Pan = Vector2.zero;
+        protected Vector2 offsetRateZoom = Vector2.zero;
+        protected Vector2 offsetRatePan = Vector2.zero;
         public bool limitPanning = true;
 
-        private float skimproof_normFixator = 0;
+        private float skimProofNormalFixator;
         private float skimproof_UpdateSpeed = 5f; // Speed for how fast the current fixation will trigger a scroll after looking around. 
 
         private BoxCollider myCollider;
 
         protected float zoomSpeed = 0.01f;
-        protected float zoomDir = 0; // 1: Zoom in, -1: Zoom out
-        protected int dynaZoomInvert = 1; // To invert when to zoom in/out for the manipulation gesture
+        protected float zoomDirection; // 1: Zoom in, -1: Zoom out
+        protected int dynamicZoomInvert = 1; // To invert when to zoom in/out for the manipulation gesture
         private bool wasLookedAtBefore = false;
         private bool isNavigating = false;
-        private Vector3 navPos = Vector3.zero;
+        private Vector3 navigationPosition = Vector3.zero;
 
-        internal bool isZooming = false;
+        internal bool IsZooming = false;
         internal bool ZoomGestureEnabledOnStartup = false;
         private bool handZoomEnabled = false;
 
         protected Vector3 originalRatio;
         protected Vector2 originalScale;
-
         #endregion
 
         public abstract void Initialize();
@@ -135,6 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             handZoomEnabled = ZoomGestureEnabledOnStartup;
             Initialize();
         }
+
         private Vector3 CustomColliderSizeOnLookAt
         {
             get
@@ -145,8 +145,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         public void AutoPan()
         {
-            PanHorizontally(ComputePanSpeed(cursorPos.x, panSpeedLeftRight, minDistFromCenterForAutoPan.x));
-            PanVertically(ComputePanSpeed(cursorPos.y, panSpeedUpDown, minDistFromCenterForAutoPan.y));
+            PanHorizontally(ComputePanSpeed(cursorPosition.x, panSpeedLeftRight, minDistFromCenterForAutoPan.x));
+            PanVertically(ComputePanSpeed(cursorPosition.y, panSpeedUpDown, minDistFromCenterForAutoPan.y));
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         public void PanHorizontally(float speed)
         {
-            offsetRate_Pan = new Vector2(Time.deltaTime * speed, offsetRate_Pan.y);
+            offsetRatePan = new Vector2(Time.deltaTime * speed, offsetRatePan.y);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         public void PanVertically(float speed)
         {
-            offsetRate_Pan = new Vector2(offsetRate_Pan.x, Time.deltaTime * speed);
+            offsetRatePan = new Vector2(offsetRatePan.x, Time.deltaTime * speed);
         }
 
         public void EnableHandZoom()
@@ -180,19 +180,19 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         private void ZoomStart(bool zoomIn)
         {
-            zoomSpeed = 0;
-            zoomDir = ZoomDir(zoomIn);
+            zoomSpeed = 0f;
+            zoomDirection = ZoomDir(zoomIn);
         }
 
         public void ZoomInStart()
         {
-            Debug.Log($"[{gameObject.name}] ZoomInStart: {scale.ToString()}");
+            Debug.Log($"[{gameObject.name}] ZoomInStart: {scale}");
             ZoomStart(true);
         }
 
         public void ZoomOutStart()
         {
-            Debug.Log($"[{gameObject.name}] ZoomOutStart: {scale.ToString()}");
+            Debug.Log($"[{gameObject.name}] ZoomOutStart: {scale}");
             ZoomStart(false);
         }
 
@@ -202,18 +202,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// </summary>
         public void ZoomStop()
         {
-            if (zoomSpeed != 0)
+            if (zoomSpeed != 0f)
             {
-                zoomSpeed = 0;
-                zoomDir = 0;
+                zoomSpeed = 0f;
+                zoomDirection = 0f;
             }
-            isZooming = false;
+            IsZooming = false;
         }
 
         private void NavigationStart()
         {
             isNavigating = true;
-            navPos = Vector3.zero;
+            navigationPosition = Vector3.zero;
         }
 
         private void NavigationStop()
@@ -221,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             isNavigating = false;
             ZoomStop();
             ResetNormFixator();
-            navPos = Vector3.zero;
+            navigationPosition = Vector3.zero;
         }
 
         private void NavigationUpdate(Vector3 normalizedOffset)
@@ -232,40 +232,41 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             }
 
             // Let's rotate the normalized gesture offset based on camera rotation. Let's check if the zoom direction changed
-            Vector3 transfPnt = normalizedOffset;
+            Vector3 transformPoint = normalizedOffset;
             // Rotate around the y axis
-            transfPnt = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.y, Vector3.down) * transfPnt;
+            transformPoint = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.y, Vector3.down) * transformPoint;
 
             // Rotate around the x axis
-            transfPnt = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.x, Vector3.left) * transfPnt;
+            transformPoint = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.x, Vector3.left) * transformPoint;
 
             // Rotate around the z axis
-            transfPnt = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.z, Vector3.back) * transfPnt;
+            transformPoint = Quaternion.AngleAxis(gameObject.transform.rotation.eulerAngles.z, Vector3.back) * transformPoint;
 
-            if (navPos.z >= 0 && transfPnt.z < 0)
+            if (navigationPosition.z >= 0f && transformPoint.z < 0f)
             {
                 ZoomOutStart();
             }
-            else if (navPos.z <= 0 && transfPnt.z > 0)
+            else if (navigationPosition.z <= 0f && transformPoint.z > 0f)
             {
                 ZoomInStart();
             }
 
-            navPos = 5f * transfPnt;
+            navigationPosition = 5f * transformPoint;
         }
 
         private bool zoomUsingHandsActive = false;
-        private Vector3 initialPalmPos;
+        private Vector3 initialPalmPosition;
         private XRNode handUsedToZoom;
 
-        [SerializeField] private bool _invertPalmZoomDirection = true;
+        [SerializeField]
+        private bool invertPalmZoomDirection = true;
 
         public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
         {
             // Dynamic is effectively just your normal Update().
             if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
             {
-                if (handZoomEnabled && isZooming)
+                if (handZoomEnabled && IsZooming)
                 {
                     var handsSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<HandsSubsystem>();
 
@@ -273,19 +274,24 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     {
                         XRNode[] hands = { XRNode.RightHand, XRNode.LeftHand };
                         foreach (var hand in hands)
-                        if (handsSubsystem.TryGetJoint(TrackedHandJoint.IndexTip, hand, out var palmJointPose))
                         {
-                            if (!zoomUsingHandsActive)
+                            if (handsSubsystem.TryGetJoint(TrackedHandJoint.IndexTip, hand, out var palmJointPose))
                             {
-                                zoomUsingHandsActive = true;
-                                initialPalmPos = new Vector3(palmJointPose.Pose.position.x, palmJointPose.Pose.position.y, palmJointPose.Pose.position.z);
-                                handUsedToZoom = hand;
-                            }
+                                if (!zoomUsingHandsActive)
+                                {
+                                    zoomUsingHandsActive = true;
+                                    initialPalmPosition = new Vector3(palmJointPose.Pose.position.x,
+                                        palmJointPose.Pose.position.y, palmJointPose.Pose.position.z);
+                                    handUsedToZoom = hand;
+                                }
 
-                            if (handUsedToZoom == hand)
-                            {
-                                Vector3 deltaPalm = _invertPalmZoomDirection ? initialPalmPos - palmJointPose.Pose.position : palmJointPose.Pose.position - initialPalmPos;
-                                NavigationUpdate(deltaPalm);
+                                if (handUsedToZoom == hand)
+                                {
+                                    Vector3 deltaPalm = invertPalmZoomDirection
+                                        ? initialPalmPosition - palmJointPose.Pose.position
+                                        : palmJointPose.Pose.position - initialPalmPosition;
+                                    NavigationUpdate(deltaPalm);
+                                }
                             }
                         }
                     }
@@ -303,7 +309,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                             {
                                 wasLookedAtBefore = true;
 
-                                if ((origColliderSize.HasValue) && (customColliderSizeOnLookAt.HasValue))
+                                if ((originalColliderSize.HasValue) && (customColliderSizeOnLookAt.HasValue))
                                 {
                                     MyCollider.size = CustomColliderSizeOnLookAt;
                                 }
@@ -323,9 +329,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                 if (wasLookedAtBefore)
                 {
                     wasLookedAtBefore = false;
-                    if (origColliderSize.HasValue)
+                    if (originalColliderSize.HasValue)
                     {
-                        MyCollider.size = origColliderSize.Value;
+                        MyCollider.size = originalColliderSize.Value;
                     }
                 }
             }
@@ -338,18 +344,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
                     {
                         IncrementNormFixator();
                     }
-                    offset += offsetRate_Pan * skimproof_normFixator + offsetRate_Zoom;
+                    offset += offsetRatePan * skimProofNormalFixator + offsetRateZoom;
                 }
                 else
                 {
-                    offset += offsetRate_Pan + offsetRate_Zoom;
+                    offset += offsetRatePan + offsetRateZoom;
                 }
 
                 UpdatePanZoom();
 
                 // Reset rate of change
-                offsetRate_Pan = Vector2.zero;
-                offsetRate_Zoom = Vector2.zero;
+                offsetRatePan = Vector2.zero;
+                offsetRateZoom = Vector2.zero;
             }
         }
 
@@ -361,17 +367,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         public void ResetNormFixator()
         {
-            skimproof_normFixator = 0;
+            skimProofNormalFixator = 0f;
         }
 
         public void IncrementNormFixator()
         {
-            skimproof_normFixator = Mathf.Clamp(skimproof_normFixator + skimproof_UpdateSpeed, 0, 1);
-        }
-
-        private void ResetScroll_OnSaccade()
-        {
-            ResetNormFixator();
+            skimProofNormalFixator = Mathf.Clamp01(skimProofNormalFixator + skimproof_UpdateSpeed);
         }
         #endregion
 
@@ -413,7 +414,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <param name="speed">Pan speed</param>
         private void PanUpDown(float speed)
         {
-            offsetRate_Pan = new Vector2(offsetRate_Pan.x, Time.deltaTime * speed);
+            offsetRatePan = new Vector2(offsetRatePan.x, Time.deltaTime * speed);
         }
 
         /// <summary>
@@ -422,7 +423,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         /// <param name="speed">Pan speed</param>
         private void PanLeftRight(float speed)
         {
-            offsetRate_Pan = new Vector2(Time.deltaTime * speed, offsetRate_Pan.y);
+            offsetRatePan = new Vector2(Time.deltaTime * speed, offsetRatePan.y);
         }
 
         /// <summary>
@@ -434,18 +435,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             float dynamicZoom = 0.5f; // Default = 0.5 in case the zoom is triggered by a button (Hand gesture would provide a value between 0 and 1
             if (isNavigating)
             {
-                dynamicZoom = Mathf.Abs(navPos.z);
-                zoomDir = Mathf.Sign(navPos.z) * dynaZoomInvert;
+                dynamicZoom = Mathf.Abs(navigationPosition.z);
+                zoomDirection = Mathf.Sign(navigationPosition.z) * dynamicZoomInvert;
             }
 
-            if (zoomDir != 0)
+            if (zoomDirection != 0f)
             {
                 // Following a logistic function; -0.5 because dynamicZoom [0,1];
-                zoomSpeed = ZoomSpeedMax / (1 + Mathf.Pow(2.71828f, -ZoomAcceleration * (dynamicZoom - 0.5f))) * Time.deltaTime;
-                zoomSpeed = Mathf.Clamp(zoomSpeed, 0, ZoomSpeedMax);
+                zoomSpeed = ZoomSpeedMax / (1f + Mathf.Pow(2.71828f, -ZoomAcceleration * (dynamicZoom - 0.5f))) * Time.deltaTime;
+                zoomSpeed = Mathf.Clamp(zoomSpeed, 0f, ZoomSpeedMax);
 
                 // Zoom in: Zoom toward zoom pivot + corrective pan motions
-                if (zoomDir < 0)
+                if (zoomDirection < 0f)
                 {
                     ZoomIn();
                 }
@@ -484,20 +485,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
 
         public void ZoomIn_Timed()
         {
-            Debug.Log("Zoom In Started");
             StartCoroutine(ZoomAndStop(true));
         }
 
         public void ZoomOut_Timed()
         {
-            Debug.Log("Zoom Out Started");
             StartCoroutine(ZoomAndStop(false));
         }
 
         private IEnumerator ZoomAndStop(bool zoomIn)
         {
             // Start zoom
-            isZooming = true;
+            IsZooming = true;
             if (zoomIn)
             {
                 ZoomInStart();
@@ -531,14 +530,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
         #region Handle input events
         public void OnSelectEntered()
         {
-            isZooming = true;
+            IsZooming = true;
         }
 
         public void OnSelectExited()
         {
             // Stop zoom
             zoomUsingHandsActive = false;
-            isZooming = false;
+            IsZooming = false;
             NavigationStop();
         }
         #endregion

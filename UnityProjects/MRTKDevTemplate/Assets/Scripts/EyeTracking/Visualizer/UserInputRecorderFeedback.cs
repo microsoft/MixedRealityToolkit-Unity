@@ -5,44 +5,44 @@ using System;
 using TMPro;
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     [AddComponentMenu("Scripts/MRTK/Examples/UserInputRecorderFeedback")]
     public class UserInputRecorderFeedback : MonoBehaviour
     {
         [SerializeField]
-        private TextMeshPro _statusText = null;
+        private TextMeshPro statusText = null;
 
         [SerializeField]
-        private float _maxShowDurationInSeconds = 2f;
+        private float maxShowDurationInSeconds = 2f;
 
-        private bool _isShowingSomething = false;
-        private DateTime _startShowTime;
+        private bool isShowingSomething = false;
+        private DateTime startShowTime;
 
         private void UpdateStatusText(string msg)
         {
-            if (_statusText != null)
+            if (statusText != null)
             {
-                _statusText.text = msg;
-                _statusText.gameObject.SetActive(true);
-                _isShowingSomething = true;
-                _startShowTime = DateTime.Now;
+                statusText.text = msg;
+                statusText.gameObject.SetActive(true);
+                isShowingSomething = true;
+                startShowTime = DateTime.Now;
             }
         }
 
         private void ResetStatusText()
         {
-            if (_statusText != null)
+            if (statusText != null)
             {
-                _statusText.gameObject.SetActive(false);
-                _statusText.text = "";
-                _isShowingSomething = false;
+                statusText.gameObject.SetActive(false);
+                statusText.text = "";
+                isShowingSomething = false;
             }
         }
 
         private void Update()
         {
-            if ((_isShowingSomething) && ((DateTime.Now - _startShowTime).TotalSeconds > _maxShowDurationInSeconds))
+            if (isShowingSomething && (DateTime.Now - startShowTime).TotalSeconds > maxShowDurationInSeconds)
             {
                 ResetStatusText();
             }

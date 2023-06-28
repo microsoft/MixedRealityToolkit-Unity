@@ -15,6 +15,7 @@ public class KeywordRecognitionHandler : MonoBehaviour
     {
         [SerializeField]
         public string Keyword;
+
         [SerializeField]
         public UnityEvent Event;
     }

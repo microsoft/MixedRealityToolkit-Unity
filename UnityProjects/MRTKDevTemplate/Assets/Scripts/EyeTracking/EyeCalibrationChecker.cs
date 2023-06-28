@@ -27,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         public UnityEvent OnEyeCalibrationDetected;
         public UnityEvent OnNoEyeCalibrationDetected;
 
-        private bool? _prevCalibrationStatus = null;
+        private bool? previousCalibrationStatus;
 
         private void Update()
         {
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             calibrationStatus = editorTestUserIsCalibrated;
 #endif
 
-            if (_prevCalibrationStatus.HasValue && _prevCalibrationStatus.Value != calibrationStatus)
+            if (previousCalibrationStatus.HasValue && previousCalibrationStatus.Value != calibrationStatus)
             {
                 if (!calibrationStatus)
                 {
@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                 
             }
 
-            _prevCalibrationStatus = calibrationStatus;
+            previousCalibrationStatus = calibrationStatus;
         }
 
         private bool CheckCalibrationStatus()
@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                     }
                 }
             }
-#endif // MSFT_OPENXR && WINDOWS_UWP
+#endif
 
             return true;
         }

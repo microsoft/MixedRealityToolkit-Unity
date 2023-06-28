@@ -3,56 +3,58 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
+    using UnityEngine.Serialization;
     using UnityEngine.XR.Interaction.Toolkit;
 
+    [RequireComponent(typeof(Renderer))]
     public class ColorTap : MonoBehaviour
     {
         [SerializeField]
-        private Color _IdleStateColor = Color.cyan;
+        private Color idleStateColor = Color.cyan;
 
         [SerializeField]
-        private Color _OnHoverColor = Color.white;
+        private Color onHoverColor = Color.white;
 
         [SerializeField]
-        private Color _OnSelectColor = Color.blue;
+        private Color onSelectColor = Color.blue;
 
-        private Material _material;
+        private Material material;
 
         private void Awake()
         {
-            _material = GetComponent<Renderer>().material;
+            material = GetComponent<Renderer>().material;
         }
 
         public void OnGazeHoverEntered()
         {
-            _material.color = _OnHoverColor;
+            material.color = onHoverColor;
         }
 
         public void OnGazeHoverExited()
         {
-            _material.color = _IdleStateColor;
+            material.color = idleStateColor;
         }
 
         public void OnGazePinchEntered()
         {
-            _material.color = _OnHoverColor;
+            material.color = onHoverColor;
         }
 
         public void OnGazePinchExited()
         {
-            _material.color = _IdleStateColor;
+            material.color = idleStateColor;
         }
 
-        public void OnSelectEntered(SelectEnterEventArgs args)
+        public void OnSelectEntered(SelectEnterEventArgs _)
         {
-            _material.color = _OnSelectColor;
+            material.color = onSelectColor;
         }
 
-        public void OnSelectExited(SelectExitEventArgs args)
+        public void OnSelectExited(SelectExitEventArgs _)
         {
-            _material.color = _OnHoverColor;
+            material.color = onHoverColor;
         }
     }
 }
