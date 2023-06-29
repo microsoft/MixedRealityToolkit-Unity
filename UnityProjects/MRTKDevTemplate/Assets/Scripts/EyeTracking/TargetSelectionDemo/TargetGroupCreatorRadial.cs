@@ -6,8 +6,6 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
-    using UnityEngine.Serialization;
-
     /// <summary>
     /// Handles the creation of a group of targets based on a list of given templates.
     /// </summary>

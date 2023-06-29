@@ -6,11 +6,11 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
     using System.Collections;
-    using UnityEngine.Serialization;
 
     /// <summary>
     /// Handles events triggered from the attached <see cref="StatefulInteractable"/>
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/EyeTrackingTarget")]
     public class EyeTrackingTarget : MonoBehaviour
     {
         [Tooltip("Visual effect (e.g., particle explosion or animation) that is played when a target is selected.")]

@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         internal bool IsLogging = false;
         protected abstract string GetFileName();
-        private StringBuilder buffer = null;
+        private StringBuilder buffer;
 
 #if WINDOWS_UWP
         protected virtual async void CreateNewLogFile()

@@ -6,8 +6,6 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
-    using UnityEngine.Serialization;
-
     /// <summary>
     /// This associated GameObject acts a target goal zone to place other GameObjects inside.
     /// </summary>

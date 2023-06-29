@@ -16,18 +16,23 @@ namespace Microsoft.MixedReality.Toolkit.Examples
     [RequireComponent(typeof(Renderer))]
     internal class DrawOnTexture : MRTKBaseInteractable
     {
+        [Tooltip("A lookup texture that ramps from [0,1] in UV co-ordinates in attention values")]
         [SerializeField]
         private Texture2D heatmapLookUpTable;
 
+        [Tooltip("The brush size or spread from the eye gaze point")]
         [SerializeField]
-        private float drawBrushSize = 2000.0f; // aka spread
+        private float drawBrushSize = 2000.0f;
 
+        [Tooltip("The intensity or amplitude of the brush that falls off from the eye gaze point")]
         [SerializeField]
-        private float drawIntensity = 15.0f; // aka amplitude
+        private float drawIntensity = 15.0f;
 
+        [Tooltip("The minimum threshold value to apply colors to the heat map")]
         [SerializeField]
-        private float minThreshDeltaHeatMap = 0.001f; // Mostly for performance to reduce spreading heatmap for small values.
+        private float minThresholdDeltaHeatMap = 0.001f; // Mostly for performance to reduce spreading heatmap for small values.
 
+        [Tooltip("Toggle to update the heat map in real-time or use recorded values")]
         [SerializeField]
         private bool useLiveInputStream = false;
 
@@ -66,8 +71,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             base.OnDestroy();
         }
 
+        /// <summary>
+        /// Updates the heat map with the current eye gaze position.
+        /// </summary>
         public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
-        {   
+        {
+            base.ProcessInteractable(updatePhase);
+
             // Dynamic is effectively just your normal Update().
             if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic && useLiveInputStream)
             {
@@ -82,6 +92,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
         }
 
+        /// <summary>
+        /// Updates the heat map with a hit at <param name="hitPosition"></param>.
+        /// </summary>
+        /// <param name="hitPosition">The hit position in world co-ordinates.</param>
         public void DrawAtThisHitPos(Vector3 hitPosition)
         {
             Vector2? hitPosUV = GetCursorPosInTexture(hitPosition);
@@ -158,7 +172,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             float B = 2f;
             float scaledInterest = 1f / (1f + Mathf.Pow(Mathf.Epsilon, -(B * distCenterToCurrPnt)));
             float delta = scaledInterest / amplitude;
-            if (delta < minThreshDeltaHeatMap)
+            if (delta < minThresholdDeltaHeatMap)
                 return false;
 
             Color baseColor = texture.GetPixel((int)currentPoint.x, (int)currentPoint.y);

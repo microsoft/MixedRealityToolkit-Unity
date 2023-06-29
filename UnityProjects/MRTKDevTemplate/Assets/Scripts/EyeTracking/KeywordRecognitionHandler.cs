@@ -9,6 +9,9 @@ using Microsoft.MixedReality.Toolkit.Subsystems;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
+    /// <summary>
+    /// Sample for binding speech recognition keywords to Unity Event functions.
+    /// </summary>
     public class KeywordRecognitionHandler : MonoBehaviour
     {
         [Serializable]
@@ -21,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             public UnityEvent Event;
         }
 
+        [Tooltip("List of speech recognition keywords and events to trigger.")]
         [SerializeField]
         private List<KeywordEvent> _keywords = new List<KeywordEvent>();
 

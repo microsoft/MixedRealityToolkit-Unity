@@ -52,6 +52,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         private float maxRotationY = 180.0f;
         #endregion
 
+        /// <summary>
+        /// Updates the rotation of the GameObject based on the current eye gaze position.
+        /// </summary>
         public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
         {   
             // Dynamic is effectively just your normal Update().
@@ -61,15 +64,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                 {
                     if (interactor is FuzzyGazeInteractor gaze)
                     {
-                        Vector3 TargetToHit = (gameObject.transform.position - gaze.PreciseHitResult.raycastHit.point).normalized;
-                        Vector3 TargetToCamera = (gameObject.transform.position - Camera.main.transform.position).normalized;
+                        Vector3 targetToHit = (gameObject.transform.position - gaze.PreciseHitResult.raycastHit.point).normalized;
+                        Vector3 targetToCamera = (gameObject.transform.position - Camera.main.transform.position).normalized;
 
-                        float angle1x = Mathf.Atan2(TargetToHit.y, TargetToHit.z);
-                        float angle1y = Mathf.Atan2(TargetToHit.x * Mathf.Cos(angle1x), TargetToHit.z);
+                        float angle1x = Mathf.Atan2(targetToHit.y, targetToHit.z);
+                        float angle1y = Mathf.Atan2(targetToHit.x * Mathf.Cos(angle1x), targetToHit.z);
                         float angle1z = Mathf.Atan2(Mathf.Cos(angle1x), Mathf.Sin(angle1x) * Mathf.Sin(angle1y));
 
-                        float angle2x = Mathf.Atan2(TargetToCamera.y, TargetToCamera.z);
-                        float angle2y = Mathf.Atan2(TargetToCamera.x * Mathf.Cos(angle2x), TargetToCamera.z);
+                        float angle2x = Mathf.Atan2(targetToCamera.y, targetToCamera.z);
+                        float angle2y = Mathf.Atan2(targetToCamera.x * Mathf.Cos(angle2x), targetToCamera.z);
 
                         if (angle1y > 0f && angle1z < 0f)
                         {

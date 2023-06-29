@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                     loggedLines.Add(line);
                 }
                 LoadingUpdateStatusText.text = "Finished loading log file. Lines: " + loggedLines.Count;
-                Log(("Finished loading log file. Lines: " + loggedLines.Count));
+                Log("Finished loading log file. Lines: " + loggedLines.Count);
             }
             catch (Exception e)
             {
@@ -301,6 +301,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         private void LoadingStatus_Hide()
         {
+            if (LoadingUpdateStatusText != null)
+            {
+                LoadingUpdateStatusText.gameObject.SetActive(true);
+            }
         }
 
         private void LoadingStatus_Show()
@@ -368,12 +372,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             LoadingStatus_Hide();
         }
 
-        private Ray? GetEyeRay(IReadOnlyList<string> split)
+        private static Ray? GetEyeRay(IReadOnlyList<string> split)
         {
             return GetRay(split[9], split[10], split[11], split[12], split[13], split[14]);
         }
 
-        private Ray? GetRay(string originX, string originY, string originZ, string dirX, string dirY, string dirZ)
+        private static Ray? GetRay(string originX, string originY, string originZ, string dirX, string dirY, string dirZ)
         {
             bool isValidVec1 = TryParseStringToVector3(originX, originY, originZ, out Vector3 origin);
             bool isValidVec2 = TryParseStringToVector3(dirX, dirY, dirZ, out Vector3 dir);
@@ -406,7 +410,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
         }
 
-        private void UpdateEyeGazeSignal(IReadOnlyList<string>split, InputPointerVisualizer visualizer)
+        private static void UpdateEyeGazeSignal(IReadOnlyList<string>split, InputPointerVisualizer visualizer)
         {
             Ray? ray = GetEyeRay(split);
             if (ray.HasValue)

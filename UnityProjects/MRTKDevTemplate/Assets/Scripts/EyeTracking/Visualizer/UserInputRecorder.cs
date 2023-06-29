@@ -41,15 +41,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                 string headerFormat = GetStringFormat(headerColumns);
                 return string.Format(headerFormat, headerColumns);
             }
-            else
-                return "";
+
+            return "";
         }
 
         // Todo: Put into BasicLogger?
         protected object[] GetData_Part1()
         {
-            object[] data = new object[]
-            {
+            object[] data = {
                 // UserId
                 UserName,
                 // SessionType
@@ -86,22 +85,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             return strFormat.ToString();
         }
 
-        public void UpdateLog(string inputType, string inputStatus, EyeTrackingTarget intendedTarget)
+        public void UpdateLog()
         {
             if (Instance != null && IsLogging)
             {
                 if (logStructure != null)
                 {
-                    object[] data = MergeObjArrays(GetData_Part1(), logStructure.GetData(inputType, inputStatus, intendedTarget));
+                    object[] data = MergeObjArrays(GetData_Part1(), logStructure.GetData());
                     string data_format = GetStringFormat(data);
-                    Instance.CustomAppend(String.Format(data_format, data));
+                    Instance.CustomAppend(string.Format(data_format, data));
                 }
             }
-        }
-
-        public void UpdateLog()
-        {
-            UpdateLog("", "", null);
         }
 
         private void Update()

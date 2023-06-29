@@ -14,15 +14,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples
     /// Sample for allowing the game object that this script is attached to follow the user's eye gaze
     /// at a given distance of "DefaultDistanceInMeters". 
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/FollowEyeGaze")]
     public class FollowEyeGaze : MonoBehaviour
     {
         [Tooltip("Display the game object along the eye gaze ray at a default distance (in meters).")]
         [SerializeField]
         private float _defaultDistanceInMeters = 2f;
 
+        [Tooltip("The default color of the GameObject.")]
         [SerializeField]
         private Color _idleStateColor;
 
+        [Tooltip("The highlight color of the GameObject when hovered over another StatefulInteractable.")]
         [SerializeField]
         private Color _hightlightStateColor;
 

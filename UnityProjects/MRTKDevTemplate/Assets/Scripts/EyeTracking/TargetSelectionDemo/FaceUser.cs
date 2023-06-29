@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
     /// eye gaze: The currently looked at part will move towards the 
     /// front, facing the user.
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/FaceUser")]
     public class FaceUser : MonoBehaviour
     {
         #region Serialized variables

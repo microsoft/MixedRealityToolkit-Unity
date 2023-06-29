@@ -1854,6 +1854,14 @@ PrefabInstance:
       propertyPath: m_InteractionManager
       value: 
       objectReference: {fileID: 525252188}
+    - target: {fileID: 1524931721158149771, guid: 7fee940c81bcd264699d55f5dacdcf88, type: 3}
+      propertyPath: minThreshDeltaHeatMap
+      value: 0.0001
+      objectReference: {fileID: 0}
+    - target: {fileID: 1524931721158149771, guid: 7fee940c81bcd264699d55f5dacdcf88, type: 3}
+      propertyPath: minThresholdDeltaHeatMap
+      value: 0.001
+      objectReference: {fileID: 0}
     - target: {fileID: 3200108193205774659, guid: 7fee940c81bcd264699d55f5dacdcf88, type: 3}
       propertyPath: m_Name
       value: LiveTrackingSample
@@ -1926,6 +1934,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 870610049}
     m_Modifications:
+    - target: {fileID: 4863657714435241520, guid: 64e53d8562025f543b10498ba7cdaa3e, type: 3}
+      propertyPath: minThreshDeltaHeatMap
+      value: 0.0001
+      objectReference: {fileID: 0}
+    - target: {fileID: 4863657714435241520, guid: 64e53d8562025f543b10498ba7cdaa3e, type: 3}
+      propertyPath: minThresholdDeltaHeatMap
+      value: 0.001
+      objectReference: {fileID: 0}
     - target: {fileID: 8729132920210686062, guid: 64e53d8562025f543b10498ba7cdaa3e, type: 3}
       propertyPath: m_RootOrder
       value: 1

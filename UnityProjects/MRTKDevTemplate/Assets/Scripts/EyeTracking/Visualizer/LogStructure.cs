@@ -6,15 +6,23 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
-    [AddComponentMenu("Scripts/MRTK/Examples/LogStructure")]
+    /// <summary>
+    /// Abstract base class for defining file or stream logging structure types.
+    /// </summary>
     public abstract class LogStructure : MonoBehaviour
     {
+        /// <summary>
+        /// Returns the headers of the log structure.
+        /// </summary>
         public virtual string[] GetHeaderColumns()
         {
             return Array.Empty<string>();
         }
 
-        public virtual object[] GetData(string inputType, string inputStatus, EyeTrackingTarget intTarget)
+        /// <summary>
+        /// Returns a row of logging data.
+        /// </summary>
+        public virtual object[] GetData()
         {
             return Array.Empty<object>();
         }
