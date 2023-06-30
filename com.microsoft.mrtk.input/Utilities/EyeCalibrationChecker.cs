@@ -48,9 +48,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region Serialized Fields
 
-        [Tooltip("For testing purposes, you can manually assign whether eyes are calibrated or not.")]
-        [SerializeField]
-        private EyeCalibrationStatus editorTestUserIsCalibrated = EyeCalibrationStatus.IsCalibrated;
+        /// <summary>
+        /// For testing purposes, you can manually assign whether eyes are calibrated or not in editor. 
+        /// </summary>
+        [field: SerializeField, Tooltip("For testing purposes, you can manually assign whether eyes are calibrated or not in editor.")]
+        public EyeCalibrationStatus EditorTestIsCalibrated = EyeCalibrationStatus.IsCalibrated;
 
         #endregion Serialized Fields
 
@@ -85,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (Application.isEditor)
             {
-                calibrationStatus = editorTestUserIsCalibrated;
+                calibrationStatus = EditorTestIsCalibrated;
             }
             else
             {
@@ -94,16 +96,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (prevCalibrationStatus != calibrationStatus)
             {
-                Debug.Log("New calibration just dropped");
                 if (calibrationStatus == EyeCalibrationStatus.IsCalibrated)
                 {
-
-                    Debug.Log("Calibrated.");
                     OnEyeCalibrationDetected.Invoke();
                 }
                 else
                 {
-                    Debug.Log("Not calibrated.");
                     OnNoEyeCalibrationDetected.Invoke();
                 }
                 prevCalibrationStatus = calibrationStatus;
@@ -115,22 +113,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private EyeCalibrationStatus CheckCalibrationStatus()
         {
-            Debug.Log(System.DateTime.Now.ToString());
 #if WINDOWS_UWP
-            Debug.Log("Yes UWP.");
             if (MixedReality.OpenXR.PerceptionInterop.GetSceneCoordinateSystem(Pose.identity) is SpatialCoordinateSystem worldOrigin)
             {
-                Debug.Log("yes spatial coordinate system.");
                 SpatialPointerPose pointerPose = SpatialPointerPose.TryGetAtTimestamp(worldOrigin, PerceptionTimestampHelper.FromHistoricalTargetTime(DateTimeOffset.Now));
                 if (pointerPose != null)
                 {
-                    Debug.Log("yes pointer pose");
                     EyesPose eyes = pointerPose.Eyes;
                     if (eyes != null)
                     {
-                        Debug.Log("yes eyes");
-                        Debug.Log(eyes.IsCalibrationValid);
-                        Debug.Log(eyes.UpdateTimestamp.TargetTime.DateTime);
+                        if ((System.DateTime.Now - eyes.UpdateTimestamp.TargetTime.DateTime).TotalSeconds > 1)
+                        {
+                            return EyeCalibrationStatus.IsNotCalibrated;
+                        }
                         if (eyes.IsCalibrationValid)
                         {
                             return EyeCalibrationStatus.IsCalibrated;

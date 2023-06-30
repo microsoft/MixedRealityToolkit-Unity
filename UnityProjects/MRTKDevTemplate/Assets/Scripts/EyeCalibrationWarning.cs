@@ -72,14 +72,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
 			text.text = warning;
             text.color = Color.red;
-            Debug.Log(text.text);
         }
 
         private void NotifyYesEyeCalibration()
         {
             text.text = "Eye Calibration Status: Calibrated.";
             text.color = Color.green;
-            Debug.Log(text,text);
         }
     }
 }
