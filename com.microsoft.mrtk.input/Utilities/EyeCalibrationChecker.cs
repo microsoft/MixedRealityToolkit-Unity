@@ -24,23 +24,35 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public enum EyeCalibrationStatus
         {
-            // The eye calibration status is not defined. 
+            /// <summary>
+            /// The eye calibration status is not defined. 
+            /// </summary>
             Undefined,
 
-            // The eye calibration status could not be retrieved because this is a non-UWP device.
+            /// <summary>
+            /// The eye calibration status could not be retrieved because this is a non-UWP device.
+            /// </summary>
             IsNonUWPDevice,
 
-            // The eye calibration status could not be retrieved becaause eyes are not being tracked.
-            // This occurs when SpatialPointerPose's Eyes property is null. 
+            /// <summary>
+            /// The eye calibration status could not be retrieved becaause eyes are not being tracked.
+            /// This occurs when SpatialPointerPose's Eyes property is null. 
+            /// </summary>
             IsNotTracked,
 
-            // The eye calibration check has expired. Assume that eyes are not calibrated.
+            /// <summary>
+            /// The eye calibration check has expired. Assume that eyes are not calibrated.
+            /// </summary>
             IsExpired,
 
-            // The eye calibration status was retrieved and eyes are not calibrated. 
+            /// <summary>
+            /// The eye calibration status was retrieved and eyes are not calibrated. 
+            /// </summary> 
             IsNotCalibrated,
 
-            // The eye calibration status was retrieved and eyes are calibrated. 
+            /// <summary>
+            /// The eye calibration status was retrieved and eyes are calibrated. 
+            /// </summary>
             IsCalibrated
         };
 
@@ -60,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private EyeCalibrationStatus calibrationStatus;
 
         /// <summary>
-        /// Checks whether eyes are present and calibrated. 
+        /// Tracks whether eyes are present and calibrated. 
         /// </summary>
         public EyeCalibrationStatus CalibratedStatus
         {
@@ -122,9 +134,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     EyesPose eyes = pointerPose.Eyes;
                     if (eyes != null)
                     {
-                        if ((System.DateTime.Now - eyes.UpdateTimestamp.TargetTime.DateTime).TotalSeconds > 1)
+                        // If it's been longer than a second since the last perception snapshot, assume the information has expired.
+                        if ((DateTime.Now - eyes.UpdateTimestamp.TargetTime.DateTime).TotalSeconds > 1)
                         {
-                            return EyeCalibrationStatus.IsNotCalibrated;
+                            return EyeCalibrationStatus.IsExpired;
                         }
                         if (eyes.IsCalibrationValid)
                         {
