@@ -17,7 +17,7 @@
   "dependencies": {
     "com.microsoft.mrtk.core": "3.0.0",
     "com.microsoft.mrtk.graphicstools.unity": "0.5.12",
-    "com.unity.inputsystem": "1.5.1",
+    "com.unity.inputsystem": "1.6.1",
     "com.unity.textmeshpro": "3.0.6",
     "com.unity.xr.interaction.toolkit": "2.3.0"
   },
