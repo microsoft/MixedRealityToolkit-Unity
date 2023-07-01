@@ -148,15 +148,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             return EyeCalibrationStatus.IsNotCalibrated;
                         }
                     }
-                    else
-                    {
-                        return EyeCalibrationStatus.IsNotTracked;
-                    }
                 }
             }
-#endif // WINDOWS_UWP
-
+            return EyeCalibrationStatus.IsNotTracked;
+#else
             return EyeCalibrationStatus.IsNonUWPDevice;
+#endif // WINDOWS_UWP
         }
 
         #endregion Private Functions
