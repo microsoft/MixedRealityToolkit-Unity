@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         private TMP_Text text;
 
         private void OnEnable()
-		{
+	    {
             if (checker == null)
             {
                 checker = GetComponent<EyeCalibrationChecker>();
@@ -50,18 +50,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
         }
 
-		private void WarnNoEyeCalibration()
-		{
+	    private void WarnNoEyeCalibration()
+	    {
             string warning = "Eye Calibration Status: Not Calibrated. ";
             if (checker != null)
             {
                 switch (checker.CalibratedStatus)
-                { 
+                {
+                    case EyeCalibrationChecker.EyeCalibrationStatus.IsNonUWPDevice:
+                        text.text = "";
+                        return;
                     case EyeCalibrationChecker.EyeCalibrationStatus.IsNotCalibrated:
                         warning += "Please calibrate your eyes.";
-                        break;
-                    case EyeCalibrationChecker.EyeCalibrationStatus.IsNonUWPDevice:
-                        warning += "You are not on a UWP Device.";
                         break;
                     case EyeCalibrationChecker.EyeCalibrationStatus.IsNotTracked:
                         warning += "Please ensure this app is granted the appropriate permissions.";
@@ -70,7 +70,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                         break;
                 }
             }
-			text.text = warning;
+		    text.text = warning;
             text.color = Color.red;
         }
 
