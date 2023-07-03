@@ -7,8 +7,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
     /// Automatically configure an audio source to use a mixer-based
-    /// spatializer, such as the Microsoft Spatializer
-    /// <see cref="https://github.com/microsoft/spatialaudio-unity"/>.
+    /// spatializer, such as the <see href="https://github.com/microsoft/spatialaudio-unity">Microsoft Spatializer</see>.
     /// </summary>
     [RequireComponent(typeof(AudioSource))]
     public class ConfigureSpatializationSettings : MonoBehaviour

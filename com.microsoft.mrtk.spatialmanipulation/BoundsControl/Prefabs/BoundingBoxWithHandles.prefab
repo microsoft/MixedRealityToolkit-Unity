@@ -118,6 +118,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScaleHandle (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5036881520609974024, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 6273884922986239398, guid: eed09895eda47964bbc6ac91039b18a2, type: 3}
     - target: {fileID: 7622992455544025216, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
       propertyPath: m_InteractionManager
       value: 
@@ -207,6 +211,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScaleHandle (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 5036881520609974024, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 6273884922986239398, guid: eed09895eda47964bbc6ac91039b18a2, type: 3}
     - target: {fileID: 7622992455544025216, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
       propertyPath: m_InteractionManager
       value: 
@@ -308,6 +316,10 @@ PrefabInstance:
       propertyPath: neighboringHandles.Array.data[1]
       value: 
       objectReference: {fileID: 3096713591961479423}
+    - target: {fileID: 8987199081894814038, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 2087522883944475637, guid: 2becf02efbfc7bf409ad412e38f464f8, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
 --- !u!4 &838235203131453643 stripped
@@ -398,6 +410,10 @@ PrefabInstance:
       propertyPath: neighboringHandles.Array.data[1]
       value: 
       objectReference: {fileID: 3096713591961479423}
+    - target: {fileID: 8987199081894814038, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 2087522883944475637, guid: 2becf02efbfc7bf409ad412e38f464f8, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
 --- !u!4 &267191481337050457 stripped
@@ -472,6 +488,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScaleHandle (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 5036881520609974024, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 6273884922986239398, guid: eed09895eda47964bbc6ac91039b18a2, type: 3}
     - target: {fileID: 7622992455544025216, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
       propertyPath: m_InteractionManager
       value: 
@@ -577,6 +597,10 @@ PrefabInstance:
       propertyPath: neighboringHandles.Array.data[1]
       value: 
       objectReference: {fileID: 6601472751645577924}
+    - target: {fileID: 8987199081894814038, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 2087522883944475637, guid: 2becf02efbfc7bf409ad412e38f464f8, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
 --- !u!4 &3618957461922352420 stripped
@@ -663,6 +687,10 @@ PrefabInstance:
       propertyPath: neighboringHandles.Array.data[1]
       value: 
       objectReference: {fileID: 4356109107597309498}
+    - target: {fileID: 8987199081894814038, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 2087522883944475637, guid: 2becf02efbfc7bf409ad412e38f464f8, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
 --- !u!4 &3526394353919841268 stripped
@@ -753,6 +781,10 @@ PrefabInstance:
       propertyPath: neighboringHandles.Array.data[1]
       value: 
       objectReference: {fileID: 739809802765867868}
+    - target: {fileID: 8987199081894814038, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 2087522883944475637, guid: 2becf02efbfc7bf409ad412e38f464f8, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
 --- !u!4 &2920836690631141696 stripped
@@ -835,6 +867,10 @@ PrefabInstance:
       propertyPath: neighboringHandles.Array.data[1]
       value: 
       objectReference: {fileID: 2743734415695344524}
+    - target: {fileID: 8987199081894814038, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 2087522883944475637, guid: 2becf02efbfc7bf409ad412e38f464f8, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
 --- !u!4 &3023444588432002058 stripped
@@ -925,6 +961,10 @@ PrefabInstance:
       propertyPath: neighboringHandles.Array.data[1]
       value: 
       objectReference: {fileID: 739809802765867868}
+    - target: {fileID: 8987199081894814038, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 2087522883944475637, guid: 2becf02efbfc7bf409ad412e38f464f8, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
 --- !u!4 &3229878193932362468 stripped
@@ -999,6 +1039,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScaleHandle (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 5036881520609974024, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 6273884922986239398, guid: eed09895eda47964bbc6ac91039b18a2, type: 3}
     - target: {fileID: 7622992455544025216, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
       propertyPath: m_InteractionManager
       value: 
@@ -1108,6 +1152,10 @@ PrefabInstance:
       propertyPath: neighboringHandles.Array.data[1]
       value: 
       objectReference: {fileID: 5711108000947130060}
+    - target: {fileID: 8987199081894814038, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 2087522883944475637, guid: 2becf02efbfc7bf409ad412e38f464f8, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
 --- !u!4 &5937433203586028424 stripped
@@ -1182,6 +1230,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScaleHandle (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 5036881520609974024, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 6273884922986239398, guid: eed09895eda47964bbc6ac91039b18a2, type: 3}
     - target: {fileID: 7622992455544025216, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
       propertyPath: m_InteractionManager
       value: 
@@ -1287,6 +1339,10 @@ PrefabInstance:
       propertyPath: neighboringHandles.Array.data[1]
       value: 
       objectReference: {fileID: 5711108000947130060}
+    - target: {fileID: 8987199081894814038, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 2087522883944475637, guid: 2becf02efbfc7bf409ad412e38f464f8, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
 --- !u!4 &4618306618419526986 stripped
@@ -1427,6 +1483,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScaleHandle
       objectReference: {fileID: 0}
+    - target: {fileID: 5036881520609974024, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 6273884922986239398, guid: eed09895eda47964bbc6ac91039b18a2, type: 3}
     - target: {fileID: 7622992455544025216, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
       propertyPath: m_InteractionManager
       value: 
@@ -1528,6 +1588,10 @@ PrefabInstance:
       propertyPath: neighboringHandles.Array.data[1]
       value: 
       objectReference: {fileID: 6601472751645577924}
+    - target: {fileID: 8987199081894814038, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 2087522883944475637, guid: 2becf02efbfc7bf409ad412e38f464f8, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
 --- !u!4 &8349516722664271651 stripped
@@ -1602,6 +1666,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScaleHandle (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 5036881520609974024, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 6273884922986239398, guid: eed09895eda47964bbc6ac91039b18a2, type: 3}
     - target: {fileID: 7622992455544025216, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
       propertyPath: m_InteractionManager
       value: 
@@ -1707,6 +1775,10 @@ PrefabInstance:
       propertyPath: neighboringHandles.Array.data[1]
       value: 
       objectReference: {fileID: 6095641019203833185}
+    - target: {fileID: 8987199081894814038, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 2087522883944475637, guid: 2becf02efbfc7bf409ad412e38f464f8, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
 --- !u!4 &8472961834347041450 stripped
@@ -1781,6 +1853,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScaleHandle (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 5036881520609974024, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 6273884922986239398, guid: eed09895eda47964bbc6ac91039b18a2, type: 3}
     - target: {fileID: 7622992455544025216, guid: 45938efb25451774cad2262df8ebeef2, type: 3}
       propertyPath: m_InteractionManager
       value: 
@@ -1890,6 +1966,10 @@ PrefabInstance:
       propertyPath: neighboringHandles.Array.data[1]
       value: 
       objectReference: {fileID: 4356109107597309498}
+    - target: {fileID: 8987199081894814038, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
+      propertyPath: m_CustomReticle
+      value: 
+      objectReference: {fileID: 2087522883944475637, guid: 2becf02efbfc7bf409ad412e38f464f8, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b475f5cfd3a24ff4dadda4a9f34acd4b, type: 3}
 --- !u!4 &7207427688271266024 stripped

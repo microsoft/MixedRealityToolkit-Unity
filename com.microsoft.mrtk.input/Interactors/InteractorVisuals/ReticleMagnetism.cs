@@ -230,9 +230,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             // If we're using variable reticle visuals, update the visuals with the progress/proximity.
-            if (variableReticleVisuals != null)
+            if (variableReticleVisuals != null && variableReticleVisuals is RingReticle ringReticleVisuals)
             {
-                variableReticleVisuals.UpdateVisuals(1.0f - progressFraction);
+                ringReticleVisuals.UpdateVisuals(1.0f - progressFraction);
             }
         }
 

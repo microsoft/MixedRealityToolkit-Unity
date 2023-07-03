@@ -7,6 +7,10 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
+    /// <summary>
+    /// A custom drawer used when rendering information about a <see cref="Microsoft.MixedReality.Toolkit.Input.InteractionMode">InteractionMode</see>
+    /// property within a Unity inspector window.
+    /// </summary>
     [CustomPropertyDrawer(typeof(InteractionMode))]
     public class InteractionModePropertyDrawer : PropertyDrawer
     {

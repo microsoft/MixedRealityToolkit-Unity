@@ -407,7 +407,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
                 Vector3 origin = transform.position;
                 Vector3 endpoint = transform.position + transform.forward;
-                CurrentRay.UpdateRayStep(ref origin, ref endpoint);
+                CurrentRay.UpdateRayStep(in origin, in endpoint);
 
                 // Check if the current ray hits a magnetic surface
                 DidHitSurface = MixedRealityRaycaster.RaycastSimplePhysicsStep(CurrentRay, MaxRaycastDistance, MagneticSurfaces, false, out CurrentHit);

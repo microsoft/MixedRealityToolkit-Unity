@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     public abstract class DataSourceGOBase : MonoBehaviour, IDataSource, IDataSourceProvider
     {
         [Tooltip("(Optional) Data source type. Can be used by data consumers to automatically find and attach to the correct data source. E.g. This is useful for differentiating between 'data' and 'theme' data sources.")]
-        [SerializeField]
+        [SerializeField, Experimental]
         protected string dataSourceType;
 
         [Tooltip("(Optional) DataKeyPathMapper that translates between local view key paths and data source key paths. This is useful for re-using prefabs.")]

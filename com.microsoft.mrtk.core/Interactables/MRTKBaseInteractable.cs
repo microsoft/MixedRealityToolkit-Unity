@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit
         readonly List<IGazeInteractor> hoveringGazeInteractors = new List<IGazeInteractor>();
 
         /// <summary>
-        /// (Read Only) The list of <see cref="IGazeInteractor">s currently gazing this object.
+        /// (Read Only) The list of <see cref="IGazeInteractor"/> components currently gazing this object.
         /// </summary>
         public List<IGazeInteractor> HoveringGazeInteractors => hoveringGazeInteractors;
 
@@ -31,14 +31,14 @@ namespace Microsoft.MixedReality.Toolkit
         readonly List<IGazePinchInteractor> hoveringGazePinchInteractors = new List<IGazePinchInteractor>();
 
         /// <summary>
-        /// (Read Only) The list of <see cref="IGazePinchInteractor">s currently hovering this object.
+        /// (Read Only) The list of <see cref="IGazePinchInteractor"/> components currently hovering this object.
         /// </summary>
         public List<IGazePinchInteractor> HoveringGazePinchInteractors => hoveringGazePinchInteractors;
 
         readonly List<IGazePinchInteractor> selectingGazePinchInteractors = new List<IGazePinchInteractor>();
 
         /// <summary>
-        /// (Read Only) The list of <see cref="IGazePinchInteractor">s currently selecting this object.
+        /// (Read Only) The list of <see cref="IGazePinchInteractor"/> components currently selecting this object.
         /// </summary>
         public List<IGazePinchInteractor> SelectingGazePinchInteractors => selectingGazePinchInteractors;
 
@@ -49,7 +49,7 @@ namespace Microsoft.MixedReality.Toolkit
         readonly List<IPokeInteractor> hoveringPokeInteractors = new List<IPokeInteractor>();
 
         /// <summary>
-        /// (Read Only) The list of PokeInteractors currently hovering this object.
+        /// (Read Only) The list of <see cref="IPokeInteractor"/> components currently hovering this object.
         /// </summary>
         public List<IPokeInteractor> HoveringPokeInteractors => hoveringPokeInteractors;
 
@@ -60,14 +60,14 @@ namespace Microsoft.MixedReality.Toolkit
         readonly List<IGrabInteractor> hoveringGrabInteractors = new List<IGrabInteractor>();
 
         /// <summary>
-        /// (Read Only) The list of XRRayInteractors (hand rays) currently hovering this object.
+        /// (Read Only) The list of <see cref="IGrabInteractor"/> components currently hovering this object.
         /// </summary>]
         public List<IGrabInteractor> HoveringGrabInteractors => hoveringGrabInteractors;
 
         readonly List<IGrabInteractor> selectingGrabInteractors = new List<IGrabInteractor>();
 
         /// <summary>
-        /// (Read Only) The list of <see cref="IGrabInteractor">s currently selecting this object.
+        /// (Read Only) The list of <see cref="IGrabInteractor"/> components currently selecting this object.
         /// </summary>
         public List<IGrabInteractor> SelectingGrabInteractors => selectingGrabInteractors;
 
@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit
         readonly List<IRayInteractor> hoveringRayInteractors = new List<IRayInteractor>();
 
         /// <summary>
-        /// (Read Only) The list of XRRayInteractors (hand rays) currently hovering this object.
+        /// (Read Only) The list of <see cref="IRayInteractor"/> components currently hovering this object.
         /// </summary>]
         public List<IRayInteractor> HoveringRayInteractors => hoveringRayInteractors;
 

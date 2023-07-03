@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit
         protected SerializableDictionary<SystemType, BaseSubsystemConfig> subsystemConfigs = new SerializableDictionary<SystemType, BaseSubsystemConfig>();
 
         /// <summary>
-        /// Attempts to retrieve the specified <see cref="BaseSubsystemConfig"> for a given subsystem type.
+        /// Attempts to retrieve the specified <see cref="BaseSubsystemConfig"/> for a given subsystem type.
         /// </summary>
         /// <returns>
         /// True if there is a registered configuration for the specified subsystem. False otherwise.

@@ -17,6 +17,14 @@ using Windows.Storage.Streams;
 
 namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 {
+    /// <summary>
+    /// A Unity subsystem that extends <see cref="Microsoft.MixedReality.Toolkit.Subsystems.TextToSpeechSubsystem">TextToSpeechSubsystem</see>
+    /// so to expose the text to speech services available on Windows platforms. This subsystem is enabled for Windows Standalone and
+    /// Universal Windows Applications. 
+    /// </summary>
+    /// <remarks>
+    /// This subsystem can be configured using the <see cref="Microsoft.MixedReality.Toolkit.Speech.Windows.WindowsKeywordRecognitionSubsystemConfig">WindowsKeywordRecognitionSubsystemConfig</see> Unity asset.
+    /// </remarks>
     [Preserve]
     [MRTKSubsystem(
         Name = "com.microsoft.mrtk.windowsspeech.texttospeech",
@@ -39,6 +47,10 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             }
         }
 
+        /// <summary>
+        /// A subsystem provider for <see cref="WindowsTextToSpeechSubsystem"/> that exposes methods on the Windows
+        /// speech synthesizer systems.
+        /// </summary>
         [Preserve]
         class WindowsTextToSpeechSubsystemProvider : Provider
         {

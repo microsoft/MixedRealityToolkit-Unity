@@ -220,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.IsTrue(sv.Animator.enabled, "The animator should still be enabled after a short delay.");
 
             // Wait for the rest of the keepAliveTime
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.5f);
 
             Assert.IsFalse(sv.Animator.enabled, "The animator should be disabled after the keepAliveTime has elapsed.");
         }

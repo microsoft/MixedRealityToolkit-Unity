@@ -6,9 +6,15 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// Represents a set parametric curve points.
+    /// </summary>
     [AddComponentMenu("MRTK/Input/Bezier Data Provider")]
     internal class BezierDataProvider : BaseMixedRealityLineDataProvider
     {
+        /// <summary>
+        /// A structure that holds four 3D points along a parametric curve.
+        /// </summary>
         [Serializable]
         private struct BezierPointSet
         {
