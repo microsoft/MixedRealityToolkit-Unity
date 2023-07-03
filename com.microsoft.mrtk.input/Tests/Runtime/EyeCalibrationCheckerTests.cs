@@ -27,17 +27,17 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             // Create an EyeCalibrationChecker and add event listeners
             GameObject testButton = new GameObject("EyeCalibrationChecker");
             EyeCalibrationChecker checker = testButton.AddComponent<EyeCalibrationChecker>();
-            checker.OnNoEyeCalibrationDetected.AddListener(NoEyeCalibration);
-            checker.OnEyeCalibrationDetected.AddListener(YesEyeCalibration);
+            checker.Calibrated.AddListener(NoEyeCalibration);
+            checker.NotCalibrated.AddListener(YesEyeCalibration);
             yield return null;
 
             // Test whether the events fire when the status is changed
             isCalibrated = true;
-            checker.EditorTestIsCalibrated = EyeCalibrationChecker.EyeCalibrationStatus.IsNotCalibrated;
+            checker.EditorTestIsCalibrated = EyeCalibrationStatus.NotCalibrated;
             yield return null;
             Assert.IsFalse(isCalibrated, "OnNoEyeCalibrationDetected event was not fired.");
             yield return null;
-            checker.EditorTestIsCalibrated = EyeCalibrationChecker.EyeCalibrationStatus.IsCalibrated;
+            checker.EditorTestIsCalibrated = EyeCalibrationStatus.Calibrated;
             yield return null;
             Assert.IsTrue(isCalibrated, "OnEyeCalibrationDetected event was not fired.");
             yield return null;

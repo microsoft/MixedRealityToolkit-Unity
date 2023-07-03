@@ -20,55 +20,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [AddComponentMenu("MRTK/Input/Eye Calibration Checker")]
     public class EyeCalibrationChecker : MonoBehaviour
     {
-        #region Public Enums
-
-        public enum EyeCalibrationStatus
-        {
-            /// <summary>
-            /// The eye calibration status is not defined. 
-            /// </summary>
-            Undefined,
-
-            /// <summary>
-            /// The eye calibration status could not be retrieved because this is a non-UWP device.
-            /// </summary>
-            IsNonUWPDevice,
-
-            /// <summary>
-            /// The eye calibration status could not be retrieved becaause eyes are not being tracked.
-            /// This occurs when SpatialPointerPose's Eyes property is null. 
-            /// </summary>
-            IsNotTracked,
-
-            /// <summary>
-            /// The eye calibration check has expired. Assume that eyes are not calibrated.
-            /// </summary>
-            IsExpired,
-
-            /// <summary>
-            /// The eye calibration status was retrieved and eyes are not calibrated. 
-            /// </summary> 
-            IsNotCalibrated,
-
-            /// <summary>
-            /// The eye calibration status was retrieved and eyes are calibrated. 
-            /// </summary>
-            IsCalibrated
-        };
-
-        #endregion Public Enums
-
         #region Serialized Fields
 
         /// <summary>
         /// For testing purposes, you can manually assign whether eyes are calibrated or not in editor. 
         /// </summary>
         [field: SerializeField, Tooltip("For testing purposes, you can manually assign whether eyes are calibrated or not in editor.")]
-        public EyeCalibrationStatus EditorTestIsCalibrated = EyeCalibrationStatus.IsCalibrated;
+        public EyeCalibrationStatus EditorTestIsCalibrated = EyeCalibrationStatus.Calibrated;
 
         #endregion Serialized Fields
 
         #region Private Fields
+
         private EyeCalibrationStatus calibrationStatus;
 
         /// <summary>
@@ -80,18 +43,38 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         private EyeCalibrationStatus prevCalibrationStatus;
+
         #endregion Private Fields
 
         #region Events
-        /// <summary>
-        /// Event fired when IsCalibrated changes from false to true.
-        /// </summary>
-        public UnityEvent OnEyeCalibrationDetected = new UnityEvent();
+
+        [SerializeField]
+        [Tooltip("Event fired when eye tracking is calibrated.")]
+        private UnityEvent calibrated = new UnityEvent();
 
         /// <summary>
-        /// Event fired when IsCalibrated changes from true to false.
+        /// Event fired when eye tracking is calibrated.
         /// </summary>
-        public UnityEvent OnNoEyeCalibrationDetected = new UnityEvent();
+        public UnityEvent Calibrated => calibrated;
+
+        [SerializeField]
+        [Tooltip("Event fired when eye tracking is not calibrated.")]
+        private UnityEvent notCalibrated = new UnityEvent();
+
+        /// <summary>
+        /// Event fired when eye tracking is not calibrated.
+        /// </summary>
+        public UnityEvent NotCalibrated => notCalibrated;
+
+        [SerializeField]
+        [Tooltip("Event fired whenever eye tracking status changes.")]
+        private EyeCalibrationStatusEvent calibratedStatusChanged = new EyeCalibrationStatusEvent();
+
+        /// <summary>
+        /// Event fired whenever eye tracking status changes.
+        /// </summary>
+        public EyeCalibrationStatusEvent CalibratedStatusChanged => calibratedStatusChanged;
+
         #endregion Events
 
         #region MonoBehaviour Functions
@@ -108,14 +91,15 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             if (prevCalibrationStatus != calibrationStatus)
             {
-                if (calibrationStatus == EyeCalibrationStatus.IsCalibrated)
+                if (calibrationStatus == EyeCalibrationStatus.Calibrated)
                 {
-                    OnEyeCalibrationDetected.Invoke();
+                    calibrated.Invoke();
                 }
-                else
+                else if (calibrationStatus == EyeCalibrationStatus.NotCalibrated)
                 {
-                    OnNoEyeCalibrationDetected.Invoke();
+                    notCalibrated.Invoke();
                 }
+                calibratedStatusChanged.Invoke(new EyeCalibrationStatusEventArgs(calibrationStatus));
                 prevCalibrationStatus = calibrationStatus;
             }
         }
@@ -135,24 +119,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     if (eyes != null)
                     {
                         // If it's been longer than a second since the last perception snapshot, assume the information has expired.
-                        if ((DateTimeOffset.Now - eyes.UpdateTimestamp.TargetTime.DateTime).TotalSeconds > 1)
+                        if ((DateTimeOffset.Now - eyes.UpdateTimestamp.TargetTime).TotalSeconds > 1)
                         {
-                            return EyeCalibrationStatus.IsExpired;
+                            return EyeCalibrationStatus.NotCalibrated;
                         }
-                        if (eyes.IsCalibrationValid)
+                        else if (eyes.IsCalibrationValid)
                         {
-                            return EyeCalibrationStatus.IsCalibrated;
+                            return EyeCalibrationStatus.Calibrated;
                         }
                         else
                         {
-                            return EyeCalibrationStatus.IsNotCalibrated;
+                            return EyeCalibrationStatus.NotCalibrated;
                         }
                     }
                 }
             }
-            return EyeCalibrationStatus.IsNotTracked;
+            return EyeCalibrationStatus.NotTracked;
 #else
-            return EyeCalibrationStatus.IsNonUWPDevice;
+            return EyeCalibrationStatus.Unsupported;
 #endif // WINDOWS_UWP
         }
 

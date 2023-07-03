@@ -3576,11 +3576,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b0ab44b6f20884458aa9e1d5ea5cf22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EditorTestIsCalibrated: 5
-  OnEyeCalibrationDetected:
+  EditorTestIsCalibrated: 4
+  calibrated:
     m_PersistentCalls:
       m_Calls: []
-  OnNoEyeCalibrationDetected:
+  notCalibrated:
+    m_PersistentCalls:
+      m_Calls: []
+  calibratedStatusChanged:
     m_PersistentCalls:
       m_Calls: []
 --- !u!4 &971743154
