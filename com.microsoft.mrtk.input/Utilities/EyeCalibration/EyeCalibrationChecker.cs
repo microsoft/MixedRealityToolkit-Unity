@@ -43,6 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         private EyeCalibrationStatus prevCalibrationStatus;
+        private const int maxPoseAgeInSeconds = 1;
 
         #endregion Private Fields
 
@@ -119,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     if (eyes != null)
                     {
                         // If it's been longer than a second since the last perception snapshot, assume the information has expired.
-                        if ((DateTimeOffset.Now - eyes.UpdateTimestamp.TargetTime).TotalSeconds > 1)
+                        if ((DateTimeOffset.Now - eyes.UpdateTimestamp.TargetTime).TotalSeconds > maxPoseAgeInSeconds)
                         {
                             return EyeCalibrationStatus.NotCalibrated;
                         }

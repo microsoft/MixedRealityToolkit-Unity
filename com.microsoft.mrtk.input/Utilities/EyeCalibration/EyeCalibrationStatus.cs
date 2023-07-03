@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 		Unsupported,
 
 		/// <summary>
-		/// The eye calibration status could not be retrieved becaause eyes are not being tracked.
+		/// The eye calibration status could not be retrieved because eyes are not being tracked.
 		/// This usually occurs when SpatialPointerPose's Eyes property is null. 
 		/// </summary>
 		NotTracked,
