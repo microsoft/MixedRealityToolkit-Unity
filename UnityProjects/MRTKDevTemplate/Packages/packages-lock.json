@@ -289,15 +289,7 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.unity.project-auditor": {
-      "version": "https://github.com/Unity-Technologies/ProjectAuditor.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {
-        "com.unity.nuget.mono-cecil": "1.10.1"
-      },
-      "hash": "0fc705630268255b07f06dacd61f3205f5d5ff3c"
-    },
+
     "com.unity.subsystemregistration": {
       "version": "1.1.0",
       "depth": 1,
