@@ -86,12 +86,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Event fired when IsCalibrated changes from false to true.
         /// </summary>
-        public UnityEvent OnEyeCalibrationDetected;
+        public UnityEvent OnEyeCalibrationDetected = new UnityEvent();
 
         /// <summary>
         /// Event fired when IsCalibrated changes from true to false.
         /// </summary>
-        public UnityEvent OnNoEyeCalibrationDetected;
+        public UnityEvent OnNoEyeCalibrationDetected = new UnityEvent();
         #endregion Events
 
         #region MonoBehaviour Functions
