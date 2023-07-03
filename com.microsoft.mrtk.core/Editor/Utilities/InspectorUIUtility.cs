@@ -936,17 +936,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             // Draw a line from origin to origin + direction
             Handles.DrawLine(origin, handlePosition);
 
-            Quaternion rotation = Quaternion.identity;
-            if (vector != Vector3.zero)
-            {
-                rotation = Quaternion.LookRotation(vector);
-            }
-
-            // TODO: rotation needs to be applied somehow in 2022
 #if UNITY_2022_1_OR_NEWER
             Vector3 newPosition = Handles.FreeMoveHandle(handlePosition, handleSize, Vector3.zero, Handles.DotHandleCap);
 #else 
-            Vector3 newPosition = Handles.FreeMoveHandle(handlePosition, rotation, handleSize, Vector3.zero, Handles.DotHandleCap);
+            Vector3 newPosition = Handles.FreeMoveHandle(handlePosition, Quaternion.identity, handleSize, Vector3.zero, Handles.DotHandleCap);
 #endif
 
             if (recordUndo && handlePosition != newPosition)
