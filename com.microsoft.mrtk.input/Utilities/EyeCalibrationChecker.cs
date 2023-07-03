@@ -135,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     if (eyes != null)
                     {
                         // If it's been longer than a second since the last perception snapshot, assume the information has expired.
-                        if ((DateTime.Now - eyes.UpdateTimestamp.TargetTime.DateTime).TotalSeconds > 1)
+                        if ((DateTimeOffset.Now - eyes.UpdateTimestamp.TargetTime.DateTime).TotalSeconds > 1)
                         {
                             return EyeCalibrationStatus.IsExpired;
                         }
