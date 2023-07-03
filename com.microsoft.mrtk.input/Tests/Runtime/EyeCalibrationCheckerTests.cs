@@ -20,6 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
     public class EyeCalibrationCheckerTests : BaseRuntimeInputTests
     {
         private bool isCalibrated;
+        private EyeCalibrationStatus calibrationStatus;
 
         [UnityTest]
         public IEnumerator TestEyeCalibrationEvents()
@@ -27,20 +28,34 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             // Create an EyeCalibrationChecker and add event listeners
             GameObject testButton = new GameObject("EyeCalibrationChecker");
             EyeCalibrationChecker checker = testButton.AddComponent<EyeCalibrationChecker>();
-            checker.Calibrated.AddListener(NoEyeCalibration);
-            checker.NotCalibrated.AddListener(YesEyeCalibration);
+            checker.Calibrated.AddListener(YesEyeCalibration);
+            checker.NotCalibrated.AddListener(NoEyeCalibration);
+            checker.CalibratedStatusChanged.AddListener(CalibrationEvent);
             yield return null;
 
             // Test whether the events fire when the status is changed
             isCalibrated = true;
+            checker.EditorTestIsCalibrated = EyeCalibrationStatus.Calibrated;
+            yield return null;
             checker.EditorTestIsCalibrated = EyeCalibrationStatus.NotCalibrated;
             yield return null;
-            Assert.IsFalse(isCalibrated, "OnNoEyeCalibrationDetected event was not fired.");
+            Assert.IsFalse(isCalibrated, "NotCalibrated event was not fired.");
+            Assert.AreEqual(calibrationStatus, EyeCalibrationStatus.NotCalibrated, "CalibratedStatusChanged event was not fired.");
             yield return null;
             checker.EditorTestIsCalibrated = EyeCalibrationStatus.Calibrated;
             yield return null;
-            Assert.IsTrue(isCalibrated, "OnEyeCalibrationDetected event was not fired.");
+            Assert.IsTrue(isCalibrated, "Calibrated event was not fired.");
+            Assert.AreEqual(calibrationStatus, EyeCalibrationStatus.Calibrated, "CalibratedStatusChanged event was not fired.");
             yield return null;
+
+            checker.Calibrated.RemoveListener(NoEyeCalibration);
+            checker.NotCalibrated.RemoveListener(YesEyeCalibration);
+            checker.CalibratedStatusChanged.RemoveListener(CalibrationEvent);
+        }
+
+        private void CalibrationEvent(EyeCalibrationStatusEventArgs args)
+        {
+            calibrationStatus = args.CalibratedStatus;
         }
 
         private void YesEyeCalibration()
