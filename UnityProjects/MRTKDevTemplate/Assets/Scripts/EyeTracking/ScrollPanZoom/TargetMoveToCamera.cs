@@ -13,16 +13,21 @@ namespace Microsoft.MixedReality.Toolkit.Examples
     [AddComponentMenu("Scripts/MRTK/Examples/TargetMoveToCamera")]
     public class TargetMoveToCamera : OnLookAtRotateByEyeGaze
     {
-        public static TargetMoveToCamera currentlyFocusedTarget;
+        private static TargetMoveToCamera currentlyFocusedTarget;
 
-        public float DistanceToCamera = 6f;
+        [Tooltip("The focus distance of the GameObject in front of the camera when it is selected")]
+        [SerializeField]
+        private float DistanceToCamera = 1f;
 
+        [Tooltip("Speed of the object when transitioning when selected or deselected")]
         [SerializeField]
         private float speed = 1f;
 
+        [Tooltip("The distance threshold to stop transitioning when selected")]
         [SerializeField]
         private float minDistanceToStopTransition = 1f;
 
+        [Tooltip("Toggles the GameObject to rotate by eye gaze when selected")]
         [SerializeField]
         private bool setToAutoRotateIfFocused = true;
 
@@ -35,6 +40,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             originalPosition = transform.position;
         }
 
+        /// <summary>
+        /// Transitions the GameObject to the camera and the original world position when selected or deselected.
+        /// </summary>
         public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
         {
             // Dynamic is effectively just your normal Update().
@@ -49,6 +57,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
         }
 
+        /// <summary>
+        /// Fired when the GameObject is selected or deselected.
+        /// </summary>
         public void OnSelect()
         {
             if (isInNearFocusMode)
@@ -61,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
         }
 
-        public void TransitionToUser()
+        private void TransitionToUser()
         {
             SpeechRecognitionKeyword = "send back";
 
@@ -78,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             inTransition = true;
         }
 
-        public void ReturnHome()
+        private void ReturnHome()
         {
             SpeechRecognitionKeyword = "come to me";
 
