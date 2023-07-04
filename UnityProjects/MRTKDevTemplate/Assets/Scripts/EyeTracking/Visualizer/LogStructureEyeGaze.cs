@@ -2,17 +2,17 @@
 // Licensed under the MIT License.
 
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
-    using Input;
-
     /// <summary>
     /// A CSV file logging structure for eye gaze data.
     /// </summary>
     [AddComponentMenu("Scripts/MRTK/Examples/LogStructureEyeGaze")]
     public class LogStructureEyeGaze : LogStructure
     {
+        [Tooltip("Reference to the FuzzyGazeInteractor in the scene")]
         [SerializeField]
         private FuzzyGazeInteractor gazeInteractor;
 

@@ -5,36 +5,50 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
+    /// <summary>
+    /// This script controls the UI state of the user recording and playback control system.
+    /// </summary>
     [AddComponentMenu("Scripts/MRTK/Examples/UserInputRecorderUIController")]
     public class UserInputRecorderUIController : MonoBehaviour
     {
+        [Tooltip("Root GameObject that allows the user to start a new recording")]
         [SerializeField]
         private GameObject buttonStartRecording = null;
 
+        [Tooltip("Root GameObject that allows the user to stop a recording")]
         [SerializeField]
         private GameObject buttonStopRecording = null;
 
-        [SerializeField]
-        private GameObject buttonStartPlaybackInactive = null;
-
+        [Tooltip("Root GameObject that allows the user to start playback of a log file")]
         [SerializeField]
         private GameObject buttonStartPlayback = null;
 
+        [Tooltip("Root GameObject that allows the user to pause a recording")]
         [SerializeField]
         private GameObject buttonPausePlayback = null;
 
-        public void Start()
+        [Tooltip("Root GameObject that allows the user to resume a recording")]
+        [SerializeField]
+        private GameObject buttonResumePlayback = null;
+
+        private void Start()
         {
             RecordingUI_Reset(true);
-            ReplayUI_SetActive(false);
+            ShowStartButton();
         }
 
         #region Data recording
+        /// <summary>
+        /// Updates the control UI when the user starts recording a new eye gaze log file.
+        /// </summary>
         public void StartRecording()
         {
             RecordingUI_Reset(false);
         }
 
+        /// <summary>
+        /// Updates the control UI when the user finishes recording a new eye gaze log file.
+        /// </summary>
         public void StopRecording()
         {
             RecordingUI_Reset(true);
@@ -55,43 +69,56 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         #endregion
 
         #region Data replay
-        public void LoadData()
+        /// <summary>
+        /// Updates the control UI with the initial state, and when the user completes playback of a eye gaze log file.
+        /// </summary>
+        public void ShowStartButton()
         {
-            ReplayUI_SetActive(true);
+            SetPlaybackButtons(true, false, false);
         }
 
-        private void ReplayUI_SetActive(bool active)
-        {
-            ResetPlayback(active, false);
-
-            if (buttonStartPlaybackInactive != null)
-            {
-                buttonStartPlaybackInactive.SetActive(!active);
-            }
-        }
-
+        /// <summary>
+        /// Updates the control UI when the user starts playback of a eye gaze log file.
+        /// </summary>
         public void StartReplay()
         {
             Debug.Log("StartReplay");
-            ResetPlayback(false, true);
+            SetPlaybackButtons(false, true, false);
         }
 
+        /// <summary>
+        /// Updates the control UI when the user pauses playback of a eye gaze log file.
+        /// </summary>
         public void PauseReplay()
         {
             Debug.Log("PauseReplay");
-            ResetPlayback(true, false);
+            SetPlaybackButtons(false, false, true);
         }
 
-        private void ResetPlayback(bool showPlayBtn, bool showPauseBtn)
+        /// <summary>
+        /// Updates the control UI when the user resumes playback of a eye gaze log file.
+        /// </summary>
+        public void ResumeReplay()
+        {
+            Debug.Log("ResumePlayback");
+            SetPlaybackButtons(false, true, false);
+        }
+        
+        private void SetPlaybackButtons(bool showStartButton, bool showPauseButton, bool showResumeButton)
         {
             if (buttonStartPlayback != null)
             {
-                buttonStartPlayback.SetActive(showPlayBtn);
+                buttonStartPlayback.SetActive(showStartButton);
             }
 
             if (buttonPausePlayback != null)
             {
-                buttonPausePlayback.SetActive(showPauseBtn);
+                buttonPausePlayback.SetActive(showPauseButton);
+            }
+
+            if (buttonResumePlayback != null)
+            {
+                buttonResumePlayback.SetActive(showResumeButton);
             }
         }
         #endregion

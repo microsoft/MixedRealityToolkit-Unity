@@ -9,28 +9,33 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
-    /// 
+    /// Allows the user to record a log file of eye gaze interactions for playback at another time.
+    /// The log file is a CSV file and is created and written to while this behaviour is <see cref="MonoBehaviour.isActiveAndEnabled"/>
     /// </summary>
     [AddComponentMenu("Scripts/MRTK/Examples/UserInputRecorder")]
     public class UserInputRecorder : MonoBehaviour
     {
+        [Tooltip("File name segment appended to the log file name")]
         [SerializeField]
-        private string filenameToUse = "test/folder";
+        private string filenameToUse = "test";
 
+        [Tooltip("Prepends a timestamp to the log file name if enabled")]
         [SerializeField]
         private bool addTimestampToLogfileName = false;
 
-        private FileInputLogger fileLogger = null;
-
+        [Tooltip("The log structure to gather eye gaze samples from")]
         [SerializeField]
         private LogStructure logStructure = null;
 
+        [Tooltip("User name added to the log structure, and added to UWP file names and folder structure")]
         [SerializeField]
         private string userName = "tester";
 
+        [Tooltip("Session description added to UWP file names")]
         [SerializeField]
         private string sessionDescription = "Session00";
 
+        private FileInputLogger fileLogger = null;
         private string dataFormat;
         private DateTime timerStart;
 
@@ -61,16 +66,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
         }
 
-        private string GetFileName()
-        {
-            return !string.IsNullOrEmpty(filenameToUse) ? filenameToUse : $"{sessionDescription}-{userName}";
-        }
-
         private string Filename
         {
             get { return addTimestampToLogfileName ? FilenameWithTimestamp : FilenameNoTimestamp; }
         }
-
+        
         private string FilenameWithTimestamp
         {
             get { return $"{FormattedTimeStamp}_{FilenameNoTimestamp}.csv"; }
@@ -79,6 +79,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         private string FilenameNoTimestamp
         {
             get { return GetFileName() + ".csv"; }
+        }
+
+        private string GetFileName()
+        {
+            return !string.IsNullOrEmpty(filenameToUse) ? filenameToUse : $"{sessionDescription}-{userName}";
         }
 
         private string GetHeader()
@@ -93,7 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             return "";
         }
 
-        protected object[] GetData_Part1()
+        private object[] GetData_Part1()
         {
             object[] data = {
                 // UserId
@@ -107,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             return data;
         }
 
-        public object[] MergeObjArrays(object[] part1, object[] part2)
+        private object[] MergeObjArrays(object[] part1, object[] part2)
         {
             object[] data = new object[part1.Length + part2.Length];
             part1.CopyTo(data, 0);

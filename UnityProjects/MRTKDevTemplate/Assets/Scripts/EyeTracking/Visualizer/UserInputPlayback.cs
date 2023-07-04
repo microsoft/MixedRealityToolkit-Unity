@@ -15,19 +15,32 @@ using Windows.Storage;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
+    using UnityEngine.Events;
+
+    /// <summary>
+    /// Allows the user to playback a recorded log file of eye gaze interactions with a heat map.
+    /// </summary>
     [AddComponentMenu("Scripts/MRTK/Examples/UserInputPlayback")]
     public class UserInputPlayback : MonoBehaviour
     {
+        [Tooltip("Filename of the log file to be replayed")]
         [SerializeField]
         private string playbackLogFilename = string.Empty;
 
+        [Tooltip("References to the heatmaps to show playback of eye gaze interactions")]
         [SerializeField]
         private DrawOnTexture[] heatmapReferences = null;
 
+        [Tooltip("Displays status updates for file loading and replay status")]
         [SerializeField]
         private TextMeshPro loadingUpdateStatusText;
 
+        [Tooltip("Event that is fired when playback of a log file has completed")]
+        [SerializeField]
+        private UnityEvent onPlaybackCompleted;
+
         private IReadOnlyList<string> loggedLines;
+        private Coroutine showHeatmapCoroutine;
 
 #if WINDOWS_UWP
         private StorageFolder uwpRootFolder = KnownFolders.MusicLibrary;
@@ -41,6 +54,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         {
             IsPlaying = false;
             LoadingStatus_Hide();
+        }
+
+        private void Update()
+        {
+            if (IsPlaying && IsDataLoaded && counter < loggedLines.Count - 1)
+            {
+                UpdateLoadingStatus(counter, loggedLines.Count);
+            }
         }
 
         private void ResetCurrentStream()
@@ -104,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         }
 #endif
 
-        private bool DataIsLoaded
+        private bool IsDataLoaded
         {
             get { return loggedLines != null && loggedLines.Count > 0; }
         }
@@ -115,11 +136,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
             try
             {
-#if WINDOWS_UWP
-                if (!UnityEngine.Windows.File.Exists(filename))
-#else
                 if (!File.Exists(filename))
-#endif
                 {
                     loadingUpdateStatusText.text += "Error: Playback log file does not exist! ->>   " + filename + "   <<";
                     Log(("Error: Playback log file does not exist! ->" + filename + "<"));
@@ -139,16 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                 Debug.Log("The file could not be read:\n" + e.Message);
             }
         }
-
-        private void Log(string msg)
-        {
-            if (loadingUpdateStatusText != null)
-            {
-                LoadingStatus_Show();
-                loadingUpdateStatusText.text = string.Format($"{msg}");
-            }
-        }
-
+        
         #region Parsers
         private static bool TryParseStringToVector3(string x, string y, string z, out Vector3 vector)
         {
@@ -176,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         #endregion
 
         #region Available player actions
-        public void Load()
+        private void Load()
         {
 #if WINDOWS_UWP
             LoadInUWP();
@@ -184,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             LoadInEditor();
 #endif
         }
-
+        
         private void LoadInEditor()
         {
             loadingUpdateStatusText.text = "Load: " + FileName;
@@ -198,6 +206,22 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             await UWP_Load();
         }
 #endif
+        /// <summary>
+        /// True while the GameObject is playing back eye gaze data from the log file.
+        /// </summary>
+        public bool IsPlaying
+        {
+            private set;
+            get;
+        }
+
+        /// <summary>
+        /// Begins playback of the eye gaze data.
+        /// </summary>
+        public void StartPlayback()
+        {
+            ShowHeatmap();
+        }
 
         private string FileName
         {
@@ -210,33 +234,40 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 #endif
             }
         }
-
-        public bool IsPlaying
-        {
-            private set;
-            get;
-        }
-
-        public void StartPlayback()
-        {
-            ShowHeatmap();
-        }
-
+        
         private void ShowHeatmap()
         {
             if (heatmapReferences != null && heatmapReferences.Length > 0)
             {
                 // First, let's load the data
-                if (!DataIsLoaded)
+                if (!IsDataLoaded)
                 {
                     Load();
                 }
 
-                counter = 0;
+                if (showHeatmapCoroutine != null)
+                    StopCoroutine(showHeatmapCoroutine);
 
-                StartCoroutine(UpdateStatus(0.2f));
-                StartCoroutine(PopulateHeatmap());
+                IsPlaying = true;
+                counter = 0;
+                showHeatmapCoroutine = StartCoroutine(PopulateHeatmap());
             }
+        }
+
+        /// <summary>
+        /// Pauses playback of the eye gaze data.
+        /// </summary>
+        public void PauseHeatmapPlayback()
+        {
+            IsPlaying = false;
+        }
+
+        /// <summary>
+        /// Resumes playback of the eye gaze data.
+        /// </summary>
+        public void ResumeHeatmapPlayback()
+        {
+            IsPlaying = true;
         }
         
         private int counter = 0;
@@ -261,21 +292,27 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                         }
                     }
                     counter = i;
-                    yield return null;
+                    if (IsPlaying)
+                    {
+                        yield return null;
+                    }
+                    else
+                    {
+                        yield return new WaitUntil(() => IsPlaying);
+                    }
                 }
             }
+
+            PlaybackCompleted();
         }
 
-        private IEnumerator UpdateStatus(float updateFrequency)
+        private void PlaybackCompleted()
         {
-            while (counter < loggedLines.Count - 1)
-            {
-                UpdateLoadingStatus(counter, loggedLines.Count);
-                yield return new WaitForSeconds(updateFrequency);
-            }
-            LoadingStatus_Hide();
+            IsPlaying = false;
+            ResetCurrentStream();
+            onPlaybackCompleted.Invoke();
         }
-
+        
         private void LoadingStatus_Hide()
         {
             if (loadingUpdateStatusText != null)
@@ -290,6 +327,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             {
                 if (!loadingUpdateStatusText.gameObject.activeSelf)
                     loadingUpdateStatusText.gameObject.SetActive(true);
+            }
+        }
+
+        private void Log(string msg)
+        {
+            if (loadingUpdateStatusText != null)
+            {
+                LoadingStatus_Show();
+                loadingUpdateStatusText.text = string.Format($"{msg}");
             }
         }
 

@@ -3,7 +3,6 @@
 
 using System;
 using System.IO;
-using System.Text;
 using UnityEngine;
 
 #if WINDOWS_UWP
@@ -13,17 +12,16 @@ using Windows.Storage;
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
-    /// 
+    /// Stores collected eye gaze data to a file.
     /// </summary>
     public class FileInputLogger : IDisposable
     {
         private bool disposed = false;
         private StreamWriter logFile = null;
-        private string userName;
-        
-        public FileInputLogger(string userName, string fileName)
+
+        public FileInputLogger(string userNameFolder, string fileName)
         {
-            UserName = userName;
+            UserNameFolder = userNameFolder;
 
 #if WINDOWS_UWP
             await CreateNewLogFile();
@@ -50,16 +48,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         }
 
         /// <summary>
-        /// 
+        /// A user folder to store logs file in UWP
         /// </summary>
-        public string UserName
-        {
-            get { return userName; }
-            set { userName = value; }
-        }
+        private string UserNameFolder { get; set; }
 
 #if WINDOWS_UWP
-        public string LogDirectory => "MRTK_ET_Demo/" + UserName;
+        public string LogDirectory => "MRTK_ET_Demo/" + UserNameFolder;
 
         private StorageFile logFile;
         private StorageFolder logRootFolder = KnownFolders.MusicLibrary;
@@ -113,6 +107,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             await FileIO.AppendTextAsync(logFile, message);
         }
 #else
+        /// <summary>
+        /// Appends a message to the log file.
+        /// </summary>
         public void AppendLog(string message)
         {
             logFile.Write(message);
