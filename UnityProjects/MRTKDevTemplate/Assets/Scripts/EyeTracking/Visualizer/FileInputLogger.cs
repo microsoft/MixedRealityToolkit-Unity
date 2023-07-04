@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
 using System;
@@ -12,42 +12,59 @@ using Windows.Storage;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
-    public abstract class BasicInputLogger : MonoBehaviour
+    /// <summary>
+    /// 
+    /// </summary>
+    public class FileInputLogger : IDisposable
     {
-        public bool AddTimestampToLogfileName = false;
-
-        public void SetUserName(string name)
+        private bool disposed = false;
+        private StreamWriter logFile = null;
+        private string userName;
+        
+        public FileInputLogger(string userName, string fileName)
         {
-            UserName = name;
-            Debug.Log("New user name: " + name);
-        }
-
-        public void SetSessionDescription(string description)
-        {
-            sessionDescription = description;
-            Debug.Log("New session name: " + description);
-        }
-
-        public string UserName = "tester";
-
-        [SerializeField]
-        protected string sessionDescription = "Session00";
-
-        public string LogDirectory => "MRTK_ET_Demo/" + UserName;
-
-        public abstract string GetHeader();
+            UserName = userName;
 
 #if WINDOWS_UWP
+            await CreateNewLogFile();
+#else
+            logFile = File.CreateText(Application.persistentDataPath + "/" + fileName);
+            logFile.AutoFlush = true;
+#endif
+        }
+
+        /// <summary>
+        /// Closes the log file and releases any managed resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (disposed)
+            {
+                return;
+            }
+
+            disposed = true;
+
+            logFile.Close();
+            logFile.Dispose();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string UserName
+        {
+            get { return userName; }
+            set { userName = value; }
+        }
+
+#if WINDOWS_UWP
+        public string LogDirectory => "MRTK_ET_Demo/" + UserName;
+
         private StorageFile logFile;
         private StorageFolder logRootFolder = KnownFolders.MusicLibrary;
         private StorageFolder sessionFolder;
-#endif
 
-        internal bool IsLogging = false;
-        protected abstract string GetFileName();
-        private StringBuilder buffer;
-
-#if WINDOWS_UWP
         protected virtual async void CreateNewLogFile()
         {
             try
@@ -87,43 +104,21 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
         }
 #endif
-
-        void CheckIfInitialized()
-        {
-            if (buffer == null)
-                ResetLog();
-        }
-
-        public void ResetLog()
-        {
-            buffer = new StringBuilder();
+        
+#region Append Log
 #if WINDOWS_UWP
-            CreateNewLogFile();
+        public async void AppendLog(string message)
+        {
+            // Log buffer to the file
+            await FileIO.AppendTextAsync(logFile, message);
+        }
+#else
+        public void AppendLog(string message)
+        {
+            logFile.Write(message);
+        }
 #endif
-        }
-
-        private static string FormattedTimeStamp
-        {
-            get
-            {
-                return DateTime.Now.ToString("yMMddHHmmss");
-            }
-        }
-
-        #region Append log
-        public bool Append(string msg)
-        {
-            CheckIfInitialized();
-
-            if (IsLogging)
-            {
-                // post IO to a separate thread.
-                buffer.AppendLine(msg);
-                return true;
-            }
-            return false;
-        }
-        #endregion
+#endregion
 
 #if WINDOWS_UWP
         public async void LoadLogs()
@@ -143,8 +138,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
                         sessionFolder = await logRootFolder.GetFolderAsync(LogDirectory);
                         logFile = await sessionFolder.GetFileAsync(filename);
-
-
                     }
                     catch (FileNotFoundException)
                     {
@@ -160,51 +153,5 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
         }
 #endif
-
-#if WINDOWS_UWP
-        public async void SaveLogs()
-        {
-            if (IsLogging)
-            {
-                if (buffer.Length > 0)
-                {
-                    // Log buffer to the file
-                    await FileIO.AppendTextAsync(logFile, buffer.ToString());
-                }
-            }
-        }
-#else
-        public void SaveLogs()
-        {
-            if (IsLogging)
-            {
-                string path = Application.persistentDataPath + "/" + Filename;
-
-                Debug.Log("SAVE LOGS to " + path);
-                File.WriteAllText(path, buffer.ToString());
-            }
-        }
-#endif
-
-        private string Filename
-        {
-            get { return AddTimestampToLogfileName ? FilenameWithTimestamp : FilenameNoTimestamp; }
-        }
-
-        protected string FilenameWithTimestamp
-        {
-            get { return $"{FormattedTimeStamp}_{FilenameNoTimestamp}"; }
-        }
-
-        protected string FilenameNoTimestamp
-        {
-            get { return GetFileName() + ".csv"; }
-        }
-
-        public virtual void OnDestroy()
-        {
-            if (IsLogging)
-                SaveLogs();
-        }
     }
 }
