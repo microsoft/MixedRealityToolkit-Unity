@@ -2131,10 +2131,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4583486472360274399, guid: c9d9edba85c2c504c962d7cd830d9e3e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4661674953859262252, guid: c9d9edba85c2c504c962d7cd830d9e3e, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -2184,41 +2180,9 @@ PrefabInstance:
       value: EyeTracking_Cursor
       objectReference: {fileID: 0}
     - target: {fileID: 8364151238423769580, guid: c9d9edba85c2c504c962d7cd830d9e3e, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8364151238423769580, guid: c9d9edba85c2c504c962d7cd830d9e3e, type: 3}
-      propertyPath: _gazeController
+      propertyPath: gazeController
       value: 
       objectReference: {fileID: 1530487695}
-    - target: {fileID: 8364151238423769580, guid: c9d9edba85c2c504c962d7cd830d9e3e, type: 3}
-      propertyPath: _idleStateColor.a
-      value: 0.5019608
-      objectReference: {fileID: 0}
-    - target: {fileID: 8364151238423769580, guid: c9d9edba85c2c504c962d7cd830d9e3e, type: 3}
-      propertyPath: _idleStateColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8364151238423769580, guid: c9d9edba85c2c504c962d7cd830d9e3e, type: 3}
-      propertyPath: _idleStateColor.r
-      value: 0.94482756
-      objectReference: {fileID: 0}
-    - target: {fileID: 8364151238423769580, guid: c9d9edba85c2c504c962d7cd830d9e3e, type: 3}
-      propertyPath: _hightlightStateColor.a
-      value: 0.5019608
-      objectReference: {fileID: 0}
-    - target: {fileID: 8364151238423769580, guid: c9d9edba85c2c504c962d7cd830d9e3e, type: 3}
-      propertyPath: _hightlightStateColor.g
-      value: 0.8897059
-      objectReference: {fileID: 0}
-    - target: {fileID: 8364151238423769580, guid: c9d9edba85c2c504c962d7cd830d9e3e, type: 3}
-      propertyPath: _hightlightStateColor.r
-      value: 0.61972624
-      objectReference: {fileID: 0}
-    - target: {fileID: 8364151238423769580, guid: c9d9edba85c2c504c962d7cd830d9e3e, type: 3}
-      propertyPath: _gazeTranslationAction.m_UseReference
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9d9edba85c2c504c962d7cd830d9e3e, type: 3}
 --- !u!114 &1152038354 stripped

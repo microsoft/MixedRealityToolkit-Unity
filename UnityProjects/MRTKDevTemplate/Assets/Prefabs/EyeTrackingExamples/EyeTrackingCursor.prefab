@@ -283,10 +283,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f794cd1785a414045977779c0ff5bd79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultDistanceInMeters: 2
-  _idleStateColor: {r: 0.94482756, g: 0, b: 1, a: 0.5019608}
-  _hightlightStateColor: {r: 0.61972624, g: 0.8897059, b: 0, a: 0.5019608}
-  _gazeController: {fileID: 0}
+  defaultDistanceInMeters: 2
+  idleStateColor: {r: 0.94482756, g: 0, b: 1, a: 0.5019608}
+  hightlightStateColor: {r: 0.61972624, g: 0.8897059, b: 0, a: 0.5019608}
+  gazeController: {fileID: 0}
   _gazeTranslationAction:
     m_UseReference: 0
     m_Action:

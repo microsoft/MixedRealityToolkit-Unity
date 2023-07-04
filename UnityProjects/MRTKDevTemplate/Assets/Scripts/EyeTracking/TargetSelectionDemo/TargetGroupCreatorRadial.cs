@@ -119,17 +119,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         }
 
         /// <summary>
-        /// List of all instantiated targets.
-        /// </summary>
-        internal GameObject[] InstantiatedObjects
-        {
-            get
-            {
-                return instantiatedTargets?.ToArray();
-            }
-        }
-
-        /// <summary>
         /// Returns a random template.
         /// </summary>
         private GameObject GetRandomTemplate()

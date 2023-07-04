@@ -12,27 +12,27 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
     /// Sample for allowing the game object that this script is attached to follow the user's eye gaze
-    /// at a given distance of "DefaultDistanceInMeters". 
+    /// at a given distance of <see cref="defaultDistanceInMeters"/>. 
     /// </summary>
     [AddComponentMenu("Scripts/MRTK/Examples/FollowEyeGaze")]
     public class FollowEyeGaze : MonoBehaviour
     {
         [Tooltip("Display the game object along the eye gaze ray at a default distance (in meters).")]
         [SerializeField]
-        private float _defaultDistanceInMeters = 2f;
+        private float defaultDistanceInMeters = 2f;
 
         [Tooltip("The default color of the GameObject.")]
         [SerializeField]
-        private Color _idleStateColor;
+        private Color idleStateColor;
 
         [Tooltip("The highlight color of the GameObject when hovered over another StatefulInteractable.")]
         [SerializeField]
-        private Color _hightlightStateColor;
+        private Color hightlightStateColor;
 
         private Material material;
 
         [SerializeField]
-        private ActionBasedController _gazeController;
+        private ActionBasedController gazeController;
 
         [SerializeField]
         private InputActionProperty _gazeTranslationAction;
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         {
             material = GetComponent<Renderer>().material;
 
-            gazeInteractor = _gazeController.GetComponentInChildren<IGazeInteractor>();
+            gazeInteractor = gazeController.GetComponentInChildren<IGazeInteractor>();
 
             targets = new List<IXRInteractable>();
         }
@@ -76,12 +76,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             targets.Clear();
 
             gazeInteractor.GetValidTargets(targets);
-            material.color = targets.Count > 0 ? _hightlightStateColor : _idleStateColor;
+            material.color = targets.Count > 0 ? hightlightStateColor : idleStateColor;
 
             // Note: A better workflow would be to create and attach a prefab to the MRTK Gaze Controller object.
             // Doing this will parent the cursor to the gaze controller transform and be updated automatically.
-            var pose = _gazeController.transform.GetWorldPose();
-            transform.position = pose.position + _gazeController.transform.forward * _defaultDistanceInMeters;
+            var pose = gazeController.transform.GetWorldPose();
+            transform.position = pose.position + gazeController.transform.forward * defaultDistanceInMeters;
         }
 
         private void FollowEyeGazeAction(InputAction.CallbackContext obj)

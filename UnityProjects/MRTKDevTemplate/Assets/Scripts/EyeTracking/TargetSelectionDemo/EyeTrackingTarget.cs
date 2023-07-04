@@ -58,16 +58,25 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             interactable = GetComponent<StatefulInteractable>();
         }
 
+        /// <summary>
+        /// Called when a user begins a hover on the GameObject using a gaze based interactor.
+        /// </summary>
         public void OnGazeHoverEntered()
         {
             rotationCoroutine = StartCoroutine(RotateTarget());
         }
 
+        /// <summary>
+        /// Called when a user leaves a hover on the GameObject using a gaze based interactor.
+        /// </summary>
         public void OnGazeHoverExited()
         {
             StopCoroutine(rotationCoroutine);
         }
 
+        /// <summary>
+        /// Called when a user selects the GameObject.
+        /// </summary>
         public void OnTargetSelected()
         {
             if (!interactable.isHovered)

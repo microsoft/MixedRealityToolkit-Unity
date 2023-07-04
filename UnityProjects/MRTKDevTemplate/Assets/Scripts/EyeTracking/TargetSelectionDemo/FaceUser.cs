@@ -84,8 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             originalForwardNormalized = targetToRotate.transform.forward.normalized;
         }
 
-        // Update is called once per frame
-        public void Update()
+        private void Update()
         {
             // Update target rotation
             Vector3 TargetToCamera = (Camera.main.transform.position - targetToRotate.transform.position).normalized;
