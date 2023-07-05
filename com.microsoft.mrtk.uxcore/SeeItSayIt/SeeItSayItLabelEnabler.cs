@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 // Check if input and speech packages are present
 #if MRTK_INPUT_PRESENT && MRTK_SPEECH_PRESENT
                 // If we can't find any active speech interactors, then do not enable the labels.
-                if (!FindAnyObjectByType<SpeechInteractor>())
+                if (!Object.FindAnyObjectByType<SpeechInteractor>())
                 {
                     return;
                 }
