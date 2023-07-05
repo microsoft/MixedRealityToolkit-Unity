@@ -3,6 +3,9 @@
 
 using TMPro;
 using UnityEngine;
+#if MRTK_INPUT_PRESENT && MRTK_SPEECH_PRESENT
+using Microsoft.MixedReality.Toolkit.Input;
+#endif
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
@@ -47,48 +50,52 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 // Check if input and speech packages are present
 #if MRTK_INPUT_PRESENT && MRTK_SPEECH_PRESENT
-                SeeItSayItLabel.SetActive(true);
-
-                // Children must be disabled so that they are not initially visible 
-                foreach (Transform child in SeeItSayItLabel.transform)
+                
+                if ()
                 {
-                    child.gameObject.SetActive(false);
-                }
+                    SeeItSayItLabel.SetActive(true);
 
-                // Set the label text to reflect the speech recognition keyword
-                string keyword = pressablebutton.SpeechRecognitionKeyword;
-                if (keyword != null)
-                {
-                    TMP_Text labelText = SeeItSayItLabel.GetComponentInChildren<TMP_Text>(true);
-                    if (labelText != null)
+                    // Children must be disabled so that they are not initially visible 
+                    foreach (Transform child in SeeItSayItLabel.transform)
                     {
-                        labelText.text = $"Say '{keyword}'";
+                        child.gameObject.SetActive(false);
                     }
-                }
 
-                // If a Transform is specified, use it to reposition the object dynamically
-                if (positionControl != null)
-                {
-                    // The control RectTransform used to position the label's height
-                    RectTransform controlRectTransform = PositionControl.gameObject.GetComponent<RectTransform>();
-
-                    // If PositionControl is a RectTransform, reposition label relative to Canvas button
-                    if (controlRectTransform != null &&  SeeItSayItLabel.transform.childCount > 0)
+                    // Set the label text to reflect the speech recognition keyword
+                    string keyword = pressablebutton.SpeechRecognitionKeyword;
+                    if (keyword != null)
                     {
-                        // The parent RectTransform used to center the label
-                        RectTransform canvasTransform = SeeItSayItLabel.GetComponent<RectTransform>();
-
-                        // The child RectTransform used to set the final position of the label 
-                        RectTransform labelTransform = SeeItSayItLabel.transform.GetChild(0).gameObject.GetComponent<RectTransform>();
-
-                        if (labelTransform != null && canvasTransform != null)
+                        TMP_Text labelText = SeeItSayItLabel.GetComponentInChildren<TMP_Text>(true);
+                        if (labelText != null)
                         {
-                            labelTransform.anchoredPosition3D = new Vector3(canvasTransform.rect.width / 2f, canvasTransform.rect.height / 2f + (controlRectTransform.rect.height /  2f * -1) + canvasOffset, canvasOffset);
+                            labelText.text = $"Say '{keyword}'";
                         }
                     }
-                    else
+
+                    // If a Transform is specified, use it to reposition the object dynamically
+                    if (positionControl != null)
                     {
-                        SeeItSayItLabel.transform.localPosition = new Vector3(PositionControl.localPosition.x, (PositionControl.lossyScale.y / 2f * -1) + nonCanvasOffset, PositionControl.localPosition.z + nonCanvasOffset);
+                        // The control RectTransform used to position the label's height
+                        RectTransform controlRectTransform = PositionControl.gameObject.GetComponent<RectTransform>();
+
+                        // If PositionControl is a RectTransform, reposition label relative to Canvas button
+                        if (controlRectTransform != null &&  SeeItSayItLabel.transform.childCount > 0)
+                        {
+                            // The parent RectTransform used to center the label
+                            RectTransform canvasTransform = SeeItSayItLabel.GetComponent<RectTransform>();
+
+                            // The child RectTransform used to set the final position of the label 
+                            RectTransform labelTransform = SeeItSayItLabel.transform.GetChild(0).gameObject.GetComponent<RectTransform>();
+
+                            if (labelTransform != null && canvasTransform != null)
+                            {
+                                labelTransform.anchoredPosition3D = new Vector3(canvasTransform.rect.width / 2f, canvasTransform.rect.height / 2f + (controlRectTransform.rect.height /  2f * -1) + canvasOffset, canvasOffset);
+                            }
+                        }
+                        else
+                        {
+                            SeeItSayItLabel.transform.localPosition = new Vector3(PositionControl.localPosition.x, (PositionControl.lossyScale.y / 2f * -1) + nonCanvasOffset, PositionControl.localPosition.z + nonCanvasOffset);
+                        }
                     }
                 }
 #endif
