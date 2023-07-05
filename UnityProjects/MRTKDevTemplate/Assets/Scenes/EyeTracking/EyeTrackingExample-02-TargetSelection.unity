@@ -455,6 +455,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Infotext_GazeAndCommit
       objectReference: {fileID: 0}
+    - target: {fileID: 6540126486176102408, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6809291684801504143, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_text
       value: 
@@ -471,7 +475,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6540126486176102408, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
   m_PrefabInstance: {fileID: 300645523}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &300645526
+--- !u!114 &300645529
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -480,7 +484,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 300645525}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36eae551b67b6d74da769f7ceb8c1fe7, type: 3}
+  m_Script: {fileID: 11500000, guid: a7212b095e2da2c4cbb76f18506096c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &341941212

@@ -35,7 +35,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         private bool IsValid => (textureRenderer != null) && textureRenderer.enabled;
 
-        public override void Initialize()
+        /// <inheritdoc />
+        protected override void Initialize()
         {
             if (aspectRatio == -1f)
             {
@@ -47,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
         }
 
-        public void Initialize(float newAspectRatio)
+        private void Initialize(float newAspectRatio)
         {
             if (IsValid && aspectRatio != 0f)
             {
@@ -73,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// Returns the pan speed.
         /// </summary>
         /// <param name="uvCursorVal">Normalized cursor position in the hit box. Center is assumed to be at [-0.5, 0.5].</param>
-        public override float ComputePanSpeed(float uvCursorPos, float maxSpeed, float minDistFromCenterForAutoPan)
+        protected override float ComputePanSpeed(float uvCursorPos, float maxSpeed, float minDistFromCenterForAutoPan)
         {
             // UV space from [0,1] -> Center: [-0.5, 0.5]
             float centeredVal = uvCursorPos - 0.5f;
@@ -91,7 +92,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
         }
 
-        public override void UpdatePanZoom()
+        /// <inheritdoc />
+        protected override void UpdatePanZoom()
         {
             if (IsValid)
             {
@@ -127,12 +129,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
         }
 
-        public override int ZoomDir(bool zoomIn)
+        /// <inheritdoc />
+        protected override int ZoomDir(bool zoomIn)
         {
             return zoomIn ? -1 : 1;
         }
 
-        public override void ZoomIn()
+        /// <inheritdoc />
+        protected override void ZoomIn()
         {
             if (IsZooming)
             {
@@ -144,7 +148,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
         }
 
-        public override void ZoomOut()
+        /// <inheritdoc />
+        protected override void ZoomOut()
         {
             if (IsZooming)
             {
@@ -175,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// Determine the position of the cursor within the texture in UV space.
         /// </summary>
         /// <returns>True if this GameObject is hit.</returns>
-        public override bool UpdateCursorPosInHitBox(Vector3 hitPosition)
+        protected override bool UpdateCursorPosInHitBox(Vector3 hitPosition)
         {
             Vector3 center = gameObject.transform.position;
             Vector3 halfsize = gameObject.transform.lossyScale * 0.5f;

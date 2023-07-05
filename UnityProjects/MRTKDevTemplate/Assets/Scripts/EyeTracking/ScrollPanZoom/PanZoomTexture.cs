@@ -88,6 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             base.Start();
         }
 
+        /// <inheritdoc />
         public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
         {   
             base.ProcessInteractable(updatePhase);

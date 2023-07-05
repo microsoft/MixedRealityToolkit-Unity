@@ -119,13 +119,40 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         protected Vector2 originalScale;
         #endregion
 
-        public abstract void Initialize();
-        public abstract float ComputePanSpeed(float cursorPosInOneDir, float maxSpeed, float minDistFromCenterForAutoPan);
-        public abstract int ZoomDir(bool zoomIn);
-        public abstract void ZoomIn();
-        public abstract void ZoomOut();
-        public abstract void UpdatePanZoom();
-        public abstract bool UpdateCursorPosInHitBox(Vector3 hitPosition);
+        /// <summary>
+        /// Initializes the state of the interactable.
+        /// </summary>
+        protected abstract void Initialize();
+
+        /// <summary>
+        /// Computes the pan speed based on the distance from interactor position to the center of the interactable.
+        /// </summary>
+        protected abstract float ComputePanSpeed(float cursorPosInOneDir, float maxSpeed, float minDistFromCenterForAutoPan);
+
+        /// <summary>
+        /// Determines the sign of the zoom direction for zooming in and out.
+        /// </summary>
+        protected abstract int ZoomDir(bool zoomIn);
+
+        /// <summary>
+        /// Zooms in the GameObject.
+        /// </summary>
+        protected abstract void ZoomIn();
+
+        /// <summary>
+        /// Zooms out the GameObject.
+        /// </summary>
+        protected abstract void ZoomOut();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        protected abstract void UpdatePanZoom();
+
+        /// <summary>
+        /// Determine the position of the cursor within the hitbox. 
+        /// </summary>
+        protected abstract bool UpdateCursorPosInHitBox(Vector3 hitPosition);
 
         protected virtual void Start()
         {
@@ -143,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
         }
 
-        public void AutoPan()
+        protected void AutoPan()
         {
             PanHorizontally(ComputePanSpeed(cursorPosition.x, panSpeedLeftRight, minDistFromCenterForAutoPan.x));
             PanVertically(ComputePanSpeed(cursorPosition.y, panSpeedUpDown, minDistFromCenterForAutoPan.y));
@@ -165,11 +192,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             offsetRatePan = new Vector2(offsetRatePan.x, Time.deltaTime * speed);
         }
 
+        /// <summary>
+        /// Enables zoom operations using hand based interators.
+        /// </summary>
         public void EnableHandZoom()
         {
             handZoomEnabled = true;
         }
 
+        /// <summary>
+        /// Disables zoom operations using hand based interators.
+        /// </summary>
         public void DisableHandZoom()
         {
             handZoomEnabled = false;
@@ -184,13 +217,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             zoomDirection = ZoomDir(zoomIn);
         }
 
-        public void ZoomInStart()
+        private void ZoomInStart()
         {
             Debug.Log($"[{gameObject.name}] ZoomInStart: {scale}");
             ZoomStart(true);
         }
 
-        public void ZoomOutStart()
+        private void ZoomOutStart()
         {
             Debug.Log($"[{gameObject.name}] ZoomOutStart: {scale}");
             ZoomStart(false);
@@ -258,6 +291,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         private Vector3 initialPalmPosition;
         private XRNode handUsedToZoom;
 
+        [Tooltip("Toggles the direction of hand based zoom interactions")]
         [SerializeField]
         private bool invertPalmZoomDirection = true;
 
@@ -365,7 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             skimproof_UpdateSpeed = newSpeed / 1000f;
         }
 
-        public void ResetNormFixator()
+        protected void ResetNormFixator()
         {
             skimProofNormalFixator = 0f;
         }
@@ -483,11 +517,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             return newScale;
         }
 
+        /// <summary>
+        /// Begins a zoom in operation on the GameObject.
+        /// </summary>
         public void ZoomIn_Timed()
         {
             StartCoroutine(ZoomAndStop(true));
         }
 
+        /// <summary>
+        /// Begins a zoom out operation on the GameObject.
+        /// </summary>
         public void ZoomOut_Timed()
         {
             StartCoroutine(ZoomAndStop(false));
@@ -528,11 +568,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         }
 
         #region Handle input events
+        /// <summary>
+        /// Called when a user selects the GameObject.
+        /// </summary>
         public void OnSelectEntered()
         {
             IsZooming = true;
         }
 
+        /// <summary>
+        /// Called when a user deselects the GameObject.
+        /// </summary>
         public void OnSelectExited()
         {
             // Stop zoom
