@@ -895,6 +895,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMaterial: {fileID: 2100000, guid: 20aab68aa5bdcbc4abcd59454f35d25f, type: 2}
   outlineWidth: 0.005
+  autoAssignRenderQueue: 1
+  useStencilOutline: 0
+  stencilWriteMaterial: {fileID: 0}
+  outlineOffset: 0
+  stencilReference: 1
 --- !u!114 &320359050
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3505,6 +3510,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MRTK XR Rig
       objectReference: {fileID: 0}
+    - target: {fileID: 8479077998186684813, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
 --- !u!114 &1530487695 stripped
@@ -4662,6 +4671,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMaterial: {fileID: 2100000, guid: 20aab68aa5bdcbc4abcd59454f35d25f, type: 2}
   outlineWidth: 0.005
+  autoAssignRenderQueue: 1
+  useStencilOutline: 0
+  stencilWriteMaterial: {fileID: 0}
+  outlineOffset: 0
+  stencilReference: 1
 --- !u!65 &2059172217
 BoxCollider:
   m_ObjectHideFlags: 0
