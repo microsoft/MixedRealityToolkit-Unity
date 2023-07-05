@@ -66,9 +66,17 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// The mixer group to use for sounds that are to be spatialized.
+        /// Get or set an audio mixer group that can be used for mixing spatialized sounds. Setting this is not required.
         /// </summary>
-        [field: SerializeField, Tooltip("The mixer group to use for sounds that are to be spatialized.")]
+        /// <remarks>
+        /// This property can be used to configure audio sources' `outputAudioMixerGroup` fields, which is useful in
+        /// cases where the project's spatializer plugin requires an audio mixer. However, in this version of the Mixed 
+        /// Reality Toolkit, this property is not utilized. So setting it has no impact to the project.
+        ///
+        /// In the future, this property might be used to automatically configure audio sources. For an  example usage 
+        /// see the <see cref="Microsoft.MixedReality.Toolkit.Examples.Demos.ConfigureSpatializationSettings">ConfigureSpatializationSettings</see> 
+        /// behavior.
+        [field: SerializeField, Tooltip("An audio mixer group that can be used for mixing spatialized sounds. Setting this is not required.")]
         public AudioMixerGroup SpatializationMixer { get; set; }
 
 #if !UNITY_EDITOR
