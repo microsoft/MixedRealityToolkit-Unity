@@ -50,7 +50,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 // Check if input and speech packages are present
 #if MRTK_INPUT_PRESENT && MRTK_SPEECH_PRESENT
-
                 // If we can't find any active speech interactors, then do not enable the labels.
                 if (!FindAnyObjectByType<SpeechInteractor>())
                 {
@@ -101,7 +100,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
                         SeeItSayItLabel.transform.localPosition = new Vector3(PositionControl.localPosition.x, (PositionControl.lossyScale.y / 2f * -1) + nonCanvasOffset, PositionControl.localPosition.z + nonCanvasOffset);
                     }
                 }
-                
 #endif
             }
         }
