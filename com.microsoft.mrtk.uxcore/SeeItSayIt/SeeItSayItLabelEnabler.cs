@@ -3,9 +3,6 @@
 
 using TMPro;
 using UnityEngine;
-#if MRTK_INPUT_PRESENT && MRTK_SPEECH_PRESENT
-using Microsoft.MixedReality.Toolkit.Input;
-#endif
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
@@ -50,12 +47,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 // Check if input and speech packages are present
 #if MRTK_INPUT_PRESENT && MRTK_SPEECH_PRESENT
-                // If we can't find any active speech interactors, then do not enable the labels.
-                if (!Object.FindAnyObjectByType<SpeechInteractor>())
-                {
-                    return;
-                }
-
                 SeeItSayItLabel.SetActive(true);
 
                 // Children must be disabled so that they are not initially visible 
