@@ -477,7 +477,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             if (interactionManager == null)
             {
-                interactionManager = FindObjectOfType<XRInteractionManager>();
+                interactionManager = ComponentCache<XRInteractionManager>.FindFirstInstance();
                 if (interactionManager == null)
                 {
                     Debug.LogError("No interaction manager found in scene. Please add an interaction manager to the scene.");

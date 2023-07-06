@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public void InitializeControllers()
         {
             controllerMapping.Clear();
-            foreach (XRController xrController in FindObjectsOfType<XRController>())
+            foreach (XRController xrController in ComponentCache<XRController>.FindInstanceList())
             {
                 if (!controllerMapping.ContainsKey(xrController.gameObject))
                 {
@@ -188,7 +188,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 if (interactionManager == null)
                 {
-                    interactionManager = FindObjectOfType<XRInteractionManager>();
+                    interactionManager = ComponentCache<XRInteractionManager>.FindFirstInstance();
                 }
 
                 return interactionManager;

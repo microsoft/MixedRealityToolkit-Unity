@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         public void Awake()
         {
-            ControllerLookup[] lookups = GameObject.FindObjectsOfType(typeof(ControllerLookup)) as ControllerLookup[];
+            ControllerLookup[] lookups = ComponentCache<ControllerLookup>.FindInstanceList();
             if (lookups.Length == 0)
             {
                 Debug.LogError("Could not locate an instance of the ControllerLookup class in the hierarchy. It is recommended to add ControllerLookup to your camera rig.");

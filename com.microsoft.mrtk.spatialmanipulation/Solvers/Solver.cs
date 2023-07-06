@@ -244,12 +244,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         {
             // Find the controller lookup class in the hierarchy. Solvers that require access to the
             // left, right or gaze controllers will use the references stored in this class.
-            //
-            // While FindObjectsOfType can be an expensive method, the controllerLookup variable is
-            // static. The hierarchy traversal will occur a maximum of once per scene.
             if (controllerLookup == null)
             {
-                ControllerLookup[] lookups = GameObject.FindObjectsOfType(typeof(ControllerLookup)) as ControllerLookup[];
+                ControllerLookup[] lookups = ComponentCache<ControllerLookup>.FindInstanceList();
                 if (lookups.Length == 0)
                 {
                     Debug.LogError("Could not locate an instance of the ControllerLookup class in the hierarchy. It is recommended to add ControllerLookup to your camera rig.");
