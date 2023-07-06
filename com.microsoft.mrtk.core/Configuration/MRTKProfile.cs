@@ -65,12 +65,6 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
-        /// <summary>
-        /// The mixer group to use for sounds that are to be spatialized.
-        /// </summary>
-        [field: SerializeField, Tooltip("The mixer group to use for sounds that are to be spatialized.")]
-        public AudioMixerGroup SpatializationMixer { get; set; }
-
 #if !UNITY_EDITOR
         private void Awake()
         {
