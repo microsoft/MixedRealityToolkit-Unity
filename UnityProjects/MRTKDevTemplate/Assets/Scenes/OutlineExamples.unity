@@ -412,6 +412,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMaterial: {fileID: 2100000, guid: 8747c6241a00370479e539102c77c39f, type: 2}
   outlineWidth: 0.005
+  autoAssignRenderQueue: 1
+  useStencilOutline: 0
+  stencilWriteMaterial: {fileID: 0}
+  outlineOffset: 0
+  stencilReference: 1
 --- !u!114 &120046071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -986,6 +991,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMaterial: {fileID: 2100000, guid: 8747c6241a00370479e539102c77c39f, type: 2}
   outlineWidth: 0.005
+  autoAssignRenderQueue: 1
+  useStencilOutline: 0
+  stencilWriteMaterial: {fileID: 0}
+  outlineOffset: 0
+  stencilReference: 1
 --- !u!114 &250065335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2152,6 +2162,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMaterial: {fileID: 2100000, guid: 8747c6241a00370479e539102c77c39f, type: 2}
   outlineWidth: 0.005
+  autoAssignRenderQueue: 1
+  useStencilOutline: 0
+  stencilWriteMaterial: {fileID: 0}
+  outlineOffset: 0
+  stencilReference: 1
 --- !u!114 &848211347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3444,6 +3459,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MRTK XR Rig
       objectReference: {fileID: 0}
+    - target: {fileID: 8479077998186684813, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d7e2f87fefe0ba468719b15288b46e7, type: 3}
 --- !u!114 &1530487695 stripped
@@ -3572,6 +3591,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMaterial: {fileID: 2100000, guid: 8747c6241a00370479e539102c77c39f, type: 2}
   outlineWidth: 0.005
+  autoAssignRenderQueue: 1
+  useStencilOutline: 0
+  stencilWriteMaterial: {fileID: 0}
+  outlineOffset: 0
+  stencilReference: 1
 --- !u!114 &1566835733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3982,6 +4006,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMaterial: {fileID: 2100000, guid: 8747c6241a00370479e539102c77c39f, type: 2}
   outlineWidth: 0.005
+  autoAssignRenderQueue: 1
+  useStencilOutline: 0
+  stencilWriteMaterial: {fileID: 0}
+  outlineOffset: 0
+  stencilReference: 1
 --- !u!114 &1686868140
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3996,6 +4025,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMaterial: {fileID: 2100000, guid: 8747c6241a00370479e539102c77c39f, type: 2}
   outlineWidth: 0.005
+  autoAssignRenderQueue: 1
+  useStencilOutline: 0
+  stencilWriteMaterial: {fileID: 0}
+  outlineOffset: 0
+  stencilReference: 1
 --- !u!4 &1686868149 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400018, guid: f9a8072f5d9b92347a999f10f01b8012, type: 3}
@@ -4737,6 +4771,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMaterial: {fileID: 2100000, guid: cf3f7a021c11ff3448af91b319a16682, type: 2}
   outlineWidth: 0.005
+  autoAssignRenderQueue: 1
+  useStencilOutline: 0
+  stencilWriteMaterial: {fileID: 0}
+  outlineOffset: 0
+  stencilReference: 1
+  exclusionMode: 0
+  exclusionString: 
+  exclusionTag: Untagged
 --- !u!4 &2139691554
 Transform:
   m_ObjectHideFlags: 0
