@@ -4,10 +4,8 @@
 using System.Collections;
 using Microsoft.MixedReality.Toolkit.Input.Tests;
 using NUnit.Framework;
-using TMPro;
 using UnityEngine;
 using UnityEngine.TestTools;
-using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 {

@@ -12,6 +12,7 @@ namespace Microsoft.MixedReality.Toolkit
     {
         /// <summary>
         /// Returns an estimated distance from the provided pose to the user's body.
+        /// </summary>
         /// <remarks>
         /// The body is treated as a ray, parallel to the y-axis, where the start is head position.
         /// This means that moving your hand down such that is the same distance from the body will

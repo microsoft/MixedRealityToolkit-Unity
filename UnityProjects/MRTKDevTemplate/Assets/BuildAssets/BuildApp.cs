@@ -15,6 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Build
         private static string[] scenes = {
             "Assets/Scenes/Audio/AudioLoFiExample.unity",
             "Assets/Scenes/Audio/AudioOcclusionExample.unity",
+            "Assets/Scenes/Experimental/ScrollingExample.unity",
+            "Assets/Scenes/Experimental/NonNativeKeyboard.unity",
+            "Assets/Scenes/Experimental/VirtualizedScrollRectList.unity",
             "Assets/Scenes/BoundsControlExamples.unity",
             "Assets/Scenes/CanvasExample.unity",
             "Assets/Scenes/CanvasUITearsheet.unity",
@@ -42,9 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Build
             "Assets/Scenes/TapToPlaceExample.unity",
             "Assets/Scenes/ToggleCollectionExample.unity",
             "Assets/Scenes/TopNavigationExample.unity",
-            "Assets/Scenes/VanillaUGUIExample.unity",
-            "Assets/Scenes/Experimental/VirtualizedScrollRectList.unity",
-            "Assets/Scenes/Experimental/NonNativeKeyboard.unity" };
+            "Assets/Scenes/VanillaUGUIExample.unity" };
 
         private static string buildPath = "build";
 

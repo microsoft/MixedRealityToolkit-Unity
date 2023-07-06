@@ -228,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Derived classes should override this method to
         /// specify custom variable selection math.
         /// The default implementation allows for variable selection
-        /// from the <see cref="GazePinchInteractor">, calculated with
+        /// from the <see cref="GazePinchInteractor"/>, calculated with
         /// <see cref="PinchAmount"/>.
         /// </summary>
         public virtual float Selectedness()

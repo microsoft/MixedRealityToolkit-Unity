@@ -655,6 +655,14 @@ PrefabInstance:
       propertyPath: previewInput
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1123086001961791811, guid: 74b589d1efab94a4cb70e4b5c22783f8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1195796392646670598, guid: 74b589d1efab94a4cb70e4b5c22783f8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4299661269661786889, guid: 74b589d1efab94a4cb70e4b5c22783f8, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
