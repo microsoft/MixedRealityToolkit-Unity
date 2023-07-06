@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// <summary>
         /// Constructs a <c>TextToSpeechSubsystemDescriptor</c> based on the given parameters.
         /// </summary>
-        /// <param name=cinfo>The parameters required to initialize the descriptor.</param>
+        /// <param name="cinfo">The parameters required to initialize the descriptor.</param>
         TextToSpeechSubsystemDescriptor(TextToSpeechSubsystemCinfo cinfo) : base(cinfo)
         {
             // TODO: Initialize subsystem specific properties.
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// Creates a <c>TextToSpeechSubsystemDescriptor</c> based on the given parameters validating that the
         /// <c>id</c> and <c>implentationType</c> properties are specified.
         /// </summary>
-        /// <param name='cinfo'>The parameters required to initialize the descriptor.</param>
+        /// <param name="cinfo">The parameters required to initialize the descriptor.</param>
         /// <returns>
         /// The created <c>TextToSpeechSubsystemDescriptor</c>.
         /// </returns>

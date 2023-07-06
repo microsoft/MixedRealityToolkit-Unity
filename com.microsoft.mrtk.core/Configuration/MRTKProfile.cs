@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit
         protected SerializableDictionary<SystemType, BaseSubsystemConfig> subsystemConfigs = new SerializableDictionary<SystemType, BaseSubsystemConfig>();
 
         /// <summary>
-        /// Attempts to retrieve the specified <see cref="BaseSubsystemConfig"> for a given subsystem type.
+        /// Attempts to retrieve the specified <see cref="BaseSubsystemConfig"/> for a given subsystem type.
         /// </summary>
         /// <returns>
         /// True if there is a registered configuration for the specified subsystem. False otherwise.
@@ -64,12 +64,6 @@ namespace Microsoft.MixedReality.Toolkit
                 return false;
             }
         }
-
-        /// <summary>
-        /// The mixer group to use for sounds that are to be spatialized.
-        /// </summary>
-        [field: SerializeField, Tooltip("The mixer group to use for sounds that are to be spatialized.")]
-        public AudioMixerGroup SpatializationMixer { get; set; }
 
 #if !UNITY_EDITOR
         private void Awake()

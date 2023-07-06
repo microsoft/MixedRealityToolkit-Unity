@@ -109,7 +109,7 @@
       "dependencies": {
         "com.microsoft.mrtk.core": "3.0.0",
         "com.microsoft.mrtk.graphicstools.unity": "0.5.12",
-        "com.unity.inputsystem": "1.5.1",
+        "com.unity.inputsystem": "1.6.1",
         "com.unity.xr.arfoundation": "5.0.5",
         "com.unity.xr.interaction.toolkit": "2.3.0",
         "com.unity.xr.core-utils": "2.1.0"
@@ -122,7 +122,7 @@
       "dependencies": {
         "com.microsoft.mrtk.core": "3.0.0",
         "com.microsoft.mrtk.uxcore": "3.0.0",
-        "com.unity.inputsystem": "1.5.1",
+        "com.unity.inputsystem": "1.6.1",
         "com.unity.xr.interaction.toolkit": "2.3.0"
       }
     },
@@ -177,7 +177,7 @@
       "dependencies": {
         "com.microsoft.mrtk.core": "3.0.0",
         "com.microsoft.mrtk.graphicstools.unity": "0.5.12",
-        "com.unity.inputsystem": "1.5.1",
+        "com.unity.inputsystem": "1.6.1",
         "com.unity.textmeshpro": "3.0.6",
         "com.unity.xr.interaction.toolkit": "2.3.0"
       }
@@ -188,7 +188,6 @@
       "source": "local",
       "dependencies": {
         "com.microsoft.mrtk.core": "3.0.0",
-        "com.microsoft.mrtk.input": "3.0.0",
         "com.microsoft.mrtk.tts.windows": "1.0.1"
       }
     },
@@ -247,7 +246,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.inputsystem": {
-      "version": "1.5.1",
+      "version": "1.6.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -290,15 +289,7 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.unity.project-auditor": {
-      "version": "https://github.com/Unity-Technologies/ProjectAuditor.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {
-        "com.unity.nuget.mono-cecil": "1.10.1"
-      },
-      "hash": "0fc705630268255b07f06dacd61f3205f5d5ff3c"
-    },
+
     "com.unity.subsystemregistration": {
       "version": "1.1.0",
       "depth": 1,
