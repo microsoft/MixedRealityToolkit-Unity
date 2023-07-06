@@ -18,6 +18,11 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// A display that blocks viewing of the physical world.
         /// </summary>
-        Opaque = 1
+        Opaque = 1,
+
+        /// <summary>
+        /// An unknown display type.
+        /// </summary>
+        Unknown = 2,
     }
 }
