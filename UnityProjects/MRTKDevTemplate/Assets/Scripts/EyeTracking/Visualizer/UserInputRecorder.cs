@@ -41,13 +41,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         private void OnEnable()
         {
-            fileLogger = new FileInputLogger(userName, Filename);
+            fileLogger = new FileInputLogger(Filename);
             timerStart = DateTime.Now;
             fileLogger.AppendLog(GetHeader());
         }
 
         private void OnDisable()
         {
+            #if WINDOWS_UWP
+            fileLogger.SaveLogs();
+            #endif
+
             fileLogger.Dispose();
             fileLogger = null;
         }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 #if WINDOWS_UWP
 using System.Threading.Tasks;
@@ -15,8 +16,6 @@ using Windows.Storage;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
-    using UnityEngine.Events;
-
     /// <summary>
     /// Allows the user to playback a recorded log file of eye gaze interactions with a heat map.
     /// </summary>
@@ -38,17 +37,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         [Tooltip("Event that is fired when playback of a log file has completed")]
         [SerializeField]
         private UnityEvent onPlaybackCompleted;
-
+        
         private IReadOnlyList<string> loggedLines;
         private Coroutine showHeatmapCoroutine;
-
-#if WINDOWS_UWP
-        private StorageFolder uwpRootFolder = KnownFolders.MusicLibrary;
-        private readonly string uwpSubFolderName = $"MRTK_ET_Demo{Path.DirectorySeparatorChar}tester";
-        private readonly string uwpFileName = "mrtk_log_mostRecentET.csv";
-        private StorageFolder uwpLogSessionFolder;
-        private StorageFile uwpLogFile;
-#endif
 
         private void Start()
         {
@@ -68,62 +59,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         {
             loggedLines = null;
         }
-
-#if WINDOWS_UWP
-        public async Task<bool> UWP_Load()
-        {
-            return await UWP_LoadNewFile(FileName);
-        }
-
-        public async Task<bool> UWP_LoadNewFile(string filename)
-        {
-            ResetCurrentStream();
-            bool fileExists = await UWP_FileExists(uwpSubFolderName, uwpFileName);
-
-            if (fileExists)
-            {
-                loadingUpdateStatusText.text = "File exists: " + uwpFileName;
-                await UWP_ReadData(uwpLogFile);
-            }
-            else
-            {
-                loadingUpdateStatusText.text = "Error: File does not exist! " + uwpFileName;
-                return false;
-            }
-
-            return true;
-        }
-
-        public async Task<bool> UWP_FileExists(string dir, string filename)
-        {
-            try
-            {
-                uwpLogSessionFolder = await uwpRootFolder.GetFolderAsync(dir);
-                uwpLogFile = await uwpLogSessionFolder.GetFileAsync(filename);
-
-                return true;
-            }
-            catch
-            {
-                loadingUpdateStatusText.text = "Error: File could not be found.";
-            }
-
-            return false;
-        }
-
-        private async Task<bool> UWP_ReadData(StorageFile logfile)
-        {
-            using var inputStream = await logfile.OpenReadAsync();
-            using var classicStream = inputStream.AsStreamForRead();
-            using var streamReader = new StreamReader(classicStream);
-            while (streamReader.Peek() >= 0)
-            {
-                loggedLines.Add(streamReader.ReadLine());
-            }
-            loadingUpdateStatusText.text = "Finished loading log file. Lines: " + loggedLines.Count;
-            return true;
-        }
-#endif
 
         private bool IsDataLoaded
         {
@@ -202,10 +137,67 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 #if WINDOWS_UWP
         private async void LoadInUWP()
         {
-            loadingUpdateStatusText.text = "[Load.1] " + FileName;
-            await UWP_Load();
+            loadingUpdateStatusText.text = "[LoadInUWP] " + FileName;
+            try
+            {
+                bool loaded = await LoadLogs();
+                if (loaded)
+                {
+                    await ReadData();
+                }
+                else
+                {
+                    Debug.Log("Could not load file.");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log(string.Format("Exception: {0}", e.Message));
+                loadingUpdateStatusText.text = $"[LoadInUWP] File load failed: {e.Message}";
+            }
+        }
+
+        private StorageFile logFile;
+        public async Task<bool> LoadLogs()
+        {
+            try
+            {
+                StorageFolder logRootFolder = KnownFolders.MusicLibrary;
+                if (logRootFolder != null)
+                {
+                    //string fullPath = Path.Combine(logRootFolder.Path, LogDirectory);
+
+                    //if (!Directory.Exists(fullPath))
+                    //{
+                    //    return;
+                    //}
+
+                    //sessionFolder = await logRootFolder.GetFolderAsync(LogDirectory);
+                    logFile = await logRootFolder.GetFileAsync(playbackLogFilename);
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log(string.Format("Exception in BasicLogger to load log file: {0}", e.Message));
+            }
+            return false;
+        }
+
+        public async Task<bool> ReadData()
+        {
+            var stream = await logFile.OpenAsync(Windows.Storage.FileAccessMode.Read);
+            using var inputStream = stream.GetInputStreamAt(0);
+            using var dataReader = new Windows.Storage.Streams.DataReader(inputStream);
+            uint numBytesLoaded = await dataReader.LoadAsync((uint)stream.Size);
+            string text = dataReader.ReadString(numBytesLoaded);
+
+            loggedLines = text.Split(Environment.NewLine);
+            return true;
         }
 #endif
+
+
         /// <summary>
         /// True while the GameObject is playing back eye gaze data from the log file.
         /// </summary>
@@ -228,7 +220,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             get
             {
 #if WINDOWS_UWP
-                return "C:\\Data\\Users\\DefaultAccount\\Music\\MRTK_ET_Demo\\tester\\" + playbackLogFilename;
+                return playbackLogFilename;
 #else
                 return Application.persistentDataPath + "/" + playbackLogFilename;
 #endif
@@ -247,8 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
                 if (showHeatmapCoroutine != null)
                     StopCoroutine(showHeatmapCoroutine);
-
-                IsPlaying = true;
+                
                 counter = 0;
                 showHeatmapCoroutine = StartCoroutine(PopulateHeatmap());
             }
@@ -274,6 +265,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         private IEnumerator PopulateHeatmap()
         {
             const float maxTargetingDistInMeters = 10f;
+
+#if WINDOWS_UWP
+            yield return new WaitUntil(() => IsDataLoaded);
+#endif
+            IsPlaying = true;
 
             // Now let's populate the visualizer
             for (int i = 0; i < loggedLines.Count; i++)

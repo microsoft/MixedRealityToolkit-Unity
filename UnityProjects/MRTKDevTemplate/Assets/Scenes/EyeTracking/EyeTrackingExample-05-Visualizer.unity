@@ -703,11 +703,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &715919861 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 715919861, guid: 0745c2d3ca133584e996e8cd69f6d0aa, type: 3}
-  m_PrefabInstance: {fileID: 7887614037481751899}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &870610048
 GameObject:
   m_ObjectHideFlags: 0
@@ -1180,6 +1175,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  UserNameFolder: tester
 --- !u!224 &1261404671 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3220012215463627515, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
@@ -2030,10 +2026,6 @@ PrefabInstance:
       propertyPath: <OnClicked>k__BackingField.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1232406737}
-    - target: {fileID: 5685716680725385779, guid: 0745c2d3ca133584e996e8cd69f6d0aa, type: 3}
-      propertyPath: buttonResumePlayback
-      value: 
-      objectReference: {fileID: 715919861}
     - target: {fileID: 5853303421825090637, guid: 0745c2d3ca133584e996e8cd69f6d0aa, type: 3}
       propertyPath: m_RootOrder
       value: 2

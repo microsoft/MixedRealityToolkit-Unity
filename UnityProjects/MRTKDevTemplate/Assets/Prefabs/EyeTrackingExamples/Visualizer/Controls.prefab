@@ -975,7 +975,7 @@ MonoBehaviour:
   buttonStopRecording: {fileID: 6802997350238223167}
   buttonStartPlayback: {fileID: 8310050747605233910}
   buttonPausePlayback: {fileID: 191985091076322603}
-  buttonResumePlayback: {fileID: 8237818353018430703}
+  buttonResumePlayback: {fileID: 715919861}
 --- !u!114 &2087141182152323438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -988,7 +988,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a97caac99350c446a783a1bc3e9bf1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filenameToUse: test
+  filenameToUse: mrtk_log_mostRecentET
   addTimestampToLogfileName: 0
   logStructure: {fileID: 9111033687875367441}
   userName: tester
@@ -2537,10 +2537,5 @@ PrefabInstance:
 --- !u!4 &8237818351390515726 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2244185731585867246, guid: cd0f0697f0939504389ec612388f609a, type: 3}
-  m_PrefabInstance: {fileID: 7887614037859475424}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8237818353018430703 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2244185731031694095, guid: cd0f0697f0939504389ec612388f609a, type: 3}
   m_PrefabInstance: {fileID: 7887614037859475424}
   m_PrefabAsset: {fileID: 0}
