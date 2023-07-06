@@ -102,7 +102,9 @@ namespace Microsoft.MixedReality.Toolkit
                         break;
 
                     default:
+#if !UNITY_EDITOR
                         Debug.LogWarning($"Unknown DisplayType value: {type}. No camera settings changes made.");
+#endif
                         break;
                 }
             }
