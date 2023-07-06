@@ -8,11 +8,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 {
     using Input;
     using Subsystems;
-    using UnityEngine.Serialization;
     using UnityEngine.XR;
     using UnityEngine.XR.Interaction.Toolkit;
 
-    public enum PlacementSurfaces
+    /// <summary>
+    /// Specifies the allowed surface orientations to place GameObjects with attached <see cref="MoveObjectByEyeGaze"/> on.
+    /// </summary>
+    internal enum PlacementSurfaces
     {
         Horizontal,
         Vertical
@@ -25,12 +27,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples
     [AddComponentMenu("Scripts/MRTK/Examples/MoveObjectByEyeGaze")]
     public class MoveObjectByEyeGaze : StatefulInteractable
     {
+        [Tooltip("Reference to the FuzzyGazeInteractor in the scene")]
         [SerializeField]
         private FuzzyGazeInteractor gazeInteractor;
 
         #region Serialized variables
 
         [Header("Eyes")]
+        [Tooltip("Use this to toggle eye gaze interactions.")]
         [SerializeField]
         private bool useEyeSupportedTargetPlacement = false;
 
@@ -41,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         private float minLookAwayDistToEnableEyeWarp = 5f;
 
         [Header("Hands")]
-        [Tooltip("Use this to enforce only voice commands to move targets.")]
+        [Tooltip("Use this to toggle hand based interactions.")]
         [SerializeField]
         private bool handInputEnabled = true;
 
@@ -73,28 +77,43 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         private float previewPlacementDistanceThreshold = 0.05f;
 
         [Header("Constrained Movement")]
+        [Tooltip("Freeze the X position of the GameObject.")]
         [SerializeField]
         private bool freezeX = false;
 
+        [Tooltip("Freeze the Y position of the GameObject.")]
         [SerializeField]
         private bool freezeY = false;
 
+        [Tooltip("Freeze the Z position of the GameObject.")]
         [SerializeField]
         private bool freezeZ = false;
 
+        [Tooltip("Specifies whether the GameObject moves on horizontal or vertical surfaces.")]
+        [SerializeField]
+        private PlacementSurfaces placementSurface = PlacementSurfaces.Horizontal;
+
+        /// <summary>
+        /// Limits the X position of the GameObject to the specified minimum and maximum.
+        /// </summary>
         public Vector2 LocalMinMaxX = new Vector2(float.NegativeInfinity, float.PositiveInfinity);
+
+        /// <summary>
+        /// Limits the Y position of the GameObject to the specified minimum and maximum.
+        /// </summary>
         public Vector2 LocalMinMaxY = new Vector2(float.NegativeInfinity, float.PositiveInfinity);
+
+        /// <summary>
+        /// Limits the Z position of the GameObject to the specified minimum and maximum.
+        /// </summary>
         public Vector2 LocalMinMaxZ = new Vector2(float.NegativeInfinity, float.PositiveInfinity);
-
-        public PlacementSurfaces PlacementSurface = PlacementSurfaces.Horizontal;
-
+        
+        [Tooltip("Fired when the GameObject is dropped.")]
         [SerializeField]
         private UnityEvent onDrop = null;
-
         #endregion
 
         #region Private variables
-
         private GameObject previewGameObject;
 
         private bool
@@ -124,14 +143,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         private Ray? headPreviousRay;
         private float headDeltaDirectionThreshold = 0.05f;
         private float headSmoothf = 0.1f;
-        private bool headIsInMotion;
         private float headDeltaDirectionf = 0f;
 
         private int ConstraintX => freezeX ? 0 : 1;
         private int ConstraintY => freezeY ? 0 : 1;
         private int ConstraintZ => freezeZ ? 0 : 1;
 
-        Vector3? _prevPreviewPos;
+        Vector3? previousPreviewPosition;
 
         // The values represent the maximum angle that the surface can be offset from the 'up' vector to be considered for horizontal placement.
         // For example, if a surface is slanted by 40 degrees targets may slid off and hence we may consider this an invalid offset angle.
@@ -139,7 +157,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         // The values represents the minimal angle that the surface must be offset from the 'up' vector to be considered for vertical placement.
         private readonly float minDiffAngleForVerticalPlacement = 50f;
-
         #endregion
 
         public override float Selectedness()
@@ -147,6 +164,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             return objectIsGrabbed ? 1f : base.Selectedness();
         }
 
+        /// <summary>
+        /// Moves the GameObject while it is grabbed using hand interactors if enabled, and places a preview object at the eye gaze
+        /// position if eye gaze interaction is enabled.
+        /// </summary>
         public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
         {
             // Dynamic is effectively just your normal Update().
@@ -225,7 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                                 }
                                 else
                                 {
-                                    if (PlacementSurface == PlacementSurfaces.Horizontal)
+                                    if (placementSurface == PlacementSurfaces.Horizontal)
                                     {
                                         previewGameObject.transform.position = plausibleLocation.Value +
                                             previewGameObject.transform.localScale.y * Vector3.up /
@@ -237,7 +258,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                                             plausibleLocation.Value;
                                     }
 
-                                    _prevPreviewPos = previewGameObject.transform.position;
+                                    previousPreviewPosition = previewGameObject.transform.position;
                                 }
                             }
                             else
@@ -253,17 +274,23 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                 }
                 else
                 {
-                    _prevPreviewPos = null;
+                    previousPreviewPosition = null;
                 }
             }
         }
 
         #region Hand input handler
+        /// <summary>
+        /// Called when a user selects the GameObject using a hand based interactor.
+        /// </summary>
         public void OnGrabSelectedEntered()
         {
             HandDrag_Start();
         }
 
+        /// <summary>
+        /// Called when a user deselects the GameObject using a hand based interactor.
+        /// </summary>
         public void OnGrabSelectedExited()
         {
             HandDrag_Stop();
@@ -271,12 +298,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         #endregion
 
         #region Voice input handler
+        /// <summary>
+        /// Called when a user selects the GameObject using a voice based interactor
+        /// </summary>
         public void OnVoiceSelectedEntered()
         {
             isManipulatingUsingVoice = true;
             DragAndDrop_Start();
         }
 
+        /// <summary>
+        /// Called when a user deselects the GameObject using a voice based interactor
+        /// </summary>
         public void OnVoiceSelectedExited()
         {
             DragAndDrop_Finish();
@@ -338,15 +371,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// </summary>
         private bool IsLookingAwayFromPreview()
         {
-            if (_prevPreviewPos == null)
+            if (previousPreviewPosition == null)
             {
                 return true;
             }
 
-            Vector3 eyes2PrevPreview = _prevPreviewPos.Value - Camera.main.transform.position;
-            Vector3 eye2HitPos = Camera.main.transform.forward;
+            Vector3 eyes2PreviousPreview = previousPreviewPosition.Value - Camera.main.transform.position;
+            Vector3 eye2HitPosition = Camera.main.transform.forward;
 
-            float distance = EyeTrackingUtilities.VisAngleInDegreesToMeters(Vector3.Angle(eyes2PrevPreview, eye2HitPos), eye2HitPos.magnitude);
+            float distance = EyeTrackingUtilities.VisAngleInDegreesToMeters(Vector3.Angle(eyes2PreviousPreview, eye2HitPosition), eye2HitPosition.magnitude);
 
             if (distance < previewPlacementDistanceThreshold)
             {
@@ -361,11 +394,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
             // Check whether the user is still looking within the proximity of the target
             float distanceBetweenTargetAndCurrHitPos = Angle_ToCurrHitTarget(previewGameObject);
-            if (distanceBetweenTargetAndCurrHitPos > minLookAwayDistToEnableEyeWarp)
-            {
-                return true;
-            }
-            return false;
+
+            return distanceBetweenTargetAndCurrHitPos > minLookAwayDistToEnableEyeWarp;
         }
 
         /// <summary>
@@ -375,7 +405,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// <returns>True if the target can be placed on this surface.</returns>
         private bool IsDestinationPlausible()
         {
-            if (PlacementSurface == PlacementSurfaces.Horizontal)
+            if (placementSurface == PlacementSurfaces.Horizontal)
             {
                 float angle = Vector3.Angle(gazeInteractor.PreciseHitResult.raycastHit.normal, Vector3.up);
                 if (angle < maxDiffAngleForHorizontalPlacement) // If the angle is more than for example 20 degrees off from the up vector
@@ -384,7 +414,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                 }
             }
 
-            else if (PlacementSurface == PlacementSurfaces.Vertical)
+            else if (placementSurface == PlacementSurfaces.Vertical)
             {
                 float angle = Vector3.Angle(gazeInteractor.PreciseHitResult.raycastHit.normal, gameObject.transform.up);
                 if (angle > minDiffAngleForVerticalPlacement)
@@ -441,7 +471,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// <summary>
         /// Begin with the selection and movement of the focused target.
         /// </summary>
-        public void DragAndDrop_Start()
+        private void DragAndDrop_Start()
         {
             if (!objectIsGrabbed && isHovered)
             {
@@ -464,7 +494,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// <summary>
         /// Finalize placing the currently selected target.
         /// </summary>
-        public void DragAndDrop_Finish()
+        private void DragAndDrop_Finish()
         {
             if (objectIsGrabbed)
             {
@@ -504,7 +534,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// <summary>
         /// Compute the angle between the initial (when selecting the target) and current eye gaze direction.
         /// </summary>
-        public float Angle_InitialGazeToCurrGazeDir()
+        private float Angle_InitialGazeToCurrGazeDir()
         {
             return Vector3.Angle(initalGazeDirection, Camera.main.transform.forward);
         }
@@ -512,7 +542,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// <summary>
         /// Compute angle between target center ( OR original targeting location??? ) and current targeting direction
         /// </summary>
-        public float Angle_ToCurrHitTarget(GameObject gobj)
+        private float Angle_ToCurrHitTarget(GameObject gobj)
         {
             if (gazeInteractor.PreciseHitResult.targetInteractable != null)
             {
@@ -533,6 +563,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         private bool HeadIsInMotion()
         {
+            bool headIsInMotion = false;
+
             Vector3 pos = Camera.main.transform.position;
             Vector3 forward = Camera.main.transform.forward;
 
@@ -547,15 +579,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                     headIsInMotion = headDeltaDirectionf > headDeltaDirectionThreshold;
                 }
             }
-            else
-                headIsInMotion = false;
 
             headPreviousRay = new Ray(pos, forward);  // Update recent head move
 
             return headIsInMotion;
         }
 
-        public void MoveTargetBy(Vector3 delta)
+        private void MoveTargetBy(Vector3 delta)
         {
             // Check that this game object is currently selected
             if (objectIsGrabbed)
@@ -577,7 +607,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                     Vector3 hitPosition = gazeInteractor.PreciseHitResult.raycastHit.point;
 
                     // Discrete cursor-based target movement
-                    if (PlacementSurface == PlacementSurfaces.Horizontal)
+                    if (placementSurface == PlacementSurfaces.Horizontal)
                     {
                         hitPosition.y += gameObject.transform.localScale.y * 0.5f;
                     }
@@ -606,7 +636,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
         }
 
-        public void ConstrainMovement()
+        private void ConstrainMovement()
         {
             Vector3 locPos = gameObject.transform.localPosition;
             float rx = Mathf.Clamp(locPos.x, LocalMinMaxX.x, LocalMinMaxX.y);
@@ -616,20 +646,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             gameObject.transform.localPosition = new Vector3(rx, ry, rz);
         }
 
-        /*public void OnDrop_SnapToClosestDecimal()
-        {
-            if (_sliderSnapToNearestDecimal != 0f
-                && !float.IsPositiveInfinity(LocalMinMaxX.x) && !float.IsNegativeInfinity(LocalMinMaxX.x)
-                && !float.IsPositiveInfinity(LocalMinMaxX.y) && !float.IsNegativeInfinity(LocalMinMaxX.y))
-            {
-                Vector3 locPos = gameObject.transform.localPosition;
-                float normalizedValue = (locPos.x - LocalMinMaxX.x) / (LocalMinMaxX.y - LocalMinMaxX.x);
-                locPos.x = (Mathf.Round(normalizedValue / _sliderSnapToNearestDecimal) * _sliderSnapToNearestDecimal) * (LocalMinMaxX.y - LocalMinMaxX.x) + LocalMinMaxX.x;
-                gameObject.transform.localPosition = locPos;
-            }
-        }*/
-
-        public void MoveTargetTo(Vector3 destination)
+        private void MoveTargetTo(Vector3 destination)
         {
             // Check that this game object is currently selected
             if (objectIsGrabbed)
@@ -648,7 +665,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                 if (ShouldObjBeWarped(deltaHand, Angle_ToCurrHitTarget(gameObject), headIsInMotion))
                 {
                     // Discrete cursor-based target movement
-                    if (PlacementSurface == PlacementSurfaces.Horizontal)
+                    if (placementSurface == PlacementSurfaces.Horizontal)
                     {
                         destination.y += gameObject.transform.localScale.y * 0.5f;
                     }

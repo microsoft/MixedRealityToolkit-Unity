@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 #if WINDOWS_UWP
 using System.Threading.Tasks;
@@ -15,109 +16,64 @@ using Windows.Storage;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
+    /// <summary>
+    /// Allows the user to playback a recorded log file of eye gaze interactions with a heat map.
+    /// </summary>
     [AddComponentMenu("Scripts/MRTK/Examples/UserInputPlayback")]
     public class UserInputPlayback : MonoBehaviour
     {
+        [Tooltip("Filename of the log file to be replayed")]
         [SerializeField]
-        private string customFilename = string.Empty;
+        private string playbackLogFilename = string.Empty;
 
-        public InputPointerVisualizer EyeGazeVisualizer;
-        public InputPointerVisualizer HeadGazeVisualizer;
-
+        [Tooltip("References to the heatmaps to show playback of eye gaze interactions")]
         [SerializeField]
         private DrawOnTexture[] heatmapReferences = null;
 
-        private List<string> loggedLines;
+        [Tooltip("Displays status updates for file loading and replay status")]
+        [SerializeField]
+        private TextMeshPro loadingUpdateStatusText;
 
-#if WINDOWS_UWP
-        private StorageFolder uwpRootFolder = KnownFolders.MusicLibrary;
-        private readonly string uwpSubFolderName = $"MRTK_ET_Demo{Path.DirectorySeparatorChar}tester";
-        private readonly string uwpFileName = "mrtk_log_mostRecentET.csv";
-        private StorageFolder uwpLogSessionFolder;
-        private StorageFile uwpLogFile;
-#endif
+        [Tooltip("Event that is fired when playback of a log file has completed")]
+        [SerializeField]
+        private UnityEvent onPlaybackCompleted;
+        
+        private IReadOnlyList<string> loggedLines;
+        private Coroutine showHeatmapCoroutine;
 
         private void Start()
         {
             IsPlaying = false;
-            ResetCurrentStream();
             LoadingStatus_Hide();
+        }
+
+        private void Update()
+        {
+            if (IsPlaying && IsDataLoaded && counter < loggedLines.Count - 1)
+            {
+                UpdateLoadingStatus(counter, loggedLines.Count);
+            }
         }
 
         private void ResetCurrentStream()
         {
-            loggedLines = new List<string>();
+            loggedLines = null;
         }
 
-#if WINDOWS_UWP
-        public async Task<bool> UWP_Load()
+        private bool IsDataLoaded
         {
-            return await UWP_LoadNewFile(FileName);
+            get { return loggedLines != null && loggedLines.Count > 0; }
         }
 
-        public async Task<bool> UWP_LoadNewFile(string filename)
-        {
-            ResetCurrentStream();
-            bool fileExists = await UWP_FileExists(uwpSubFolderName, uwpFileName);
-
-            if (fileExists)
-            {
-                LoadingUpdateStatusText.text = "File exists: " + uwpFileName;
-                await UWP_ReadData(uwpLogFile);
-            }
-            else
-            {
-                LoadingUpdateStatusText.text = "Error: File does not exist! " + uwpFileName;
-                return false;
-            }
-
-            return true;
-        }
-
-        public async Task<bool> UWP_FileExists(string dir, string filename)
-        {
-            try
-            {
-                uwpLogSessionFolder = await uwpRootFolder.GetFolderAsync(dir);
-                uwpLogFile = await uwpLogSessionFolder.GetFileAsync(filename);
-
-                return true;
-            }
-            catch
-            {
-                LoadingUpdateStatusText.text = "Error: File could not be found.";
-            }
-
-            return false;
-        }
-
-        private async Task<bool> UWP_ReadData(StorageFile logfile)
-        {
-            using var inputStream = await logfile.OpenReadAsync();
-            using var classicStream = inputStream.AsStreamForRead();
-            using var streamReader = new StreamReader(classicStream);
-            while (streamReader.Peek() >= 0)
-            {
-                loggedLines.Add(streamReader.ReadLine());
-            }
-            LoadingUpdateStatusText.text = "Finished loading log file. Lines: " + loggedLines.Count;
-            return true;
-        }
-#endif
-
-        public void LoadNewFile(string filename)
+        private void LoadNewFile(string filename)
         {
             ResetCurrentStream();
 
             try
             {
-#if WINDOWS_UWP
-                if (!UnityEngine.Windows.File.Exists(filename))
-#else
                 if (!File.Exists(filename))
-#endif
                 {
-                    LoadingUpdateStatusText.text += "Error: Playback log file does not exist! ->>   " + filename + "   <<";
+                    loadingUpdateStatusText.text += "Error: Playback log file does not exist! ->>   " + filename + "   <<";
                     Log(("Error: Playback log file does not exist! ->" + filename + "<"));
                     Debug.LogError("Playback log file does not exist! " + filename);
                     return;
@@ -125,14 +81,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
                 // Create an instance of StreamReader to read from a file.
                 // The using statement also closes the StreamReader.
-                using StreamReader sr = new StreamReader(new FileStream(filename, FileMode.Open));
-                // Read and display lines from the file until the end of the file is reached.
-                while (sr.ReadLine() is { } line)
-                {
-                    loggedLines.Add(line);
-                }
-                LoadingUpdateStatusText.text = "Finished loading log file. Lines: " + loggedLines.Count;
-                Log(("Finished loading log file. Lines: " + loggedLines.Count));
+                loggedLines = File.ReadAllLines(filename);
+                loadingUpdateStatusText.text = "Finished loading log file. Lines: " + loggedLines.Count;
+                Log("Finished loading log file. Lines: " + loggedLines.Count);
             }
             catch (Exception e)
             {
@@ -140,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                 Debug.Log("The file could not be read:\n" + e.Message);
             }
         }
-
+        
         #region Parsers
         private static bool TryParseStringToVector3(string x, string y, string z, out Vector3 vector)
         {
@@ -168,173 +119,157 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         #endregion
 
         #region Available player actions
-        public void Load()
+        private void Load()
         {
-#if UNITY_EDITOR
-            LoadInEditor();
-#elif WINDOWS_UWP
+#if WINDOWS_UWP
             LoadInUWP();
+#else
+            LoadInEditor();
 #endif
         }
-
+        
         private void LoadInEditor()
         {
-            LoadingUpdateStatusText.text = "Load: " + FileName;
+            loadingUpdateStatusText.text = "Load: " + FileName;
             LoadNewFile(FileName);
         }
 
 #if WINDOWS_UWP
         private async void LoadInUWP()
         {
-            LoadingUpdateStatusText.text = "[Load.1] " + FileName;
-            await UWP_Load();
-        }
-#endif
-
-        private string FileName
-        {
-            get
+            loadingUpdateStatusText.text = "[LoadInUWP] " + FileName;
+            try
             {
-#if WINDOWS_UWP
-                return "C:\\Data\\Users\\DefaultAccount\\Music\\MRTK_ET_Demo\\tester\\" + customFilename;
-#else
-                return Application.persistentDataPath + "/" + customFilename;
-#endif
+                bool loaded = await LoadLogs();
+                if (loaded)
+                {
+                    await ReadData();
+                }
+                else
+                {
+                    Debug.Log("Could not load file.");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log(string.Format("Exception: {0}", e.Message));
+                loadingUpdateStatusText.text = $"[LoadInUWP] File load failed: {e.Message}";
             }
         }
 
+        private StorageFile logFile;
+        public async Task<bool> LoadLogs()
+        {
+            try
+            {
+                StorageFolder logRootFolder = KnownFolders.MusicLibrary;
+                if (logRootFolder != null)
+                {
+                    //string fullPath = Path.Combine(logRootFolder.Path, LogDirectory);
+
+                    //if (!Directory.Exists(fullPath))
+                    //{
+                    //    return;
+                    //}
+
+                    //sessionFolder = await logRootFolder.GetFolderAsync(LogDirectory);
+                    logFile = await logRootFolder.GetFileAsync(playbackLogFilename);
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log(string.Format("Exception in BasicLogger to load log file: {0}", e.Message));
+            }
+            return false;
+        }
+
+        public async Task<bool> ReadData()
+        {
+            var stream = await logFile.OpenAsync(Windows.Storage.FileAccessMode.Read);
+            using var inputStream = stream.GetInputStreamAt(0);
+            using var dataReader = new Windows.Storage.Streams.DataReader(inputStream);
+            uint numBytesLoaded = await dataReader.LoadAsync((uint)stream.Size);
+            string text = dataReader.ReadString(numBytesLoaded);
+
+            loggedLines = text.Split(Environment.NewLine);
+            return true;
+        }
+#endif
+
+
+        /// <summary>
+        /// True while the GameObject is playing back eye gaze data from the log file.
+        /// </summary>
         public bool IsPlaying
         {
             private set;
             get;
         }
 
-        public void Play()
+        /// <summary>
+        /// Begins playback of the eye gaze data.
+        /// </summary>
+        public void StartPlayback()
         {
-            IsPlaying = true;
-            lastUpdatedTime = DateTime.UtcNow;
-            deltaTimeToUpdateInMs = 0f;
-            EyeGazeVisualizer.gameObject.SetActive(true);
-            EyeGazeVisualizer.UnpauseApp();
-
-            if (HeadGazeVisualizer != null)
-            {
-                HeadGazeVisualizer.gameObject.SetActive(true);
-                HeadGazeVisualizer.UnpauseApp();
-            }
-        }
-
-        public void Pause()
-        {
-            IsPlaying = false;
-            EyeGazeVisualizer.PauseApp();
-
-            if (HeadGazeVisualizer != null)
-            {
-                HeadGazeVisualizer.PauseApp();
-            }
-        }
-
-        public void Clear()
-        {
-            EyeGazeVisualizer.ResetVisualizations();
-            HeadGazeVisualizer.ResetVisualizations();
-        }
-
-        public void ShowAllAndFreeze()
-        {
-            Debug.Log(">> ShowAllAndFreeze");
-            ShowAllAndFreeze(EyeGazeVisualizer);
-            //ShowAllAndFreeze(HeadGazeVisualizer, InputSourceType.Head);
             ShowHeatmap();
         }
 
-        private void ShowAllAndFreeze(InputPointerVisualizer visualizer)
+        private string FileName
         {
-            if (visualizer != null)
+            get
             {
-                visualizer.gameObject.SetActive(true);
-
-#if UNITY_EDITOR
-                Load();
-#elif WINDOWS_UWP
-                LoadingUpdateStatusText.text = "[Load.2] " + FileName;
-                bool result = AsyncHelpers.RunSync<bool>(() => UWP_Load());
-                LoadingUpdateStatusText.text = "[Load.2] Done. ";
+#if WINDOWS_UWP
+                return playbackLogFilename;
+#else
+                return Application.persistentDataPath + "/" + playbackLogFilename;
 #endif
-                LoadingUpdateStatusText.text = "Loading done. Visualize data...";
-
-                // Let's unpause the visualizer to make updates
-                visualizer.UnpauseApp();
-
-                // Let's make sure that the visualizer will show all data at once
-                visualizer.AmountOfSamples = loggedLines.Count;
-
-                // Now let's populate the visualizer
-                for (int i = 0; i < loggedLines.Count; i++)
-                {
-                    string[] split = loggedLines[i].Split(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator.ToCharArray());
-                    UpdateEyeGazeSignal(split, visualizer);
-                }
-                visualizer.PauseApp();
             }
         }
-
+        
         private void ShowHeatmap()
         {
             if (heatmapReferences != null && heatmapReferences.Length > 0)
             {
                 // First, let's load the data
-                if (!DataIsLoaded)
+                if (!IsDataLoaded)
                 {
                     Load();
                 }
 
+                if (showHeatmapCoroutine != null)
+                    StopCoroutine(showHeatmapCoroutine);
+                
                 counter = 0;
-
-                StartCoroutine(UpdateStatus(0.2f));
-                StartCoroutine(PopulateHeatmap());
+                showHeatmapCoroutine = StartCoroutine(PopulateHeatmap());
             }
         }
 
-        public TextMeshPro LoadingUpdateStatusText;
-
-        private void LoadingStatus_Hide()
+        /// <summary>
+        /// Pauses playback of the eye gaze data.
+        /// </summary>
+        public void PauseHeatmapPlayback()
         {
+            IsPlaying = false;
         }
 
-        private void LoadingStatus_Show()
+        /// <summary>
+        /// Resumes playback of the eye gaze data.
+        /// </summary>
+        public void ResumeHeatmapPlayback()
         {
-            if (LoadingUpdateStatusText != null)
-            {
-                if (!LoadingUpdateStatusText.gameObject.activeSelf)
-                    LoadingUpdateStatusText.gameObject.SetActive(true);
-            }
+            IsPlaying = true;
         }
-
-        private void UpdateLoadingStatus(int now, int total)
-        {
-            if (LoadingUpdateStatusText != null)
-            {
-                LoadingStatus_Show();
-                LoadingUpdateStatusText.text = string.Format($"Replay status: {100f * now / total:0}%");
-            }
-        }
-
-        private void Log(string msg)
-        {
-            if (LoadingUpdateStatusText != null)
-            {
-                LoadingStatus_Show();
-                LoadingUpdateStatusText.text = string.Format($"{msg}");
-            }
-        }
-
-
-        private static int counter = 0;
+        
+        private int counter = 0;
         private IEnumerator PopulateHeatmap()
         {
             const float maxTargetingDistInMeters = 10f;
+
+#if WINDOWS_UWP
+            yield return new WaitUntil(() => IsDataLoaded);
+#endif
+            IsPlaying = true;
 
             // Now let's populate the visualizer
             for (int i = 0; i < loggedLines.Count; i++)
@@ -353,27 +288,68 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                         }
                     }
                     counter = i;
-                    yield return null;
+                    if (IsPlaying)
+                    {
+                        yield return null;
+                    }
+                    else
+                    {
+                        yield return new WaitUntil(() => IsPlaying);
+                    }
                 }
             }
+
+            PlaybackCompleted();
         }
 
-        private IEnumerator UpdateStatus(float updateFrequency)
+        private void PlaybackCompleted()
         {
-            while (counter < loggedLines.Count - 1)
+            IsPlaying = false;
+            ResetCurrentStream();
+            onPlaybackCompleted.Invoke();
+        }
+        
+        private void LoadingStatus_Hide()
+        {
+            if (loadingUpdateStatusText != null)
             {
-                UpdateLoadingStatus(counter, loggedLines.Count);
-                yield return new WaitForSeconds(updateFrequency);
+                loadingUpdateStatusText.gameObject.SetActive(true);
             }
-            LoadingStatus_Hide();
         }
 
-        private Ray? GetEyeRay(IReadOnlyList<string> split)
+        private void LoadingStatus_Show()
+        {
+            if (loadingUpdateStatusText != null)
+            {
+                if (!loadingUpdateStatusText.gameObject.activeSelf)
+                    loadingUpdateStatusText.gameObject.SetActive(true);
+            }
+        }
+
+        private void Log(string msg)
+        {
+            if (loadingUpdateStatusText != null)
+            {
+                LoadingStatus_Show();
+                loadingUpdateStatusText.text = string.Format($"{msg}");
+            }
+        }
+
+        private void UpdateLoadingStatus(int now, int total)
+        {
+            if (loadingUpdateStatusText != null)
+            {
+                LoadingStatus_Show();
+                loadingUpdateStatusText.text = $"Replay status: {100f * now / total:0}%";
+            }
+        }
+
+        private static Ray? GetEyeRay(IReadOnlyList<string> split)
         {
             return GetRay(split[9], split[10], split[11], split[12], split[13], split[14]);
         }
 
-        private Ray? GetRay(string originX, string originY, string originZ, string dirX, string dirY, string dirZ)
+        private static Ray? GetRay(string originX, string originY, string originZ, string dirX, string dirY, string dirZ)
         {
             bool isValidVec1 = TryParseStringToVector3(originX, originY, originZ, out Vector3 origin);
             bool isValidVec2 = TryParseStringToVector3(dirX, dirY, dirZ, out Vector3 dir);
@@ -383,100 +359,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                 return new Ray(origin, dir);
             }
             return null;
-        }
-        #endregion
-
-        #region Handle data replay
-        private bool DataIsLoaded
-        {
-            get { return loggedLines.Count > 0; }
-        }
-
-        private DateTime lastUpdatedTime;
-        private float deltaTimeToUpdateInMs;
-        private float lastTimestampInMs;
-
-        private void UpdateTimestampForNextReplay(IReadOnlyList<string> split)
-        {
-            if (float.TryParse(split[2], out float timestampInMs))
-            {
-                lastUpdatedTime = DateTime.UtcNow;
-                deltaTimeToUpdateInMs = timestampInMs - lastTimestampInMs;
-                lastTimestampInMs = timestampInMs;
-            }
-        }
-
-        private void UpdateEyeGazeSignal(IReadOnlyList<string>split, InputPointerVisualizer visualizer)
-        {
-            Ray? ray = GetEyeRay(split);
-            if (ray.HasValue)
-            {
-                visualizer.UpdateDataVis(new Ray(ray.Value.origin, ray.Value.direction));
-            }
-        }
-
-        private int replayIndex = 0;
-        private bool replayNotStartedYet = true;
-        public int NumSamples = 30;
-
-        [SerializeField, Range(0f, 10.0f)]
-        private float replaySpeed = 1f;
-
-        private void Update()
-        {
-            // First, let's checked if we're paused
-            if (IsPlaying)
-            {
-                // Second, let's check that it's time to add a new data point
-                if ((DateTime.UtcNow - lastUpdatedTime).TotalMilliseconds * replaySpeed > deltaTimeToUpdateInMs)
-                {
-                    PlayNext();
-                }
-            }
-        }
-
-        private void PlayNext()
-        {
-            // Have we started the replay yet? 
-            if (replayNotStartedYet)
-            {
-                replayNotStartedYet = false;
-                replayIndex = 0;
-
-                if (!DataIsLoaded)
-                {
-                    Load();
-                }
-
-                // Let's unpause the visualizer to make updates
-                // Show only a certain amount of data at once 
-                if (EyeGazeVisualizer != null)
-                {
-                    EyeGazeVisualizer.UnpauseApp();
-                    EyeGazeVisualizer.AmountOfSamples = NumSamples;
-                }
-
-                if (HeadGazeVisualizer != null)
-                {
-                    HeadGazeVisualizer.UnpauseApp();
-                    HeadGazeVisualizer.AmountOfSamples = NumSamples;
-                }
-            }
-
-            // Now let's populate the visualizer step by step
-            if (replayIndex < loggedLines.Count)
-            {
-                string[] split = loggedLines[replayIndex].Split(System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator.ToCharArray());
-                UpdateEyeGazeSignal(split, EyeGazeVisualizer);
-                UpdateTimestampForNextReplay(split);
-                replayIndex++;
-            }
-            else
-            {
-                LoadingUpdateStatusText.text = "Replay done!";
-                Pause();
-                replayNotStartedYet = true;
-            }
         }
         #endregion
     }

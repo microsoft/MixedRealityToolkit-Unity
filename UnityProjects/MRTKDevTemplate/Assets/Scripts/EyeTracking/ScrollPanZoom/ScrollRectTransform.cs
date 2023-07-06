@@ -80,6 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             navigationRectTransform.anchorMax = new Vector2(0f, 1f);
         }
 
+        /// <inheritdoc />
         public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
         {   
             base.ProcessInteractable(updatePhase);

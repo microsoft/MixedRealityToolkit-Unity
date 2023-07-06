@@ -17,8 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         internal bool isScrollText = false;
 
         private bool IsValid => navigationRectTransform != null;
-        
-        public override void Initialize()
+
+        /// <inheritdoc />
+        protected override void Initialize()
         {
             if (IsValid)
             {
@@ -29,7 +30,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
         }
 
-        public override float ComputePanSpeed(float uvCursorPos, float maxSpeed, float minDistFromCenterForAutoPan)
+        /// <inheritdoc />
+        protected override float ComputePanSpeed(float uvCursorPos, float maxSpeed, float minDistFromCenterForAutoPan)
         {
             // UV space from [0,1] -> Center: [-0.5, 0.5]
             float centeredVal = uvCursorPos - 0.5f;
@@ -45,12 +47,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             return speed;
         }
 
-        public override int ZoomDir(bool zoomIn)
+        /// <inheritdoc />
+        protected override int ZoomDir(bool zoomIn)
         {
             return zoomIn ? 1 : -1;
         }
 
-        public override void ZoomIn()
+        /// <inheritdoc />
+        protected override void ZoomIn()
         {
             ZoomInOut_RectTransform(zoomDirection * zoomSpeed, cursorPosition);
 
@@ -59,12 +63,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             PanVertically(ComputePanSpeed(cursorPosition.y, panSpeedUpDown, minDistFromCenterForAutoPan.y));
         }
 
-        public override void ZoomOut()
+        /// <inheritdoc />
+        protected override void ZoomOut()
         {
             ZoomInOut_RectTransform(zoomDirection * zoomSpeed, new Vector2(0.5f, 0.5f));
         }
 
-        public override void UpdatePanZoom()
+        /// <inheritdoc />
+        protected override void UpdatePanZoom()
         {
             offset = LimitPanning();
 
@@ -161,7 +167,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// Determine the position of the cursor within the hitbox. 
         /// </summary>
         /// <returns>True if this GameObject is hit.</returns>
-        public override bool UpdateCursorPosInHitBox(Vector3 hitPosition)
+        protected override bool UpdateCursorPosInHitBox(Vector3 hitPosition)
         {
             Vector3 center = gameObject.transform.position;
             Vector3 halfsize = gameObject.transform.lossyScale * 0.5f;

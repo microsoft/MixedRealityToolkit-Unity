@@ -2990,6 +2990,38 @@ PrefabInstance:
       propertyPath: isGazePinchSelected.onEntered.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 348134655595542138, guid: d341ff791a3249540a0c38121c47a9b9, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: -1005824763306460071, guid: 533bdd8d5c92b52448ee2ecf7bd828a4, type: 2}
+    - target: {fileID: 348134655595542139, guid: d341ff791a3249540a0c38121c47a9b9, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 533bdd8d5c92b52448ee2ecf7bd828a4, type: 2}
+    - target: {fileID: 348134655595542139, guid: d341ff791a3249540a0c38121c47a9b9, type: 3}
+      propertyPath: m_fontStyle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 348134655595542139, guid: d341ff791a3249540a0c38121c47a9b9, type: 3}
+      propertyPath: m_fontColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 348134655595542139, guid: d341ff791a3249540a0c38121c47a9b9, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 348134655595542139, guid: d341ff791a3249540a0c38121c47a9b9, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 348134655595542139, guid: d341ff791a3249540a0c38121c47a9b9, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -1005824763306460071, guid: 533bdd8d5c92b52448ee2ecf7bd828a4, type: 2}
+    - target: {fileID: 348134655595542139, guid: d341ff791a3249540a0c38121c47a9b9, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 2789646968690223496, guid: d341ff791a3249540a0c38121c47a9b9, type: 3}
       propertyPath: m_Name
       value: PanAndZoomExample
@@ -3092,18 +3124,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1156823076}
     m_Modifications:
-    - target: {fileID: 1808124033441462824, guid: 9715efe25e795694e9e2df61c9d8c6bb, type: 3}
-      propertyPath: minimumScale.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1808124033441462824, guid: 9715efe25e795694e9e2df61c9d8c6bb, type: 3}
-      propertyPath: minimumScale.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1808124033441462824, guid: 9715efe25e795694e9e2df61c9d8c6bb, type: 3}
-      propertyPath: minimumScale.z
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 1808124033441462828, guid: 9715efe25e795694e9e2df61c9d8c6bb, type: 3}
       propertyPath: m_InteractionManager
       value: 
@@ -3335,7 +3355,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2362020300155552838, guid: 223005b231c33c5449426df912d4de39, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -512.9503
+      value: -512.9508
       objectReference: {fileID: 0}
     - target: {fileID: 2362020300408418987, guid: 223005b231c33c5449426df912d4de39, type: 3}
       propertyPath: m_Name

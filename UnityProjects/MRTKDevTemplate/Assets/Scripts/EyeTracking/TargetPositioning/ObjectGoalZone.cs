@@ -6,8 +6,6 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
-    using UnityEngine.Serialization;
-
     /// <summary>
     /// This associated GameObject acts a target goal zone to place other GameObjects inside.
     /// </summary>
@@ -65,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// <summary>
         /// If an already enrolled collider leaves our trigger zone, let's remove it from the list of currently colliding targets.
         /// </summary>
-        void OnTriggerExit(Collider other)
+        private void OnTriggerExit(Collider other)
         {
             if (currentCollidingObjects.Contains(other.gameObject.name))
             {

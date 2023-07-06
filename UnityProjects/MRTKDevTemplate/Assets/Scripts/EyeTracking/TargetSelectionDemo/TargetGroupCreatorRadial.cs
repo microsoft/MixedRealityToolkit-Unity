@@ -6,8 +6,6 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
-    using UnityEngine.Serialization;
-
     /// <summary>
     /// Handles the creation of a group of targets based on a list of given templates.
     /// </summary>
@@ -117,17 +115,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
                 // Rotate the target family
                 transform.Rotate(rotate);
-            }
-        }
-
-        /// <summary>
-        /// List of all instantiated targets.
-        /// </summary>
-        internal GameObject[] InstantiatedObjects
-        {
-            get
-            {
-                return instantiatedTargets?.ToArray();
             }
         }
 

@@ -2,67 +2,121 @@
 // Licensed under the MIT License.
 
 using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
+    /// <summary>
+    /// Allows the user to record a log file of eye gaze interactions for playback at another time.
+    /// The log file is a CSV file and is created and written to while this behaviour is <see cref="MonoBehaviour.isActiveAndEnabled"/>
+    /// </summary>
     [AddComponentMenu("Scripts/MRTK/Examples/UserInputRecorder")]
-    public class UserInputRecorder : CustomInputLogger
+    public class UserInputRecorder : MonoBehaviour
     {
-        public string FilenameToUse = $"test{Path.AltDirectorySeparatorChar}folder";
+        [Tooltip("File name segment appended to the log file name")]
+        [SerializeField]
+        private string filenameToUse = "test";
 
+        [Tooltip("Prepends a timestamp to the log file name if enabled")]
+        [SerializeField]
+        private bool addTimestampToLogfileName = false;
+
+        [Tooltip("The log structure to gather eye gaze samples from")]
         [SerializeField]
         private LogStructure logStructure = null;
 
-        private bool automaticLogging = true;
+        [Tooltip("User name added to the log structure, and added to UWP file names and folder structure")]
+        [SerializeField]
+        private string userName = "tester";
 
-        #region Singleton
-        private static UserInputRecorder instance;
-        public static UserInputRecorder Instance
+        [Tooltip("Session description added to UWP file names")]
+        [SerializeField]
+        private string sessionDescription = "Session00";
+
+        private FileInputLogger fileLogger = null;
+        private string dataFormat;
+        private DateTime timerStart;
+
+        private void OnEnable()
+        {
+            fileLogger = new FileInputLogger(Filename);
+            timerStart = DateTime.Now;
+            fileLogger.AppendLog(GetHeader());
+        }
+
+        private void OnDisable()
+        {
+            #if WINDOWS_UWP
+            fileLogger.SaveLogs();
+            #endif
+
+            fileLogger.Dispose();
+            fileLogger = null;
+        }
+
+        private void Update()
+        {
+            object[] data = MergeObjArrays(GetData_Part1(), logStructure.GetData());
+            fileLogger.AppendLog(string.Format(dataFormat, data));
+        }
+
+        private static string FormattedTimeStamp
         {
             get
             {
-                if (instance == null)
-                {
-                    instance = FindObjectOfType<UserInputRecorder>();
-                }
-                return instance;
+                return DateTime.Now.ToString("yMMddHHmmss");
             }
         }
-        #endregion
 
-        public override string GetHeader()
+        private string Filename
+        {
+            get { return addTimestampToLogfileName ? FilenameWithTimestamp : FilenameNoTimestamp; }
+        }
+        
+        private string FilenameWithTimestamp
+        {
+            get { return $"{FormattedTimeStamp}_{FilenameNoTimestamp}.csv"; }
+        }
+
+        private string FilenameNoTimestamp
+        {
+            get { return GetFileName() + ".csv"; }
+        }
+
+        private string GetFileName()
+        {
+            return !string.IsNullOrEmpty(filenameToUse) ? filenameToUse : $"{sessionDescription}-{userName}";
+        }
+
+        private string GetHeader()
         {
             if (logStructure != null)
             {
                 string[] headerColumns = logStructure.GetHeaderColumns();
-                string headerFormat = GetStringFormat(headerColumns);
-                return string.Format(headerFormat, headerColumns);
+                dataFormat = GetStringFormat(headerColumns);
+                return string.Format(dataFormat, headerColumns);
             }
-            else
-                return "";
+
+            return "";
         }
 
-        // Todo: Put into BasicLogger?
-        protected object[] GetData_Part1()
+        private object[] GetData_Part1()
         {
-            object[] data = new object[]
-            {
+            object[] data = {
                 // UserId
-                UserName,
+                userName,
                 // SessionType
                 sessionDescription,
                 // Timestamp
-                (DateTime.UtcNow - TimerStart).TotalMilliseconds
+                (DateTime.UtcNow - timerStart).TotalMilliseconds
             };
 
             return data;
         }
 
-        // Todo: Put into generic utils class?
-        public object[] MergeObjArrays(object[] part1, object[] part2)
+        private object[] MergeObjArrays(object[] part1, object[] part2)
         {
             object[] data = new object[part1.Length + part2.Length];
             part1.CopyTo(data, 0);
@@ -70,57 +124,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             return data;
         }
 
-        protected override string GetFileName()
-        {
-            return !string.IsNullOrEmpty(FilenameToUse) ? FilenameToUse : $"{sessionDescription}-{UserName}";
-        }
-
-        public static string GetStringFormat(object[] data)
+        private static string GetStringFormat(IReadOnlyCollection<object> data)
         {
             StringBuilder strFormat = new StringBuilder();
-            for (int i = 0; i < data.Length - 1; i++)
+            for (int i = 0; i < data.Count - 1; i++)
             {
                 strFormat.Append("{" + i + "}" + System.Globalization.CultureInfo.CurrentCulture.TextInfo.ListSeparator + " ");
             }
-            strFormat.Append("{" + (data.Length - 1) + "}");
+            strFormat.Append("{" + (data.Count - 1) + "}" + Environment.NewLine);
             return strFormat.ToString();
-        }
-
-        public void UpdateLog(string inputType, string inputStatus, EyeTrackingTarget intendedTarget)
-        {
-            if (Instance != null && IsLogging)
-            {
-                if (logStructure != null)
-                {
-                    object[] data = MergeObjArrays(GetData_Part1(), logStructure.GetData(inputType, inputStatus, intendedTarget));
-                    string data_format = GetStringFormat(data);
-                    Instance.CustomAppend(String.Format(data_format, data));
-                }
-            }
-        }
-
-        public void UpdateLog()
-        {
-            UpdateLog("", "", null);
-        }
-
-        private void Update()
-        {
-            if (automaticLogging)
-            {
-                UpdateLog();
-            }
-        }
-
-        public override void OnDestroy()
-        {
-            // Disable listening to user input
-            if (Instance != null)
-            {
-                Instance.StopLoggingAndSave();
-            }
-
-            base.OnDestroy();
         }
     }
 }

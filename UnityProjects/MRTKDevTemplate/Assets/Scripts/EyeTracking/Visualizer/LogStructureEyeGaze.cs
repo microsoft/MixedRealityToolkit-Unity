@@ -2,17 +2,23 @@
 // Licensed under the MIT License.
 
 using UnityEngine;
+using Microsoft.MixedReality.Toolkit.Input;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
-    using Input;
-
+    /// <summary>
+    /// A CSV file logging structure for eye gaze data.
+    /// </summary>
     [AddComponentMenu("Scripts/MRTK/Examples/LogStructureEyeGaze")]
     public class LogStructureEyeGaze : LogStructure
     {
+        [Tooltip("Reference to the FuzzyGazeInteractor in the scene")]
         [SerializeField]
         private FuzzyGazeInteractor gazeInteractor;
 
+        /// <summary>
+        /// The headers of the eye gaze file structure.
+        /// </summary>
         public override string[] GetHeaderColumns()
         {
             return new string[]
@@ -43,12 +49,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             };
         }
 
-        public override object[] GetData(string inputType, string inputStatus, EyeTrackingTarget intTarget)
+        /// <summary>
+        /// Returns the eye gaze data captured during an update frame.
+        /// </summary>
+        public override object[] GetData()
         {
             // Let's prepare all the data we wanna log
 
             // Eye gaze hit position
-            Vector3? eyeHitPos = gazeInteractor.PreciseHitResult.raycastHit.point;
+            Vector3 eyeHitPos = gazeInteractor.PreciseHitResult.raycastHit.point;
 
             object[] data = new object[]
             { 
@@ -69,9 +78,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                 gazeInteractor.rayOriginTransform.forward.y,
                 gazeInteractor.rayOriginTransform.forward.z,
 
-                eyeHitPos.HasValue ? eyeHitPos.Value.x : float.NaN,
-                eyeHitPos.HasValue ? eyeHitPos.Value.y : float.NaN,
-                eyeHitPos.HasValue ? eyeHitPos.Value.z : float.NaN
+                eyeHitPos.x,
+                eyeHitPos.y,
+                eyeHitPos.z
             };
 
             return data;

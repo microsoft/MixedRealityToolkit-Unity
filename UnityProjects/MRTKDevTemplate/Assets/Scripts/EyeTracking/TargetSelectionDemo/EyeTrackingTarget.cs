@@ -6,11 +6,11 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
     using System.Collections;
-    using UnityEngine.Serialization;
 
     /// <summary>
     /// Handles events triggered from the attached <see cref="StatefulInteractable"/>
     /// </summary>
+    [AddComponentMenu("Scripts/MRTK/Examples/EyeTrackingTarget")]
     public class EyeTrackingTarget : MonoBehaviour
     {
         [Tooltip("Visual effect (e.g., particle explosion or animation) that is played when a target is selected.")]
@@ -58,16 +58,25 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             interactable = GetComponent<StatefulInteractable>();
         }
 
+        /// <summary>
+        /// Called when a user begins a hover on the GameObject using a gaze based interactor.
+        /// </summary>
         public void OnGazeHoverEntered()
         {
             rotationCoroutine = StartCoroutine(RotateTarget());
         }
 
+        /// <summary>
+        /// Called when a user leaves a hover on the GameObject using a gaze based interactor.
+        /// </summary>
         public void OnGazeHoverExited()
         {
             StopCoroutine(rotationCoroutine);
         }
 
+        /// <summary>
+        /// Called when a user selects the GameObject.
+        /// </summary>
         public void OnTargetSelected()
         {
             if (!interactable.isHovered)

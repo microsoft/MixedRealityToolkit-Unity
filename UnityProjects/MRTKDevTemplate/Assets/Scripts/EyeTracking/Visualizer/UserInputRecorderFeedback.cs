@@ -7,12 +7,17 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
+    /// <summary>
+    /// This script displays on screen status updates user recording and playback control system.
+    /// </summary>
     [AddComponentMenu("Scripts/MRTK/Examples/UserInputRecorderFeedback")]
     public class UserInputRecorderFeedback : MonoBehaviour
     {
+        [Tooltip("Textfield that displays status updates")]
         [SerializeField]
         private TextMeshPro statusText = null;
 
+        [Tooltip("The duration an update will be displayed before it is hidden")]
         [SerializeField]
         private float maxShowDurationInSeconds = 2f;
 
@@ -74,6 +79,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         public void PauseReplay()
         {
             UpdateStatusText("Replay stopped!");
+        }
+
+        public void ResumeReplay()
+        {
+            UpdateStatusText("Replay resumed!");
+        }
+
+        public void PlaybackCompleted()
+        {
+            UpdateStatusText("Playback Completed!");
         }
         #endregion
     }

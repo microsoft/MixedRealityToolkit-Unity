@@ -5,8 +5,6 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
-    using UnityEngine.Serialization;
-
     /// <summary>
     /// The associated GameObject acts as a teleporter to a referenced respawn location when
     /// a GameObject enters the attached collider volume.  

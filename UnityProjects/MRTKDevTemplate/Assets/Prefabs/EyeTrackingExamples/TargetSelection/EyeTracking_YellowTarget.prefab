@@ -5137,7 +5137,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 5857853439839890309}
-          m_TargetAssemblyTypeName: Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.EyeTrackingTarget,
+          m_TargetAssemblyTypeName: Microsoft.MixedReality.Toolkit.Examples.EyeTrackingTarget,
             Assembly-CSharp
           m_MethodName: OnGazeHoverEntered
           m_Mode: 1
@@ -5153,7 +5153,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 5857853439839890309}
-          m_TargetAssemblyTypeName: Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.EyeTrackingTarget,
+          m_TargetAssemblyTypeName: Microsoft.MixedReality.Toolkit.Examples.EyeTrackingTarget,
             Assembly-CSharp
           m_MethodName: OnGazeHoverExited
           m_Mode: 1
@@ -5256,7 +5256,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5857853439839890309}
-        m_TargetAssemblyTypeName: Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.EyeTrackingTarget,
+        m_TargetAssemblyTypeName: Microsoft.MixedReality.Toolkit.Examples.EyeTrackingTarget,
           Assembly-CSharp
         m_MethodName: OnTargetSelected
         m_Mode: 1
@@ -5290,8 +5290,8 @@ MonoBehaviour:
   audioFxCorrectTarget: {fileID: 8300000, guid: 50b629cc6a6feb0458f4b22b5c96eb91, type: 3}
   audioFxIncorrectTarget: {fileID: 8300000, guid: ca1d2149dae1f1c46bd86eda5ac11494, type: 3}
   isValidTarget: 1
-  rotateByEulerAngles: {x: 0, y: 0, z: 0}
-  speed: 1
+  rotateByEulerAngles: {x: 0, y: 1, z: 1}
+  speed: 0.5
 --- !u!114 &8278177351404225702
 MonoBehaviour:
   m_ObjectHideFlags: 0
