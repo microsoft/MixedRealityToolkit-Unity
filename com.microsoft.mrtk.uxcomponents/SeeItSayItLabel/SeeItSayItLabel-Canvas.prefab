@@ -294,12 +294,12 @@ MonoBehaviour:
         isVariable: 0
     - key: PassiveHover
       value:
-        effects: []
+        effects:
+        - rid: 7001448244017627138
         isVariable: 0
     - key: ActiveHover
       value:
-        effects:
-        - rid: 0
+        effects: []
         isVariable: 0
     - key: Select
       value:
@@ -314,7 +314,7 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: 0
+    - rid: 7001448244017627138
       type: {class: AnimationEffect, ns: Microsoft.MixedReality.Toolkit.UX, asm: Microsoft.MixedReality.Toolkit.UXCore}
       data:
         name: Animation
