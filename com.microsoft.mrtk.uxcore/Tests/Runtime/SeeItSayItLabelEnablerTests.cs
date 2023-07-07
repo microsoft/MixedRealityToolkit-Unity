@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             yield return null;
             if (Application.isBatchMode)
             {
-                LogAssert.Expect(LogType.Exception, new Regex(".*Speech recognition is not supported on this machine.*"));
+                LogAssert.Expect(LogType.Exception, new Regex("Speech recognition is not supported on this machine"));
             }
 
             Transform label = testButton.transform.GetChild(0);

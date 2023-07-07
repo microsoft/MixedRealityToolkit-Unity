@@ -246,20 +246,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // left, right or gaze controllers will use the references stored in this class.
             if (controllerLookup == null)
             {
-                ControllerLookup[] lookups = ComponentCache<ControllerLookup>.FindInstanceList();
-                if (lookups.Length == 0)
-                {
-                    Debug.LogError("Could not locate an instance of the ControllerLookup class in the hierarchy. It is recommended to add ControllerLookup to your camera rig.");
-                }
-                else if (lookups.Length > 1)
-                {
-                    Debug.LogWarning("Found more than one instance of the ControllerLookup class in the hierarchy. Defaulting to the first instance.");
-                    controllerLookup = lookups[0];
-                }
-                else
-                {
-                    controllerLookup = lookups[0];
-                }
+                controllerLookup = ComponentCache<ControllerLookup>.FindFirstActiveInstance();
             }
         }
 

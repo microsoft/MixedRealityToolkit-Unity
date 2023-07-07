@@ -34,11 +34,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             return new BuildValidationRule()
             {
                 IsRuleEnabled = () => (MRTKProjectValidation.GetLoadedSubsystemsForBuildTarget(buildTargetGroup)?.Any(s => typeof(KeywordRecognitionSubsystem).IsAssignableFrom(s.Type))).GetValueOrDefault()
-                    && ComponentCache<SpeechInteractor>.FindFirstInstance(FindObjectsInactive.Include),
+                    && Object.FindObjectOfType<SpeechInteractor>(true),
                 Category = "MRTK3",
                 Message = "The speech interactor needs to be active and enabled in the scene to allow for speech interactions with interactables (e.g. buttons).",
-                CheckPredicate = () => ComponentCache<SpeechInteractor>.FindFirstInstance(FindObjectsInactive.Include).isActiveAndEnabled,
-                FixIt = () => EditorGUIUtility.PingObject(ComponentCache<SpeechInteractor>.FindFirstInstance(FindObjectsInactive.Include)),
+                CheckPredicate = () => Object.FindObjectOfType<SpeechInteractor>(true).isActiveAndEnabled,
+                FixIt = () => EditorGUIUtility.PingObject(Object.FindObjectOfType<SpeechInteractor>(true)),
                 FixItMessage = "Make sure the speech interactor component is enabled and in active in the hierarchy",
                 FixItAutomatic = false,
                 Error = false
