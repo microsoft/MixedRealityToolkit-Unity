@@ -9,7 +9,11 @@ using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit
-{
+{    
+    /// <summary>
+    /// An extended version of <see cref="Microsoft.MixedReality.Toolkit.MRTKBaseInteractable">MRTKBaseInteractable</see> that adds additional
+    /// functionality such as speech support, gaze support, and toggle behaviors.
+    /// </summary>
     [AddComponentMenu("MRTK/Core/Stateful Interactable")]
     public class StatefulInteractable : MRTKBaseInteractable
     {
@@ -20,12 +24,21 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public enum ToggleType
         {
-            // Interactable will not enter toggle states
-            // unless forced by code (ForceSetToggle)
+            /// <summary>
+            /// The interactable will not enter toggle states unless forces by code 
+            /// using the <see cref="ForceSetToggled" /> function.
+            /// </summary>
             Button,
-            // User can toggle on and off
+
+            /// <summary>
+            /// The user can toggle on and off the interactable.
+            /// </summary>
             Toggle,
-            // User can only toggle on, not off. Useful for radio buttons.
+            
+            /// <summary>
+            /// The User can only toggle on the interactable, but not toggle off. 
+            /// This value is useful for radio buttons.
+            /// </summary>
             OneWayToggle
         }
 
@@ -215,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Derived classes should override this method to
         /// specify custom variable selection math.
         /// The default implementation allows for variable selection
-        /// from the <see cref="GazePinchInteractor">, calculated with
+        /// from the <see cref="GazePinchInteractor"/>, calculated with
         /// <see cref="PinchAmount"/>.
         /// </summary>
         public virtual float Selectedness()

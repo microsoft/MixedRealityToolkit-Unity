@@ -8,7 +8,7 @@ using UnityEngine.SubsystemsImplementation;
 namespace Microsoft.MixedReality.Toolkit.Subsystems
 {
     /// <summary>
-    /// A subsystem that enables dictation.
+    /// A Unity subsystem that enables dictation.
     /// </summary>
     [Preserve]
     public class DictationSubsystem :

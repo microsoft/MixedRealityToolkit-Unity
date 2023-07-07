@@ -33,6 +33,19 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         }
 
         [SerializeField]
+        [Tooltip("Indicates whether or not eyes are currently being tracked.")]
+        private bool isTracked = true;
+
+        /// <summary>
+        /// Indicates whether or not eyes are currently being tracked.
+        /// </summary>
+        public bool IsTracked
+        {
+            get => isTracked;
+            set => isTracked = value;
+        }
+
+        [SerializeField]
         [Tooltip("Offset, from the HMD origin, at which eye gaze originates.")]
         private Vector3 eyeOriginOffset = new Vector3(0f, -0.2f, 0f);
 

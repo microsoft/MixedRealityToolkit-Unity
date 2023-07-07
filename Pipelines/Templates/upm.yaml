@@ -7,9 +7,9 @@ parameters:
   projectRoot: $(Build.SourcesDirectory)/MixedRealityToolkit-Unity
   outputDirectory: $(Build.ArtifactStagingDirectory)/build/upm/output
   buildNumber: $(Build.BuildNumber)
-  previewTag: $(MRTKReleaseTag)
+  previewTag: $(ReleaseTagPrefix)$(MRTKReleaseTag)
   publishToArtifacts: true
-  publishToFeed: false
+  publishToFeed: true
 
 steps:
 - task: PowerShell@2
@@ -22,7 +22,9 @@ steps:
       -ProjectRoot: ${{ parameters.projectRoot }}
       -OutputDirectory: ${{ parameters.outputDirectory }}
       -BuildNumber: ${{ parameters.buildNumber }}
-      -PreviewTag: ${{ parameters.previewTag }}
+      -PreviewTag: $(ReleaseTagPrefix)$(MRTKReleaseTag)
+      -Revision: $(Version.DateCode).$(Version.DateCodeRevision)
+      -ReleasePackages: $(ReleasePackages)
 
 - ${{ if eq(parameters.publishToArtifacts, true) }}:
   - task: PublishBuildArtifacts@1

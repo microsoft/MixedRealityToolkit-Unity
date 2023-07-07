@@ -11,6 +11,14 @@ using UnityEngine.Windows.Speech;
 
 namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 {
+    /// <summary>
+    /// A Unity subsystem that extends <see cref="Microsoft.MixedReality.Toolkit.Subsystems.DictationSubsystem">DictationSubsystem</see>
+    /// so to expose the dictation services available on Windows platforms. This subsystem is enabled for Windows Standalone and
+    /// Universal Windows Applications. 
+    /// </summary>
+    /// <remarks>
+    /// This subsystem can be configured using the <see cref="Microsoft.MixedReality.Toolkit.Speech.Windows.WindowsDictationSubsystemConfig">WindowsDictationSubsystemConfig</see> Unity asset.
+    /// </remarks>
     [Preserve]
     [MRTKSubsystem(
         Name = "com.microsoft.mixedreality.windowsdictation",
@@ -33,6 +41,10 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             }
         }
 
+        /// <summary>
+        /// A subsystem provider used with <see cref="WindowsDictationSubsystem"/> class that exposes methods on Unity's `DictationRecognizer`
+        /// on Windows platforms.
+        /// </summary>
         [Preserve]
         class WindowsDictationProvider : Provider
         {
@@ -107,8 +119,13 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
                 initialSilenceTimeoutSeconds = config.InitialSilenceTimeoutSeconds;
                 autoSilenceTimeout = config.AutoSilenceTimeout;
             }
-#endif
 
+            public override void Stop()
+            {
+                base.Stop();
+                StopDictation();
+            }
+#endif
 
             /// <inheritdoc/>
             public override void Destroy()
@@ -167,7 +184,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             public override void StopDictation()
             {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_WSA
-                if (dictationRecognizer != null)
+                if (dictationRecognizer != null && dictationRecognizer.Status == SpeechSystemStatus.Running)
                 {
                     dictationRecognizer.Stop();
                 }

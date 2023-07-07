@@ -1,0 +1,341 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: KeyboardPreviewBackPlate
+  m_Shader: {fileID: 4800000, guid: 29b058829dc4dbf449bc59c038dfa631, type: 3}
+  m_ValidKeywords:
+  - _IRIDESCENCE_ENABLE_
+  m_InvalidKeywords:
+  - _BORDER_LIGHT
+  - _BORDER_LIGHT_REPLACES_ALBEDO
+  - _DECAL_FRONT_ONLY__ON
+  - _DISABLE_ALBEDO_MAP
+  - _IGNORE_Z_SCALE
+  - _METALLIC_TEXTURE_ALBEDO_CHANNEL_A
+  - _REFLECTED__ON
+  - _RELATIVE_TO_HEIGHT__ON
+  - _ROUND_CORNERS
+  - _SKY_ENABLED_
+  - _USE_GLOBAL_LEFT_INDEX__ON
+  - _USE_GLOBAL_RIGHT_INDEX__ON
+  - _USE_WORLD_SCALE
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Blob_Texture_:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ChannelMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Decal_:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Indirect_Environment_:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Iridescence_Texture_:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _IridescentSpectrumMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Iridescent_Map_:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OccludedTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Reflection_Map_:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AlbedoAlphaMode: 1
+    - _AlbedoAssignedAtRuntime: 0
+    - _Angle_: -45
+    - _BlendOp: 0
+    - _BlendedClippingWidth: 1
+    - _Blob_Enable_: 0
+    - _Blob_Enable_2_: 0
+    - _Blob_Fade_: 1
+    - _Blob_Fade_2_: 1
+    - _Blob_Fade_Length_: 0.08
+    - _Blob_Far_Distance_: 0.08
+    - _Blob_Far_Size_: 0.05
+    - _Blob_Inner_Fade_: 0.01
+    - _Blob_Inner_Fade_2_: 0.1
+    - _Blob_Intensity_: 0.34
+    - _Blob_Near_Distance_: 0
+    - _Blob_Near_Size_: 0.025
+    - _Blob_Near_Size_2_: 0.025
+    - _Blob_Pulse_: 0
+    - _Blob_Pulse_2_: 0
+    - _Blob_Pulse_Max_Size_: 0.05
+    - _BlurBorderIntensity: 0
+    - _BlurMode: 0
+    - _BlurTextureIntensity: 1
+    - _BorderColorMode: 0
+    - _BorderLight: 1
+    - _BorderLightOpaque: 0
+    - _BorderLightOpaqueAlpha: 1
+    - _BorderLightReplacesAlbedo: 1
+    - _BorderLightUsesHoverColor: 0
+    - _BorderMinValue: 0.6
+    - _BorderWidth: 0.04
+    - _BumpScale: 1
+    - _ClippingBorder: 0
+    - _ClippingBorderWidth: 0.025
+    - _ColorMask: 15
+    - _ColorWriteMask: 15
+    - _CullMode: 0
+    - _CustomMode: 0
+    - _Cutoff: 0.5
+    - _Decal_Enable_: 0
+    - _Decal_Front_Only_: 1
+    - _DetailNormalMapScale: 1
+    - _DirectionalLight: 0
+    - _DstBlend: 0
+    - _EdgeSmoothingMode: 0
+    - _EdgeSmoothingValue: 0.0002
+    - _Edge_Only_: 0
+    - _Edge_Power_: 2
+    - _Edge_Reflect_: 1
+    - _Edge_Width_: 0.5
+    - _EnableChannelMap: 0
+    - _EnableEmission: 0
+    - _EnableHoverColorOverride: 0
+    - _EnableLocalSpaceTriplanarMapping: 0
+    - _EnableNormalMap: 0
+    - _EnableProximityLightColorOverride: 0
+    - _EnableSSAA: 0
+    - _EnableStencil: 0
+    - _EnableTriplanarMapping: 0
+    - _EnvironmentColorIntensity: 0.5
+    - _EnvironmentColorThreshold: 1.5
+    - _EnvironmentColoring: 0
+    - _Fade: 1
+    - _FadeBeginDistance: 0.85
+    - _FadeCompleteDistance: 0.5
+    - _FadeMinValue: 0
+    - _Fade_Out_: 1
+    - _Filter_Width_: 1
+    - _Fixed_Radius_: 0
+    - _Fixed_Unit_Multiplier_: 1000
+    - _FluentLightIntensity: 1
+    - _Frequency_: 1
+    - _Fresnel_Disabled_: 0
+    - _Front_Reflect_: 0
+    - _Gaze_Focus_: 0
+    - _Gaze_Intensity_: 0.7
+    - _GlossMapScale: 1
+    - _Glossiness: 0.5
+    - _GlossyReflections: 1
+    - _Glow_Falloff_: 2
+    - _Glow_Fraction_: 0.5
+    - _Glow_Max_: 0.5
+    - _GradientAngle: 180
+    - _GradientMode: 0
+    - _Gradient_Disabled_: 0
+    - _GridScale: 0.02
+    - _Highlight_: 1
+    - _Highlight_Width_: 0.25
+    - _Horizon_Power_: 1
+    - _HoverLight: 0
+    - _IgnoreZScale: 1
+    - _IndependentCorners: 0
+    - _Indirect_Diffuse_: 0.51
+    - _InnerGlow: 0
+    - _InnerGlowPower: 4
+    - _InstancedColor: 0
+    - _Iridescence: 0
+    - _IridescenceAngle: -0.78
+    - _IridescenceIntensity: 0.75
+    - _IridescenceThreshold: 0.05
+    - _Iridescence_Edge_Intensity_: 0.56
+    - _Iridescence_Enable_: 1
+    - _Iridescence_Enabled_: 0
+    - _Iridescence_Intensity_: 0
+    - _Line_Disabled_: 0
+    - _Line_Gradient_Blend_: 0.36
+    - _Line_Width_: 1
+    - _Mapped_Environment_Enabled_: 0
+    - _Metallic: 0
+    - _MipmapBias: -2
+    - _Mode: 0
+    - _NearLightFade: 0
+    - _NearPlaneFade: 0
+    - _NormalMapScale: 1
+    - _OcclusionStrength: 1
+    - _Parallax: 0.02
+    - _Pinched_: 0
+    - _Power_: 1
+    - _ProximityLight: 0
+    - _ProximityLightSubtractive: 0
+    - _ProximityLightTwoSided: 0
+    - _Proximity_Anisotropy_: 1
+    - _Proximity_Far_Distance_: 0.16
+    - _Proximity_Max_Intensity_: 0.45
+    - _Proximity_Near_Radius_: 0.03
+    - _Radius_: 0.3125
+    - _Rate_: 0
+    - _Reflected_: 1
+    - _Reflection_: 0
+    - _Reflections: 0
+    - _Refraction: 0
+    - _RefractiveIndex: 1.1
+    - _Relative_To_Height_: 1
+    - _RenderQueueOverride: -1
+    - _RimLight: 0
+    - _RimPower: 5.83
+    - _RoundCornerMargin: 0
+    - _RoundCornerRadius: 0.5
+    - _RoundCorners: 1
+    - _RoundCornersHideInterior: 0
+    - _Selected_: 0
+    - _Selected_Distance_: 0.08
+    - _Selected_Fade_Length_: 0.08
+    - _Selection_Fade_: 0
+    - _Selection_Fade_Size_: 0.3
+    - _Selection_Fuzz_: 0.5
+    - _Sharpness_: 0
+    - _Shininess_: 10
+    - _Sky_Enabled_: 1
+    - _Smoothness: 0.5
+    - _SmoothnessTextureChannel: 0
+    - _SpecularHighlights: 0
+    - _Specular_: 0
+    - _SphericalHarmonics: 0
+    - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComp: 0
+    - _StencilComparison: 0
+    - _StencilOp: 0
+    - _StencilOperation: 0
+    - _StencilReadMask: 255
+    - _StencilReference: 0
+    - _StencilWriteMask: 255
+    - _Subsurface_: 0
+    - _Sun_Intensity_: 0.75
+    - _Sun_Phi_: 0.48
+    - _Sun_Theta_: 0.73
+    - _TriplanarMappingBlendSharpness: 4
+    - _UVSec: 0
+    - _UseWorldScale: 1
+    - _Use_Global_Left_Index_: 1
+    - _Use_Global_Right_Index_: 1
+    - _VertexColors: 0
+    - _VertexExtrusion: 0
+    - _VertexExtrusionSmoothNormals: 0
+    - _VertexExtrusionValue: 0
+    - _Vertical_Offset_: 0
+    - _ZOffsetFactor: 0
+    - _ZOffsetUnits: 0
+    - _ZTest: 4
+    - _ZWrite: 1
+    m_Colors:
+    - _Albedo_: {r: 1, g: 1, b: 1, a: 1}
+    - _Base_Color_: {r: 0, g: 0, b: 0, a: 1}
+    - _Blob_Position_: {r: 0.5, g: 0, b: 0.2, a: 1}
+    - _Blob_Position_2_: {r: 0, g: 0, b: 0, a: 1}
+    - _BlurBackgroundRect: {r: 0, g: 0, b: 1, a: 1}
+    - _BorderColor: {r: 1, g: 1, b: 1, a: 0}
+    - _Bottom_Left_: {r: 0, g: 0.33, b: 0.88, a: 1}
+    - _Bottom_Right_: {r: 1, g: 1, b: 1, a: 1}
+    - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
+    - _ClipRectRadii: {r: 10, g: 10, b: 10, a: 10}
+    - _ClippingBorderColor: {r: 1, g: 0.2, b: 0, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color_: {r: 1, g: 1, b: 1, a: 1}
+    - _Decal_Scale_XY_: {r: 1.5, g: 1.5, b: 0, a: 0}
+    - _Edge_Color_: {r: 0.53, g: 0.53, b: 0.53, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EnvironmentColorX: {r: 1, g: 0, b: 0, a: 1}
+    - _EnvironmentColorY: {r: 0, g: 1, b: 0, a: 1}
+    - _EnvironmentColorZ: {r: 0, g: 0, b: 1, a: 1}
+    - _GradientColor0: {r: 0.631373, g: 0.631373, b: 0.631373, a: 0}
+    - _GradientColor1: {r: 1, g: 0.690196, b: 0.976471, a: 0.25}
+    - _GradientColor2: {r: 0, g: 0.33, b: 0.88, a: 0.5}
+    - _GradientColor3: {r: 0, g: 0.33, b: 0.88, a: 1}
+    - _GradientColor4: {r: 1, g: 1, b: 1, a: 1}
+    - _Gradient_Color_: {r: 0.631373, g: 0.631373, b: 0.631373, a: 1}
+    - _Ground_Color_: {r: 0.603922, g: 0.611765, b: 0.764706, a: 1}
+    - _Highlight_Color_: {r: 0.98, g: 0.98, b: 0.98, a: 1}
+    - _Highlight_Transform_: {r: 1, g: 1, b: 0, a: 0}
+    - _Horizon_Color_: {r: 0.843137, g: 0.87451, b: 1, a: 1}
+    - _HoverColorOverride: {r: 1, g: 1, b: 1, a: 0.566}
+    - _InnerGlowColor: {r: 1, g: 1, b: 1, a: 0.522}
+    - _Iridescence_Tint_: {r: 1, g: 1, b: 1, a: 1}
+    - _Line_Color_: {r: 0, g: 0, b: 0, a: 1}
+    - _OccludedColor: {r: 0, g: 0.5, b: 1, a: 1}
+    - _ProximityLightCenterColorOverride: {r: 1, g: 0, b: 0, a: 0}
+    - _ProximityLightMiddleColorOverride: {r: 0, g: 1, b: 0, a: 0.5}
+    - _ProximityLightOuterColorOverride: {r: 0, g: 0, b: 1, a: 1}
+    - _RimColor: {r: 1, g: 1, b: 1, a: 0.497}
+    - _RoundCornersRadius: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+    - _Sky_Color_: {r: 0.866667, g: 0.917647, b: 1, a: 1}
+    - _Top_Left_: {r: 1, g: 0.690196, b: 0.976471, a: 1}
+    - _Top_Right_: {r: 0, g: 0.33, b: 0.88, a: 1}
+  m_BuildTextureStacks: []

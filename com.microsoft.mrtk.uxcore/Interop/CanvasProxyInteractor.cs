@@ -8,13 +8,20 @@ using UnityEngine.XR.Interaction.Toolkit;
 namespace Microsoft.MixedReality.Toolkit.UX
 {
     /// <summary>
-    /// A simple proxy interactor which will select + hover things on our behalf, for canvas input.
+    /// A simple proxy interactor which will select and hover things on MRTK's behalf, for canvas input.
     /// </summary>
     [AddComponentMenu("MRTK/UX/Canvas Proxy Interactor")]
     public class CanvasProxyInteractor : XRBaseInteractor, IProxyInteractor, IModeManagedInteractor
     {
+        /// <summary>
+        /// The hash set containing a collection of valid interactable targets for this this interactor.
+        /// </summary>
         protected HashSet<IXRInteractable> validTargets = new HashSet<IXRInteractable>();
 
+        /// <summary>
+        /// The last target selected using the <see cref="StartSelect"/> method. This value will
+        /// be cleared when <see cref="EndSelect"/> is called.
+        /// </summary>
         protected IXRSelectInteractable manualSelectTarget;
 
         // We set this flag whenever we're cancelling an interaction. This will suppress

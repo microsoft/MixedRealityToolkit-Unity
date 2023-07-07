@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// <summary>
     /// ToggleCollection groups a list of StatefulInteractables and correlates their
     /// toggle states. When any one of the StatefulInteractables are toggled, all other
-    /// interactables controlled by this script will be detoggled.
+    /// interactables controlled by this script will be de-toggled.
     /// A custom list of interactables can be set; if none is set at edit-time, all direct
     /// StatefulInteractable children will be added.
     /// </summary>
@@ -54,11 +54,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private bool allowSwitchOff = false;
 
         /// <summary>
-        /// Should the user be allowed to un-toggle the toggles?
+        /// Get or set if the user is allowed to un-toggle the toggle buttons.
         /// </summary>
-        /// <remarks>
-        /// Same name and behaviour as UnityUI's ToggleGroup.
-        /// </remarks>
         public bool AllowSwitchOff
         {
             get => allowSwitchOff;
@@ -74,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         [SerializeField]
-        [Tooltip("Currently selected index in the ToggleList, default is 0")]
+        [Tooltip("Currently selected index in the ToggleCollection, default is 0")]
         private int currentIndex;
 
         /// <summary>
@@ -86,19 +83,19 @@ namespace Microsoft.MixedReality.Toolkit.UX
             set => SetSelection(value);
         }
 
-        [Tooltip("This event is triggered when any of the toggles in the ToggleList are selected. The event data is the index of the toggle in the ToggleList selected.")]
+        [Tooltip("This event is triggered when any of the toggles in the ToggleCollection are selected. The event data is the index of the toggle button with in the ToggleCollection.")]
         [SerializeField]
         private ToggleSelectedEvent onToggleSelected = new ToggleSelectedEvent();
 
         /// <summary>
-        /// This event is triggered when any of the toggles in the ToggleList are selected. The event data is the index of the toggle in the ToggleList selected.
+        /// This event is triggered when any of the toggles in the <see cref="ToggleCollection"/> are selected. The event data is the index of the toggle button within the <see cref="ToggleCollection"/>.
         /// </summary>
         public ToggleSelectedEvent OnToggleSelected
         {
             get => onToggleSelected;
         }
 
-        // List of the actions for the toggles in ToggleList
+        // List of the actions for the toggles in ToggleCollection.
         private List<UnityAction<float>> toggleActions = new List<UnityAction<float>>();
 
         private void OnValidate()
@@ -131,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
             if (Toggles != null && toggleActions.Count == 0)
             {
-                // Add listeners to each toggle in ToggleList
+                // Add listeners to each toggle in ToggleCollection.
                 AddSelectionListeners();
 
                 // Force set initial selection in the toggle collection at start
@@ -148,14 +145,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         /// <summary>
         /// Set the selection of a an element in the toggle collection based on index.
-        /// <param name="index">Index of an element in ToggleList</param>
-        /// <param name="force">Force selection set</param>
+        /// <param name="index">Index of an element in the <see cref="ToggleCollection"/>.</param>
+        /// <param name="force">Force selection to be set.</param>
         /// </summary>
         public void SetSelection(int index, bool force = false)
         {
             if (index < 0 || Toggles.Count <= index || Toggles == null || !isActiveAndEnabled)
             {
-                Debug.LogWarning("Index out of range of ToggleList: " + index);
+                Debug.LogWarning("Index out of range of ToggleCollection: " + index);
                 return;
             }
 

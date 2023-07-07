@@ -102,7 +102,9 @@ namespace Microsoft.MixedReality.Toolkit
                         break;
 
                     default:
+#if !UNITY_EDITOR
                         Debug.LogWarning($"Unknown DisplayType value: {type}. No camera settings changes made.");
+#endif
                         break;
                 }
             }
@@ -125,7 +127,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             using (GetDisplayTypePerfMarker.Auto())
             {
-                if (XRSubsystemHelpers.DisplaySubsystem == null) { return DisplayType.Transparent; }
+                if (XRSubsystemHelpers.DisplaySubsystem == null) { return DisplayType.Unknown; }
                 return XRSubsystemHelpers.DisplaySubsystem.displayOpaque ? DisplayType.Opaque : DisplayType.Transparent;
             }
         }

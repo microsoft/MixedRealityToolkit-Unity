@@ -2,15 +2,23 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Example4_ButtonFrontplateHighlight_32mm_Circular
   m_Shader: {fileID: 4800000, guid: 3dee60a1b8e777e4f8b15a53c35077c0, type: 3}
-  m_ShaderKeywords: USE_GLOBAL_EXTRA_INPUT_ON USE_GLOBAL_LEFT_INDEX_ON USE_GLOBAL_RIGHT_INDEX_ON
-    _BLOB_ENABLE_2__ON _BLOB_ENABLE_3__ON _BLOB_ENABLE__ON _SMOOTH_EDGES__ON _USE_GLOBAL_PROGRESS__ON
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - USE_GLOBAL_EXTRA_INPUT_ON
+  - USE_GLOBAL_LEFT_INDEX_ON
+  - USE_GLOBAL_RIGHT_INDEX_ON
+  - _BLOB_ENABLE_2__ON
+  - _BLOB_ENABLE_3__ON
+  - _BLOB_ENABLE__ON
+  - _SMOOTH_EDGES__ON
+  - _USE_GLOBAL_PROGRESS__ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -24,6 +32,7 @@ Material:
         m_Texture: {fileID: 2800000, guid: da544c38514958a47b79221e159fcfba, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - Use_Global_Extra_Input: 1
     - Use_Global_Left_Index: 1

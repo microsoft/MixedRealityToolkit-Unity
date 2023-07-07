@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         menuName = "MRTK/Accessibility/Accessible Object Classification")]
     public class AccessibleObjectClassification : ScriptableObject
     {
-        [SerializeField]
+        [SerializeField, Experimental]
         [Tooltip("Friendly description of the classification.")]
         private string description;
 

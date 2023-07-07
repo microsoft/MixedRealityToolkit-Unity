@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Represents the current state of the <see cref="ArticulatedHandController"/>.
-    /// Contains extra state values extended from the base <see cref="XRControllerState">,
+    /// Contains extra state values extended from the base <see cref="XRControllerState"/>,
     /// including the left and right pinch/select progress.
     /// </summary>
     [Serializable]

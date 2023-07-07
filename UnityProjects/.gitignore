@@ -27,6 +27,9 @@
 # Visual Studio cache directory
 .vs/
 
+# Jetbrains cache directory
+.idea/
+
 # Visual Studio Code cache directory
 .vscode/
 
@@ -58,6 +61,10 @@ ExportedObj/
 
 # Unity3D generated file on crash reports
 sysinfo.txt
+
+# Unity3D Test Runner generated files
+*/[Aa]ssets/InitTestScene*.unity
+*/[Aa]ssets/InitTestScene*.unity.meta
 
 # Builds
 *.apk

@@ -15,6 +15,10 @@ using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
+    /// <summary>
+    /// A Unity subsystem that extends <see cref="Microsoft.MixedReality.Toolkit.Subsystems.HandsSubsystem">HandsSubsystem</see>, and 
+    /// obtains hand joint poses from the Microsoft.MixedReality.OpenXR.HandTracker class.
+    /// </summary>
 #if MROPENXR_PRESENT && (UNITY_EDITOR_WIN || UNITY_WSA || UNITY_STANDALONE_WIN || UNITY_ANDROID)
     [Preserve]
     [MRTKSubsystem(
@@ -43,6 +47,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// A class that extends <see cref="Microsoft.MixedReality.Toolkit.Input.HandDataContainer">HandDataContainer</see>, and 
+        /// obtains hand joint poses from the Microsoft.MixedReality.OpenXR.HandTracker class.
+        /// </summary>
         private class OpenXRHandContainer : HandDataContainer
         {
             public OpenXRHandContainer(XRNode handNode) : base(handNode)
@@ -123,7 +131,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             private static readonly ProfilerMarker TryCalculateEntireHandPerfMarker =
                 new ProfilerMarker("[MRTK] OpenXRHandsSubsystem.TryCalculateEntireHand");
 
-            /// <summary/>
+            /// <summary>
             /// For a certain hand, query every Bone in the hand, and write all results to the
             /// handJoints collection. This will also mark handsQueriedThisFrame[handNode] = true.
             /// </summary>
@@ -165,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             private static readonly ProfilerMarker UpdateJointPerfMarker =
                 new ProfilerMarker("[MRTK] OpenXRHandsSubsystem.UpdateJoint");
 
-            /// <summary/>
+            /// <summary>
             /// Given a destination jointID, apply the Bone info to the correct struct
             /// in the handJoints collection.
             /// </summary>
@@ -251,6 +259,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             };
         }
 
+        /// <summary>
+        /// A hand subsystem that extends the <see cref="Microsoft.MixedReality.Toolkit.Subsystems.HandSubsystem.Provider">Provider</see> class, and 
+        /// obtains hand joint poses from the <see cref="OpenXRHandContainer"/> class.
+        /// </summary>
         [Preserve]
         private class OpenXRProvider : Provider, IHandsSubsystem
         {
