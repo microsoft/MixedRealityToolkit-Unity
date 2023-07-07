@@ -1,16 +1,15 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using Microsoft.MixedReality.Toolkit;
 using Microsoft.MixedReality.Toolkit.Subsystems;
 using UnityEngine;
 using UnityEngine.Events;
 using System.Collections.Generic;
 using System;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
-    public class KeywordRecognitionHandler : MonoBehaviour
+    public class SpeechKeywordRecognitionHandler : MonoBehaviour
     {
         [Serializable]
         public struct KeywordEvent
@@ -19,27 +18,28 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             [SerializeField] public UnityEvent Event;
         }
 
-        [SerializeField] private List<KeywordEvent> _keywords = new List<KeywordEvent>();
+        [SerializeField] private List<KeywordEvent> keywords = new List<KeywordEvent>();
 
         public List<KeywordEvent> Keywords
         {
-            get => _keywords;
+            get => keywords;
             set
             {
-                _keywords = value;
+                keywords = value;
                 UpdateKeywords();
             }
         }
 
-        [SerializeField] private UnityEvent GlobalEvent;
-        private KeywordRecognitionSubsystem _keywordRecognitionSubsystem;
+        [SerializeField] private UnityEvent globalEvent;
+
+        private KeywordRecognitionSubsystem keywordRecognitionSubsystem;
 
         private void Start()
         {
-            _keywordRecognitionSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<KeywordRecognitionSubsystem>();
-            if (_keywordRecognitionSubsystem == null)
+            keywordRecognitionSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<KeywordRecognitionSubsystem>();
+            if (keywordRecognitionSubsystem == null)
             {
-                // TODO log warning
+                Debug.LogWarning("No keyword subsystem detected.");
             }
 
             UpdateKeywords();
@@ -47,11 +47,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         private void UpdateKeywords()
         {
-            foreach (var data in _keywords)
+            foreach (var data in keywords)
             {
-                _keywordRecognitionSubsystem.CreateOrGetEventForKeyword(data.Keyword).AddListener(() =>
+                keywordRecognitionSubsystem.CreateOrGetEventForKeyword(data.Keyword).AddListener(() =>
                 {
-                    GlobalEvent?.Invoke();
+                    globalEvent?.Invoke();
                     data.Event?.Invoke();
                 });
             }

@@ -3,7 +3,7 @@
 
 using UnityEngine;
 
-namespace Microsoft.MixedReality.Toolkit.Examples.Demos
+namespace Microsoft.MixedReality.Toolkit.Examples
 {
     using SpatialManipulation;
     using UnityEngine.XR.Interaction.Toolkit;

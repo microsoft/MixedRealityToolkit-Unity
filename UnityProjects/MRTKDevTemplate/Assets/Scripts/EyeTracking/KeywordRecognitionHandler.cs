@@ -26,24 +26,24 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         [Tooltip("List of speech recognition keywords and events to trigger.")]
         [SerializeField]
-        private List<KeywordEvent> _keywords = new List<KeywordEvent>();
+        private List<KeywordEvent> keywords = new List<KeywordEvent>();
 
         public List<KeywordEvent> Keywords
         {
-            get => _keywords;
+            get => keywords;
             set
             {
-                _keywords = value;
+                keywords = value;
                 UpdateKeywords();
             }
         }
 
-        private IKeywordRecognitionSubsystem _keywordRecognitionSubsystem;
+        private IKeywordRecognitionSubsystem keywordRecognitionSubsystem;
 
         private void Start()
         {
-            _keywordRecognitionSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<IKeywordRecognitionSubsystem>();
-            if (_keywordRecognitionSubsystem == null)
+            keywordRecognitionSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<IKeywordRecognitionSubsystem>();
+            if (keywordRecognitionSubsystem == null)
             {
                 Debug.LogWarning("No keyword subsystem detected.");
             }
@@ -53,9 +53,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         private void UpdateKeywords()
         {
-            foreach (var data in _keywords)
+            foreach (var data in keywords)
             {
-                _keywordRecognitionSubsystem.CreateOrGetEventForKeyword(data.Keyword).AddListener(() =>
+                keywordRecognitionSubsystem.CreateOrGetEventForKeyword(data.Keyword).AddListener(() =>
                 {
                     data.Event?.Invoke();
                 });

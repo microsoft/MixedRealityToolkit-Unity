@@ -37,7 +37,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         [SerializeField]
         private TextToSpeechVoice voice;
 
-
         /// <summary>
         /// Wrapper of UnityEvent&lt;string&gt; for serialization.
         /// </summary>
@@ -53,7 +52,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         public StringUnityEvent OnSpeakFaulted { get; private set; }
 
         private TextToSpeechSubsystem textToSpeechSubsystem;
-
 
         public void Speak()
         {
