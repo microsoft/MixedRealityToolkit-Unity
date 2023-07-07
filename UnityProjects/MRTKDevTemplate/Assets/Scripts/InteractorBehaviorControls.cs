@@ -108,17 +108,25 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         private void ToggleInteractors(XRBaseInteractor[] interactors, bool isActive)
         {
             if (isActive)
+            {
                 ActivateInteractors(interactors);
+            }
             else
+            {
                 DeactivateInteractors(interactors);
+            }
         }
 
         private void ToggleInteractor(XRBaseInteractor interactor, bool isActive)
         {
             if (isActive)
+            {
                 ActivateInteractor(interactor);
+            }
             else
+            {
                 DeactivateInteractor(interactor);
+            }
         }
 
         private void ActivateInteractors(XRBaseInteractor[] interactors)
