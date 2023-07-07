@@ -93,7 +93,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     else
                     {
                         // Otherwise, go find one.
-                        interactionManager = FindObjectOfType<XRInteractionManager>();
+                        interactionManager = ComponentCache<XRInteractionManager>.FindFirstActiveInstance();
                     }
                 }
 
