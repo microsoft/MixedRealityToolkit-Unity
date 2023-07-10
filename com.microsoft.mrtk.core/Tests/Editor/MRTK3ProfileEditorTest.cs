@@ -24,8 +24,6 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests.EditMode
             Assert.IsNotNull(panel, "There should have hand a settings panel created for the MRTK Profile.");
 
             yield return null;
-
-            //Assert.AreEqual(0, logWatcher.FailureCount, "There should have been zero failures logged when showing the MRTK Profile editor window");
         }
     }
 }
