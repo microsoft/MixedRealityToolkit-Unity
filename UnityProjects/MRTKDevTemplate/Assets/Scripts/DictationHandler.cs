@@ -58,7 +58,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             dictationSubsystem = XRSubsystemHelpers.DictationSubsystem;
             if (dictationSubsystem != null)
             {
-
                 keywordRecognitionSubsystem = XRSubsystemHelpers.KeywordRecognitionSubsystem;
                 if (keywordRecognitionSubsystem != null)
                 {
