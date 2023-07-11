@@ -222,6 +222,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Used to locate and lock the raycast hit data on a select.
         /// </summary>
+        /// <param name="rayInteractor">The XRRayInteractor responsible for the raycast hit.</param>
+        /// <param name="interactableObject"> The IXRSelectInteractable which has been selected. </param>
+        /// <returns>The local position and normal of the hit target, the hit target transform, and a reference point to calculate hit distance, contained in a TargetHitInfo struct.</returns>
         public static TargetHitInfo LocateTargetHitPoint(this XRRayInteractor rayInteractor, IXRSelectInteractable interactableObject)
         {
             TargetHitInfo hitInfo = new TargetHitInfo();
@@ -266,7 +269,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 hitInfo.HitTargetTransform = raycastResult.Value.gameObject.transform;
                 hitInfo.TargetLocalHitPoint = hitInfo.HitTargetTransform.InverseTransformPoint(raycastResult.Value.worldPosition);
                 hitInfo.TargetLocalHitNormal = hitInfo.HitTargetTransform.InverseTransformDirection(raycastResult.Value.worldNormal);
-                hitInfo.HitDistanceReference = raycastResult.Value.worldPosition;
+                hitInfo.HitDistanceReferencePoint = raycastResult.Value.worldPosition;
             }
             // Otherwise, calculate the reticle pose based on the raycast hit.
             else if (raycastHit.HasValue)
@@ -282,7 +285,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     hitInfo.TargetLocalHitNormal = hitInfo.HitTargetTransform.InverseTransformDirection(raycastHit.Value.normal);
                 }
 
-                hitInfo.HitDistanceReference = hitInfo.HitTargetTransform.TransformPoint(hitInfo.TargetLocalHitPoint);
+                hitInfo.HitDistanceReferencePoint = hitInfo.HitTargetTransform.TransformPoint(hitInfo.TargetLocalHitPoint);
             }
             return hitInfo;
         }
@@ -295,7 +298,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             public Vector3 TargetLocalHitPoint;
             public Vector3 TargetLocalHitNormal;
             public Transform HitTargetTransform;
-            public Vector3 HitDistanceReference;
+            public Vector3 HitDistanceReferencePoint;
         }
     }
 }

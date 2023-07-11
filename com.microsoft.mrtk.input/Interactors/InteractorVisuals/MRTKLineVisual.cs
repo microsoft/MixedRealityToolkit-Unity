@@ -454,7 +454,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
 
             selectedHitInfo = rayInteractor.LocateTargetHitPoint(args.interactableObject);
-            hitDistance = (selectedHitInfo.HitDistanceReference - rayPositions[0]).magnitude;
+            hitDistance = (selectedHitInfo.HitDistanceReferencePoint - rayPositions[0]).magnitude;
         }
 
         #endregion
