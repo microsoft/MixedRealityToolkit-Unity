@@ -261,6 +261,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
+        protected virtual void OnEnable()
+        {
+            foreach (var handle in handles)
+            {
+                handle.HideOnStartup();
+            }
+        }
+
         /// <summary>
         /// Writes the property values into the renderer. Override this if you have custom box visuals that use different material property bindings.
         /// </summary>
