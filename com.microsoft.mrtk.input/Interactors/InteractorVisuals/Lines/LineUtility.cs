@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -217,5 +218,80 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Used to calculate the ellipse point in <see cref="GetEllipsePoint"/>
         /// </summary>
         private static Vector3 cachedEllipsePoint = Vector3.zero;
+
+        /// <summary>
+        /// Used to locate and lock the raycast hit data on a select.
+        /// </summary>
+        public static TargetHitInfo LocateTargetHitPoint(this XRRayInteractor rayInteractor, IXRSelectInteractable interactableObject)
+        {
+            TargetHitInfo hitInfo = new TargetHitInfo();
+            bool hitPointAndTransformUpdated = false;
+            bool hitNormalUpdated = false;
+
+            // In the case of affordances/handles, we can stick the ray right on to the handle.
+            if (interactableObject is ISnapInteractable snappable)
+            {
+                hitInfo.hitTargetTransform = snappable.HandleTransform;
+                hitInfo.targetLocalHitPoint = Vector3.zero;
+                hitInfo.targetLocalHitNormal = Vector3.up;
+                hitPointAndTransformUpdated = true;
+                hitNormalUpdated = true;
+            }
+
+            // In the case of an IScrollable being selected, ensure that the reticle locks to the
+            // scroller and not to the a list item within the scroller, such as a button.
+            if (interactableObject is IScrollable scrollable &&
+                scrollable.IsScrolling &&
+                scrollable.ScrollingInteractor == (IXRInteractor)rayInteractor)
+            {
+                hitInfo.hitTargetTransform = scrollable.ScrollableTransform;
+                hitInfo.targetLocalHitPoint = scrollable.ScrollingLocalAnchorPosition;
+                hitPointAndTransformUpdated = true;
+            }
+
+            // If no hit, abort.
+            if (!rayInteractor.TryGetCurrentRaycast(
+                  out RaycastHit? raycastHit,
+                  out _,
+                  out UnityEngine.EventSystems.RaycastResult? raycastResult,
+                  out _,
+                  out bool isUIHitClosest))
+            {
+                return hitInfo;
+            }
+
+            // Align the reticle with a UI hit if applicable
+            if (raycastResult.HasValue && isUIHitClosest)
+            {
+                hitInfo.hitTargetTransform = raycastResult.Value.gameObject.transform;
+                hitInfo.targetLocalHitPoint = hitInfo.hitTargetTransform.InverseTransformPoint(raycastResult.Value.worldPosition);
+                hitInfo.targetLocalHitNormal = hitInfo.hitTargetTransform.InverseTransformDirection(raycastResult.Value.worldNormal);
+            }
+            // Otherwise, calculate the reticle pose based on the raycast hit.
+            else if (raycastHit.HasValue)
+            {
+                if (!hitPointAndTransformUpdated)
+                {
+                    hitInfo.hitTargetTransform = raycastHit.Value.collider.transform;
+                    hitInfo.targetLocalHitPoint = hitInfo.hitTargetTransform.InverseTransformPoint(raycastHit.Value.point);
+                }
+
+                if (!hitNormalUpdated)
+                {
+                    hitInfo.targetLocalHitNormal = hitInfo.hitTargetTransform.InverseTransformDirection(raycastHit.Value.normal);
+                }
+            }
+            return hitInfo;
+        }
+
+        /// <summary>
+        /// A data container for managing the position, normal, and transform of a target hit point. 
+        /// </summary>
+        public struct TargetHitInfo
+        {
+            public Vector3 targetLocalHitPoint;
+            public Vector3 targetLocalHitNormal;
+            public Transform hitTargetTransform;
+        }
     }
 }
