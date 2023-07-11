@@ -231,9 +231,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // In the case of affordances/handles, we can stick the ray right on to the handle.
             if (interactableObject is ISnapInteractable snappable)
             {
-                hitInfo.hitTargetTransform = snappable.HandleTransform;
-                hitInfo.targetLocalHitPoint = Vector3.zero;
-                hitInfo.targetLocalHitNormal = Vector3.up;
+                hitInfo.HitTargetTransform = snappable.HandleTransform;
+                hitInfo.TargetLocalHitPoint = Vector3.zero;
+                hitInfo.TargetLocalHitNormal = Vector3.up;
                 hitPointAndTransformUpdated = true;
                 hitNormalUpdated = true;
             }
@@ -244,8 +244,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 scrollable.IsScrolling &&
                 scrollable.ScrollingInteractor == (IXRInteractor)rayInteractor)
             {
-                hitInfo.hitTargetTransform = scrollable.ScrollableTransform;
-                hitInfo.targetLocalHitPoint = scrollable.ScrollingLocalAnchorPosition;
+                hitInfo.HitTargetTransform = scrollable.ScrollableTransform;
+                hitInfo.TargetLocalHitPoint = scrollable.ScrollingLocalAnchorPosition;
                 hitPointAndTransformUpdated = true;
             }
 
@@ -263,23 +263,26 @@ namespace Microsoft.MixedReality.Toolkit.Input
             // Align the reticle with a UI hit if applicable
             if (raycastResult.HasValue && isUIHitClosest)
             {
-                hitInfo.hitTargetTransform = raycastResult.Value.gameObject.transform;
-                hitInfo.targetLocalHitPoint = hitInfo.hitTargetTransform.InverseTransformPoint(raycastResult.Value.worldPosition);
-                hitInfo.targetLocalHitNormal = hitInfo.hitTargetTransform.InverseTransformDirection(raycastResult.Value.worldNormal);
+                hitInfo.HitTargetTransform = raycastResult.Value.gameObject.transform;
+                hitInfo.TargetLocalHitPoint = hitInfo.HitTargetTransform.InverseTransformPoint(raycastResult.Value.worldPosition);
+                hitInfo.TargetLocalHitNormal = hitInfo.HitTargetTransform.InverseTransformDirection(raycastResult.Value.worldNormal);
+                hitInfo.HitDistanceReference = raycastResult.Value.worldPosition;
             }
             // Otherwise, calculate the reticle pose based on the raycast hit.
             else if (raycastHit.HasValue)
             {
                 if (!hitPointAndTransformUpdated)
                 {
-                    hitInfo.hitTargetTransform = raycastHit.Value.collider.transform;
-                    hitInfo.targetLocalHitPoint = hitInfo.hitTargetTransform.InverseTransformPoint(raycastHit.Value.point);
+                    hitInfo.HitTargetTransform = raycastHit.Value.collider.transform;
+                    hitInfo.TargetLocalHitPoint = hitInfo.HitTargetTransform.InverseTransformPoint(raycastHit.Value.point);
                 }
 
                 if (!hitNormalUpdated)
                 {
-                    hitInfo.targetLocalHitNormal = hitInfo.hitTargetTransform.InverseTransformDirection(raycastHit.Value.normal);
+                    hitInfo.TargetLocalHitNormal = hitInfo.HitTargetTransform.InverseTransformDirection(raycastHit.Value.normal);
                 }
+
+                hitInfo.HitDistanceReference = hitInfo.HitTargetTransform.TransformPoint(hitInfo.TargetLocalHitPoint);
             }
             return hitInfo;
         }
@@ -289,9 +292,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public struct TargetHitInfo
         {
-            public Vector3 targetLocalHitPoint;
-            public Vector3 targetLocalHitNormal;
-            public Transform hitTargetTransform;
+            public Vector3 TargetLocalHitPoint;
+            public Vector3 TargetLocalHitNormal;
+            public Transform HitTargetTransform;
+            public Vector3 HitDistanceReference;
         }
     }
 }

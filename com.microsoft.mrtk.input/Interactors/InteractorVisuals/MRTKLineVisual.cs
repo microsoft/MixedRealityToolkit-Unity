@@ -324,7 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (rayInteractor.hasSelection)
                 {
                     // Assign the last point to the one saved by the callback
-                    lineDataProvider.LastPoint = selectedHitInfo.hitTargetTransform.TransformPoint(selectedHitInfo.targetLocalHitPoint);
+                    lineDataProvider.LastPoint = selectedHitInfo.HitTargetTransform.TransformPoint(selectedHitInfo.TargetLocalHitPoint);
                     rayHasHit = true;
                 }
                 // Otherwise draw out the line exactly as the Ray Interactor prescribes
@@ -447,8 +447,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void LocateTargetHitPoint(SelectEnterEventArgs args)
         {
+            // If no hit interactable or we haven't even gotten any ray positions yet, abort
+            if (args == null || rayPositions == null || rayPositionsCount <= 0)
+            {
+                return;
+            }
+
             selectedHitInfo = rayInteractor.LocateTargetHitPoint(args.interactableObject);
-            hitDistance = (selectedHitInfo.hitTargetTransform.TransformPoint(selectedHitInfo.targetLocalHitPoint) - rayPositions[0]).magnitude;
+            hitDistance = (selectedHitInfo.HitDistanceReference - rayPositions[0]).magnitude;
         }
 
         #endregion

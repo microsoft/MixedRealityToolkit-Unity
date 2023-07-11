@@ -84,8 +84,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         if (rayInteractor.interactablesSelected.Count > 0)
                         {
-                            reticlePosition = selectedHitInfo.hitTargetTransform.TransformPoint(selectedHitInfo.targetLocalHitPoint);
-                            reticleNormal = selectedHitInfo.hitTargetTransform.TransformDirection(selectedHitInfo.targetLocalHitNormal);
+                            reticlePosition = selectedHitInfo.HitTargetTransform.TransformPoint(selectedHitInfo.TargetLocalHitPoint);
+                            reticleNormal = selectedHitInfo.HitTargetTransform.TransformDirection(selectedHitInfo.TargetLocalHitNormal);
                             ReticleSetActive(true);
                         }
                         else

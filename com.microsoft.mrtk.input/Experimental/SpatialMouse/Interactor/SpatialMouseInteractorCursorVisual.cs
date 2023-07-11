@@ -65,6 +65,15 @@ namespace Microsoft.MixedReality.Toolkit.Input.Experimental
 
         private void LocateTargetHitPoint(SelectEnterEventArgs args)
         {
+            // Sanity check.
+            if (rayPositions == null ||
+                rayPositions.Length == 0 ||
+                rayPositionsCount == 0 ||
+                rayPositionsCount > rayPositions.Length)
+            {
+                return;
+            }
+
             selectedHitInfo = mouseInteractor.LocateTargetHitPoint(args.interactableObject);
         }
 
@@ -97,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Experimental
             // If the mouse is selecting an interactable, then position the cursor based on the target transform
             if (mouseInteractor.interactablesSelected.Count > 0)
             {
-                reticlePosition = selectedHitInfo.hitTargetTransform.TransformPoint(selectedHitInfo.targetLocalHitPoint);
+                reticlePosition = selectedHitInfo.HitTargetTransform.TransformPoint(selectedHitInfo.TargetLocalHitPoint);
             }
             // otherwise, try getting reticlePosition from the ray hit or set it a default distance from the user
             else if (!mouseInteractor.TryGetHitInfo(out reticlePosition, out reticleNormal, out endPositionInLine, out bool isValidTarget))
