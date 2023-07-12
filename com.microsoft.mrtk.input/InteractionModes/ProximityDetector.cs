@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (interactionManager == null)
             {
-                interactionManager = FindObjectOfType<XRInteractionManager>();
+                interactionManager = ComponentCache<XRInteractionManager>.FindFirstActiveInstance();
             }
 
             if (interactionManager == null)

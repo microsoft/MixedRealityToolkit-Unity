@@ -11,13 +11,18 @@ namespace Microsoft.MixedReality.Toolkit
     public enum DisplayType
     {
         /// <summary>
+        /// An unknown display type.
+        /// </summary>
+        Unknown = 0,
+
+        /// <summary>
         /// A see-through display that allows the physical world to be viewed.
         /// </summary>
-        Transparent = 0,
+        Transparent = 1,
 
         /// <summary>
         /// A display that blocks viewing of the physical world.
         /// </summary>
-        Opaque = 1
+        Opaque = 2,
     }
 }

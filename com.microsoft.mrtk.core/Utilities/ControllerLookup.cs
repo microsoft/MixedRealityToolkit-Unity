@@ -56,5 +56,12 @@ namespace Microsoft.MixedReality.Toolkit
             set => rightHandController = value;
         }
 
+        private void OnValidate()
+        {
+            if (FindObjectsByType<ControllerLookup>(FindObjectsSortMode.None).Length > 1)
+            {
+                Debug.LogWarning("Found more than one instance of the ControllerLookup class in the hierarchy. There should only be one");
+            }
+        }
     }
 }
