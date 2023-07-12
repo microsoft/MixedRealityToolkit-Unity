@@ -182,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         // reusable values derived from raycast hit data
         private Vector3 reticlePosition;
-        private TargetHitInfo selectedHitInfo = new TargetHitInfo();
+        private TargetHitDetails selectedHitDetails = new TargetHitDetails();
         private float hitDistance;
 
         /// <summary>
@@ -324,7 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (rayInteractor.hasSelection)
                 {
                     // Assign the last point to the one saved by the callback
-                    lineDataProvider.LastPoint = selectedHitInfo.HitTargetTransform.TransformPoint(selectedHitInfo.TargetLocalHitPoint);
+                    lineDataProvider.LastPoint = selectedHitDetails.HitTargetTransform.TransformPoint(selectedHitDetails.TargetLocalHitPoint);
                     rayHasHit = true;
                 }
                 // Otherwise draw out the line exactly as the Ray Interactor prescribes
@@ -453,8 +453,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            selectedHitInfo = rayInteractor.LocateTargetHitPoint(args.interactableObject);
-            hitDistance = (selectedHitInfo.HitDistanceReferencePoint - rayPositions[0]).magnitude;
+            rayInteractor.TryLocateTargetHitPoint(args.interactableObject, out selectedHitDetails);
+            hitDistance = (selectedHitDetails.HitDistanceReferencePoint - rayPositions[0]).magnitude;
         }
 
         #endregion

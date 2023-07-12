@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Experimental
             Application.onBeforeRender -= OnBeforeRenderCursor;
         }
 
-        private TargetHitInfo selectedHitInfo = new TargetHitInfo();
+        private TargetHitDetails selectedHitDetails = new TargetHitDetails();
 
         // reusable lists of the points returned by the XRRayInteractor
         Vector3[] rayPositions;
@@ -74,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Experimental
                 return;
             }
 
-            selectedHitInfo = mouseInteractor.LocateTargetHitPoint(args.interactableObject);
+            mouseInteractor.TryLocateTargetHitPoint(args.interactableObject, out selectedHitDetails);
         }
 
         private void OnBeforeRenderCursor()
@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Experimental
             // If the mouse is selecting an interactable, then position the cursor based on the target transform
             if (mouseInteractor.interactablesSelected.Count > 0)
             {
-                reticlePosition = selectedHitInfo.HitTargetTransform.TransformPoint(selectedHitInfo.TargetLocalHitPoint);
+                reticlePosition = selectedHitDetails.HitTargetTransform.TransformPoint(selectedHitDetails.TargetLocalHitPoint);
             }
             // otherwise, try getting reticlePosition from the ray hit or set it a default distance from the user
             else if (!mouseInteractor.TryGetHitInfo(out reticlePosition, out reticleNormal, out endPositionInLine, out bool isValidTarget))

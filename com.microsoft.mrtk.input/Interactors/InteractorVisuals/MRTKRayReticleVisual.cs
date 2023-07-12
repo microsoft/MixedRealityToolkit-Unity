@@ -84,8 +84,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         if (rayInteractor.interactablesSelected.Count > 0)
                         {
-                            reticlePosition = selectedHitInfo.HitTargetTransform.TransformPoint(selectedHitInfo.TargetLocalHitPoint);
-                            reticleNormal = selectedHitInfo.HitTargetTransform.TransformDirection(selectedHitInfo.TargetLocalHitNormal);
+                            reticlePosition = selectedHitDetails.HitTargetTransform.TransformPoint(selectedHitDetails.TargetLocalHitPoint);
+                            reticleNormal = selectedHitDetails.HitTargetTransform.TransformDirection(selectedHitDetails.TargetLocalHitNormal);
                             ReticleSetActive(true);
                         }
                         else
@@ -132,14 +132,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private TargetHitInfo selectedHitInfo = new TargetHitInfo();
+        private TargetHitDetails selectedHitDetails = new TargetHitDetails();
 
         /// <summary>
         /// Used to locate and lock the raycast hit data on a select
         /// </summary>
         private void LocateTargetHitPoint(SelectEnterEventArgs args)
         {
-            selectedHitInfo = rayInteractor.LocateTargetHitPoint(args.interactableObject);
+            rayInteractor.TryLocateTargetHitPoint(args.interactableObject, out selectedHitDetails);
         }
 
         /// <summary>
