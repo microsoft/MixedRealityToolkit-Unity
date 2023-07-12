@@ -16,6 +16,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
     {
         private KeyboardPreview keyboardPreview = null;
 
+        /// <summary>
+        /// Initialize the keyboard tests by creating a game object with a <see cref="KeyboardPreview"/> component.
+        /// </summary>
         [SetUp]
         public void Init()
         {
@@ -25,12 +28,18 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             keyboardPreview = obj.AddComponent<KeyboardPreview>();
         }
 
+        /// <summary>
+        /// Clean-up the keyboard tests by destroying the game object with the <see cref="KeyboardPreview"/> component.
+        /// </summary>
         [TearDown]
         public void Teardown()
         {
             Object.Destroy(keyboardPreview);
         }
 
+        /// <summary>
+        /// Test the creation of the <see cref="KeyboardPreview"/> component.
+        /// </summary>
         [UnityTest]
         public IEnumerator TestCreation()
         {
@@ -39,6 +48,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.IsNotNull(keyboardPreview, "KeyboardPreview was destroyed unexpectedly.");
         }
 
+        /// <summary>
+        /// Test that the <see cref="KeyboardPreview"/> component functions without a label component.
+        /// </summary>
         [UnityTest]
         public IEnumerator TestWithNoLabel()
         {

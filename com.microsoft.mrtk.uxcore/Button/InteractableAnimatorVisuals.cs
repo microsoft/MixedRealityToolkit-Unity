@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             if (Interactable != null && TargetAnimator != null)
             {
-                TargetAnimator.SetFloat("Selected", Interactable.Selectedness());
+                TargetAnimator.SetFloat("Selected", Interactable.GetSelectionProgress());
                 TargetAnimator.SetFloat("ActiveFocus", Interactable.IsActiveHovered ? 1 : 0);
                 TargetAnimator.SetFloat("PassiveFocus", Interactable.isHovered ? 1 : 0);
             }

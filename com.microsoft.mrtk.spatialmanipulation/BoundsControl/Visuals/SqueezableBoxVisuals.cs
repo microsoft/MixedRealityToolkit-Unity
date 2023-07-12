@@ -207,8 +207,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             if (interactable != null)
             {
                 targetActiveFocus = (interactable.IsActiveHovered || interactable.isSelected || handlesActive) ? 1 : 0;
-                targetActivation = interactable.Selectedness();
-                targetShrink = interactable.Selectedness();
+                targetActivation = interactable.GetSelectionProgress();
+                targetShrink = interactable.GetSelectionProgress();
 
                 if (handlesActive)
                 {

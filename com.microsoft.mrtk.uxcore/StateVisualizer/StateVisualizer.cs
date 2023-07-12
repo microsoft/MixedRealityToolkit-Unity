@@ -389,7 +389,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     parameterChanged |= UpdateStateValue("Disabled", !interactable.enabled ? 1 : 0);
                     parameterChanged |= UpdateStateValue("PassiveHover", interactable.isHovered ? 1 : 0);
                     parameterChanged |= UpdateStateValue("ActiveHover", interactable.IsActiveHovered ? 1 : 0);
-                    parameterChanged |= UpdateStateValue("Select", interactable.Selectedness());
+                    parameterChanged |= UpdateStateValue("Select", interactable.GetSelectionProgress());
                     parameterChanged |= UpdateStateValue("Toggle", interactable.IsToggled ? 1 : 0);
                     return parameterChanged;
                 }

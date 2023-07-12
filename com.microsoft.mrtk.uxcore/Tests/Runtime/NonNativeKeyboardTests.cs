@@ -19,6 +19,10 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
     {
         private NonNativeKeyboard keyboard = null;
 
+        /// <summary>
+        /// Initialize the non-native keyboard tests by creating a game object with a <see cref="NonNativeKeyboard"/> component,
+        /// and then opening this component.
+        /// </summary>
         [SetUp]
         public void Init()
         {
@@ -29,12 +33,18 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             keyboard.Open();
         }
 
+        /// <summary>
+        /// Clean-up the non-native keyboard tests by destroying the game object with the <see cref="NonNativeKeyboard"/> component.
+        /// </summary>
         [TearDown]
         public void Teardown()
         {
             Object.Destroy(keyboard);
         }
 
+        /// <summary>
+        /// Test that the <see cref="NonNativeKeyboard"/> component correctly handles an alpha key value.
+        /// </summary>
         [UnityTest]
         public IEnumerator TestNonnativeValueKey()
         {
@@ -49,6 +59,10 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             yield return null;
         }
 
+        /// <summary>
+        /// Test that the <see cref="NonNativeKeyboard"/> component correctly handles an alpha key value with a shift
+        /// key modifier.
+        /// </summary>
         [UnityTest]
         public IEnumerator TestNonnativeValueKeyShift()
         {
@@ -69,6 +83,10 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             yield return null;
         }
 
+        /// <summary>
+        /// Test that the <see cref="NonNativeKeyboard"/> text property correctly handles an alpha key value with a shift
+        /// key modifier, and then without the modifier.
+        /// </summary>
         [UnityTest]
         public IEnumerator TestNonnativeShiftFunctionKey()
         {
@@ -88,6 +106,10 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             yield return null;
         }
 
+        /// <summary>
+        /// Test that the <see cref="NonNativeKeyboard"/> text property correctly handles an alpha key value with the caps
+        /// lock key modifier.
+        /// </summary>
         [UnityTest]
         public IEnumerator TestNonnativeCapsLockFunctionKey()
         {
@@ -112,6 +134,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             yield return null;
         }
 
+        /// <summary>
+        /// Test that the <see cref="NonNativeKeyboard"/> text property correctly handles the space key.
+        /// </summary>
         [UnityTest]
         public IEnumerator TestNonnativeSpaceFunctionKey()
         {
@@ -120,6 +145,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.AreEqual(keyboard.Text, "a b", "The Space function key works.");
         }
 
+        /// <summary>
+        /// Test that the <see cref="NonNativeKeyboard"/> text property correctly handles the enter key.
+        /// </summary>
         [UnityTest]
         public IEnumerator TestNonnativeEnterFunctionKey()
         {
@@ -128,6 +156,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.AreEqual(keyboard.Text, "a\nb", "The Enter function key works.");
         }
 
+        /// <summary>
+        /// Test that the <see cref="NonNativeKeyboard"/> text property correctly handles the tab key.
+        /// </summary>
         [UnityTest]
         public IEnumerator TestNonnativeTabFunctionKey()
         {
@@ -136,6 +167,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.AreEqual(keyboard.Text, "a\tb", "The Tab function key works.");
         }
 
+        /// <summary>
+        /// Test that the <see cref="NonNativeKeyboard"/> text property correctly handles the previous and next keys.
+        /// </summary>
         [UnityTest]
         public IEnumerator TestNonnativePreviousNextFunctionKeys()
         {

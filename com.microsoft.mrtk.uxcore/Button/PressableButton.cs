@@ -4,29 +4,31 @@
 using System.Collections.Generic;
 using Unity.Profiling;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
     /// <summary>
-    /// The core behavior logic for a pressable button, following the <see cref="StatefulInteractable"/> pattern.
+    /// The core behavior logic for a button that can be pressed, following the <see cref="StatefulInteractable"/> pattern.
     /// </summary>
     /// <remarks>
     /// This script does not make any assumptions about the visuals associated with this button; any visuals
-    /// script can listen to the <see cref="Selectedness"/> value, or call <see cref="PushPlaneLocalPosition">
-    /// to obtain a 0...1 selectedness value or a local displacement, respectively, to implement a visual layer.
+    /// script can listen to the <see cref="selectionProgress"/> value, or call <see cref="PushPlaneLocalPosition">
+    /// to obtain a 0...1 selectionProgress value or a local displacement, respectively, to implement a visual layer.
     /// </remarks>
     [AddComponentMenu("MRTK/UX/Pressable Button")]
     public class PressableButton : StatefulInteractable
     {
         [SerializeField]
-        [Tooltip("Should this button's selectedness be smoothed, or absolute?")]
-        private bool smoothSelectedness = true;
+        [FormerlySerializedAs("smoothSelectedness")]
+        [Tooltip("Should this button's selectionProgress be smoothed, or absolute?")]
+        private bool smoothSelectionProgress = true;
 
         /// <summary>
-        /// Should this button's selectedness be smoothed/animated, or absolute?
+        /// Should this button's selectionProgress be smoothed/animated, or absolute?
         /// </summary>
-        public bool SmoothSelectedness { get => smoothSelectedness; set => smoothSelectedness = value; }
+        public bool SmoothSelectionProgress { get => smoothSelectionProgress; set => smoothSelectionProgress = value; }
 
         /// <summary>
         /// An enumeration defining the coordinate space of plane distances.
@@ -106,37 +108,40 @@ namespace Microsoft.MixedReality.Toolkit.UX
         public bool EnforceFrontPush { get => enforceFrontPush; set => enforceFrontPush = value; }
 
         [SerializeField]
+        [FormerlySerializedAs("rejectXYRolloff")]
         [Tooltip("Ensures that the button click event only fires if the push did not roll off the button in the XY plane. Defaults to true.")]
-        private bool rejectXYRolloff = true;
+        private bool rejectXYRollOff = true;
 
         /// <summary>
         /// Ensures that the button click event only fires if the push did not roll off the edge of the button in the XY plane.
         /// Defaults to true.
         /// </summary>
-        public bool RejectXYRolloff { get => rejectXYRolloff; set => rejectXYRolloff = value; }
+        public bool RejectXYRollOff { get => rejectXYRollOff; set => rejectXYRollOff = value; }
 
         [SerializeField]
-        [Tooltip("If RejectXYRolloff is enabled, rolloffs will be rejected within this normalized press amount behind the backplane.")]
-        private float rolloffXYDepth = 3;
+        [FormerlySerializedAs("rolloffXYDepth")]
+        [Tooltip("If RejectXYRollOff is enabled, roll-offs will be rejected within this normalized press amount behind the back plane.")]
+        private float rollOffXYDepth = 3;
 
         /// <summary>/
-        /// If RejectXYRolloff is enabled, rolloffs will be rejected within this normalized press amount of the backplane.
+        /// If RejectXYRollOff is enabled, roll-offs will be rejected within this normalized press amount of the back plane.
         /// </summary>
-        public float RolloffXYDepth { get => rolloffXYDepth; set => rolloffXYDepth = value; }
+        public float RollOffXYDepth { get => rollOffXYDepth; set => rollOffXYDepth = value; }
 
         [SerializeField]
-        [Tooltip("Ensures that the button click event only fires if the finger exited the button out the back instead of through the frontplate. Defaults to false.")]
-        private bool rejectZRolloff = false;
+        [FormerlySerializedAs("rejectZRolloff")]
+        [Tooltip("Ensures that the button click event only fires if the finger exited the button out the back instead of through the front plate. Defaults to false.")]
+        private bool rejectZRollOff = false;
 
         /// <summary>
         /// Ensures that the button click event only fires if the finger exited the button
-        /// out the back instead of through the frontplate. Defaults to false.
+        /// out the back instead of through the front plate. Defaults to false.
         /// </summary>
         /// <remarks>
         /// People like to push buttons by sticking their finger all the way through, and out the back.
         /// Keep this property false if you want to allow this behavior.
         /// </remarks>
-        public bool RejectZRolloff { get => rejectZRolloff; set => rejectZRolloff = value; }
+        public bool RejectZRollOff { get => rejectZRollOff; set => rejectZRollOff = value; }
 
         /// <summary>
         ///  Speed for extending the moving button visuals when selected by a non-touch source.
@@ -154,10 +159,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private HashSet<IPokeInteractor> validPokeInteractors = new HashSet<IPokeInteractor>();
 
         /// <summary>
-        /// The internal selectedness value; StatefulInteractable.Selectedness() is overridden
+        /// The internal selection progress value; StatefulInteractable.selectionProgress() is overridden
         /// to point to this value.
         /// </summary>
-        private float selectedness;
+        private float selectionProgress;
 
         /// <summary>
         /// Transform for local to world space in the world direction of a press
@@ -172,14 +177,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private float WorldToLocalScale => transform.InverseTransformVector(transform.forward).magnitude;
 
         /// <summary>
-        /// If the selectedness lerps to within this threshold of 0 or 1, the selectedness will snap to 0 or 1.
+        /// If the <see cref="selectionProgress"/> value is smoothed to within this threshold of 0 or 1, the <see cref="selectionProgress"/> will snap to 0 or 1.
         /// </summary>
-        private const float selectednessEpsilon = 0.00001f;
+        private const float selectionProgressEpsilon = 0.00001f;
 
         #endregion Private Members
 
         /// <inheritdoc />
-        public override float Selectedness() => selectedness;
+        public override float GetSelectionProgress() => selectionProgress;
 
         /// <inheritdoc />
         protected override bool CanClickOnFirstSelectEntered(SelectEnterEventArgs args)
@@ -195,17 +200,17 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         /// <summary>
         /// Returns the position of the front press plane of the button,
-        /// using the overall Selectedness of the button, which includes
+        /// using the overall selectionProgress of the button, which includes
         /// all forms of selection enabled on the interactable.
         /// </summary>
         /// <remarks>
-        /// If only a normalized 0...1 value for selectedness is needed,
-        /// query <see cref="Selectedness"> instead. Use this to determine the
+        /// If only a normalized 0...1 value for selectionProgress is needed,
+        /// query <see cref="GetSelectionProgress" /> instead. Use this to determine the
         /// local position of where the front plate of a moving button would be.
         /// </remarks>
         public Vector3 PushPlaneLocalPosition()
         {
-            float distance = MapToDistance(Selectedness());
+            float distance = MapToDistance(GetSelectionProgress());
             float localPushDistance = distanceSpaceMode == SpaceMode.Local ? distance : WorldToLocalScale * distance;
             return new Vector3(0, 0, localPushDistance);
         }
@@ -216,9 +221,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         /// <remarks>
         /// Excludes any other input mode, such as gaze-pinch, click, or other interactor.
-        /// Use <see cref="Selectedness"> to query the overall selectedness of this button.
+        /// Use <see cref="selectionProgress" /> to query the overall selectionProgress of this button.
         /// </remarks>
-        public bool TryGetPressedness(out float pokeAmount)
+        public bool TryGetPressProgress(out float pokeAmount)
         {
             IPokeInteractor farthestInteractor = TryGetFarthestPressDistance(out float touchDistance);
 
@@ -248,8 +253,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         protected override void OnDisable()
         {
-            // Reset the selectedness to 0 when the button is disabled.
-            selectedness = 0.0f;
+            // Reset the selectionProgress to 0 when the button is disabled.
+            selectionProgress = 0.0f;
             base.OnDisable();
         }
 
@@ -335,7 +340,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     }
 
                     // Do an immediate calculation here in the case that a PokeInteractor is already sufficiently pressing us before
-                    // we've calculated Selectedness() for this frame.
+                    // we've calculated selectionProgress() for this frame.
                     float pressDistanceLastFrame = GetDistanceAlongPushDirection(pokeInteractor.PokeTrajectory.Start) + scaledFingerOffset;
                     float pressAmountLastFrame = MapToPressedness(pressDistanceLastFrame);
 
@@ -367,11 +372,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
             using (ProcessInteractablePerfMarker.Auto())
             {
                 // We have the option to do time-based lerping/smoothing/animating of button value,
-                // so we do that here in a single-call-per-frame function. (The Selectedness method
+                // so we do that here in a single-call-per-frame function. (The selectionProgress method
                 // may be called any number of times per frame.)
                 if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
                 {
-                    bool isPoked = TryGetPressedness(out float pokeAmount);
+                    bool isPoked = TryGetPressProgress(out float pokeAmount);
 
                     float totalPressedness = pokeAmount;
                     bool isVariablySelected = false;
@@ -399,28 +404,28 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     }
 
                     // If we aren't poking or pinching, we do a lerp to animate the pressedness.
-                    if (!isPoked && !isVariablySelected && smoothSelectedness)
+                    if (!isPoked && !isVariablySelected && smoothSelectionProgress)
                     {
                         // If total pressedness is 1, we are extending. If zero, we are retracting.
                         // Todo: make framerate independent, but *equally snappy*. Smoothing.SmoothTo is
                         // unacceptably slow/smooth for this. We may end up exposing a custom curve here.
-                        selectedness = Mathf.Lerp(selectedness, totalPressedness, totalPressedness == 1 ? extendSpeed : returnSpeed);
+                        selectionProgress = Mathf.Lerp(selectionProgress, totalPressedness, totalPressedness == 1 ? extendSpeed : returnSpeed);
 
-                        // Snap selectedness to ends of range, plus/minus selectednessEpsilon.
-                        if (selectedness < selectednessEpsilon)
+                        // Snap selectionProgress to ends of range, plus/minus selectionProgressEpsilon.
+                        if (selectionProgress < selectionProgressEpsilon)
                         {
-                            selectedness = 0;
+                            selectionProgress = 0;
                         }
 
-                        if (selectedness > 1 - selectednessEpsilon)
+                        if (selectionProgress > 1 - selectionProgressEpsilon)
                         {
-                            selectedness = 1;
+                            selectionProgress = 1;
                         }
                     }
                     else
                     {
                         // Otherwise, we set the value to the actual pressedness for maximum responsiveness.
-                        selectedness = totalPressedness;
+                        selectionProgress = totalPressedness;
                     }
                 }
             }
@@ -539,14 +544,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         // Returns true if the current farthest-pressing IPokeInteractor has "fallen off" the edge of the button.
-        // Configured by the rejectXYRolloff and rejectZRolloff fields. 
-        // If RejectXYRolloff is true, this method checks if the interactor has fallen off the 2D footprint of the button
+        // Configured by the rejectXYRollOff and rejectZRollOff fields. 
+        // If RejectXYRollOff is true, this method checks if the interactor has fallen off the 2D footprint of the button
         // in the X-Y plane.
-        // If RejectZRolloff is true, this method checks if the finger has gone through the button and out the back.
+        // If RejectZRollOff is true, this method checks if the finger has gone through the button and out the back.
         private bool IsRolledOff()
         {
             // Early-out if neither type of rolloff rejection is desired.
-            if (!rejectXYRolloff && !rejectZRolloff)
+            if (!rejectXYRollOff && !rejectZRollOff)
             {
                 return false;
             }
@@ -559,16 +564,16 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 // If we are configured to reject XY rolloff,
                 // check whether we are outside the 2D footprint of the button.
-                if (rejectXYRolloff &&
+                if (rejectXYRollOff &&
                     IsOutsideFootprint(farthestInteractor.PokeTrajectory.End, 0.0001f) &&
-                    pressAmount < RolloffXYDepth)
+                    pressAmount < RollOffXYDepth)
                 {
                     return true;
                 }
 
                 // If we are configured to reject Z rolloff,
                 // check whether the touch point is beyond the far-push-plane.
-                if (rejectZRolloff && pressDistance >= EndPushPlane)
+                if (rejectZRollOff && pressDistance >= EndPushPlane)
                 {
                     return true;
                 }
