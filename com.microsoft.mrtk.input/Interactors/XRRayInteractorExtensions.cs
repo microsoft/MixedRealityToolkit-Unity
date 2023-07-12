@@ -6,7 +6,9 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-
+	/// <summary>
+	/// Extensions to the XRRayInteractor and associated structs.
+	/// </summary>
 	public static class XRRayInteractorExtensions
 	{
 		/// <summary>
