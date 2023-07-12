@@ -44,7 +44,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         [field: SerializeField]
         public StringUnityEvent OnRecognitionFaulted { get; private set; }
 
-        private DictationSubsystem dictationSubsystem;
+        private IDictationSubsystem dictationSubsystem = null;
+        private IKeywordRecognitionSubsystem keywordRecognitionSubsystem = null;
 
         /// <summary>
         /// Start dictation on a DictationSubsystem.
@@ -54,9 +55,15 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             // Make sure there isn't an ongoing recognition session
             StopRecognition();
 
-            dictationSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<DictationSubsystem>();
+            dictationSubsystem = XRSubsystemHelpers.DictationSubsystem;
             if (dictationSubsystem != null)
             {
+                keywordRecognitionSubsystem = XRSubsystemHelpers.KeywordRecognitionSubsystem;
+                if (keywordRecognitionSubsystem != null)
+                {
+                    keywordRecognitionSubsystem.Stop();
+                }
+
                 dictationSubsystem.Recognizing += DictationSubsystem_Recognizing;
                 dictationSubsystem.Recognized += DictationSubsystem_Recognized;
                 dictationSubsystem.RecognitionFinished += DictationSubsystem_RecognitionFinished;
@@ -73,11 +80,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private void DictationSubsystem_RecognitionFaulted(DictationSessionEventArgs obj)
         {
             OnRecognitionFaulted.Invoke("Recognition faulted. Reason: " + obj.ReasonString);
+            HandleDictationShutdown();
         }
 
         private void DictationSubsystem_RecognitionFinished(DictationSessionEventArgs obj)
         {
             OnRecognitionFinished.Invoke("Recognition finished. Reason: " + obj.ReasonString);
+            HandleDictationShutdown();
         }
 
         private void DictationSubsystem_Recognized(DictationResultEventArgs obj)
@@ -103,6 +112,20 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 dictationSubsystem.RecognitionFinished -= DictationSubsystem_RecognitionFinished;
                 dictationSubsystem.RecognitionFaulted -= DictationSubsystem_RecognitionFaulted;
                 dictationSubsystem = null;
+            }
+        }
+
+        /// <summary>
+        /// Stop dictation on the current DictationSubsystem.
+        /// </summary>
+        public void HandleDictationShutdown()
+        {
+            StopRecognition();
+
+            if (keywordRecognitionSubsystem != null)
+            {
+                keywordRecognitionSubsystem.Start();
+                keywordRecognitionSubsystem = null;
             }
         }
     }

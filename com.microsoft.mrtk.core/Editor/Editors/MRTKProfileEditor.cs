@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Audio;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
@@ -188,10 +187,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // subsystem types to config ScriptableObjects.
         private SerializedProperty serializedConfigs;
 
-        // The serialized audio mixer group that is to be
-        // used when playing spatiailized sounds.
-        private SerializedProperty serializedMixerGroup;
-
         // All concrete subsystems in currently loaded assemblies,
         // which are tagged with the MRTKSubsystemAttribute.
         private SortedDictionary<string, List<SubsystemItem>> allSubsystemTypes = new SortedDictionary<string, List<SubsystemItem>>(StringComparer.InvariantCultureIgnoreCase);
@@ -218,7 +213,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             serializedSubsystems = serializedObject.FindProperty("loadedSubsystems");
             serializedConfigs = serializedObject.FindProperty("subsystemConfigs");
-            serializedMixerGroup = serializedObject.FindProperty(InspectorUIUtility.GetBackingField("SpatializationMixer"));
         }
 
         public override void OnInspectorGUI()
@@ -245,8 +239,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                  + ".\nCheck the MR Feature Tool to import missing subsystems.", MessageType.Warning);
             }
 
-            DrawSelectedMixer();
-
             using (new EditorGUILayout.HorizontalScope(GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)))
             {
                 DrawSubsystemList();
@@ -257,13 +249,6 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         #region Drawing methods
-
-        private void DrawSelectedMixer()
-        {
-            EditorGUILayout.ObjectField(
-                serializedMixerGroup,
-                typeof(AudioMixerGroup));
-        }
 
         /// <summary>
         /// Draws the display name, author, and full name of the specified subsystem.
