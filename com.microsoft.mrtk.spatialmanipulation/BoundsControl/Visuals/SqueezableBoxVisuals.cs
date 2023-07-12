@@ -263,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         protected virtual void OnEnable()
         {
-            // Ensures that when the GameObject is re-enabled, the handles are occluded ny default.
+            // Ensures that when the GameObject is re-enabled, the handles are occluded by default.
             // If the handles are active, they will be un-occluded by the next frame.
             // Prevents undesirable behaviour from the handle animations.
             foreach (var handle in handles)
