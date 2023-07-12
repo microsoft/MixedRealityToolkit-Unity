@@ -88,8 +88,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private bool wasOccludedLastFrame = false;
 
-        private Vector3 initialLocalScale;
-
         private float initialParentScale;
 
         protected override void Awake()
@@ -100,23 +98,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             DisableInteractorType(typeof(IPokeInteractor));
 
             handleRenderer = GetComponentInChildren<MeshRenderer>();
-
-            // Start occluded, so we don't show a frame of handles
-            // on startup when they should start disabled.
-            // We'll un-occlude on the next frame if we need to.
-            if (handleRenderer != null)
-            {
-                handleRenderer.enabled = false;
-            }
-            colliders[0].enabled = false;
-            wasOccludedLastFrame = true;
+            HideOnStartup();
         }
 
         // Record initial values at Start(), so that we
         // capture the bounds sizing, etc.
         void Start()
         {
-            initialLocalScale = transform.localScale;
             initialParentScale = MaxComponent(transform.parent.lossyScale);
         }
 
@@ -151,6 +139,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private float MaxComponent(Vector3 v)
         {
             return Mathf.Max(Mathf.Abs(v.x), Mathf.Abs(v.y), Mathf.Abs(v.z));
+        }
+
+        /// <summary>
+        /// Occludes the handle so it is not initially visible when it should start disabled.
+        /// </summary>
+        public void HideOnStartup()
+        {
+            if (handleRenderer != null)
+            {
+                handleRenderer.enabled = false;
+            }
+            colliders[0].enabled = false;
+            wasOccludedLastFrame = true;
         }
 
         /// <inheritdoc />
