@@ -5,7 +5,7 @@ using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.XR.Interaction.Toolkit;
-using static Microsoft.MixedReality.Toolkit.Input.LineUtility;
+using static Microsoft.MixedReality.Toolkit.Input.XRRayInteractorExtensions;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
