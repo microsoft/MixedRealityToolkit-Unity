@@ -4,6 +4,7 @@
 using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using static Microsoft.MixedReality.Toolkit.Input.XRRayInteractorExtensions;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -83,8 +84,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         if (rayInteractor.interactablesSelected.Count > 0)
                         {
-                            reticlePosition = hitTargetTransform.TransformPoint(targetLocalHitPoint);
-                            reticleNormal = hitTargetTransform.TransformDirection(targetLocalHitNormal);
+                            reticlePosition = selectedHitDetails.HitTargetTransform.TransformPoint(selectedHitDetails.TargetLocalHitPoint);
+                            reticleNormal = selectedHitDetails.HitTargetTransform.TransformDirection(selectedHitDetails.TargetLocalHitNormal);
                             ReticleSetActive(true);
                         }
                         else
@@ -131,71 +132,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private Vector3 targetLocalHitPoint;
-        private Vector3 targetLocalHitNormal;
-        private Transform hitTargetTransform;
+        private TargetHitDetails selectedHitDetails = new TargetHitDetails();
 
         /// <summary>
         /// Used to locate and lock the raycast hit data on a select
         /// </summary>
         private void LocateTargetHitPoint(SelectEnterEventArgs args)
         {
-            bool hitPointAndTransformUpdated = false;
-            bool hitNormalUpdated = false;
-
-            // In the case of affordances/handles, we can stick the ray right on to the handle.
-            if (args.interactableObject is ISnapInteractable snappable)
-            {
-                hitTargetTransform = snappable.HandleTransform;
-                targetLocalHitPoint = Vector3.zero;
-                targetLocalHitNormal = Vector3.up;
-                hitPointAndTransformUpdated = true;
-                hitNormalUpdated = true;
-            }
-
-            // In the case of an IScrollable being selected, ensure that the reticle locks to the
-            // scroller and not to the a list item within the scroller, such as a button.
-            if (args.interactableObject is IScrollable scrollable &&
-                scrollable.IsScrolling &&
-                scrollable.ScrollingInteractor == (IXRInteractor)rayInteractor)
-            {
-                hitTargetTransform = scrollable.ScrollableTransform;
-                targetLocalHitPoint = scrollable.ScrollingLocalAnchorPosition;
-                hitPointAndTransformUpdated = true;
-            }
-
-            // If no hit, abort.
-            if (!rayInteractor.TryGetCurrentRaycast(
-                  out RaycastHit? raycastHit,
-                  out _,
-                  out UnityEngine.EventSystems.RaycastResult? raycastResult,
-                  out _,
-                  out bool isUIHitClosest))
-            {
-                return;
-            }
-
-            // Align the reticle with a UI hit if applicable
-            if (raycastResult.HasValue && isUIHitClosest)
-            {
-                hitTargetTransform = raycastResult.Value.gameObject.transform;
-                targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastResult.Value.worldPosition);
-                targetLocalHitNormal = hitTargetTransform.InverseTransformDirection(raycastResult.Value.worldNormal);
-            }
-            // Otherwise, calculate the reticle pose based on the raycast hit.
-            else if (raycastHit.HasValue)
-            {
-                if (!hitPointAndTransformUpdated)
-                {
-                    hitTargetTransform = raycastHit.Value.collider.transform;
-                    targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastHit.Value.point);
-                }
-
-                if (!hitNormalUpdated)
-                {
-                    targetLocalHitNormal = hitTargetTransform.InverseTransformDirection(raycastHit.Value.normal);
-                }
-            }
+            rayInteractor.TryLocateTargetHitPoint(args.interactableObject, out selectedHitDetails);
         }
 
         /// <summary>

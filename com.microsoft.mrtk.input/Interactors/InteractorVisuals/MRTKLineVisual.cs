@@ -5,6 +5,7 @@ using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.XR.Interaction.Toolkit;
+using static Microsoft.MixedReality.Toolkit.Input.XRRayInteractorExtensions;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
@@ -181,8 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         // reusable values derived from raycast hit data
         private Vector3 reticlePosition;
-        private Transform hitTargetTransform;
-        private Vector3 targetLocalHitPoint;
+        private TargetHitDetails selectedHitDetails = new TargetHitDetails();
         private float hitDistance;
 
         /// <summary>
@@ -324,7 +324,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 if (rayInteractor.hasSelection)
                 {
                     // Assign the last point to the one saved by the callback
-                    lineDataProvider.LastPoint = hitTargetTransform.TransformPoint(targetLocalHitPoint);
+                    lineDataProvider.LastPoint = selectedHitDetails.HitTargetTransform.TransformPoint(selectedHitDetails.TargetLocalHitPoint);
                     rayHasHit = true;
                 }
                 // Otherwise draw out the line exactly as the Ray Interactor prescribes
@@ -447,67 +447,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private void LocateTargetHitPoint(SelectEnterEventArgs args)
         {
-            // If no hit interactable, abort
-            if (args == null)
+            // If no hit interactable or we haven't even gotten any ray positions yet, abort
+            if (args == null || rayPositions == null || rayPositionsCount <= 0)
             {
                 return;
             }
 
-            bool hitPointAndTransformUpdated = false;
-
-            // In the case of affordances/handles, we can stick the ray right on to the handle.
-            if (args.interactableObject is ISnapInteractable snappable)
-            {
-                hitTargetTransform = snappable.HandleTransform;
-                targetLocalHitPoint = Vector3.zero;
-                hitPointAndTransformUpdated = true;
-            }
-
-            // In the case of an IScrollable being selected, ensure that the line visual locks to
-            // the scroller and not to the a list item within the scroller, such as a button.
-            if (args.interactableObject is IScrollable scrollable &&
-                scrollable.IsScrolling &&
-                scrollable.ScrollingInteractor == (IXRInteractor)rayInteractor)
-            {
-                hitTargetTransform = scrollable.ScrollableTransform;
-                targetLocalHitPoint = scrollable.ScrollingLocalAnchorPosition;
-                hitPointAndTransformUpdated = true;
-            }
-
-            // If no hit, abort.
-            if (!rayInteractor.TryGetCurrentRaycast(
-                out RaycastHit? raycastHit,
-                out _,
-                out UnityEngine.EventSystems.RaycastResult? raycastResult,
-                out _,
-                out bool isUIHitClosest))
-            {
-                return;
-            }
-
-            // If we haven't even gotten any ray positions yet, abort.
-            if (rayPositions == null || rayPositionsCount <= 0)
-            {
-                return;
-            }
-
-            // Record relevant data about the hit point.
-            if (raycastResult.HasValue && isUIHitClosest)
-            {
-                hitTargetTransform = raycastResult.Value.gameObject.transform;
-                targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastResult.Value.worldPosition);
-                hitDistance = (raycastResult.Value.worldPosition - rayPositions[0]).magnitude;
-            }
-            else if (raycastHit.HasValue)
-            {
-                if (!hitPointAndTransformUpdated)
-                {
-                    hitTargetTransform = raycastHit.Value.collider.transform;
-                    targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastHit.Value.point);
-                }
-
-                hitDistance = (hitTargetTransform.TransformPoint(targetLocalHitPoint) - rayPositions[0]).magnitude;
-            }
+            rayInteractor.TryLocateTargetHitPoint(args.interactableObject, out selectedHitDetails);
+            hitDistance = (selectedHitDetails.HitDistanceReferencePoint - rayPositions[0]).magnitude;
         }
 
         #endregion
