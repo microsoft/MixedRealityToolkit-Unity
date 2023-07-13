@@ -1,5 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable 1591
 using System;
 
 namespace Microsoft.MixedReality.Toolkit.Data
@@ -139,3 +143,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         bool TryGetPrefetchedObject(int id, out object returnedObject);
     }
 }
+#pragma warning restore 1591
