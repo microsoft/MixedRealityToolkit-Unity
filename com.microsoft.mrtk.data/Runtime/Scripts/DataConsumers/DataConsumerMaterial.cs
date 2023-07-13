@@ -3,7 +3,7 @@
 
 // Disable "missing XML comment" warning for the experimental package.
 // While nice to have, documentation is not required for this experimental package.
-#pragma warning disable 1591
+#pragma warning disable CS1591
 
 using System;
 using UnityEngine;
@@ -105,4 +105,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     }
 }
-#pragma warning restore 1591
+#pragma warning restore CS1591

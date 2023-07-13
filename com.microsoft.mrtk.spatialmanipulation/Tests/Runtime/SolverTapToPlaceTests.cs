@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 // Disable "missing XML comment" warning for tests. While nice to have, this documentation is not required.
-#pragma warning disable 1591
+#pragma warning disable CS1591
 
 using NUnit.Framework;
 using UnityEngine;
@@ -186,4 +186,4 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         }
     }
 }
-#pragma warning restore 1591
+#pragma warning restore CS1591
