@@ -9,7 +9,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
 {
     [Serializable]
     /// <summary>
-    /// A <see cref="TintEffect<T>"> that wraps a PlayableBehaviour which can tint <see cref="SpriteRenderer"> components.
+    /// A <see cref="TintEffect{T}"/> implementation that wraps a Unity <see href="https://docs.unity3d.com/ScriptReference/Playables.PlayableBehaviour.html">PlayableBehaviour</see> 
+    /// component, and can tint Unity <see href="https://docs.unity3d.com/ScriptReference/SpriteRenderer.html">SpriteRenderer</see> components.
     /// </summary>
     /// <remarks>
     /// Useful for tinting or fading sprites.

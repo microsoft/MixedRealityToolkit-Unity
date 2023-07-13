@@ -34,8 +34,8 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         IXRInteractableEventRoute[] eventRoutes = null;
 
         /// <summary>
-        /// This function is called when the object becomes enabled and active.
-        /// </summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary> 
         protected virtual void OnEnable()
         {
             EnableEventRoutes();
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         }
 
         /// <summary>
-        /// This function is called when the object becomes disabled or inactive.
+        /// A Unity event function that is called when the script component has been disabled.
         /// </summary>
         protected virtual void OnDisable()
         {

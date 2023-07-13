@@ -45,6 +45,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             set => visibilitySettings = value;
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         private void OnEnable()
         {
             rayInteractor.selectEntered.AddListener(LocateTargetHitPoint);
@@ -57,6 +60,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             UpdateReticle();
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         private void OnDisable()
         {
             rayInteractor.selectEntered.RemoveListener(LocateTargetHitPoint);
@@ -64,6 +70,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             ReticleSetActive(false);
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             UpdateReticle();

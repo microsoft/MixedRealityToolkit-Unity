@@ -679,6 +679,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         #region MonoBehaviour Implementation
 
+        /// <inheritdoc/>
         protected override void OnEnable()
         {
             base.OnEnable();

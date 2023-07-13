@@ -3,7 +3,6 @@
 
 using TMPro;
 using UnityEngine;
-using Microsoft.MixedReality.Toolkit.UX;
 using Microsoft.MixedReality.Toolkit.UX.Experimental;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
@@ -20,7 +19,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private bool animate;
 
         private string[] words = { "one", "two", "three", "zebra", "keyboard", "rabbit", "graphite", "ruby", };
-        // Start is called before the first frame update
+        
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
         private void Start()
         {
             list = GetComponent<VirtualizedScrollRectList>();
@@ -34,7 +36,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             };
         }
 
-        // Update is called once per frame
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             if (sinScroll)

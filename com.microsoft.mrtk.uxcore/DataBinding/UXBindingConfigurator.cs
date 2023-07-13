@@ -11,19 +11,26 @@ using Microsoft.MixedReality.Toolkit.Data;
 namespace Microsoft.MixedReality.Toolkit.UX
 {
     /// <summary>
-    /// Automatically configures and adds DataConsumer components needed to manage all data bound and/or themable
+    /// Automatically configures and adds DataConsumer components needed to manage all data bound and/or can customizable
     /// elements in a prefab
     /// </summary>
     [Serializable]
     [AddComponentMenu("MRTK/UX/UX Binding Configurator")]
     public class UXBindingConfigurator : MonoBehaviour
     {
-        [Tooltip("The binding profile scriptable object that defines a standard set of keypath mappings for data sources and theme sources across all themable and bindable elements.")]
+        [Tooltip("The binding profile scriptable object that defines a standard set of keypath mappings for data sources and theme sources across all customizable and bindable elements.")]
         [SerializeField]
         private UXBindingProfileTemplate bindingProfile;
+
+        /// <summary>
+        ///The binding profile scriptable object that defines a standard set of keypath mappings for data sources and theme sources across all customizable and bindable elements.
+        /// </summary>
         public UXBindingProfileTemplate BindingProfile => bindingProfile;
 
 #if MRTK_DATA_PRESENT && MRTK_UX_DATABINDING_THEMING_ENABLED
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             TryDataBindingConfiguration();

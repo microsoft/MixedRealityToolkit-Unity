@@ -239,6 +239,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             foreach (Component managedComponent in FindComponentsToManage())

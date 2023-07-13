@@ -10,6 +10,9 @@ namespace Microsoft.MixedReality.Toolkit.Data.Editor
     {
         private SerializedProperty viewKeypathToDataKeypathMapper;
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary> 
         private void OnEnable()
         {
             viewKeypathToDataKeypathMapper = serializedObject.FindProperty("viewKeypathToDataKeypathMapper");

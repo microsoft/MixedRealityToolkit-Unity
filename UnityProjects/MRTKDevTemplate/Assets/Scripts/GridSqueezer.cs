@@ -68,7 +68,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
             set => rectTransform = value;
         }
-        void Update()
+
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
+        private void Update()
         {
             if (!(Application.isPlaying && !DynamicFitting) && GridLayoutGroup != null && RectTransform != null && RectTransform.hasChanged)
             {

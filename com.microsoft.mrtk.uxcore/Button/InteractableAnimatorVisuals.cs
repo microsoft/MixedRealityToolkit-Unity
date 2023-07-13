@@ -54,6 +54,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             set => targetAnimator = value;
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         protected virtual void Update()
         {
             if (Interactable != null && TargetAnimator != null)

@@ -108,6 +108,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         #region MonoBehaviour
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         protected void OnEnable()
         {
             var managers = gameObject.GetComponents<ConstraintManager>();
@@ -117,6 +120,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         protected void OnDisable()
         {
             var managers = gameObject.GetComponents<ConstraintManager>();

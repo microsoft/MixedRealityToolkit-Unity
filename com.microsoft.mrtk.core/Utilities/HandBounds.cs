@@ -59,12 +59,18 @@ namespace Microsoft.MixedReality.Toolkit
 
         #region MonoBehaviour Implementation
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             ComputeNewBounds(Handedness.Left);
             ComputeNewBounds(Handedness.Right);
         }
 
+        /// <summary>
+        /// A Unity event function that is called to draw Unity editor gizmos that are also interactable and always drawn.
+        /// </summary>
         private void OnDrawGizmos()
         {
             if (drawBoundsGizmo)

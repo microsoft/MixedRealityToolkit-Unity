@@ -160,6 +160,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         #endregion Convex Hull Private Fields
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             boundsControl = GetComponentInParent<BoundsControl>();
@@ -193,6 +196,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             flattenVector = BoundsCalculator.CalculateFlattenVector(transform.lossyScale);
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             // Read state off of the BoundsControl component.
@@ -261,6 +267,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         protected virtual void OnEnable()
         {
             // Ensures that when the GameObject is re-enabled, the handles are occluded by default.

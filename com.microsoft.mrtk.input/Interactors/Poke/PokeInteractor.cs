@@ -87,6 +87,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region MonoBehaviour
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         protected override void Awake()
         {
             base.Awake();
@@ -94,6 +97,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             pokeTrajectory.End = attachTransform.position;
         }
 
+        /// <summary>
+        /// A Unity event function that is called to draw Unity editor gizmos that are also interactable and always drawn.
+        /// </summary>
         private void OnDrawGizmos()
         {
             Gizmos.DrawSphere(pokeTrajectory.Start, PokeRadius);

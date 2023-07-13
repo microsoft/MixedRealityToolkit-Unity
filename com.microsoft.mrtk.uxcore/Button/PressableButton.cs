@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// </summary>
     /// <remarks>
     /// This script does not make any assumptions about the visuals associated with this button; any visuals
-    /// script can listen to the <see cref="selectionProgress"/> value, or call <see cref="PushPlaneLocalPosition">
+    /// script can listen to the <see cref="GetSelectionProgress"/> value, or call <see cref="PushPlaneLocalPosition"/>
     /// to obtain a 0...1 selectionProgress value or a local displacement, respectively, to implement a visual layer.
     /// </remarks>
     [AddComponentMenu("MRTK/UX/Pressable Button")]
@@ -37,12 +37,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             /// <summary>
             /// The world coordinate space system should be used.
-            // </summary>
+            /// </summary>
             World,
             
             /// <summary>
             /// The button's local coordinate space system should be used.
-            // </summary>
+            /// </summary>
             Local
         }
 
@@ -76,8 +76,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         /// <summary>
         /// The local z-position of the push plane.
-        /// TODO: should be renamed to start push plane distance?
-        /// </summary>
+        /// </summary>        
         public float StartPushPlane { get => startPushPlane; set => startPushPlane = value; }
 
         [SerializeField]
@@ -87,7 +86,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// Maximum push distance. Distance is relative to the pivot of either the moving visuals
         /// if there's any or the button itself.
-        /// TODO: should be renamed to end push plane distance?
         /// </summary>
         public float EndPushPlane { get => endPushPlane; set => endPushPlane = value; }
 
@@ -177,7 +175,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private float WorldToLocalScale => transform.InverseTransformVector(transform.forward).magnitude;
 
         /// <summary>
-        /// If the <see cref="selectionProgress"/> value is smoothed to within this threshold of 0 or 1, the <see cref="selectionProgress"/> will snap to 0 or 1.
+        /// If the <see cref="GetSelectionProgress"/> value is smoothed to within this threshold of 0 or 1, the <see cref="GetSelectionProgress"/> will snap to 0 or 1.
         /// </summary>
         private const float selectionProgressEpsilon = 0.00001f;
 
@@ -221,13 +219,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         /// <remarks>
         /// Excludes any other input mode, such as gaze-pinch, click, or other interactor.
-        /// Use <see cref="selectionProgress" /> to query the overall selectionProgress of this button.
+        /// Use <see cref="GetSelectionProgress" /> to query the overall selectionProgress of this button.
         /// </remarks>
         public bool TryGetPressProgress(out float pokeAmount)
         {
             IPokeInteractor farthestInteractor = TryGetFarthestPressDistance(out float touchDistance);
 
-            pokeAmount = Mathf.Clamp01(MapToPressedness(touchDistance));
+            pokeAmount = Mathf.Clamp01(MapToPressProgress(touchDistance));
 
             return farthestInteractor != null;
         }
@@ -245,12 +243,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
             DisableInteractorType(typeof(IGrabInteractor));
         }
 
+        /// <inheritdoc/>
         protected override void Awake()
         {
             base.Awake();
             ApplyRequiredSettings();
         }
 
+        /// <inheritdoc/>
         protected override void OnDisable()
         {
             // Reset the selectionProgress to 0 when the button is disabled.
@@ -258,11 +258,17 @@ namespace Microsoft.MixedReality.Toolkit.UX
             base.OnDisable();
         }
 
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         private void OnValidate()
         {
             ApplyRequiredSettings();
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script should reset it's default values
+        /// </summary>
         protected override void Reset()
         {
             base.Reset();
@@ -280,7 +286,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             {
                 float scaledFingerOffset = distanceSpaceMode == SpaceMode.Local ? pokeInteractor.PokeRadius * WorldToLocalScale : pokeInteractor.PokeRadius;
                 float pressDistanceThisFrame = GetDistanceAlongPushDirection(pokeInteractor.PokeTrajectory.End) + scaledFingerOffset;
-                float pressAmountThisFrame = MapToPressedness(pressDistanceThisFrame);
+                float pressAmountThisFrame = MapToPressProgress(pressDistanceThisFrame);
 
                 if (IsPokeSelected)
                 {
@@ -342,7 +348,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     // Do an immediate calculation here in the case that a PokeInteractor is already sufficiently pressing us before
                     // we've calculated selectionProgress() for this frame.
                     float pressDistanceLastFrame = GetDistanceAlongPushDirection(pokeInteractor.PokeTrajectory.Start) + scaledFingerOffset;
-                    float pressAmountLastFrame = MapToPressedness(pressDistanceLastFrame);
+                    float pressAmountLastFrame = MapToPressProgress(pressDistanceLastFrame);
 
                     bool aInAB = pressAmountLastFrame > 0 && pressAmountLastFrame <= SelectThreshold && !IsOutsideFootprint(pokeInteractor.PokeTrajectory.End, 0.0001f);
                     bool bInBC = pressAmountThisFrame > SelectThreshold;
@@ -371,21 +377,21 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             using (ProcessInteractablePerfMarker.Auto())
             {
-                // We have the option to do time-based lerping/smoothing/animating of button value,
+                // We have the option to do time-based lerp'ing/smoothing/animating of button value,
                 // so we do that here in a single-call-per-frame function. (The selectionProgress method
                 // may be called any number of times per frame.)
                 if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
                 {
                     bool isPoked = TryGetPressProgress(out float pokeAmount);
 
-                    float totalPressedness = pokeAmount;
+                    float totalPressProgress = pokeAmount;
                     bool isVariablySelected = false;
 
                     foreach (var interactor in interactorsHovering)
                     {
                         if (interactor is IVariableSelectInteractor variableSelectInteractor)
                         {
-                            totalPressedness = Mathf.Max(totalPressedness, variableSelectInteractor.SelectProgress);
+                            totalPressProgress = Mathf.Max(totalPressProgress, variableSelectInteractor.SelectProgress);
                             isVariablySelected = true;
                         }
                     }
@@ -394,22 +400,22 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     {
                         if (interactor is IVariableSelectInteractor variableSelectInteractor)
                         {
-                            totalPressedness = Mathf.Max(totalPressedness, variableSelectInteractor.SelectProgress);
+                            totalPressProgress = Mathf.Max(totalPressProgress, variableSelectInteractor.SelectProgress);
                             isVariablySelected = true;
                         }
                         else if (!(interactor is IPokeInteractor)) // Exclude PokeInteractors because we've already counted them.
                         {
-                            totalPressedness = 1.0f;
+                            totalPressProgress = 1.0f;
                         }
                     }
 
-                    // If we aren't poking or pinching, we do a lerp to animate the pressedness.
+                    // If we aren't poking or pinching, we do a lerp to animate the pressProgress.
                     if (!isPoked && !isVariablySelected && smoothSelectionProgress)
                     {
-                        // If total pressedness is 1, we are extending. If zero, we are retracting.
+                        // If total pressProgress is 1, we are extending. If zero, we are retracting.
                         // Todo: make framerate independent, but *equally snappy*. Smoothing.SmoothTo is
                         // unacceptably slow/smooth for this. We may end up exposing a custom curve here.
-                        selectionProgress = Mathf.Lerp(selectionProgress, totalPressedness, totalPressedness == 1 ? extendSpeed : returnSpeed);
+                        selectionProgress = Mathf.Lerp(selectionProgress, totalPressProgress, totalPressProgress == 1 ? extendSpeed : returnSpeed);
 
                         // Snap selectionProgress to ends of range, plus/minus selectionProgressEpsilon.
                         if (selectionProgress < selectionProgressEpsilon)
@@ -424,8 +430,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     }
                     else
                     {
-                        // Otherwise, we set the value to the actual pressedness for maximum responsiveness.
-                        selectionProgress = totalPressedness;
+                        // Otherwise, we set the value to the actual pressProgress for maximum responsiveness.
+                        selectionProgress = totalPressProgress;
                     }
                 }
             }
@@ -439,7 +445,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             base.OnHoverEntered(args);
 
             // If we decide this interactor has begun its hover in a well-behaved way,
-            // we add it to our hashset of valid pokes.
+            // we add it to our hash set of valid pokes.
             if (args.interactorObject is IPokeInteractor pokeInteractor && !IsOutsideFootprint(pokeInteractor.PokeTrajectory.End, 0.0001f))
             {
                 float pressDistanceLastFrame = GetDistanceAlongPushDirection(pokeInteractor.PokeTrajectory.Start);
@@ -462,7 +468,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
             if (args.interactorObject is IPokeInteractor pokeInteractor)
             {
-                // Remove from our valid poke hashset if it was registered there.
+                // Remove from our valid poke hash set if it was registered there.
                 validPokeInteractors.Remove(pokeInteractor);
             }
         }
@@ -506,11 +512,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private static float InverseLerpUnclamped(float min, float max, float value) => (value - min) / (max - min);
 
-        // Maps a 0...1 pressedness amount to a distance between startPushPlane and endPushPlane.
-        private float MapToDistance(float pressedness) => Mathf.Lerp(startPushPlane, endPushPlane, pressedness);
+        // Maps a 0...1 pressProgress amount to a distance between startPushPlane and endPushPlane.
+        private float MapToDistance(float pressProgress) => Mathf.Lerp(startPushPlane, endPushPlane, pressProgress);
 
-        // Maps a distance between startPushPlane and endPushPlane to a normalized pressedness amount.
-        private float MapToPressedness(float distance) => InverseLerpUnclamped(startPushPlane, endPushPlane, distance);
+        // Maps a distance between startPushPlane and endPushPlane to a normalized press progress amount.
+        private float MapToPressProgress(float distance) => InverseLerpUnclamped(startPushPlane, endPushPlane, distance);
 
         // This function projects the current touch positions onto the 1D press direction of the button.
         // It will output the farthest pushed distance from the button's initial position.
@@ -550,7 +556,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         // If RejectZRollOff is true, this method checks if the finger has gone through the button and out the back.
         private bool IsRolledOff()
         {
-            // Early-out if neither type of rolloff rejection is desired.
+            // Early-out if neither type of roll-off rejection is desired.
             if (!rejectXYRollOff && !rejectZRollOff)
             {
                 return false;
@@ -558,11 +564,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
             // Get the interactor that is responsible for the current release/interaction.
             IPokeInteractor farthestInteractor = TryGetFarthestPressDistance(out float pressDistance);
-            float pressAmount = MapToPressedness(pressDistance);
+            float pressAmount = MapToPressProgress(pressDistance);
 
             if (farthestInteractor != null)
             {
-                // If we are configured to reject XY rolloff,
+                // If we are configured to reject XY roll-off,
                 // check whether we are outside the 2D footprint of the button.
                 if (rejectXYRollOff &&
                     IsOutsideFootprint(farthestInteractor.PokeTrajectory.End, 0.0001f) &&
@@ -571,7 +577,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     return true;
                 }
 
-                // If we are configured to reject Z rolloff,
+                // If we are configured to reject Z roll-off,
                 // check whether the touch point is beyond the far-push-plane.
                 if (rejectZRollOff && pressDistance >= EndPushPlane)
                 {
@@ -589,12 +595,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
             Vector3 closestPointOnCollider = colliders[0].ClosestPoint(globalTouchPoint);
 
             // Use InverseTransformDirection so we are scale-invariant.
-            Vector3 localRolloffVector = colliders[0].transform.InverseTransformDirection(closestPointOnCollider - globalTouchPoint);
+            Vector3 localRollOffVector = colliders[0].transform.InverseTransformDirection(closestPointOnCollider - globalTouchPoint);
 
-            // If the local rolloff vector's X or Y components are greater than the tolerance,
+            // If the local roll-off vector's X or Y components are greater than the tolerance,
             // the touch point is outside the 2D footprint of the button.
-            return Mathf.Abs(localRolloffVector.x) > tolerance ||
-                   Mathf.Abs(localRolloffVector.y) > tolerance;
+            return Mathf.Abs(localRollOffVector.x) > tolerance ||
+                   Mathf.Abs(localRollOffVector.y) > tolerance;
         }
 
         // Depth in world units

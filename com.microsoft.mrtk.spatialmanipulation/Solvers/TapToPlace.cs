@@ -234,6 +234,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         #region MonoBehaviour Implementation
 
+        /// <inheritdoc/>
         protected override void Start()
         {
             base.Start();
@@ -259,6 +260,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         protected override void OnDisable()
         {
             StopPlacement();

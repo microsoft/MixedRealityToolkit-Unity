@@ -63,6 +63,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             public WindowsTextToSpeechSubsystemProvider() : base()
             { }
 
+            /// <inheritdoc/>
             public override void Start()
             {
                 config = XRSubsystemHelpers.GetConfiguration<WindowsTextToSpeechSubsystemConfig, WindowsTextToSpeechSubsystem>();

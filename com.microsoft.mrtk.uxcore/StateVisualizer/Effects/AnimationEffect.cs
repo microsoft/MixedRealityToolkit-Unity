@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 {
     [Serializable]
     /// <summary>
-    /// An <see cref="IEffect"> that plays an <see cref="AnimationClip"/>.
+    /// An <see cref="IEffect"/> implementation that plays a Unity <see href="https://docs.unity3d.com/ScriptReference/AnimationClip.html">AnimationClip"</see>.
     /// </summary>
     internal class AnimationEffect : PlayableEffect, IAnimationMixableEffect
     {

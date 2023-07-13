@@ -296,6 +296,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         #region MonoBehaviour Implementation
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             GoalScale = Vector3.one;
@@ -316,11 +319,17 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary>
         protected virtual void Start()
         {
             RefreshTrackedObject();
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         protected virtual void Update()
         {
             if (IsInvalidTracking())
@@ -339,6 +348,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             lastUpdateTime = Time.realtimeSinceStartup;
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame after normal update functions, if this object is enabled.
+        /// </summary>
         private void LateUpdate()
         {
             if (UpdateSolvers)
@@ -360,6 +372,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been destroyed.
+        /// </summary>
         protected void OnDestroy()
         {
             if (trackingTarget != null)

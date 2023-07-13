@@ -199,7 +199,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #region MonoBehaviour
 
         /// <summary>
-        /// See <see cref="MonoBehaviour"/>.
+        /// A Unity event function that is called when the script should reset it's default values
         /// </summary>
         protected void Reset()
         {
@@ -219,7 +219,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
 #if UNITY_EDITOR
         /// <summary>
-        /// See <see cref="MonoBehaviour"/>.
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
         /// </summary>
         protected void OnValidate()
         {
@@ -235,7 +235,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 #endif // UNITY_EDITOR
 
         /// <summary>
-        /// See <see cref="MonoBehaviour"/>.
+        /// A Unity event function that is called when the script component has been enabled.
         /// </summary>
         protected void OnEnable()
         {
@@ -249,7 +249,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// See <see cref="MonoBehaviour"/>.
+        /// A Unity event function that is called when the script component has been disabled.
         /// </summary>
         protected void OnDisable()
         {

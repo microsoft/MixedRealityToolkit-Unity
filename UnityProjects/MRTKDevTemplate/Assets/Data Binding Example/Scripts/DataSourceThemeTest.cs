@@ -48,11 +48,17 @@ namespace Microsoft.MixedReality.Toolkit.Data
             ChangeTheme((currentTheme + 1) % availableThemes.Length);
         }
 
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         private void OnValidate()
         {
             ChangeTheme(currentTheme);
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             if (_lastTheme != currentTheme)

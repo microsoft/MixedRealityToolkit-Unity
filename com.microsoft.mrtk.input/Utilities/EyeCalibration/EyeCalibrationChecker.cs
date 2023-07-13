@@ -79,6 +79,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         #endregion Events
 
         #region MonoBehaviour Functions
+        
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             if (Application.isEditor)

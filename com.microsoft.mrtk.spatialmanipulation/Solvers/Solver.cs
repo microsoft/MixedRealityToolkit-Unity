@@ -196,6 +196,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         #region MonoBehaviour Implementation
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         protected virtual void Awake()
         {
             if (SolverHandler == null)
@@ -213,8 +216,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         /// <summary>
-        /// Typically when a solver becomes enabled, it should update its internal state to the system, in case it was disabled far away
+        /// A Unity event function that is called when the script component has been enabled.
         /// </summary>
+        /// <remarks>
+        /// Typically when a solver becomes enabled, it should update its internal state to the system, in case it was disabled far away
+        /// </remarks>
         protected virtual void OnEnable()
         {
             if (SolverHandler != null)
@@ -231,6 +237,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         protected virtual void OnDisable()
         {
             // Unregister the solver with its solver hander
@@ -240,6 +249,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary>
         protected virtual void Start()
         {
             // Find the controller lookup class in the hierarchy. Solvers that require access to the

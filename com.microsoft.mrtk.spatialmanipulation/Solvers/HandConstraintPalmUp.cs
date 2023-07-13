@@ -484,9 +484,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         #region MonoBehaviour Implementation
 
         /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
+        /// <remarks>
         /// When enabled, ensure that there are no outlying status changes that would prevent HandConstraintPalmUp from 
         /// properly working (like gazeActivationAlreadyTriggered being set to true previously)
-        /// </summary>
+        /// </remarks>
         protected override void OnEnable()
         {
             base.OnEnable();

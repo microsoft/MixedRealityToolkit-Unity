@@ -47,6 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             set => toggleCollection.CurrentIndex = value;
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         private void OnEnable()
         {
             toggleCollection.OnToggleSelected.AddListener(ChangeTab);
@@ -55,6 +58,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             ChangeTab(CurrentVisibleSectionIndex);
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         private void OnDisable()
         {
             toggleCollection.OnToggleSelected.RemoveListener(ChangeTab);

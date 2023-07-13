@@ -149,7 +149,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
         // A runtime scratchpad for recording where each IMixableEffect is connected on the mixer.
         private Dictionary<IEffect, int> mixableIndices = new Dictionary<IEffect, int>();
 
-        void OnValidate()
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
+        private void OnValidate()
         {
             EnsureDefaultStates();
             if (interactable == null)
@@ -179,6 +182,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             return () => evt.RemoveListener(callback);
         }
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
         protected virtual void Start()
         {
             OnValidate();
@@ -279,6 +285,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             sleepTimer = keepAliveTime;
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             bool valueChanged = UpdateStateValues();
@@ -321,6 +330,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been destroyed.
+        /// </summary>
         private void OnDestroy()
         {
             foreach (var unsubscribeAction in unsubscribeActions)

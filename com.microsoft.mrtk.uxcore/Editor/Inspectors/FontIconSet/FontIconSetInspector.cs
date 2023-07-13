@@ -49,6 +49,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private List<IconEntry> iconEntries = new List<IconEntry>();
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         private void OnEnable()
         {
             FontIconSet fontIconSet = (FontIconSet)target;

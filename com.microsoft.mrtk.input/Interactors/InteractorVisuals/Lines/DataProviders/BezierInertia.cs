@@ -45,6 +45,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private Vector3 p2Position;
         private Vector3 p2Offset;
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         private void OnEnable()
         {
             bezier = gameObject.EnsureComponent<BezierDataProvider>();
@@ -54,9 +57,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Application.onBeforeRender += OnBeforeRenderLineVisual;
         }
 
-
         /// <summary>
-        /// See <see cref="MonoBehaviour"/>.
+        /// A Unity event function that is called when the script component has been disabled.
         /// </summary>
         private void OnDisable()
         {

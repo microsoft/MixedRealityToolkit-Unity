@@ -141,6 +141,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private List<Collider> colliders = new List<Collider>();
         private int currentListCount;
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
         protected void Start()
         {
             // Update the Object Bar when properties are changed via script only during runtime
@@ -150,6 +153,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been destroyed.
+        /// </summary>
         protected void OnDestroy()
         {
             if (Application.isPlaying)
@@ -158,6 +164,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         protected void Update()
         {
             // Update the Object Bar while in edit mode for syncing changes when properties are modified via inspector.

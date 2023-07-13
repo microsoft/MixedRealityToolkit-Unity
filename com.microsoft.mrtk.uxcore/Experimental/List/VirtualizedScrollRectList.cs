@@ -264,6 +264,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
             ? (scroll * (layoutPrefabSize / layoutRowsOrColumns)) + (margin - gutter)
             : (-scroll * (layoutPrefabSize / layoutRowsOrColumns)) + (margin - gutter);
 
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         private void OnValidate()
         {
             // We only want to reset things if it has already been initialized,
@@ -276,6 +279,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
             Initialize();
         }
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary>
         private void Start()
         {
             visibleValid = false;

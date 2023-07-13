@@ -209,6 +209,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // profile, but not loaded in the project.
         private string missingNames = "";
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary> 
         private void OnEnable()
         {
             serializedSubsystems = serializedObject.FindProperty("loadedSubsystems");

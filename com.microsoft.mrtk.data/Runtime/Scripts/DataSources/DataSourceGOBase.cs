@@ -58,6 +58,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         private IDataSource _dataSource;
         private IDataController _dataController;
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             Initialize();

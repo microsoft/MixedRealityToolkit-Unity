@@ -143,6 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private float fovScalar = 1f;
         private float objectSize = 1f;
 
+        /// <inheritdoc/>
         protected override void Start()
         {
             base.Start();

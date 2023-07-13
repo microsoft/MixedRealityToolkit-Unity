@@ -290,6 +290,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             return GetNormalizedLengthFromWorldPosInternal(worldPosition, currentLength, ref iteration, resolution, maxIterations, newStart, newEnd);
         }
 
+        /// <summary>
+        /// A Unity event function that is called to draw Unity editor gizmos that are also interactable and always drawn.
+        /// </summary>
         private void OnDrawGizmos()
         {
 #if UNITY_EDITOR

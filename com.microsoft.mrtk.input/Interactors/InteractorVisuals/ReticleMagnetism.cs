@@ -118,6 +118,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Reference to an IPokeInteractor in our parent hierarchy, if one exists.
         private IPokeInteractor pokeInteractor;
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             // Optional.
@@ -125,6 +128,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             pokeInteractor = gameObject.GetComponentInParent<IPokeInteractor>(includeInactive: true);
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         private void OnEnable()
         {
             Application.onBeforeRender += OnBeforeRender;
@@ -135,11 +141,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
             smoothedMagnetPosition = transform.parent.position;
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         private void OnDisable()
         {
             Application.onBeforeRender -= OnBeforeRender;
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             if (detector == null) { return; }

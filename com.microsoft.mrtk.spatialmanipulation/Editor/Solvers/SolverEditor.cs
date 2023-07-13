@@ -17,6 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
         private SerializedProperty smoothingProperty;
         private SerializedProperty lifetimeProperty;
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         protected virtual void OnEnable()
         {
             updateLinkedTransformProperty = serializedObject.FindProperty("updateLinkedTransform");

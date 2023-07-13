@@ -264,6 +264,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
             return dialog;
         }
         
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         protected virtual void Awake()
         {
             SetInteractionMode(PlaceForNearInteraction);

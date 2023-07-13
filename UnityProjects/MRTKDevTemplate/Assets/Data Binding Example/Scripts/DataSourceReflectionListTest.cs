@@ -90,12 +90,18 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return new string[] { dataSourceType };
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         private void OnEnable()
         {
             GetDataSource(dataSourceType);
             InitializeData();
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             if (_fluxCollectionSize > 0)

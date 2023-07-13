@@ -275,6 +275,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             private Dictionary<XRNode, XRSDKHandContainer> hands = null;
 
+            /// <inheritdoc/>
             public override void Start()
             {
                 base.Start();

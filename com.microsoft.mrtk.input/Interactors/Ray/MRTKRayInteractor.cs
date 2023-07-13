@@ -228,6 +228,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion XRBaseInteractor
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             // Use Pose Sources to calculate the interactor's pose and the attach transform's position

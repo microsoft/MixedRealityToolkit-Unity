@@ -42,6 +42,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private float canvasOffset = -10f;
         private float nonCanvasOffset = -.004f;
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
         private void Start()
         {
             // Check if voice commands are enabled for this button

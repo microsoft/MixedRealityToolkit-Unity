@@ -84,6 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private Vector3 ReferencePosition => SolverHandler.TransformTarget == null ? Vector3.zero : SolverHandler.TransformTarget.position;
 
+        /// <inheritdoc />
         protected override void OnEnable()
         {
             base.OnEnable();

@@ -155,14 +155,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
         #region Unity MonoBehaviour methods
 
         /// <summary>
-        /// Unity's OnEnable() method.
+        /// A Unity event function that is called when the script component has been enabled.
         /// </summary>
-        ///
         /// <remarks>
         /// Note that this should rarely be overridden but is declared virtual for circumstances
         /// where this is required. If overridden, make sure to call this default behavior.
         ///
-        /// Any initialization should be accomplished by overriding IniitalizeDataConsumer().
+        /// Any initialization should be accomplished by overriding <see cref="InitializeDataConsumer"/>.
         /// </remarks>
         public virtual void OnEnable()
         {
@@ -172,11 +171,17 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             InitializeDataConsumer();
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         protected virtual void OnDisable()
         {
             if (IsAttached() && autoAttachAndDetach)

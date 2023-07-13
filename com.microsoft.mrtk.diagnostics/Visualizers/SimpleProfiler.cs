@@ -88,6 +88,9 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
 
         private const string noData = "--";
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
         private void Start()
         {
             RamLimit.text = noData;
@@ -98,6 +101,9 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             RefreshRate.text = noData;
         }
 
+        /// <summary>
+        /// A Unity event function that is called at an framerate independent frequency, and is only called if this object is enabled.
+        /// </summary>
         private void FixedUpdate()
         {
             if (PerformanceStatsHelpers.Subsystem != null)

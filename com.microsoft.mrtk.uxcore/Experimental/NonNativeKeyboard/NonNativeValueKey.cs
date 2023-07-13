@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
     /// This is an experimental feature. This class is early in the cycle, it has 
     /// been labeled as experimental to indicate that it is still evolving, and 
     /// subject to change over time. Parts of the MRTK, such as this class, appear 
-    /// to have a lot of value even if the details haven’t fully been fleshed out. 
+    /// to have a lot of value even if the details havenï¿½t fully been fleshed out. 
     /// For these types of features, we want the community to see them and get 
     /// value out of them early enough so to provide feedback. 
     /// </remarks>
@@ -73,6 +73,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
         [SerializeField, Tooltip("Reference to child text element.")]
         private TMP_Text textMeshProText;
 
+        /// <inheritdoc/>
         protected override void Awake()
         {
             base.Awake();
@@ -89,11 +90,17 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
         private void Start()
         {
             NonNativeKeyboard.Instance?.OnKeyboardShifted?.AddListener(Shift);
         }
 
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         private void OnValidate()
         {
             if (textMeshProText == null)

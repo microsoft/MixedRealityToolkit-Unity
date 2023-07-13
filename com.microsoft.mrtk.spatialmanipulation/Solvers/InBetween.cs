@@ -112,6 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private SolverHandler secondSolverHandler;
 
+        /// <inheritdoc/>
         protected override void Start()
         {
             base.Start();

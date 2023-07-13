@@ -240,7 +240,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         /// <summary>
         /// The interaction point at the beginning of an interaction.
-        /// Computed by <see cref="GetInteractionPoint"> in <see cref="SetupForInteraction">
         /// </summary>
         protected Vector3 StartInteractionPoint { get; private set; }
 
@@ -248,18 +247,25 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         #region Unity methods
 
+        /// <inheritdoc/>
         protected override void Awake()
         {
             base.Awake();
             ApplyRequiredSettings();
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script should reset it's default values
+        /// </summary>
         protected override void Reset()
         {
             base.Reset();
             ApplyRequiredSettings();
         }
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
         protected virtual void Start()
         {
             // Turn on/off colliders at Start() to avoid bugs with
@@ -274,7 +280,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 handleTransform = colliders[0].transform;
             }
 
-            // Ensure the interactable knows about our trackcollider.
+            // Ensure the interactable knows about our track collider.
             if (!colliders.Contains(trackCollider))
             {
                 colliders.Add(trackCollider);
@@ -288,6 +294,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             OnValueUpdated.Invoke(new SliderEventData(value, value));
         }
 
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         private void OnValidate()
         {
             ApplyRequiredSettings();

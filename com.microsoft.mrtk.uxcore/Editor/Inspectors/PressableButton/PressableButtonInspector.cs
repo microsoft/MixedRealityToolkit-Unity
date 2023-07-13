@@ -52,6 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly Vector3[] startPlaneVertices = new Vector3[4];
         private static readonly Vector3[] endPlaneVertices = new Vector3[4];
 
+        /// <inheritdoc/>
         protected override void OnEnable()
         {
             base.OnEnable();

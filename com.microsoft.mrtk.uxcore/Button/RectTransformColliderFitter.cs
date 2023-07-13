@@ -10,13 +10,19 @@ using UnityEngine.UI;
 namespace Microsoft.MixedReality.Toolkit.UX
 {
     /// <summary>
-    /// This script fits a BoxCollider onto a canvas element.
-    /// **You should have this script disabled most of the time for performance reasons.**
-    /// By default, for performance, it only recomputes the mask intersections and collider bounds when parent
-    /// dimensions have been updated, the mask has changed, or a parent scrollrect has scrolled.
-    /// If you need more frequent collider updates, you can enable the script.
-    /// Works in both Edit and Play modes. Only fits the X and Y axes, and preserves the Z axis.
+    /// This script fits a Unity <see href="https://docs.unity3d.com/ScriptReference/BoxCollider.html">BoxCollider</see>
+    /// component onto a canvas element.
     /// </summary>
+    /// <remarks>
+    /// This script should be disabled most of the time for performance reasons.
+    /// By default, for performance, this class will only recomputes the mask intersections and collider bounds when parent
+    /// dimensions have been updated, the mask has changed, or a parent scroll rectangle has scrolled.
+    /// If you need more frequent collider updates, you can enable the script.
+    ///
+    /// This script works in both edit and play modes.
+    ///
+    /// Only fits the X and Y axes values will be modified, while the z axis value is preserved.
+    /// </remarks>
     [ExecuteAlways]
     [AddComponentMenu("MRTK/UX/Rect Transform Collider Fitter")]
     public class RectTransformColliderFitter : UIBehaviour, IClippable
@@ -90,6 +96,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         #endregion
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         protected override void Awake()
         {
             base.Awake();
@@ -131,6 +140,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             enabled = forceUpdateEveryFrame;
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been destroyed.
+        /// </summary>
         protected override void OnDestroy()
         {
             if (scrollRect != null)
@@ -159,7 +171,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
             Awake();
         }
 
-        private void Update()
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
+        protected virtual void Update()
         {
             if (rectTransform.hasChanged)
             {

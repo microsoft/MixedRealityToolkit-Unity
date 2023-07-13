@@ -49,8 +49,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         private void OnStart()
         {
             SetTheme(currentTheme);
-        }
+        }   
 
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         private void OnValidate()
         {
             if (CurrentTheme < 0)

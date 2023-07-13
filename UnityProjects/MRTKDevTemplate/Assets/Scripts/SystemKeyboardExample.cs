@@ -46,6 +46,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         #region MonoBehaviour Implementation
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
         private void Start()
         {
             // Initially hide the preview.
@@ -87,6 +90,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         
 #if WINDOWS_UWP
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             // Windows mixed reality keyboard update goes here
@@ -130,6 +136,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
         }
 #elif UNITY_IOS || UNITY_ANDROID
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             // non-Windows mixed reality keyboard initialization goes here

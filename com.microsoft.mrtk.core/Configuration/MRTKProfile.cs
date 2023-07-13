@@ -66,6 +66,9 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
 #if !UNITY_EDITOR
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             instance = this;

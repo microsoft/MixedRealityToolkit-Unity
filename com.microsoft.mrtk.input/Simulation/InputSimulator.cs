@@ -18,6 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
     {
         #region MonoBehaviour
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             ApplyControlSet(ControlSet);
@@ -28,6 +31,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
         private bool isSimulating = true;
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             using (UpdatePerfMarker.Auto())
@@ -94,6 +100,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         private void OnDisable()
         {
             DisableSimulatedHMD();

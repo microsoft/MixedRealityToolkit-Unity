@@ -29,6 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private List<string> serializedPropertyNames = new List<string>();
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary> 
         protected override void OnEnable()
         {
             base.OnEnable();

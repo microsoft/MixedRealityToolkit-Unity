@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private IXRInteractable thisInteractable;
 
         /// <summary>
-        /// The associated <see cref="XRBaseInteractable"> on behalf of which
+        /// The associated <see cref="XRBaseInteractable"/> on behalf of which
         /// this adapter will translate input events.
         /// </summary>
         protected IXRInteractable ThisInteractable
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// For the movable axes, what distance should be moved on each OnMove event?
         /// </summary>
         /// <remarks>
-        /// This is applied along object's local axes, but scaled in worldspace distance.
+        /// This is applied along object's local axes, but scaled in world space distance.
         /// </remarks>
         public float OnMoveDelta => onMoveDelta;
 
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private List<IXRInteractor> interactorQueryList = new List<IXRInteractor>();
 
         /// <summary>
-        /// The associated <see cref="XRBaseInteractable"> on behalf of which
+        /// The associated <see cref="XRBaseInteractable"/> on behalf of which
         /// this shim will translate input events.
         /// </summary>
         protected IProxyInteractor ProxyInteractor => proxyInteractor;
@@ -103,6 +103,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
 #if UNITY_EDITOR
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         protected override void OnValidate()
         {   
             base.OnValidate();
@@ -114,6 +117,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 #endif
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         protected override void Awake()
         {
             base.Awake();
@@ -141,6 +147,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         protected override void OnDisable()
         {
             base.OnDisable();
@@ -367,13 +376,17 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 }
             }
         }
-
-        // Map Submit to XRI Select, but using a coroutine
-        // to simulate a selection/deselection. This is the
-        // same way that UnityUI Buttons do this.
-        // Gamepads fire Submit on pressing a button.
+        
+        /// <summary>
+        /// Called when the Unity UGUI element is selected.
+        /// </summary>
         public virtual void OnSubmit(BaseEventData eventData)
         {
+            // Map submit event to XRI Select, but using a coroutine
+            // to simulate a selection/deselection. This is the
+            // same way that UnityUI Buttons do this.
+            // Gamepads fire submit event on pressing a button.
+
             // This will start the coroutine, as well as manage
             // the internal Selectable state transitions and notify
             // the XRI proxy interactor.
@@ -386,11 +399,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         /// <summary>
         /// Click the interactable. This will result in the interactable being selected and
-        /// then deselected after a short period of time; this is the same behavior that occurs
-        /// when this adapter receives a UGUI OnSubmit event.
+        /// then deselected after a short period of time. This is the same behavior that occurs
+        /// when this adapter receives a Unity UGUI <see cref="OnSubmit"/> event.
         /// </summary>
-        /// <remarks> This is useful for accessibility features that need to induce a full
-        /// "OnSubmit"-like behavior from a UnityEvent that can't call the OnSubmit directly.
+        /// <remarks> 
+        /// This is useful for accessibility features that need to induce a full
+        /// submit like behavior from a Unity event that can't invoke the submit event directly.
         /// </remarks>
         public void Click()
         {

@@ -58,6 +58,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
             _nextOneSecondTarget = 0;
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             Sprite[] statusSprites = { statusSpriteOpen, statusSpritePending, statusSpriteCancelled, statusSpriteInProgress, statusSpriteCompleted };

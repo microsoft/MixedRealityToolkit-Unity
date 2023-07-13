@@ -191,18 +191,27 @@ namespace Microsoft.MixedReality.Toolkit
 
         #region MonoBehaviour Implementation
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         protected override void OnEnable()
         {
             base.OnEnable();
             OnEnabled.Invoke();
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         protected override void OnDisable()
         {
             base.OnDisable();
             OnDisabled.Invoke();
         }
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         protected override void Awake()
         {
             base.Awake();
@@ -211,6 +220,9 @@ namespace Microsoft.MixedReality.Toolkit
             lastSelectExited.AddListener(OnLastSelectExited);
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been destroyed.
+        /// </summary>
         protected override void OnDestroy()
         {
             base.OnDestroy();

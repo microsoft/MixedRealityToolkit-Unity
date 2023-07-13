@@ -148,6 +148,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             constraints.Remove(constraint);
         }
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         protected void Awake()
         {
             var constraintComponents = gameObject.GetComponents<TransformConstraint>();

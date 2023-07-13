@@ -19,6 +19,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private Rigidbody rigidBody;
         private float distanceThresholdSquared;
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
         private void Start()
         {
             rigidBody = GetComponent<Rigidbody>();
@@ -27,13 +30,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             distanceThresholdSquared = distanceThreshold * distanceThreshold;
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame after normal update functions, if this object is enabled.
+        /// </summary>
         private void LateUpdate()
         {
             float distanceSqr = (localRespawnPosition - transform.localPosition).sqrMagnitude;
 
             if (distanceSqr > distanceThresholdSquared)
             {
-                // Reset any velocity from falling or moving when respawning to original location
+                // Reset any velocity from falling or moving when re-spawning to original location
                 if (rigidBody != null)
                 {
                     rigidBody.velocity = Vector3.zero;

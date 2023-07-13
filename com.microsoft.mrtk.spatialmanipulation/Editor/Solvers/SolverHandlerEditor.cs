@@ -22,6 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 
         private SolverHandler solverHandler;
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         protected void OnEnable()
         {
             trackedTargetProperty = serializedObject.FindProperty("trackedTargetType");

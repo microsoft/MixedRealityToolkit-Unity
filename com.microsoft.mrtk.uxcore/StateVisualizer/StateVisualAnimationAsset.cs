@@ -12,7 +12,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             fileName = "MRTKHandsAggregatorConfig.asset",
             menuName = "MRTK/State Visualizer/Animation PlayableAsset")]
     /// <summary>
-    /// A ScriptableObject-based asset that can be used with <see cref="PlayableAssetEffect">.
+    /// A Unity object that can be used with <see cref="PlayableAssetEffect"/> to generate a <see href="https://docs.unity3d.com/ScriptReference/Playables.Playable.html">Playable</see> component.
     /// </summary>
     /// <remarks>
     /// This playable asset wraps an AnimationClip; however, just using <see cref="AnimationEffect"/>

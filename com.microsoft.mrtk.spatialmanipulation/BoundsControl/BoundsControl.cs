@@ -500,6 +500,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         // Has the bounds control moved past the toggle threshold throughout the time it was selected?
         private bool hasPassedToggleThreshold = false;
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             if (Interactable == null)
@@ -530,6 +533,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             // If we need to recompute bounds (usually because we found a

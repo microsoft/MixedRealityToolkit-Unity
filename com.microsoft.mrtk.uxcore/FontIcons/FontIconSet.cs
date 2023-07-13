@@ -8,28 +8,34 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UX
 {
     /// <summary>
-    /// A ScriptableObject for managing a set of character icons for use with MRTK UX via TextMeshPro.
-    ///
-    /// This is intended to be used with DataConsumerFontIconSet, which can be used to set the desired static
-    /// icon for a TextMeshPro component, and can also bind to a data source that can select an icon
+    /// A Unity object for managing a set of character icons for use with MRTK UX via Unity text components.
+    /// </summary>
+    /// <remarks>
+    /// This is intended to be used with <see cref="FontIconSelector"/>, which can be used to set the desired static
+    /// icon for a Unity text component, and can also bind to a data source that can select an icon
     /// by its name.
     ///
-    /// When using a stylesheet, it is important to use a style that maps to the desired TMP Font Asset (by its name)
+    /// When using a style sheet, it is important to use a style that maps to the desired text font asset by its name
     /// and any other styling desired when rendered, such as size and color.
-    /// </summary>
+    /// </remarks>
     [CreateAssetMenu(fileName = "MRTK_UX_FontIconSet_New", menuName = "MRTK/UX/Font Icon Set")]
     public class FontIconSet : ScriptableObject
     {
         [SerializeField]
         [Tooltip("A mapping between icon names and the unicode value of the glyph it describes.")]
         private SerializableDictionary<string, uint> glyphIconsByName = new SerializableDictionary<string, uint>();
+
+        /// <summary>
+        /// A mapping between icon names and the unicode value of the glyph it describes.
+        /// </summary>
         public SerializableDictionary<string, uint> GlyphIconsByName => glyphIconsByName;
 
         [Tooltip("Any TextMeshPro Font Asset that contains the desired icons as glyphs that map to Unicode character values.")]
         [SerializeField]
         private TMP_FontAsset iconFontAsset = null;
+
         /// <summary>
-        /// Any TextMeshPro Font Asset that contains the desired icons as glyphs that map to Unicode character values.
+        /// Any text font asset that contains the desired icons as glyphs that map to Unicode character values.
         /// </summary>
         public TMP_FontAsset IconFontAsset => iconFontAsset;
 
@@ -137,10 +143,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         /// <summary>
-        /// Converts a uint code to a string (used to convert TextMeshPro codes into a string for text fields).
+        /// Converts a unicode value to a string.
         /// </summary>
-        /// <param name="unicode">Unicode value to be converted to a hex string representation.</param>
-        /// <returns>The string version of the unicode value in the form '\uFFFF' where FFFF is ascii hex.</returns>
+        /// <remarks>
+        /// This is used to convert unicode values into a strings that can be applied to text fields.
+        /// </remarks>
+        /// <param name="unicode">Unicode value to be converted to a hexadecimal string representation.</param>
+        /// <returns>The string version of the unicode value in the form of '\uFFFF', where FFFF is replaced with the associated hexadecimal value.</returns>
         public static string ConvertUnicodeToHexString(uint unicode)
         {
             byte[] bytes = System.BitConverter.GetBytes(unicode);

@@ -261,6 +261,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             registeredControllerInteractors.Remove(interactor);
         }
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             // Sanity check making sure that there are no duplicate entries in the prioritized interaction mode list
@@ -293,6 +296,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             InitializeInteractionModeDetectors();
         }
 
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         private void OnValidate()
         {
             ValidateInteractionModes();
@@ -391,6 +397,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static readonly ProfilerMarker UpdatePerfMarker =
             new ProfilerMarker("[MRTK] InteractionModeManager.Update");
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             using (UpdatePerfMarker.Auto())

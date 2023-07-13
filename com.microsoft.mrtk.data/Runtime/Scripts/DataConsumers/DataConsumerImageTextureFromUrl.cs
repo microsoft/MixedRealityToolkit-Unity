@@ -45,6 +45,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected const float FramesPerMillisecond = 60.0f / 1000.0f; // 60 frames per 1000 milliseconds
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             CheckForWaitingUrlToFetch();

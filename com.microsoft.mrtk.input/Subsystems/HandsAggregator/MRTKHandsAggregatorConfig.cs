@@ -56,7 +56,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public float HandFacingAwayToleranceInDegrees => handFacingAwayToleranceInDegrees;
 
-        /// <summary> Resets config values to a reasonable default. </summary>
+        /// <summary>
+        /// Resets configuration values to a reasonable default.
+        /// </summary>
         protected virtual void Reset()
         {
             pinchOpenThreshold = 0.75f;

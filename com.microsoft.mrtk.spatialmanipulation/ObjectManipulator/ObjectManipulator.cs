@@ -507,6 +507,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             DisableInteractorType(typeof(IPokeInteractor));
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script should reset it's default values
+        /// </summary>
         protected override void Reset()
         {
             base.Reset();
@@ -514,11 +517,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             selectMode = InteractableSelectMode.Multiple;
         }
 
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         private void OnValidate()
         {
             ApplyRequiredSettings();
         }
 
+        /// <inheritdoc/>
         protected override void Awake()
         {
             base.Awake();

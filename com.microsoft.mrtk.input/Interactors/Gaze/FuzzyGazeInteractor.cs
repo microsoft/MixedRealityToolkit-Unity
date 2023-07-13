@@ -424,8 +424,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private const float RaycastGizmoScale = 0.07f;
 
         /// <summary>
-        /// When in editor, draws an approximation of what is the "Near Object" area
+        /// A Unity event function that is called to draw Unity editor gizmos that are also interactable and always drawn.
         /// </summary>
+        /// <remarks>
+        /// When in editor, draws an approximation of what is the "Near Object" area
+        /// </remarks>
         private void OnDrawGizmos()
         {
             if (!isHoverActive)

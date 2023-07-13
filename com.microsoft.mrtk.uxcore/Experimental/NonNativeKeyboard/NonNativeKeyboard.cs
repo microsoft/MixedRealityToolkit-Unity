@@ -14,11 +14,10 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
     /// A simple general use keyboard that provides an alternative to the native keyboard offered by each device.
     /// </summary>
     /// <remarks>
-    /// <remarks>
     /// This is an experimental feature. This class is early in the cycle, it has 
     /// been labeled as experimental to indicate that it is still evolving, and 
     /// subject to change over time. Parts of the MRTK, such as this class, appear 
-    /// to have a lot of value even if the details haven’t fully been fleshed out. 
+    /// to have a lot of value even if the details havenï¿½t fully been fleshed out. 
     /// For these types of features, we want the community to see them and get 
     /// value out of them early enough so to provide feedback. 
     /// 
@@ -271,6 +270,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
 
         #region MonoBehaviours
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             if (Instance != null && Instance != this)
@@ -321,7 +323,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
         }
 
         /// <summary>
-        /// Set up Dictation, CanvasEX, and automatically select the TextInput object.
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
         /// </summary>
         protected void Start()
         {
@@ -344,11 +346,17 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
         /// <param name="value">Integer value.</param>
         private void DoCaretIndexUpdated(int value) => OnCaretIndexUpdate?.Invoke(value);
 
+        /// <summary>
+        /// A Unity event function that is called every frame after normal update functions, if this object is enabled.
+        /// </summary>
         private void LateUpdate()
         {
             CheckForCloseOnInactivityTimeExpired();
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         private void OnDisable()
         {
             // Reset the keyboard layout for next use
@@ -357,6 +365,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
             StopDictation();
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been destroyed.
+        /// </summary>
         private void OnDestroy()
         {
             if (Instance == this)

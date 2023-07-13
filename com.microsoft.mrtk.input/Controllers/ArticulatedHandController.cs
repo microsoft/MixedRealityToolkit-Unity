@@ -46,12 +46,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private bool pinchedLastFrame = false;
 
-        // Awake() override to prevent the base class
-        // from using the base controller state instead of our
-        // derived state. TODO: Brought up with Unity, may be
-        // resolved in future XRI update.
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         protected override void Awake()
         {
+            // Awake() override to prevent the base class
+            // from using the base controller state instead of our
+            // derived state. TODO: Brought up with Unity, may be
+            // resolved in future XRI update.
+
             base.Awake();
 
             currentControllerState = new ArticulatedHandControllerState();

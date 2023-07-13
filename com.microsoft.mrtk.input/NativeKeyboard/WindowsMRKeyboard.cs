@@ -101,8 +101,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 #if WINDOWS_UWP
 
         /// <summary>
-        /// Initializes the UWP input pane.
-        /// </summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
+        /// <remarks>
+        /// This will initialize the UWP input pane.
+        /// </remarks>
         protected virtual void Start()
         {
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
@@ -117,7 +120,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             OnKeyboardHiding();
         }
 
-        void OnDestroy()
+        /// <summary>
+        /// A Unity event function that is called when the script component has been destroyed.
+        /// </summary>
+        private void OnDestroy()
         {
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
@@ -144,6 +150,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 #endif // WINDOWS_UWP
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         private void OnDisable()
         {
             HideKeyboard();

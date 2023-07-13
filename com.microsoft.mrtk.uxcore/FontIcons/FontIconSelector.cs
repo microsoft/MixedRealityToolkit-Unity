@@ -8,28 +8,27 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UX
 {
     /// <summary>
-    /// Allows the user to select a specific icon for display via a TextMeshPro component.
-    /// See <see cref="FontIconSelectorInspector"/> for the majority of the user-facing editor code.
+    /// Allows the user to select a specific icon for display via a Unity text component.
     /// </summary>
     [AddComponentMenu("MRTK/UX/Font Icon Selector")]
     public class FontIconSelector : MonoBehaviour
     {
-        [Tooltip("The FontIconSet scriptable object that contains the icons available for use.")]
+        [Tooltip("The FontIconSet that contains the icons available for use.")]
         [SerializeField]
         private FontIconSet fontIcons;
 
         /// <summary>
-        /// The FontIconSet ScriptableObject that contains the icons
+        /// The <see cref="FontIconSet"/> that contains the icons
         /// available for use, and their human-readable names.
         /// </summary>
         public FontIconSet FontIcons => fontIcons;
 
-        [Tooltip("The currently selected icon's name, as defined by the FontIconSet ScriptableObject.")]
+        [Tooltip("The currently selected icon's name, as defined by the FontIconSet.")]
         [SerializeField]
         private string currentIconName;
 
         /// <summary>
-        /// The currently selected icon's name, as defined by the FontIconSet ScriptableObject.
+        /// The currently selected icon's name, as defined by the <see cref="FontIcons"/>.
         /// </summary>
         public string CurrentIconName
         {
@@ -44,15 +43,18 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
-        [Tooltip("The TextMeshPro used to show the icon.")]
+        [Tooltip("The Unity text component used to show the icon.")]
         [SerializeField]
         private TMP_Text textMeshProComponent;
 
         /// <summary>
-        /// The TextMeshPro used to show the icon.
+        /// The Unity text component used to show the icon.
         /// </summary>
         public TMP_Text TextMeshProComponent => textMeshProComponent;
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             if (textMeshProComponent == null)
@@ -62,6 +64,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             SetIcon(currentIconName);
         }
 
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         private void OnValidate()
         {
             SetIcon(currentIconName);

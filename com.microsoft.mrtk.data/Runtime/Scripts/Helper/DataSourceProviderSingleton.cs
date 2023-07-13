@@ -110,6 +110,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         private void OnValidate()
         {
             InitializeSingleton();
@@ -120,11 +123,17 @@ namespace Microsoft.MixedReality.Toolkit.Data
             _shuttingDown = true;
         }
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         protected virtual void Awake()
         {
             InitializeSingleton();
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been destroyed.
+        /// </summary>
         protected virtual void OnDestroy()
         {
             _shuttingDown = true;

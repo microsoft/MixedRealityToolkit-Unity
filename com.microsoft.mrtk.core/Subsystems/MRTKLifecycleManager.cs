@@ -22,6 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
 
         #region MonoBehaviour
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             // Fetch all descriptors from subsystem management
@@ -69,6 +72,9 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been destroyed.
+        /// </summary>
         private void OnDestroy()
         {
             Dispose();
@@ -77,6 +83,9 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         private static readonly ProfilerMarker OnDisableProfilerMarker =
             new ProfilerMarker("[MRTK] MRTKLifecycleManager.OnDisable");
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         private void OnDisable()
         {
             using (OnDisableProfilerMarker.Auto())
@@ -91,6 +100,9 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         private static readonly ProfilerMarker OnEnableProfilerMarker =
             new ProfilerMarker("[MRTK] MRTKLifecycleManager.OnEnable");
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary> 
         private void OnEnable()
         {
             using (OnEnableProfilerMarker.Auto())
@@ -107,6 +119,9 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         private static readonly ProfilerMarker UpdateProfilerMarker =
             new ProfilerMarker("[MRTK] MRTKLifecycleManager.Update");
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             using (UpdateProfilerMarker.Auto())
@@ -121,6 +136,9 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         private static readonly ProfilerMarker FixedUpdateProfilerMarker =
             new ProfilerMarker("[MRTK] MRTKLifecycleManager.FixedUpdate");
 
+        /// <summary>
+        /// A Unity event function that is called at an framerate independent frequency, and is only called if this object is enabled.
+        /// </summary>
         private void FixedUpdate()
         {
             using (FixedUpdateProfilerMarker.Auto())
@@ -135,6 +153,9 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         private static readonly ProfilerMarker LateUpdateProfilerMarker =
             new ProfilerMarker("[MRTK] MRTKLifecycleManager.LateUpdate");
 
+        /// <summary>
+        /// A Unity event function that is called every frame after normal update functions, if this object is enabled.
+        /// </summary>
         private void LateUpdate()
         {
             using (LateUpdateProfilerMarker.Auto())

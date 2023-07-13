@@ -21,11 +21,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("The GameObject which holds the proximity light for the reticle")]
         private GameObject proximityLight;
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         protected void OnEnable()
         {
             Application.onBeforeRender += UpdateReticle;
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         protected void OnDisable()
         {
             UpdateReticle();
