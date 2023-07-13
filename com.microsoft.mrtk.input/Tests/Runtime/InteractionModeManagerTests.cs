@@ -1,5 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+
+// Disable "missing XML comment" warning for tests. While nice to have, this documentation is not required.
+#pragma warning disable 1591
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -204,4 +208,4 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         }
     }
 }
-
+#pragma warning restore 1591
