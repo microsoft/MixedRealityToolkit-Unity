@@ -3,6 +3,7 @@
 
 using Unity.Profiling;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
