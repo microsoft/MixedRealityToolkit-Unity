@@ -22,25 +22,36 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         public GameObject boundsVisualsPrefab;
 
-        private bool speechTriggeredFlag;
+        private bool nextTriggeredFlag;
         private Vector3 cubePosition = new Vector3(0, 1.2f, 2);
         private Vector3 cubeSize = new Vector3(0.5f, 0.5f, 0.5f);
         private BoundsControl boundsControl;
+        private StringBuilder stringBuilder = new StringBuilder();
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
         protected virtual void Start()
         {
             StartCoroutine(Sequence());
         }
 
+        /// <summary>
+        /// Method to update the in scene status text
+        /// </summary>
+        /// <param name="status"></param>
         private void SetStatus(string status)
         {
             Debug.Assert(statusText != null, "statusText on BoundsControlRuntimeExample should not be null");
-            StringBuilder b = new StringBuilder();
-            b.AppendLine($"{status}");
-            b.AppendLine($"Press Next or say 'next' to continue");
-            statusText.text = b.ToString();
+            stringBuilder.Clear();
+            stringBuilder.AppendLine($"{status}");
+            stringBuilder.AppendLine($"Press Next or say 'next' to continue");
+            statusText.text = stringBuilder.ToString();
         }
 
+        /// <summary>
+        /// Coroutine method to advance the state of the example scene
+        /// </summary>
         private IEnumerator Sequence()
         {
             {
@@ -139,9 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 yield return WaitForButtonPressOrCommand();
 
                 Destroy(cube);
-            }
 
-            {
                 SetStatus("Many children");
 
                 GameObject multiRoot = new GameObject();
@@ -189,6 +198,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             SetStatus("Done!");
         }
 
+        /// <summary>
+        /// Set up a BoundsControl component on the target GameObject
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns>The created <see cref="BoundsControl"/> component</returns>
         private BoundsControl InitializeBoundsControl(GameObject target)
         {
             target.AddComponent<ConstraintManager>();
@@ -199,18 +213,25 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             return boundsControl;
         }
 
+        /// <summary>
+        /// Coroutine method to wait for the next button press or speech command
+        /// </summary>
         private IEnumerator WaitForButtonPressOrCommand()
         {
-            while (!speechTriggeredFlag)
+            while (!nextTriggeredFlag)
             {
                 yield return null;
             }
-            speechTriggeredFlag = false;
+
+            nextTriggeredFlag = false;
         }
 
+        /// <summary>
+        /// Method triggered by the next button in the scene
+        /// </summary>
         public void OnShouldAdvanceSequence()
         {
-            speechTriggeredFlag = true;
+            nextTriggeredFlag = true;
         }
     }
 }
