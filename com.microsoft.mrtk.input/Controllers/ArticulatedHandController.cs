@@ -11,8 +11,10 @@ using UnityEngine.XR.Interaction.Toolkit;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// An XRController for binding to hand input. Able to support variable pinch
-    /// select through the HandsAggregatorSubsystem.
+    /// A Unity <see cref="ActionBasedController"/> for binding to hand input.
+    /// </summary>
+    /// <remarks>
+    /// This is able to support variable pinch select through the use of <see cref="HandsAggregatorSubsystem"/>.
     /// </summary>
     [AddComponentMenu("MRTK/Input/XR Controller (Articulated Hand)")]
     public class ArticulatedHandController : ActionBasedController
@@ -39,6 +41,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region Properties
         
+        /// <summary>
+        /// The currently loaded and running hands aggregator, if any.
+        /// </summary>
+        /// <remarks>
+        /// This is deprecated, please use <see cref="XRSubsystemHelpers.HandsAggregator"/> instead.
+        /// </remarks>
         [Obsolete("Deprecated, please use XRSubsystemHelpers.HandsAggregator instead.")]
         protected HandsAggregatorSubsystem HandsAggregator => XRSubsystemHelpers.HandsAggregator as HandsAggregatorSubsystem;
 

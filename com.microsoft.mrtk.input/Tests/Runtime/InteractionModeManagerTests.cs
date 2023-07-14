@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             InteractionMode nearMode = rightHandController.GetComponentInChildren<ProximityDetector>().ModeOnDetection;
             yield return RuntimeTestUtilities.WaitForUpdates();
             ValidateInteractionModeActive(rightHandController, nearMode);
-            Assert.IsTrue(nearMode.priority > farRayMode.priority);
+            Assert.IsTrue(nearMode.Priority > farRayMode.Priority);
 
             // Finally move in for a grab
             yield return rightHand.MoveTo(cube.transform.position);
@@ -151,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             Assert.AreEqual(grabMode, rightHandController.GetComponentInChildren<GrabInteractor>().GetComponent<InteractionDetector>().ModeOnDetection);
             yield return RuntimeTestUtilities.WaitForUpdates();
             ValidateInteractionModeActive(rightHandController, grabMode);
-            Assert.IsTrue(grabMode.priority > nearMode.priority);
+            Assert.IsTrue(grabMode.Priority > nearMode.Priority);
 
             // Run it all in reverse and make sure the interaction stack is in order
             // Now move the hand in range for the proximity detector
@@ -179,7 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             // We construct the list of managed interactor types manually because we don't want to expose the internal controller mapping implementation to even internal use, since
             // we don't want any other class to be able to modify those collections without going through the Mode Manager or it's in-editor inspector.
             HashSet<System.Type> managedInteractorTypes = new HashSet<System.Type>(InteractionModeManager.Instance.PrioritizedInteractionModes.SelectMany(x => x.AssociatedTypes));
-            HashSet<System.Type> activeInteractorTypes = InteractionModeManager.Instance.PrioritizedInteractionModes.Find(x => x.ModeName == currentMode.name).AssociatedTypes;
+            HashSet<System.Type> activeInteractorTypes = InteractionModeManager.Instance.PrioritizedInteractionModes.Find(x => x.ModeName == currentMode.Name).AssociatedTypes;
 
             // Ensure the prox detector has actually had the desired effect of enabling/disabling interactors.
             foreach (System.Type interactorType in managedInteractorTypes)

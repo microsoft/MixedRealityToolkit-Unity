@@ -446,7 +446,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
 
                     // mediating all of the interactors to ensure the correct ones are active for their controller's given interaction mode
-                    InteractionModeDefinition controllerCurrentMode = prioritizedInteractionModes[controllerMapping[controller].CurrentMode.priority];
+                    InteractionModeDefinition controllerCurrentMode = prioritizedInteractionModes[controllerMapping[controller].CurrentMode.Priority];
 
                     foreach (XRBaseInteractor interactor in controllerMapping[controller].Interactors)
                     {
@@ -482,7 +482,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (controllerMapping.TryGetValue(controller, out ManagedInteractorStatus controllerInteractorStatus))
             {
-                controllerInteractorStatus.CurrentMode = controllerInteractorStatus.CurrentMode.priority > interactionMode.priority ? controllerInteractorStatus.CurrentMode : interactionMode;
+                controllerInteractorStatus.CurrentMode = controllerInteractorStatus.CurrentMode.Priority > interactionMode.Priority ? controllerInteractorStatus.CurrentMode : interactionMode;
             }
         }
 

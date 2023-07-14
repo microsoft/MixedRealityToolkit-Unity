@@ -13,9 +13,9 @@ using UnityEngine.XR;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// The MRTK implementation of a <cref see="HandsAggregatorSubsystem">, which supports
+    /// The MRTK implementation of a <see cref="HandsAggregatorSubsystem"/>, which supports
     /// lazy loading/reuse of hand data per-frame. This aggregator pulls skeletal joint data
-    /// from all actively running <cref see="HandsSubsystem"/>.
+    /// from all actively running <see cref="HandsSubsystem"/>.
     /// </summary>
     [Preserve]
     [MRTKSubsystem(
