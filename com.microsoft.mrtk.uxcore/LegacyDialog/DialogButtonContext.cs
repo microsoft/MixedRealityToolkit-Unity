@@ -20,6 +20,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
     [Obsolete("This legacy dialog system has been deprecated. Please migrate to the new dialog system, see Microsoft.MixedReality.Toolkit.UX.DialogPool for more details.")]
     public struct DialogButtonContext
     {
+        /// <summary>
+        /// The constructor for <see cref="DialogButtonContext" />.
+        /// </summary>
         [Obsolete("This legacy dialog system has been deprecated. Please migrate to the new dialog system, see Microsoft.MixedReality.Toolkit.UX.DialogPool for more details.")]
         public DialogButtonContext(DialogButtonType buttonType, string label = null)
         {

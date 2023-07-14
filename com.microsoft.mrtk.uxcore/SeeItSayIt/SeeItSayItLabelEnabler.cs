@@ -9,6 +9,18 @@ using Microsoft.MixedReality.Toolkit.Input;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
+    /// <summary>
+    /// When applied to a Unity game object along with a <see cref="PressableButton"/>, this component
+    /// will enable a "see-it say-it" label if speech input is enabled within the application.
+    /// </summary>
+    /// <remarks>
+    /// A "see-it say-it" label is used for accessibility and voice input. The label displays the keyword
+    /// that can be spoken to active or click the associated <see cref="PressableButton"/>.
+    /// 
+    /// This class will only enable a "see-it say-it" label if the application has included the MRTK input
+    /// package, and has an active <see cref="SpeechInteractor"/> object when this component's 
+    /// <see cref="Start"/> method is invoked.
+    /// </remarks>
     [RequireComponent(typeof(PressableButton))]
     [AddComponentMenu("MRTK/UX/See It Say It Label")]
     public class SeeItSayItLabelEnabler : MonoBehaviour
@@ -18,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private GameObject seeItSayItLabel;
 
         /// <summary>
-        /// The GameObject for the see-it say-it label to be enabled.
+        /// The <see cref="GameObject"/> for the see-it say-it label to be enabled.
         /// </summary>
         public GameObject SeeItSayItLabel
         {
@@ -27,11 +39,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         [SerializeField]
-        [Tooltip("The Transform that the label will be dynamically positioned off of. Empty by default. If positioning a Canvas label, this must be a RectTransform.")]
+        [Tooltip("The Transform that the label will be dynamically positioned off of. Empty by default. If positioning a Canvas label, this must be a AttachedRectTransform.")]
         private Transform positionControl;
 
         /// <summary>
-        /// The Transform that the label will be dynamically positioned off of. Empty by default. If positioning a Canvas label, this must be a RectTransform.
+        /// The <see cref="Transform"/> that the label will be dynamically positioned off of. Empty by default. If positioning a Canvas label, this must be a AttachedRectTransform.
         /// </summary>
         public Transform PositionControl
         {
@@ -45,11 +57,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
         /// </summary> 
-        private void Start()
+        protected virtual void Start()
         {
             // Check if voice commands are enabled for this button
-            PressableButton pressablebutton = gameObject.GetComponent<PressableButton>();
-            if (pressablebutton != null && pressablebutton.AllowSelectByVoice)
+            PressableButton pressableButton = gameObject.GetComponent<PressableButton>();
+            if (pressableButton != null && pressableButton.AllowSelectByVoice)
             {
                 // Check if input and speech packages are present
 #if MRTK_INPUT_PRESENT && MRTK_SPEECH_PRESENT
@@ -68,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 }
 
                 // Set the label text to reflect the speech recognition keyword
-                string keyword = pressablebutton.SpeechRecognitionKeyword;
+                string keyword = pressableButton.SpeechRecognitionKeyword;
                 if (keyword != null)
                 {
                     TMP_Text labelText = SeeItSayItLabel.GetComponentInChildren<TMP_Text>(true);
@@ -81,16 +93,16 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 // If a Transform is specified, use it to reposition the object dynamically
                 if (positionControl != null)
                 {
-                    // The control RectTransform used to position the label's height
+                    // The control AttachedRectTransform used to position the label's height
                     RectTransform controlRectTransform = PositionControl.gameObject.GetComponent<RectTransform>();
 
-                    // If PositionControl is a RectTransform, reposition label relative to Canvas button
+                    // If PositionControl is a AttachedRectTransform, reposition label relative to Canvas button
                     if (controlRectTransform != null &&  SeeItSayItLabel.transform.childCount > 0)
                     {
-                        // The parent RectTransform used to center the label
+                        // The parent AttachedRectTransform used to center the label
                         RectTransform canvasTransform = SeeItSayItLabel.GetComponent<RectTransform>();
 
-                        // The child RectTransform used to set the final position of the label 
+                        // The child AttachedRectTransform used to set the final position of the label 
                         RectTransform labelTransform = SeeItSayItLabel.transform.GetChild(0).gameObject.GetComponent<RectTransform>();
 
                         if (labelTransform != null && canvasTransform != null)

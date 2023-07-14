@@ -137,6 +137,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         [SerializeField]
         private float value = 0.5f;
 
+        /// <summary>
+        /// The current value of the slider.
+        /// </summary>
         [Obsolete("Use Value instead")]
         public float SliderValue => Value;
 
@@ -148,12 +151,18 @@ namespace Microsoft.MixedReality.Toolkit.UX
             get => value;
             set
             {
-                var oldSliderValue = this.value;
-                this.value = value;
-                OnValueUpdated.Invoke(new SliderEventData(oldSliderValue, value));
+                if (this.value != value)
+                {
+                    var oldSliderValue = this.value;
+                    this.value = value;
+                    OnValueUpdated.Invoke(new SliderEventData(oldSliderValue, value));
+                }
             }
         }
 
+        /// <summary>
+        /// The slider's normalized value calculated using the <see cref="MinValue"/> and <see cref="MaxValue"/> properties.
+        /// </summary>
         public float NormalizedValue => (MaxValue - MinValue) != 0 ? (value - MinValue) / (MaxValue - MinValue) : 0;
 
         [SerializeField]
@@ -218,8 +227,18 @@ namespace Microsoft.MixedReality.Toolkit.UX
         #endregion
 
         #region Event Handlers
+
         [Header("Slider Events")]
-        public SliderEvent OnValueUpdated = new SliderEvent();
+
+        [SerializeField]
+        [FormerlySerializedAs("OnValueUpdated")]
+        [Tooltip("A Unity event that is invoked when the slider's value has changed.")]
+        private SliderEvent onValueUpdated = new SliderEvent();
+
+        /// <summary>
+        /// A Unity event that is invoked when <see cref="Value"/> changes.
+        /// </summary>
+        public SliderEvent OnValueUpdated => onValueUpdated;
         #endregion
 
         #region Private Fields
@@ -310,6 +329,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
         #endregion
 
         #region Private Methods
+        /// <summary>
+        /// Invoked on <see cref="Start"/>, <see cref="Awake"/>, and <see cref="Reset"/> to apply required 
+        /// settings to this <see cref="Slider"/> instance.
+        /// </summary>
+        /// <remarks>
+        /// This is used to force the interactable into single select mode.
+        /// </remarks>
         protected virtual void ApplyRequiredSettings()
         {
             // Sliders use InteractableSelectMode.Single to ignore

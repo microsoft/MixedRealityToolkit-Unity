@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// The semantic action associated with a button on a dialog.
     /// </summary>
     /// <remarks>
-    /// Custom dialogs may specify additional button types. In such a case, the <see cref="ButtonType"/> value
+    /// Custom dialogs may specify additional button types. In such a case, the <see cref="DialogButtonType"/> value
     /// should be <see cref="DialogButtonType.Other"/> and the event receiver should cast the event arguments 
     /// to a custom type so to obtain more specific information about the action.
     /// </remarks>d
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// IDialogs are typically spawned, pooled, and killed
     /// by <see cref="Microsoft.MixedReality.Toolkit.UX.DialogPool">DialogPools</see>. 
     /// Generally, developers should not directly manage or instantiate instances of their dialogs,
-    /// as it is essential that they are pooled and managed correctly by a pooler.
+    /// as it is essential that they are pooled and managed correctly by a coordinator.
     /// </remarks>
     public interface IDialog
     {
@@ -92,8 +92,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// when the option is selected. <paramref name="label"/> will be affixed to the
         /// associated button.
         /// </summary>
-        /// <param name="label"> The text to affix to the button.</param>
-        /// <param name="action"> The action to invoke when the button is selected.</param>
+        /// <param name="label">The text to affix to the button.</param>
+        /// <param name="action">The action to invoke when the button is selected.</param>
         /// <returns>This <see cref="IDialog"/> object, so to enable function chaining.</returns>
         IDialog SetNegative(string label, Action<DialogButtonEventArgs> action = null);
 

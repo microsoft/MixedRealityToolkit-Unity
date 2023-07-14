@@ -13,9 +13,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// The core behavior logic for a button that can be pressed, following the <see cref="StatefulInteractable"/> pattern.
     /// </summary>
     /// <remarks>
-    /// This script does not make any assumptions about the visuals associated with this button; any visuals
+    /// This script does not make any assumptions about the visuals associated with this button. Any visuals
     /// script can listen to the <see cref="GetSelectionProgress"/> value, or call <see cref="PushPlaneLocalPosition"/>
-    /// to obtain a 0...1 selectionProgress value or a local displacement, respectively, to implement a visual layer.
+    /// to obtain a selection progress value or a local displacement, respectively, to implement a visual layer.
     /// </remarks>
     [AddComponentMenu("MRTK/UX/Pressable Button")]
     public class PressableButton : StatefulInteractable
@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         [SerializeField]
         [Tooltip("The local z-position of the push plane.")]
-        protected float startPushPlane = 0.0f;
+        private float startPushPlane = 0.0f;
 
         /// <summary>
         /// The local z-position of the push plane.

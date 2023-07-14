@@ -20,11 +20,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
         // back into 3D space.
         private Camera eventCamera;
 
-        // Plane along which drags will be projected into worldspace.
+        // Plane along which drags will be projected into world space.
         // Normal to the camera's forward vector, and offset by the initial hit point.
         private Plane plane;
 
-        // Map Drag to moving the interactor's attachTransform (or whatever else it decides to do in UpdateSelect)
+        /// <summary>
+        ///  When dragging is occurring this will be called every time the cursor is moved.
+        /// <param name="pointerEventData">The event data associated with this event.</param>
         public virtual void OnDrag(PointerEventData pointerEventData)
         {
             // Only left-click-drags are XRI drags.
@@ -52,12 +54,17 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
-        // Construct the plane for planar drag projection during
-        // OnPointerDown. Future OnDrag events may not pass event cameras
-        // or valid hit information.
+        /// <summary>
+        /// Evaluate eventData and transition to appropriate state.
+        /// </summary>
+        /// <param name="pointerEventData">The event data associated with this event.</param>
         public override void OnPointerDown(PointerEventData pointerEventData)
         {
             base.OnPointerDown(pointerEventData);
+            
+            // Construct the plane for planar drag projection during
+            // OnPointerDown. Future OnDrag events may not pass event cameras
+            // or valid hit information.
 
             if (pointerEventData.pointerCurrentRaycast.isValid)
             {
@@ -72,9 +79,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
-        // No drag thresholds in 3D, please :)
+        /// <summary>
+        ///  Called when a drag has been found but before it is valid to begin the drag.
+        /// </summary>
+        /// <param name="eventData">The event data associated with this event.</param>
         public virtual void OnInitializePotentialDrag(PointerEventData eventData)
         {
+            // No drag thresholds in 3D
             eventData.useDragThreshold = false;
         }
     }

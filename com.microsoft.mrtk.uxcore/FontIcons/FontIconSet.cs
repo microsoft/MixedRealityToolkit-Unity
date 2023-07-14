@@ -42,6 +42,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
         [Tooltip("Optional material to use for rendering glyphs in editor.")]
         [SerializeField]
         private Material optionalEditorMaterial;
+
+        /// <summary>
+        /// Optional material to use for rendering glyphs in editor.
+        /// </summary>
         public Material OptionalEditorMaterial => optionalEditorMaterial;
 
         /// <summary>

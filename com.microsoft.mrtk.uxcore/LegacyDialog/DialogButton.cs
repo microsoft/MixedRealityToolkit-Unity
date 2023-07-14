@@ -76,6 +76,10 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
             }
         }
 
+        /// <summary>
+        /// Set the dialog's label or title.
+        /// </summary>
+        /// <param name="title">New label text for the button.</param>
         [Obsolete("Use SetLabel or SetButtonContext instead.")]
         public void SetTitle(string title) => SetLabel(title);
 

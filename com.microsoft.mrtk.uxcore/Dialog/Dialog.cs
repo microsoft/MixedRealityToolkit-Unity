@@ -262,6 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// and then hide the dialog and invoke the dismissal action. This coroutine
         /// is started by the base <see cref="Dismiss"/> method once all listeners
         /// have been removed.
+        /// </summary>
         private IEnumerator InvokeDismissalAfterAnimation()
         {
             Animator animator = GetComponent<Animator>();
