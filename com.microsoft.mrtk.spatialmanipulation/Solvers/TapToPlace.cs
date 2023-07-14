@@ -206,6 +206,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private int ignoreRaycastLayer;
 
+        private RayStep currentRay;
+
         /// <summary>
         /// Get or set the current <see cref="RayStep"/> being using by this object.
         /// </summary>
@@ -215,7 +217,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// This value should be updated each frame while the game object is selected so to determine
         /// object placement if there is a hit on a surface.
         /// </remarks>
-        protected RayStep CurrentRay { get; set; }
+        protected RayStep CurrentRay
+        {
+            get => currentRay;
+            set => currentRay = value;
+        }
 
         /// <summary>
         /// Get or set whether the <see cref="CurrentRay"/> hit a surface.
@@ -225,13 +231,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </remarks>
         protected bool DidHitSurface { get; set; }
 
+        private RaycastHit currentHit;
+
         /// <summary>
         /// Get or set the <see cref="RaycastHit"/> of the <see cref="CurrentRay"/>.
         /// </summary>
         /// <remarks>
         /// This value should be updated each frame while the game object is selected.
         /// </remarks>
-        protected RaycastHit CurrentHit { get; set; }
+        protected RaycastHit CurrentHit
+        {
+            get => currentHit;
+            set => currentHit = value;
+        }
 
         /// <summary>
         /// Get or set the last time a clicked occurred.
@@ -444,11 +456,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
                 Vector3 origin = transform.position;
                 Vector3 endpoint = transform.position + transform.forward;
-                CurrentRay.UpdateRayStep(in origin, in endpoint);
+                currentRay.UpdateRayStep(in origin, in endpoint);
 
                 // Check if the current ray hits a magnetic surface
-                DidHitSurface = MixedRealityRaycaster.RaycastSimplePhysicsStep(CurrentRay, MaxRaycastDistance, MagneticSurfaces, false, out var currentHit);
-                CurrentHit = currentHit;
+                DidHitSurface = MixedRealityRaycaster.RaycastSimplePhysicsStep(CurrentRay, MaxRaycastDistance, MagneticSurfaces, false, out currentHit);
             }
         }
 

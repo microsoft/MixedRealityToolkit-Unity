@@ -46,6 +46,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         private bool exitingSelect = false;
 
+        /// <summary>
+        /// Register a new <see cref="StatefulInteractable"/> and an associated keyword with this <see cref="SpeechInteractor"/>.
+        /// </summary>
+        /// <remarks>
+        /// When this <see cref="SpeechInteractor"/> recognizes the provided <paramref name="keyword"/>, 
+        /// <see cref="XRInteractionManager.SelectEnter"/> is called, passing along the provided
+        /// <paramref name="interactable"/>.
+        /// </remarks>
+        /// <param name="interactable">The <see cref="StatefulInteractable"/> to select when the keyword in recognized.</param>
+        /// <param name="keyword">The keyword to listen for.</param>
         public void RegisterInteractable(StatefulInteractable interactable, string keyword)
         {
             keyword = keyword.ToLower();
@@ -69,6 +79,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// Remove an existing <see cref="StatefulInteractable"/> and keyword from this <see cref="SpeechInteractor"/>.
+        /// </summary>
+        /// <param name="interactable">The <see cref="StatefulInteractable"/> to remove.</param>
+        /// <param name="keyword">The keyword to stop using with the provided <paramref name="interactable"/>.</param>
         public void UnregisterInteractable(StatefulInteractable interactable, string keyword)
         {
             keyword = keyword.ToLower();
@@ -85,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static readonly ProfilerMarker OnKeywordRecognizedPerfMarker =
             new ProfilerMarker("[MRTK] SpeechInteractor.OnKeywordRecognized");
 
-        public void OnKeywordRecognized(string keyword)
+        private void OnKeywordRecognized(string keyword)
         {
             using (OnKeywordRecognizedPerfMarker.Auto())
             {
@@ -167,6 +182,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             keywordDictionary.Clear();
         }
 
+        /// <summary>
+        /// This function should be called when a new <see cref="IXRInteractable"/> is
+        /// added to the <see cref="XRBaseInteractor.interactionManager"/>.
+        /// </summary>
         protected void OnInteractableRegistered(InteractableRegisteredEventArgs args)
         {
             if (args.interactableObject is StatefulInteractable interactable && interactable.AllowSelectByVoice)
@@ -175,6 +194,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// This function should be called when a new <see cref="IXRInteractable"/> is
+        /// removed from the <see cref="XRBaseInteractor.interactionManager"/>.
+        /// </summary>
         protected void OnInteractableUnregistered(InteractableUnregisteredEventArgs args)
         {
             if (args.interactableObject is StatefulInteractable interactable && interactable.AllowSelectByVoice)

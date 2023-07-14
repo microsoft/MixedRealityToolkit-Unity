@@ -39,11 +39,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         [SerializeField]
-        [Tooltip("The Transform that the label will be dynamically positioned off of. Empty by default. If positioning a Canvas label, this must be a AttachedRectTransform.")]
+        [Tooltip("The Transform that the label will be dynamically positioned off of. Empty by default. If positioning a Canvas label, this must be a RectTransform.")]
         private Transform positionControl;
 
         /// <summary>
-        /// The <see cref="Transform"/> that the label will be dynamically positioned off of. Empty by default. If positioning a Canvas label, this must be a AttachedRectTransform.
+        /// The <see cref="Transform"/> that the label will be dynamically positioned off of. Empty by default. If positioning a Canvas label, this must be a <see cref="UnityEngine.RectTransform"/>.
         /// </summary>
         public Transform PositionControl
         {
@@ -93,16 +93,16 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 // If a Transform is specified, use it to reposition the object dynamically
                 if (positionControl != null)
                 {
-                    // The control AttachedRectTransform used to position the label's height
+                    // The control RectTransform used to position the label's height
                     RectTransform controlRectTransform = PositionControl.gameObject.GetComponent<RectTransform>();
 
-                    // If PositionControl is a AttachedRectTransform, reposition label relative to Canvas button
+                    // If PositionControl is a RectTransform, reposition label relative to Canvas button
                     if (controlRectTransform != null &&  SeeItSayItLabel.transform.childCount > 0)
                     {
-                        // The parent AttachedRectTransform used to center the label
+                        // The parent RectTransform used to center the label
                         RectTransform canvasTransform = SeeItSayItLabel.GetComponent<RectTransform>();
 
-                        // The child AttachedRectTransform used to set the final position of the label 
+                        // The child RectTransform used to set the final position of the label 
                         RectTransform labelTransform = SeeItSayItLabel.transform.GetChild(0).gameObject.GetComponent<RectTransform>();
 
                         if (labelTransform != null && canvasTransform != null)

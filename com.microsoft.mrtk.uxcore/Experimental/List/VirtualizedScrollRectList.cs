@@ -81,7 +81,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
         [SerializeField]
         private int layoutRowsOrColumns = 1;
 
-        [Tooltip("(Optional) The size of each layout cell. If an axis is 0, VirualizedList will pull this dimension directly from the prefab's AttachedRectTransform.")]
+        [Tooltip("(Optional) The size of each layout cell. If an axis is 0, VirualizedList will pull this dimension directly from the prefab's RectTransform.")]
         [SerializeField]
         private Vector2 cellSize;
 

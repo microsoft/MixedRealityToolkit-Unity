@@ -50,11 +50,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
 
         [SerializeField]
-        [Tooltip("The AttachedRectTransform to fit the collider onto.")]
+        [Tooltip("The RectTransform to fit the collider onto.")]
         private RectTransform rectTransform;
 
         /// <summary>
-        /// The AttachedRectTransform to fit the collider onto.
+        /// The <see cref="UnityEngine.RectTransform"/> to fit the collider onto.
         /// </summary>
         public RectTransform RectTransform
         {
