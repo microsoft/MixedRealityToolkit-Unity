@@ -13,12 +13,24 @@ namespace Microsoft.MixedReality.Toolkit.Input
     [Serializable]
     public struct InteractionMode
     {
+        [SerializeField]
         [Tooltip("The name of the interaction mode.")]
-        public string name;
+        private string name;
 
+        /// <summary>
+        /// The name of the interaction mode.
+        /// </summary>
+        public string Name => name;
+
+        [SerializeField]
         [FormerlySerializedAs("id")]
         [Tooltip("The priority of the interaction mode.")]
-        public int priority;
+        private int priority;
+
+        /// <summary>
+        /// The priority of the interaction mode.
+        /// </summary>
+        public int Priority => priority;
 
         /// <summary>
         /// Returns a string that represents this <see cref="InteractionMode"/>.
