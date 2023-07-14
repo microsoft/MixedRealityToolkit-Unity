@@ -8,7 +8,6 @@ using UnityEngine.Playables;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
-    [Serializable]
     /// <summary>
     /// An <see cref="IEffect" /> that wraps a Unity <see href="https://docs.unity3d.com/ScriptReference/Playables.PlayableBehaviour.html">PlayableBehaviour</see>
     /// component, and can tint arbitrary types of components.
@@ -19,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     ///
     /// Subclass this class to create tinting behaviour for arbitrary Unity components.
     /// </remarks>
+    [Serializable]
     internal abstract class TintEffect<T> : PlayableEffect, ISerializationCallbackReceiver
     {
         /// <summary>

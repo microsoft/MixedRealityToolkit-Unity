@@ -5,12 +5,11 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
+    /// <summary>
+    /// A visuals script to provide a visual layer on top of a <see cref="Slider"/> component.
+    /// </summary>
     [RequireComponent(typeof(Slider))]
     [ExecuteAlways]
-    /// <summary>
-    /// A visuals script to provide a visual layer on top of
-    /// <see cref="Slider"/>.
-    /// </summary>
     [AddComponentMenu("MRTK/UX/Slider Visuals")]
     public class SliderVisuals : MonoBehaviour
     {

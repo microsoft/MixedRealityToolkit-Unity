@@ -9,12 +9,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
     /// <summary>
     /// Abstract class defining all logics that define the logic by which an object
-    /// is manipulated by ObjectManipulator.
-    /// 
-    /// Usage:
-    /// When a manipulation starts, call Setup.
-    /// Call Update any time to update the move logic and get a new target value for the object.
+    /// is manipulated by a <see cref="ObjectManipulator"/> object.
     /// </summary>
+    /// <remarks>
+    /// When a manipulation starts, call <see cref="Setup"/>. Then call <see cref="Update"/>
+    /// any time to update the move logic and get a new target value for the object.
+    /// </remarks>
     public abstract class ManipulationLogic<T>
     {
         protected int NumInteractors { get; private set; }

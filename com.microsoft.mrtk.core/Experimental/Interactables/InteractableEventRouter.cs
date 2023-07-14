@@ -362,7 +362,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// When a child game object's interactable receives a "hover entered" event, this function will be invoked.
         /// </summary>
         /// <param name="args">
-        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.HoverEnterEventArgs.html">HoverEnterEventArgs</see>
+        /// The Unity <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.HoverEnterEventArgs.html">HoverEnterEventArgs</see>
         /// associated with the original interaction event.
         /// </param>
         void OnChildHoverEntered(HoverEnterEventArgs args);
@@ -371,7 +371,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// When a child game object's interactable receives a "hover exited" event, this function will be invoked.
         /// </summary>
         /// <param name="args">
-        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.HoverExitEventArgs.html">HoverExitEventArgs</see>
+        /// The Unity <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.HoverExitEventArgs.html">HoverExitEventArgs</see>
         /// associated with the original interaction event.
         /// </param>
         void OnChildHoverExited(HoverExitEventArgs args);
@@ -395,7 +395,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// When a parent game object's interactable receives a "hover entered" event, this function will be invoked.
         /// </summary>
         /// <param name="args">
-        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.HoverEnterEventArgs.html">HoverEnterEventArgs</see>
+        /// The Unity <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.HoverEnterEventArgs.html">HoverEnterEventArgs</see>
         /// associated with the original interaction event.
         /// </param>
         void OnParentHoverEntered(HoverEnterEventArgs args);
@@ -404,7 +404,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// When a parent game object's interactable receives a "hover exited" event, this function will be invoked.
         /// </summary>
         /// <param name="args">
-        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.HoverExitEventArgs.html">HoverExitEventArgs</see>
+        /// The Unity <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.HoverExitEventArgs.html">HoverExitEventArgs</see>
         /// associated with the original interaction event.
         /// </param>
         void OnParentHoverExited(HoverExitEventArgs args);
@@ -428,7 +428,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// When a child game object's interactable receives a "select entered" event, this function will be invoked.
         /// </summary>
         /// <param name="args">
-        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.SelectEnterEventArgs.html">SelectEnterEventArgs</see>
+        /// The Unity <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.SelectEnterEventArgs.html">SelectEnterEventArgs</see>
         /// associated with the original interaction event.
         /// </param>
         void OnChildSelectEntered(SelectEnterEventArgs args);
@@ -437,7 +437,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// When a child game object's interactable receives a "select exited" event, this function will be invoked.
         /// </summary>
         /// <param name="args">
-        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.SelectExitEventArgs.html">SelectExitEventArgs</see>
+        /// The Unity <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.SelectExitEventArgs.html">SelectExitEventArgs</see>
         /// associated with the original interaction event.
         /// </param>
         void OnChildSelectExited(SelectExitEventArgs args);
@@ -461,7 +461,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// When a parent game object's interactable receives a "select entered" event, this function will be invoked.
         /// </summary>
         /// <param name="args">
-        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.SelectEnterEventArgs.html">SelectEnterEventArgs</see>
+        /// The Unity <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.SelectEnterEventArgs.html">SelectEnterEventArgs</see>
         /// associated with the original interaction event.
         /// </param>
         void OnParentSelectEntered(SelectEnterEventArgs args);
@@ -470,7 +470,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// When a parent game object's interactable receives a "select exited" event, this function will be invoked.
         /// </summary>
         /// <param name="args">
-        /// The Unity <see cref="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.SelectExitEventArgs.html">SelectExitEventArgs</see>
+        /// The Unity <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%401.0/api/UnityEngine.XR.Interaction.Toolkit.SelectExitEventArgs.html">SelectExitEventArgs</see>
         /// associated with the original interaction event.
         /// </param>
         void OnParentSelectExited(SelectExitEventArgs args);

@@ -7,11 +7,11 @@ using UnityEngine.Playables;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
-    [Serializable]
     /// <summary>
     /// An abstract <see cref="IPlayableEffect"/> that controls a Unity <see href="https://docs.unity3d.com/ScriptReference/Playables.Playable.html">Playable</see> 
     /// component based on the supplied parameter.
     /// </summary>
+    [Serializable]
     internal abstract class PlayableEffect : IPlayableEffect
     {
         internal enum PlaybackType

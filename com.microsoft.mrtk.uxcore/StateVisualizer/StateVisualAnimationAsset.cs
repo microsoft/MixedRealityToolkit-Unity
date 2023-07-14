@@ -7,10 +7,6 @@ using UnityEngine.Playables;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
-    [System.Serializable]
-    [CreateAssetMenu(
-            fileName = "MRTKHandsAggregatorConfig.asset",
-            menuName = "MRTK/State Visualizer/Animation PlayableAsset")]
     /// <summary>
     /// A Unity object that can be used with <see cref="PlayableAssetEffect"/> to generate a <see href="https://docs.unity3d.com/ScriptReference/Playables.Playable.html">Playable</see> component.
     /// </summary>
@@ -20,6 +16,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// <see cref="StateVisualAnimationAsset"/> can be used to share common definitions across prefabs,
     /// or store other state visuals as shared assets.
     /// </remarks>
+    [System.Serializable]
+    [CreateAssetMenu(
+            fileName = "MRTKHandsAggregatorConfig.asset",
+            menuName = "MRTK/State Visualizer/Animation PlayableAsset")]
     internal class StateVisualAnimationAsset : StateVisualAsset
     {
         [SerializeField]

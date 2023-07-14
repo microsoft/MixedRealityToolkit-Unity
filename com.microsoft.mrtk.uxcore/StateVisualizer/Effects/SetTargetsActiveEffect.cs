@@ -8,10 +8,10 @@ using UnityEngine.Playables;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
-    [Serializable]
     /// <summary>
     /// A <see cref="IEffect"/> that sets a collection of specified Unity game objects as active or inactive.
     /// </summary>
+    [Serializable]
     internal class SetTargetsActiveEffect : IEffect
     {
         [SerializeField]

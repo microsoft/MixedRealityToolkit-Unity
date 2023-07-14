@@ -12,18 +12,21 @@ using UnityEngine.XR.Interaction.Toolkit;
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
     /// <summary>
-    /// ObjectManipulator allows for the manipulation (move, rotate, scale)
-    /// of an object by any interactor with a valid attach transform.
-    /// Multi-handed interactions and physics-enabled objects are also supported.
+    /// This class allows for the move, rotate, and scale manipulation 
+    /// of an object by any interactor with a valid transform.
     /// </summary>
     /// <remarks>
-    /// ObjectManipulator works with both rigidbody and non-rigidbody objects,
+    /// Multi-handed interactions and physics-enabled objects are supported.
+    /// 
+    /// The <see cref="ObjectManipulator"/> class works with both rigidbody and non-rigidbody objects,
     /// and allows for throwing and catching interactions. Any interactor
-    /// with a well-formed attach transform can interact with and manipulate
-    /// an ObjectManipulator. This is a drop-in replacement for the built-in
-    /// XRI XRGrabInteractable, that allows for flexible multi-handed interactions.
-    /// ObjectManipulator doesn't track controller velocity, so for precise fast-paced
-    /// throwing interactions that only need one hand, XRGrabInteractable may
+    /// with an attach transform can interact with and manipulate
+    /// an <see cref="ObjectManipulator"/>. 
+    /// 
+    /// This is a drop-in replacement for the built-in Unity's <see cref="XRGrabInteractable"/>, 
+    /// that allows for flexible multi-handed interactions. Note, the <see cref="ObjectManipulator"/> 
+    /// class doesn't track controller velocity, so for precise fast-paced
+    /// throwing interactions that only need one hand, <see cref="XRGrabInteractable"/> may
     /// give better results.
     /// </remarks>
     [RequireComponent(typeof(ConstraintManager))]
@@ -34,26 +37,53 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         /// <summary>
         /// Describes what pivot the manipulated object will rotate about when
-        /// you rotate your hand. This is not a description of any limits or
-        /// additional rotation logic. If no other factors (such as constraints)
-        /// are involved, rotating your hand by an amount should rotate the object
-        /// by the same amount.
-        /// For example a possible future value here is RotateAboutUserDefinedPoint
-        /// where the user could specify a pivot that the object is to rotate
-        /// around.
-        /// An example of a value that should not be found here is MaintainRotationToUser
-        /// as this restricts rotation of the object when we rotate the hand.
+        /// a controller or hand is rotated. 
         /// </summary>
+        /// <remarks>
+        /// This is not a description of any limits or additional rotation logic.
+        /// 
+        /// If no other factors, such as constraints, are involved, rotating a controller or hand by an
+        /// amount should rotate the object by that same amount. 
+        /// 
+        /// A possible future value is `RotateAboutUserDefinedPoint`, this would indicate the user could specify
+        /// a pivot that the object is to rotate around.
+        /// 
+        /// An example of a value that should not be found here is `MaintainRotationToUser`,
+        /// as this would restrict rotation of the object when a controller or hand is rotated.
+        /// </remarks>
         public enum RotateAnchorType
         {
-            RotateAboutObjectCenter,
-            RotateAboutGrabPoint
+            /// <summary>
+            /// Rotation will occur around the center of the object.
+            /// </summary>
+            RotateAboutObjectCenter = 0,
+            
+            /// <summary>
+            /// Rotation will occur at the point the control or hand grabbed the object.
+            /// </summary>
+            RotateAboutGrabPoint = 1,
         };
 
+        /// <summary>
+        /// This enumeration describing the type of behavior to apply when a 
+        /// <see cref="ObjectManipulator"/> is released by a controller.
+        /// </summary>
         [System.Flags]
         public enum ReleaseBehaviorType
         {
+            /// <summary>
+            /// No release behavior should be applied.
+            /// </summary>
+            None = 0,
+
+            /// <summary>
+            /// The manipulated object should keep its velocity upon release.
+            /// </summary>
             KeepVelocity = 1 << 0,
+
+            /// <summary>
+            /// The manipulated object should keep its angular velocity upon release.
+            /// </summary>
             KeepAngularVelocity = 1 << 1
         }
 
@@ -98,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                         constraintsManager.Setup(new MixedRealityTransform(HostTransform));
                     }
                   
-                    // Re-aquire reference to the rigidbody.
+                    // Reacquire reference to the rigidbody.
                     rigidBody = HostTransform.GetComponent<Rigidbody>();
                 }
             }
@@ -175,11 +205,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         [SerializeField]
         [Range(0, 2.0f)]
-        [Tooltip("The damping of the spring force&torque: 1.0f corresponds to critical damping, lower values lead to underdamping (i.e. oscillation).")]
+        [Tooltip("The damping of the spring force&torque. A value of one corresponds to critical damping, lower values lead to under damping or oscillation.")]
         private float springDamping = 1.0f;
 
         /// <summary>
-        /// The damping of the spring force&torque: 1.0f corresponds to critical damping, lower values lead to underdamping (i.e. oscillation).
+        /// The damping of the spring force and torque. A value of one corresponds to critical damping, lower values lead to under damping or oscillation.
         /// </summary>
         public float SpringDamping
         {
@@ -407,19 +437,20 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         };
 
         /// <summary>
-        /// The concrete types of <see cref="ManipulationLogic<T>"/> to use for manipulations.
+        /// The concrete types of <see cref="ManipulationLogic{T}"/> to use for manipulations.
         /// </summary>
         /// <remarks>
-        /// Setting this field at runtime can be expensive (reflection) and interrupt/break
-        /// currently occurring manipulations. Use with caution. Best used at startup or when
-        /// instantiating ObjectManipulators from code.
+        /// Setting this field at runtime can be expensive (reflection) and interrupt pr break
+        /// currently occurring manipulations. So use this with caution. 
+        /// 
+        /// This is best used at startup or when instantiating ObjectManipulators from code.
         /// </remarks>
         public LogicType ManipulationLogicTypes
         {
             get => manipulationLogicTypes;
             set
             {
-                // Re-instantiating manip logics is expensive and can interrupt ongoing interactions.
+                // Re-instantiating manipulation logics is expensive and can interrupt ongoing interactions.
                 manipulationLogicTypes = value;
                 InstantiateManipulationLogic();
             }
@@ -783,7 +814,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         /// <summary>
-        /// In case a Rigidbody gets the targetTransform applied using physical forcees, this function is called within the
+        /// In case a Rigidbody gets the targetTransform applied using physical forces, this function is called within the
         /// FixedUpdate() routine with physics-conforming time stepping.
         /// </summary>
         private void ApplyForcesToRigidbody()
@@ -881,11 +912,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         /// <param name="targetPose">
         /// The target position, rotation, and scale, pre-smoothing, but post-input and post-constraints. Modified by-reference.
-        /// <param/>
+        /// </param>
         /// <param name="modifiedTransformFlags">
         /// Flags which parts of the transform (position, rotation, scale) have been altered by an external source (like Elastics).
         /// Modified by-reference.
-        /// <param/>
+        /// </param>
         protected virtual void ModifyTargetPose(ref MixedRealityTransform targetPose, ref TransformFlags modifiedTransformFlags)
         {
             // TODO: Elastics. Compute elastics here and apply to modifiedTransformFlags.
@@ -932,7 +963,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // We need to query the raw device rotation from the interactor; however,
             // the controller may have its rotation bound to the pointerRotation, which is unsuitable
             // for modeling rotations with far rays. Therefore, we cast down to the base TrackedDevice,
-            // and query the device rotation directly. If any of this is un-castable, we return the
+            // and query the device rotation directly. If any of this can't be casted, we return the
             // interactor's attachTransform's rotation.
             if (interactor is XRBaseControllerInteractor controllerInteractor &&
                 controllerInteractor.xrController is ActionBasedController abController &&

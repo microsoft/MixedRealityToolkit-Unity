@@ -18,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
     /// that the application be updated to use the new <see cref="Microsoft.MixedReality.Toolkit.UX.DialogPool">DialogPool</see> system.
     /// </remarks>
     [SerializeField, Tooltip("The TextMeshPro component for displaying text on the button itself.")]
+    [Obsolete("This legacy dialog system has been deprecated. Please migrate to the new dialog system, see Microsoft.MixedReality.Toolkit.UX.DialogPool for more details.")]
     public class DialogButton : MonoBehaviour
     {
         [SerializeField, Tooltip("The TextMeshPro component for displaying text on the button itself.")]
@@ -46,6 +47,8 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
         public DialogButtonTypes ButtonTypeEnum => DialogProperty.Convert(ButtonContext.ButtonType);
 
         [SerializeField, Tooltip("The type description of the button.")]
+        [Obsolete("This legacy dialog system has been deprecated. Please migrate to the new dialog system, see Microsoft.MixedReality.Toolkit.UX.DialogPool for more details.")]
+
         private DialogButtonContext buttonContext;
 
         /// <summary>
@@ -57,6 +60,8 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
         /// <summary>
         /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
         /// </summary>
+        [Obsolete("This legacy dialog system has been deprecated. Please migrate to the new dialog system, see Microsoft.MixedReality.Toolkit.UX.DialogPool for more details.")]
+
         private void OnValidate()
         {
             SetButtonContext(ButtonContext);

@@ -7,10 +7,12 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
     /// <summary>
-    /// Component for setting the min/max scale values for ObjectManipulator
-    /// or BoundsControl
-    /// We're looking to rework this system in the future. These existing components will be deprecated then.
+    /// Component for setting the min/max scale values for <see cref="ObjectManipulator"/>
+    /// or <see cref="BoundsControl"/> components.
     /// </summary>
+    /// <remarks>
+    /// The constraint system might be reworked in the future. In such a case, these existing components will be deprecated.
+    /// </remarks>
     [AddComponentMenu("MRTK/Spatial Manipulation/Min Max Scale Constraint")]
     public class MinMaxScaleConstraint : TransformConstraint
     {
@@ -55,6 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             set => relativeToInitialState = value;
         }
 
+        /// <inheritdoc />
         public override TransformFlags ConstraintType => TransformFlags.Scale;
 
         #endregion Properties
@@ -62,10 +65,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         #region Public Methods
 
         /// <summary>
-        /// Clamps the transform scale to the scale limits set by <see cref="SetScaleLimits"/> such that:
-        /// - No one component of the returned vector will be greater than the max scale.
-        /// - No one component of the returned vector will be less than the min scale.
+        /// Clamps the transform scale to the scale limits set by <see cref="MinimumScale"/> and <see cref="MaximumScale"/>.
         /// </summary>
+        /// <remarks> 
+        /// No one component of the returned vector will be greater than the max scale, and
+        /// mo one component of the returned vector will be less than the min scale.
+        /// </remarks>
         public override void ApplyConstraint(ref MixedRealityTransform transform)
         {
             Vector3 min = minimumScale;

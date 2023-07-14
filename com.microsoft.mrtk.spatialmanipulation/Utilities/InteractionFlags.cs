@@ -15,17 +15,17 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         None = 0,
 
         /// <summary>
-        /// Near interaction, typically from a <see cref="GrabInteractor">
+        /// Near interaction, typically from a <see cref="GrabInteractor" />
         /// </summary>
         Near = 1 << 0,
 
         /// <summary>
-        /// Far-ray interaction, typically from an <see cref="MRTKRayInteractor">
+        /// Far-ray interaction, typically from an <see cref="MRTKRayInteractor" />
         /// </summary>
         Ray = 1 << 1,
 
         /// <summary>
-        /// Gaze-pinch interaction, typically from a <see cref="GazePinchInteractor">
+        /// Gaze-pinch interaction, typically from a <see cref="GazePinchInteractor" />
         /// </summary>
         Gaze = 1 << 2,
 

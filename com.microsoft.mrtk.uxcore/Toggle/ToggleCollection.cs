@@ -170,6 +170,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
+        /// <summary>
+        /// This method is called when <see cref="CurrentIndex"/> changes. 
+        /// </summary>
+        /// <param name="index">The new value of <see cref="CurrentIndex"/>.</param>
         protected virtual void OnSelection(int index)
         {
             for (int i = 0; i < Toggles.Count; i++)

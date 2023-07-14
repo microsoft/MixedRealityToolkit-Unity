@@ -12,10 +12,12 @@ using UnityEditor;
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
     /// <summary>
-    /// BoundsControl uses an `IBoundsVisuals` prefab to create a bounds visual around the specified object.
-    /// Any <see cref="BoundsHandleInteractable"/>s on the bounds prefab will forward their manipulation events
-    /// to this script, allowing for handle-based manipulation of the target object.
+    /// A <see cref="BoundsControl"/> creates a bounds visual around the specified object.
     /// </summary>
+    /// <remarks>
+    /// Any <see cref="BoundsHandleInteractable"/> component on the bounds game object will forward their manipulation events
+    /// to this script, allowing for handle-based manipulation of the target object.
+    /// </remarks>
     [RequireComponent(typeof(ConstraintManager))]
     [AddComponentMenu("MRTK/Spatial Manipulation/Bounds Control")]
     public class BoundsControl : MonoBehaviour

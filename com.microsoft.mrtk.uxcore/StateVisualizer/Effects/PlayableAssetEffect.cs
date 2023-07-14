@@ -7,12 +7,12 @@ using UnityEngine.Playables;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
-    [Serializable]
     /// <summary>
     /// A <see cref="IEffect"/> implementation that generates a 
     /// <see href="https://docs.unity3d.com/ScriptReference/Playables.Playable.html">Playable</see> component 
     /// from a <see cref="StateVisualAsset"/> component.
     /// </summary>
+    [Serializable]
     internal class PlayableAssetEffect : PlayableEffect
     {
         [SerializeField]

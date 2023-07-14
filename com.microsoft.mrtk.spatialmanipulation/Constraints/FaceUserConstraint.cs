@@ -7,9 +7,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
     /// <summary>
     /// Component for fixing the rotation of a manipulated object such that
-    /// it always faces or faces away from the user
-    /// We're looking to rework this system in the future. These existing components will be deprecated then.
+    /// it always faces or faces away from the user.
     /// </summary>
+    /// <remarks>
+    /// The constraint system might be reworked in the future. In such a case, these existing components will be deprecated.
+    /// </remarks>
     [AddComponentMenu("MRTK/Spatial Manipulation/Face User Constraint")]
     public class FaceUserConstraint : TransformConstraint
     {
@@ -41,6 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             set => gravityAlign = value;
         }
 
+        /// <inheritdoc />
         public override TransformFlags ConstraintType => TransformFlags.Rotate;
 
         #endregion Properties

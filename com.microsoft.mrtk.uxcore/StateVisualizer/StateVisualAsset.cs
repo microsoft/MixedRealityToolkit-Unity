@@ -6,7 +6,6 @@ using UnityEngine.Playables;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
-    [System.Serializable]
     /// <summary>
     /// A Unity object that can be used with <see cref="PlayableAssetEffect"/> to generate a <see href="https://docs.unity3d.com/ScriptReference/Playables.Playable.html">Playable</see> component.
     /// </summary>
@@ -16,6 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// For prefab specific effects, just add an <see cref="IEffect"/> to the
     /// <see cref="StateVisualizer"/> directly.
     /// </remarks>
+    [System.Serializable]
     internal abstract class StateVisualAsset : PlayableAsset
     {
         [SerializeField]

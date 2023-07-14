@@ -37,13 +37,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             RendererOnly,
         }
 
-        // Private scratchpad to reduce allocs.
+        // Private scratchpad to reduce allocations.
         private static List<Vector3> totalBoundsCorners = new List<Vector3>(8);
 
-        // Private scratchpad to reduce allocs.
+        // Private scratchpad to reduce allocations.
         private static List<Transform> childTransforms = new List<Transform>();
 
-        // Private scratchpad to reduce allocs.
+        // Private scratchpad to reduce allocations.
         private static Vector3[] cornersToWorld = new Vector3[8];
 
         /// <summary>
@@ -52,7 +52,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// <remarks>
         /// This is quite expensive, so call sparingly! This traverses the entire hierarchy and does quite a lot of work on each node.
         /// </remarks>
-        /// <param name="root">The root transform under which this method will traverse + calculate composite bounds.</param>
+        /// <param name="root">The root transform under which this method will traverse and calculate composite bounds.</param>
+        /// <param name="target">The target transform that contains the child objects that will be measured.</param>
         /// <param name="exclude">The transform to exclude from the bounds calculation. Only valid if a direct child of <paramref name="root"/>.</param>
         /// <param name="boundsCalculationMethod">Method to use to calculate bounds.</param>
         /// <param name="containsCanvas">
@@ -61,10 +62,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </param>
         /// <param name="includeInactiveObjects">Should objects that are currently inactive be included in the bounds calculation?</param>
         /// <param name="abortOnCanvas">Should we early-out if we find a canvas element? Will still set <paramref name="containsCanvas"/> = true.</param>
-        internal static Bounds CalculateBounds(Transform root, Transform target, Transform exclude, out bool containsCanvas,
-                                               BoundsCalculationMethod boundsCalculationMethod = BoundsCalculationMethod.RendererOverCollider,
-                                               bool includeInactiveObjects = false,
-                                               bool abortOnCanvas = false)
+        internal static Bounds CalculateBounds(
+            Transform root,
+            Transform target,
+            Transform exclude, 
+            out bool containsCanvas,
+            BoundsCalculationMethod boundsCalculationMethod = BoundsCalculationMethod.RendererOverCollider,
+            bool includeInactiveObjects = false,
+            bool abortOnCanvas = false)
         {
             totalBoundsCorners.Clear();
             childTransforms.Clear();
@@ -100,13 +105,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         /// <summary>
         /// Compute the flattening vector for a bounds of size <paramref name="size"/>.
-        /// <returns>
-        /// Returns a unit vector along the direction of the smallest component of <paramref name="size"/>.
-        /// </returns>
+        /// </summary>
         /// <remarks>
         /// Returns Vector3.forward if all components are approximately equal.
         /// </remarks>
         /// <param name="size">The size of the bounds to compute the flatten vector for.</param>
+        /// <returns>
+        /// Returns a unit vector along the direction of the smallest component of <paramref name="size"/>.
+        /// </returns>
         public static Vector3 CalculateFlattenVector(Vector3 size)
         {
             if (size.x < size.y && size.x < size.z)

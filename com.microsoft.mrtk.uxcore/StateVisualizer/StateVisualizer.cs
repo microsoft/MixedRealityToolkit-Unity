@@ -26,11 +26,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
         // can "lag" behind their intended motion in some instances.
         private const float keepAliveTime = 0.2f;
 
-        // Number of wakeup events we subscribe to by default.
+        // Number of wake-up events we subscribe to by default.
         // Used for nicer list initialization.
-        private const int defaultWakeupEventCount = 8;
+        private const int defaultWakeUpEventCount = 8;
 
-        [Serializable]
         /// <summary>
         /// A container that holds a list of effects, as well as the
         /// current value of the state.
@@ -41,6 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// Consider using a more appropriate Effect rather than adjusting how
         /// the value is submitted.
         /// </remarks>
+        [Serializable]
         internal class State
         {
             [SerializeReference]
@@ -143,8 +143,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         // zero when sleep is requested.
         private float sleepTimer = 0;
 
-        // We hold on to a list of actions we use to unsubscribe from the wakeup events.
-        private List<UnityAction> unsubscribeActions = new List<UnityAction>(defaultWakeupEventCount);
+        // We hold on to a list of actions we use to unsubscribe from the wake-up events.
+        private List<UnityAction> unsubscribeActions = new List<UnityAction>(defaultWakeUpEventCount);
 
         // A runtime scratchpad for recording where each IMixableEffect is connected on the mixer.
         private Dictionary<IEffect, int> mixableIndices = new Dictionary<IEffect, int>();
@@ -168,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private UnityAction Subscribe<T>(UnityEvent<T> genericEvent, UnityAction callback)
         {
-            // Wrap argumentless callback in generic lambda
+            // Wrap callback in generic lambda
             UnityAction<T> wrapper = (_) => callback();
             genericEvent.AddListener(wrapper);
 
@@ -313,7 +313,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
                 // Only sleep if we're not currently selected or hovered.
                 // This seems counter-intuitive, but we do this because an animation may need to be
-                // kicked off when the float value of a state changes. We don't have a wakeup event
+                // kicked off when the float value of a state changes. We don't have a wake-up event
                 // for a "value changed", so we just stay awake while we are hovered (or selected).
                 if (sleepTimer <= 0 && interactable != null && !interactable.isSelected && !interactable.isHovered)
                 {
@@ -413,7 +413,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// Manually sets a state to a given value.
         /// </summary>
         /// <param name="stateName">The name of the state to set.</param>
-        /// <param name="value">The value to set the state to.</param>
+        /// <param name="newValue">The value to set the state to.</param>
         /// <returns>
         /// True if the parameter was changed this frame, false if it remained constant.
         /// </returns>

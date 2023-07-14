@@ -8,7 +8,6 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
-    [Serializable]
     /// <summary>
     /// A <see cref="TintEffect{T}"/> that wraps a PlayableBehaviour which can fade
     /// only the alpha component of Unity <see href="https://docs.unity3d.com/Packages/com.unity.ugui%401.0/api/UnityEngine.UI.Graphic.html">Graphic</see>
@@ -19,6 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// 
     /// This component is useful for tinting images and text meshes.
     /// </remarks>
+    [Serializable]
     internal class GraphicFadeEffect : TintEffect<Graphic>
     {
         /// <inheritdoc />
