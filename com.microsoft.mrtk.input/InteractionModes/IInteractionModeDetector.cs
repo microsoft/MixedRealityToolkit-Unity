@@ -20,15 +20,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// Determines whether the detector has detected the appropriate conditions.
-        /// For example, raising a teleport gesture may change the controller's interaction mode to "teleport"
         /// </summary>
-        /// <returns>Returns whether the appropriate conditions detected</returns>
+        /// <remarks>
+        /// One possible usage can be when a teleport gesture occurs, am <see cref="IInteractionModeDetector"/> can change the controller's interaction mode to a <see cref="InteractionMode"/> representing teleportation.
+        /// </remarks>
+        /// <returns>Returns whether the appropriate conditions detected.</returns>
         bool IsModeDetected();
 
         /// <summary>
-        /// Gets a list of the GameObjects which represent the "controllers" that this interaction mode detector has jurisdiction over
+        /// Gets a list of the <see cref="GameObjects"/> which represent the controllers that this interaction mode detector has jurisdiction over.
         /// </summary>
-        /// <returns> Returns the list of the GameObjects which represent the "controllers" that this interaction mode detector has jurisdiction over</returns>
+        /// <returns>The list of the <see cref="GameObjects"/> which represent the controllers that this interaction mode detector has jurisdiction over.</returns>
         List<GameObject> GetControllers();
     }
 }

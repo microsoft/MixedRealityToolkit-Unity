@@ -86,8 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <remarks>
         /// This function is only intended for use in Unity's inspector window. See 
-        /// <see cref="Microsoft.MixedReality.Toolkit.Input.Editor.InteractionModeManagerEditor"> InteractionModeManagerEditor</see>
-        /// documentation for more details.
+        /// `InteractionModeManagerEditor` documentation for more details.
         /// </remarks>
         public void PopulateModesWithSubtypes()
         {
@@ -233,15 +232,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Unregisters an interactor from this Interaction Mode Manager. Used when the interactor's game object is destroyed or when 
-        /// it is no longer meant to be used in the scene.
+        /// This unregisters an interactor from this <see cref="InteractionModeManager"/>.
         /// </summary>
         /// <remarks>
-        /// Not called by the InteractionManager itself, because we would receive an unregistration
-        /// every time we disabled an interactor. We only call this when we are removing an interactor from
-        /// scene completely, e.g. when a controller is destroyed.
+        /// This is used when the interactor's game object is destroyed or when 
+        /// it is no longer meant to be used in the scene.
+        /// 
+        /// This function should not be called by the <see cref="InteractionManager"/> object. If it were, this class
+        /// would receive an unregister event every time an interactor was disabled. This function should  
+        /// only be called when an interactor is removed scene completely; for example, 
+        /// when a controller is destroyed.
         /// </remarks>
-        /// <param name="controllerInteractor">The XRBaseInteractor to be unregistered</param>
+        /// <param name="interactor">The <see cref="XRBaseInteractor"/> to be unregistered.</param>
         public void UnregisterInteractor(XRBaseInteractor interactor)
         {
             GameObject controllerObject = null;
