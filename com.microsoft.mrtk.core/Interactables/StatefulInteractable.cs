@@ -50,14 +50,14 @@ namespace Microsoft.MixedReality.Toolkit
         public ToggleType ToggleMode { get; set; } = ToggleType.Button;
 
         /// <summary>
-        /// The threshold of variable GetSelectionProgress at which the interactable will be selected.
+        /// The threshold of selection progress at which the interactable will be selected.
         /// </summary>
         [field: SerializeField, FormerlySerializedAs("selectThreshold"),
             Tooltip("The threshold of variable GetSelectionProgress at which the interactable will be selected.")]
         public float SelectThreshold { get; set; } = 0.9f;
 
         /// <summary>
-        /// The threshold of variable GetSelectionProgress at which the interactable will be deselected.
+        /// The threshold of selection progress at which the interactable will be deselected.
         /// </summary>
         [field: SerializeField, FormerlySerializedAs("deselectThreshold"),
             Tooltip("The threshold of variable GetSelectionProgress at which the interactable will be deselected.")]
