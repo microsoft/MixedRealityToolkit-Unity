@@ -9,13 +9,18 @@ using UnityEngine.XR.Interaction.Toolkit;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// A SpeechInteractor that is driven by KeywordRecognitionSubsystem.
-    /// StatefulInteractables register themselves with this interactor to receive
-    /// events when the associated keyword is heard by KeywordRecognitionSubsystem.
+    /// A <see cref="ISpeechInteractor"/> that is driven by a <see cref="Subsystems.IKeywordRecognitionSubsystem"/>.
     /// </summary>
     /// <remarks>
-    /// <para>As XRI does not support selecting more than one interactable at a time,
-    /// drop part of the selection lifecycle management provided by XRI and manually tell the interaction manager to enter/exit selection</para>
+    /// <para>
+    /// All <see cref="StatefulInteractable"/> objects register themselves with this interactor so to receive
+    /// events when the associated keyword is heard by a <see cref="Subsystems.IKeywordRecognitionSubsystem"/>.
+    /// <br/>
+    /// At the time <see cref="SpeechInteractor"/> was created Unity's XRI did not support selecting
+    /// more than one interactable at a time. Because of this limitation, the
+    /// <see cref="SpeechInteractor"/> drops part of the selection lifecycle management provided by 
+    /// Unity's XRI and manually informs the interaction manager to enter and exit selection states.
+    /// </para>
     /// </remarks>
     [AddComponentMenu("MRTK/Input/Speech Interactor")]
     public class SpeechInteractor : XRBaseInteractor, ISpeechInteractor

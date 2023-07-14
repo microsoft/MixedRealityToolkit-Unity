@@ -7,14 +7,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Magnetizes to the surface of nearby objects detected by an
-    /// <see cref="Microsoft.MixedReality.Toolkit.Input.ProximityDetector"/>. Used
-    /// to magnetize poke reticles onto nearby touchable surfaces. Optionally,
-    /// an <see cref="Microsoft.MixedReality.Toolkit.Input.IVariableReticle"/> can be
-    /// attached to show variable reticle visuals based on proximity.
-    /// If an <see cref="Microsoft.MixedReality.Toolkit.IPokeInteractor"/> is found in
-    /// the reticle's parents, the <see cref="IPokeInteractor.PokeRadius"/> will be taken
-    /// into account when rendering the reticle.
+    /// <see cref="ProximityDetector"/>.
     /// </summary>
+    /// <remarks>
+    /// A <see cref="ReticleMagnetism"/> object cab be used to magnetize poke reticles onto 
+    /// nearby touchable surfaces. Optionally, an <see cref="IVariableReticle"/> can be
+    /// attached to show variable reticle visuals based on proximity. If an 
+    /// <see cref="IPokeInteractor"/> is found in the reticle's parents, the 
+    /// <see cref="IPokeInteractor.PokeRadius"/> will be taken into account when rendering
+    /// the reticle.
+    /// </remarks>
     [AddComponentMenu("MRTK/Input/Reticle Magnetism")]
     internal class ReticleMagnetism : MonoBehaviour
     {

@@ -8,7 +8,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// Base class that provides data about a line.
     /// </summary>
-    /// <remarks>Data to be consumed by other classes like the <see cref="BaseMixedRealityLineRenderer"/></remarks>
+    /// <remarks>
+    /// The data produced by derivations of <see cref="BaseMixedRealityLineDataProvider"/> will be consumed by other classes, such as <see cref="BezierInertia"/>.
+    /// </remarks>
     [ExecuteAlways]
     internal abstract class BaseMixedRealityLineDataProvider : MonoBehaviour
     {

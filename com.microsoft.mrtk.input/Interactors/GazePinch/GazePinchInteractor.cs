@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// An indirectly-targeted interactor that performs interactions driven by variable pinch distance.
     /// The valid targets of this interactor are harvested from the valid targets of the specified
-    /// <see cref="GazePinchInteractor.dependentInteractor"/>.
+    /// <see cref="GazePinchInteractor.DependentInteractor"/>.
     /// </summary>
     [AddComponentMenu("MRTK/Input/Gaze Pinch Interactor")]
     public class GazePinchInteractor :
@@ -107,11 +107,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// The distance from the body at the time of selection.
-        /// This is computed with <see cref="InputRayUtilities.GetDistanceToBody"/>,
+        /// </summary>
+        /// <remarks>
+        /// This is computed with <see cref="PoseUtilities.GetDistanceToBody"/>,
         /// which approximates the body distance as the distance of the interactor
         /// position to a 2D line parallel to y+, extending up to the head height
         /// and extending y- infinitely.
-        /// </summary>
+        /// </remarks>
         private float bodyDistanceOnSelect = 0;
 
         /// <summary>
