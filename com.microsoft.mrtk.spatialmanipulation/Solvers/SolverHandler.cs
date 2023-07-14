@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             set => updateSolvers = value;
         }
 
-        protected List<Solver> solvers = new List<Solver>();
+        private List<Solver> solvers = new List<Solver>();
 
         /// <summary>
         /// List of solvers that this handler will manage and update.
@@ -252,7 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         // Stores currently attached hand if valid (only possible values Left, Right, or None)
-        protected Handedness currentTrackedHandedness = Handedness.None;
+        private Handedness currentTrackedHandedness = Handedness.None;
 
         /// <summary>
         /// Currently tracked hand or motion controller, if applicable.
@@ -263,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         public Handedness CurrentTrackedHandedness => currentTrackedHandedness;
 
         // Stores controller side to favor if TrackedHandedness is set to both left and right.
-        protected Handedness preferredTrackedHandedness = Handedness.Left;
+        private Handedness preferredTrackedHandedness = Handedness.Left;
 
         /// <summary>
         /// Controller side to favor and pick first if the <see cref="Handedness"/>
@@ -308,7 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             if (!IsValidHandedness(trackedHandedness))
             {
-                Debug.LogError("Using invalid SolverHandler.TrackedHandness value. Defaulting to Handedness.Both");
+                Debug.LogError("Using invalid SolverHandler.TrackedHandedness value. Defaulting to Handedness.Both");
                 TrackedHandedness = Handedness.Both;
             }
 
@@ -394,7 +394,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             AttachToNewTrackedObject();
         }
 
-        // Used to cache and reduce allocs for getting the solver components on this GameObject
+        // Used to cache and reduce allocations for getting the solver components on this GameObject
         private List<Solver> inspectorOrderedSolvers = new List<Solver>();
 
         /// <summary>
@@ -423,6 +423,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             solvers.Remove(solver);
         }
 
+        /// <summary>
+        /// Clear the parent of the internally created tracking-target game object. 
+        /// </summary>
+        /// <remarks>
+        /// A tracking-target is created when <see cref="AttachToNewTrackedObject"/> is called, and
+        /// represents the object being tracked as defined by the <see cref="TrackedTargetType"/>
+        /// property. When created, the tracking-target's parent is set to the object being tracked.
+        /// </remarks>
         protected virtual void DetachFromCurrentTrackedObject()
         {
             if (trackingTarget != null)
@@ -436,6 +444,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private static readonly ProfilerMarker AttachToNewTrackedObjectPerfMarker =
             new ProfilerMarker("[MRTK] SolverHandler.AttachToNewTrackedObject");
 
+
+        /// <summary>
+        /// Begin the process of tracking a new object as defined by the <see cref="TrackedTargetType"/> property.
+        /// </summary>
         protected virtual void AttachToNewTrackedObject()
         {
             using (AttachToNewTrackedObjectPerfMarker.Auto())

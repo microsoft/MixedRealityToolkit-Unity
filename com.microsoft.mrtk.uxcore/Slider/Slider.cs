@@ -328,7 +328,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         #endregion
 
-        #region Private Methods
+        #region Protected Methods
         /// <summary>
         /// Invoked on <see cref="Start"/>, <see cref="Awake"/>, and <see cref="Reset"/> to apply required 
         /// settings to this <see cref="Slider"/> instance.
@@ -343,7 +343,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             // been acquired.
             selectMode = InteractableSelectMode.Single;
         }
+        #endregion Protected Methods
 
+        #region Private Methods
         /// <summary> 
         /// Private method used to adjust initial slider value to stepwise values
         /// </summary>

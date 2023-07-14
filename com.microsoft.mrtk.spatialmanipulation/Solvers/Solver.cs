@@ -15,7 +15,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/solvers/solver")]
     public abstract class Solver : MonoBehaviour
     {
-        protected static ControllerLookup controllerLookup = null;
+        private static ControllerLookup controllerLookup;
+
+        /// <summary>
+        /// Get the <see cref="Toolkit.ControllerLookup">ControllerLookup</see> that will be used all application <see cref="Solver"/> objects.
+        /// </summary>
+        protected static ControllerLookup ControllerLookup => controllerLookup;
 
         [SerializeField]
         [Tooltip("If true, the position and orientation will be calculated, but not applied, for other components to use")]

@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         /// a BoundsControl!)
         /// </summary>
         /// <param name="target">An object to spawn and wrap with a <see cref="BoundsControl"/></param>
-        /// <param name="boundsVisual">Prefab to use for bounds visuals.</param>
+        /// <param name="boundsVisualPath">Prefab path to use for bounds visuals.</param>
         private BoundsControl InstantiateSceneAndDefaultBoundsControl(string boundsVisualPath, GameObject target = null)
         {
             GameObject boundsControlGameObject;

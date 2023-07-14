@@ -535,7 +535,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         }
 
 
-        // <summary>
+        /// <summary>
         /// This tests that the gaze pointer can be used to directly invoke the manipulation logic via simulated pointer events, used
         /// for scenarios like voice-driven movement using the gaze pointer.
         /// </summary>

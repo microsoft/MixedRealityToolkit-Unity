@@ -231,9 +231,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         /// <summary>
-        /// Applies default/required configuration to the interactable that are
-        /// common across all pressable interactables.
+        /// Invoked on <see cref="PressableButton"/>, <see cref="Awake"/>, and <see cref="Reset"/> to apply required 
+        /// settings to this <see cref="PressableButton"/> instance.
         /// </summary>
+        /// <remarks>
+        /// This is used to apply default and required configuration to the interactable that are
+        /// common across all pressable interactables.
+        /// </remarks>
         protected virtual void ApplyRequiredSettings()
         {
             // All buttons are multi-selectable.

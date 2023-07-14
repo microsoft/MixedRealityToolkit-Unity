@@ -9,7 +9,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     [System.Flags]
     public enum ManipulationHandFlags
     {
+        /// <summary>
+        /// No hand count has been specified.
+        /// </summary>
+        None = 0,
+
+        /// <summary>
+        /// A manipulation being executed by a single hand.
+        /// </summary>
         OneHanded = 1 << 0,
+
+        /// <summary>
+        /// A manipulation being executed by two hands.
+        /// </summary>
         TwoHanded = 1 << 1,
     }
 }

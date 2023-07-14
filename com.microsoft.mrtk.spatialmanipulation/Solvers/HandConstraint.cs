@@ -190,11 +190,20 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private Handedness previousHandedness = Handedness.None;
 
+        /// <summary>
+        /// Get the <see cref="Microsoft.MixedReality.Toolkit.Handedness">Handedness</see> value from the used input device.
+        /// </summary>
         public Handedness Handedness => previousHandedness;
 
-        public XRNode? trackedNode = null;
+        private XRNode? trackedNode = null;
 
-        protected HandBounds handBounds = null;
+        private HandBounds handBounds = null;
+
+        /// <summary>
+        /// Get the <see cref="Microsoft.MixedReality.Toolkit.HandBounds">HandBounds</see> component this is using to
+        /// apply the hand constraints.
+        /// </summary>
+        protected HandBounds HandBounds => handBounds;
 
         private readonly Quaternion handToWorldRotation = Quaternion.Euler(-90.0f, 0.0f, 180.0f);
 

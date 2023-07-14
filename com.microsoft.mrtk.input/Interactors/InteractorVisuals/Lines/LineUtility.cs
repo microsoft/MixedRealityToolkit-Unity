@@ -26,6 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="vectorCollection">The collection to use to calculate the blend.</param>
         /// <param name="normalizedLength">the normalized length along the line to calculate the point.</param>
+        /// <param name="repeat">Specify if this function should wrap around to the first index of <paramref name="vectorCollection"/> when the function goes out-of-bounds of <paramref name="vectorCollection"/>.</param>
         /// <returns>The calculated point found along the normalized length.</returns>
         public static Vector3 GetVectorCollectionBlend(Vector3[] vectorCollection, float normalizedLength, bool repeat)
         {
@@ -61,8 +62,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Gets the point along a physics based parabola.
         /// </summary>
-        /// <param name="origin">The point in space where the parabola starts</param>
-        /// <param name="direction">The direction the line is intended to go</param>
+        /// <param name="origin">The point in space where the parabola starts.</param>
+        /// <param name="direction">The direction the line is intended to go.</param>
+        /// <param name="velocity">The velocity of the movement specified by <paramref name="direction"/>.</param>
+        /// <param name="gravity">The direction of gravity.</param>
+        /// <param name="time">The time, in seconds, used to calculate total movements as specified by <paramref name="direction"/> and <paramref name="gravity"/>.</param>
         /// <returns>The calculated point.</returns>
         public static Vector3 GetPointAlongPhysicalParabola(Vector3 origin, Vector3 direction, float velocity, Vector3 gravity, float time)
         {
@@ -160,6 +164,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Interpolate the provided points using Catmull Rom algorithm.
         /// </summary>
+        /// <param name="point1">The first point in the Catmull Rom algorithm.</param>
+        /// <param name="point2">The second point in the Catmull Rom algorithm.</param>
+        /// <param name="point3">The third point in the Catmull Rom algorithm.</param>
+        /// <param name="point4">The fourth point in the Catmull Rom algorithm.</param>
         /// <param name="normalizedLength">the normalized length along the line to calculate the point.</param>
         /// <returns>The calculated point found along the normalized length.</returns>
         public static Vector3 InterpolateCatmullRomPoints(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4, float normalizedLength)
@@ -174,6 +182,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Interpolate the provided points using the standard Bezier algorithm.
         /// </summary>
+        /// <param name="point1">The first point in the Bezier algorithm.</param>
+        /// <param name="point2">The second point in the Bezier algorithm.</param>
+        /// <param name="point3">The third point in the Bezier algorithm.</param>
+        /// <param name="point4">The fourth point in the Bezier algorithm.</param>
         /// <param name="normalizedLength">the normalized length along the line to calculate the point.</param>
         /// <returns>The calculated point found along the normalized length.</returns>
         public static Vector3 InterpolateBezierPoints(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4, float normalizedLength)
@@ -188,6 +200,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Interpolate the provided points using the Hermite algorithm.
         /// </summary>
+        /// <param name="point1">The first point in the Hermite algorithm.</param>
+        /// <param name="point2">The second point in the Hermite algorithm.</param>
+        /// <param name="point3">The third point in the Hermite algorithm.</param>
+        /// <param name="point4">The fourth point in the Hermite algorithm.</param>
         /// <param name="normalizedLength">the normalized length along the line to calculate the point.</param>
         /// <returns>The calculated point found along the normalized length.</returns>
         public static Vector3 InterpolateHermitePoints(Vector3 point1, Vector3 point2, Vector3 point3, Vector3 point4, float normalizedLength)

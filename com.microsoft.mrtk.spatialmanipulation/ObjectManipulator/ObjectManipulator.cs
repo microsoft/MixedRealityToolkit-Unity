@@ -272,12 +272,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         [SerializeField]
-        [Tooltip("The concrete type of TransformSmoothingLogic to use for smoothing between transforms.")]
+        [Tooltip("The concrete type of ITransformSmoothingLogic to use for smoothing between transforms.")]
         [Implements(typeof(ITransformSmoothingLogic), TypeGrouping.ByNamespaceFlat)]
         private SystemType transformSmoothingLogicType = typeof(DefaultTransformSmoothingLogic);
 
         /// <summary>
-        /// The concrete type of <see cref="TransformSmoothingLogic"/> to use for smoothing between transforms.
+        /// The concrete type of <see cref="ITransformSmoothingLogic"/> to use for smoothing between transforms.
         /// </summary>
         /// <remarks>
         /// Setting this field at runtime can be expensive. Use with caution. Best used at startup or when
@@ -373,6 +373,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         [Tooltip("Enable or disable constraint support of this component. When enabled transform " +
             "changes will be post processed by the linked constraint manager.")]
         private bool enableConstraints = true;
+
         /// <summary>
         /// Enable or disable constraint support of this component. When enabled, transform
         /// changes will be post processed by the linked constraint manager.
@@ -396,34 +397,34 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             set => constraintsManager = value;
         }
 
-        [Serializable]
         /// <summary>
-        /// The SystemTypes for the desired type of manipulation logic for move, rotate, and scale.
+        /// The <see cref="SystemType"/> values for the desired type of manipulation logic for move, rotate, and scale.
         /// </summary>
+        [Serializable]
         public struct LogicType
         {
-            [SerializeField]
-            [Tooltip("The concrete type of ManipulationLogic<Vector3> to use for moving.")]
-            [Extends(typeof(ManipulationLogic<Vector3>), TypeGrouping.ByNamespaceFlat)]
             /// <summary>
             /// The concrete type of <see cref="ManipulationLogic"/> to use for moving.
             /// </summary>
+            [SerializeField]
+            [Tooltip("The concrete type of ManipulationLogic<Vector3> to use for moving.")]
+            [Extends(typeof(ManipulationLogic<Vector3>), TypeGrouping.ByNamespaceFlat)]
             public SystemType moveLogicType;
 
-            [SerializeField]
-            [Tooltip("The concrete type of ManipulationLogic<Quaternion> to use for rotating.")]
-            [Extends(typeof(ManipulationLogic<Quaternion>), TypeGrouping.ByNamespaceFlat)]
             /// <summary>
             /// The concrete type of <see cref="ManipulationLogic"/> to use for rotating.
             /// </summary>
+            [SerializeField]
+            [Tooltip("The concrete type of ManipulationLogic<Quaternion> to use for rotating.")]
+            [Extends(typeof(ManipulationLogic<Quaternion>), TypeGrouping.ByNamespaceFlat)]
             public SystemType rotateLogicType;
 
-            [SerializeField]
-            [Tooltip("The concrete type of ManipulationLogic<Vector3> to use for scaling.")]
-            [Extends(typeof(ManipulationLogic<Vector3>), TypeGrouping.ByNamespaceFlat)]
             /// <summary>
             /// The concrete type of <see cref="ManipulationLogic"/> to use for scaling.
             /// </summary>
+            [SerializeField]
+            [Tooltip("The concrete type of ManipulationLogic<Vector3> to use for scaling.")]
+            [Extends(typeof(ManipulationLogic<Vector3>), TypeGrouping.ByNamespaceFlat)]
             public SystemType scaleLogicType;
         }
 
@@ -495,9 +496,20 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         protected struct LogicImplementation
         {
-            public ManipulationLogic<Vector3> moveLogic;
-            public ManipulationLogic<Quaternion> rotateLogic;
-            public ManipulationLogic<Vector3> scaleLogic;
+            /// <summary>
+            /// A <see cref="ManipulationLogic{Vector3}" /> object that represents move logic for a <see cref="ObjectManipulator"/> object.
+            /// </summary>
+            public ManipulationLogic<Vector3> MoveLogic { get; set; }
+
+            /// <summary>
+            /// A <see cref="ManipulationLogic{Quaternion}" /> object that represents rotation logic for a <see cref="ObjectManipulator"/> object.
+            /// </summary>
+            public ManipulationLogic<Quaternion> RotateLogic { get; set; }
+
+            /// <summary>
+            /// A <see cref="ManipulationLogic{Vector3}" /> object that represents scale logic for a <see cref="ObjectManipulator"/> object.
+            /// </summary>
+            public ManipulationLogic<Vector3> ScaleLogic { get; set; }
         }
 
         /// <summary>
@@ -531,12 +543,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         #endregion Private Properties
 
         #region MonoBehaviour Functions
-
-        protected virtual void ApplyRequiredSettings()
-        {
-            // ObjectManipulator is never selected by poking.
-            DisableInteractorType(typeof(IPokeInteractor));
-        }
 
         /// <summary>
         /// A Unity event function that is called when the script should reset it's default values
@@ -581,15 +587,25 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         #endregion
+        
+        /// <summary>
+        /// Invoked on <see cref="ObjectManipulator"/>, <see cref="Awake"/>, and <see cref="Reset"/> to apply required 
+        /// settings to this <see cref="ObjectManipulator"/> instance.
+        /// </summary>
+        protected virtual void ApplyRequiredSettings()
+        {
+            // ObjectManipulator is never selected by poking.
+            DisableInteractorType(typeof(IPokeInteractor));
+        }
 
         private void InstantiateManipulationLogic()
         {
             // Re-instantiate the manipulation logic objects.
             ManipulationLogic = new LogicImplementation()
             {
-                moveLogic = Activator.CreateInstance(ManipulationLogicTypes.moveLogicType) as ManipulationLogic<Vector3>,
-                rotateLogic = Activator.CreateInstance(ManipulationLogicTypes.rotateLogicType) as ManipulationLogic<Quaternion>,
-                scaleLogic = Activator.CreateInstance(ManipulationLogicTypes.scaleLogicType) as ManipulationLogic<Vector3>,
+                MoveLogic = Activator.CreateInstance(ManipulationLogicTypes.moveLogicType) as ManipulationLogic<Vector3>,
+                RotateLogic = Activator.CreateInstance(ManipulationLogicTypes.rotateLogicType) as ManipulationLogic<Quaternion>,
+                ScaleLogic = Activator.CreateInstance(ManipulationLogicTypes.scaleLogicType) as ManipulationLogic<Vector3>,
             };
         }
 
@@ -667,9 +683,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
                 targetTransform = new MixedRealityTransform(HostTransform.position, HostTransform.rotation, HostTransform.localScale);
 
-                ManipulationLogic.scaleLogic.Setup(interactorsSelecting, this, targetTransform);
-                ManipulationLogic.rotateLogic.Setup(interactorsSelecting, this, targetTransform);
-                ManipulationLogic.moveLogic.Setup(interactorsSelecting, this, targetTransform);
+                ManipulationLogic.ScaleLogic.Setup(interactorsSelecting, this, targetTransform);
+                ManipulationLogic.RotateLogic.Setup(interactorsSelecting, this, targetTransform);
+                ManipulationLogic.MoveLogic.Setup(interactorsSelecting, this, targetTransform);
 
                 if (constraintsManager != null && EnableConstraints)
                 {
@@ -737,7 +753,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     {
                         if (allowedManipulations.IsMaskSet(TransformFlags.Scale))
                         {
-                            targetTransform.Scale = ManipulationLogic.scaleLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
+                            targetTransform.Scale = ManipulationLogic.ScaleLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
                         }
                     }
 
@@ -751,7 +767,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     {
                         if (allowedManipulations.IsMaskSet(TransformFlags.Rotate))
                         {
-                            targetTransform.Rotation = ManipulationLogic.rotateLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
+                            targetTransform.Rotation = ManipulationLogic.RotateLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
                         }
                     }
 
@@ -765,7 +781,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                     {
                         if (allowedManipulations.IsMaskSet(TransformFlags.Move))
                         {
-                            targetTransform.Position = ManipulationLogic.moveLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
+                            targetTransform.Position = ManipulationLogic.MoveLogic.Update(interactorsSelecting, this, targetTransform, useCenteredAnchor);
                         }
                     }
 
@@ -785,7 +801,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         /// <summary>
-        /// Once the <paramref name="targetTransform"/> has been determined, this method is called
+        /// Once the target transform has been determined, this method is called
         /// to apply the target pose to the object. Calls <see cref="ModifyTargetPose"/> before
         /// applying, to adjust the pose with smoothing, constraints, etc.
         /// </summary>
@@ -979,7 +995,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     }
 
     /// <summary>
-    /// Extension methods specific to the <see cref="ReleaseBehaviorType"/> enum.
+    /// Extension methods specific to the <see cref="ObjectManipulator.ReleaseBehaviorType"/> enumeration.
     /// </summary>
     public static class ReleaseBehaviorTypeExtensions
     {

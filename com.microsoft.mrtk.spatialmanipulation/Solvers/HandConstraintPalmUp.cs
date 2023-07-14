@@ -274,14 +274,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 Ray? gazeRay = null;
                 bool usedEyeGaze = false;
 
-                if (controllerLookup != null &&
-                    controllerLookup.GazeController != null &&
-                    (controllerLookup.GazeController.currentControllerState.inputTrackingState &
+                if (ControllerLookup != null &&
+                    ControllerLookup.GazeController != null &&
+                    (ControllerLookup.GazeController.currentControllerState.inputTrackingState &
                     (InputTrackingState.Position | InputTrackingState.Rotation)) > 0)
                 {
                     gazeRay = new Ray(
-                            controllerLookup.GazeController.transform.position,
-                            controllerLookup.GazeController.transform.forward);
+                            ControllerLookup.GazeController.transform.position,
+                            ControllerLookup.GazeController.transform.forward);
                     usedEyeGaze = true;
                 }
                 else
