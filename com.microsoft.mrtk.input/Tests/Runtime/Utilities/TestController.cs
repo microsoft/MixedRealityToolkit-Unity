@@ -1,14 +1,17 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for tests. While nice to have, this documentation is not required.
+#pragma warning disable CS1591
+
 using System.Collections;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Tests
 {
     /// <summary>
-    /// Convenience wrapper around the underlying <see cref="RuntimeInputTestUtilities"> functions
-    /// for manipulating test hands/controllers.
+    /// Convenience wrapper around the underlying <see cref="InputTestUtilities"/> functions
+    /// for manipulating test hands and controllers.
     /// </summary>
     public abstract class TestController
     {
@@ -20,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         }
 
         /// <summary>
-        /// Show the controller at a specified position
+        /// Show the controller at a specified position.
         /// </summary>
         /// <param name="position">Where to show the controller</param>
         /// <param name="waitForFixedUpdate">If true, will wait for a physics frame after showing the controller.</param>
@@ -39,36 +42,36 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         public abstract IEnumerator Hide(bool waitForFixedUpdate = true);
 
         /// <summary>
-        /// Move controller to given position over some number of frames
+        /// Move controller to given position over some number of frames.
         /// </summary>
         /// <param name="newPosition">Where to move controller to</param>
         /// <param name="numSteps">
         /// How many frames to move over. This defaults to the "sentinel" value which tells the system
         /// to use the default number of steps. For more information on this value, see
-        /// <see cref="PlayModeTestUtilities.ControllerMoveStepsSentinelValue"/>
+        /// <see cref="InputTestUtilities.ControllerMoveStepsSentinelValue"/>
         /// </param>
         /// <param name="waitForFixedUpdate">If true, waits a physics frame after moving the controller</param>
         public abstract IEnumerator MoveTo(Vector3 newPosition, int numSteps = InputTestUtilities.ControllerMoveStepsSentinelValue, bool waitForFixedUpdate = true);
 
         /// <summary>
-        /// Move the controller by some given delta
+        /// Move the controller by some given delta.
         /// </summary>
         /// <param name="delta">Amount to move the controller by.</param>
         /// <param name="numSteps">
         /// How many frames to move over. This defaults to the "sentinel" value which tells the system
         /// to use the default number of steps. For more information on this value, see
-        /// <see cref="PlayModeTestUtilities.ControllerMoveStepsSentinelValue"/>
+        /// <see cref="InputTestUtilities.ControllerMoveStepsSentinelValue"/>
         /// </param>
         public abstract IEnumerator Move(Vector3 delta, int numSteps = InputTestUtilities.ControllerMoveStepsSentinelValue, bool waitForFixedUpdate = true);
 
         /// <summary>
-        /// Rotates the controller to given position over some number of frames
+        /// Rotates the controller to given position over some number of frames.
         /// </summary>
-        /// <param name="newRotation">New rotation of controller<</param>
+        /// <param name="newRotation">New rotation of the controller.</param>
         /// <param name="numSteps">
         /// How many frames to move over. This defaults to the "sentinel" value which tells the system
         /// to use the default number of steps. For more information on this value, see
-        /// <see cref="PlayModeTestUtilities.ControllerMoveStepsSentinelValue"/>
+        /// <see cref="InputTestUtilities.ControllerMoveStepsSentinelValue"/>
         /// </param>
         /// <param name="waitForFixedUpdate">If true, waits a physics frame after moving the controller</param>
         public abstract IEnumerator RotateTo(Quaternion newRotation, int numSteps = InputTestUtilities.ControllerMoveStepsSentinelValue, bool waitForFixedUpdate = true);
@@ -77,11 +80,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// Rotates the controller to aim at the given world-relative position over some number of frames.
         /// This forces the controller's anchor point to be ControllerAnchorPoint.Device.
         /// </summary>
-        /// <param name="target">Point in worldspace to aim at (i.e., rotate the device's pose to aim at)</param>
+        /// <param name="target">Point in world space to aim at.</param>
         /// <param name="numSteps">
         /// How many frames to move over. This defaults to the "sentinel" value which tells the system
         /// to use the default number of steps. For more information on this value, see
-        /// <see cref="PlayModeTestUtilities.ControllerMoveStepsSentinelValue"/>
+        /// <see cref="InputTestUtilities.ControllerMoveStepsSentinelValue"/>
         /// </param>
         /// <param name="waitForFixedUpdate">If true, waits a physics frame after moving the controller</param>
         public abstract IEnumerator AimAt(Vector3 target, int numSteps = InputTestUtilities.ControllerMoveStepsSentinelValue, bool waitForFixedUpdate = true);
@@ -92,3 +95,4 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         public abstract IEnumerator Click();
     }
 }
+#pragma warning restore CS1591

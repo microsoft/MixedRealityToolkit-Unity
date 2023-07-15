@@ -101,9 +101,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         }
 
         /// <summary>
-        /// Tests that mode mediation works properly. The interaction mode with the higher priority should be the valid one which affects the controller.
-        /// This test operates on the basic assumption that the priority order is FarRayHover < Near < GrabSelect
+        /// Tests that mode mediation works properly. 
         /// </summary>
+        /// <remarks>
+        /// The interaction mode with the higher priority should be the valid one which affects the controller.
+        /// This test operates on the basic assumption that the priority order is <c>FarRayHover</c> &lt; <c>Near</c> &lt; <c>GrabSelect</c>.
+        /// </remarks>
         [UnityTest]
         public IEnumerator ModeMediationTest()
         {
