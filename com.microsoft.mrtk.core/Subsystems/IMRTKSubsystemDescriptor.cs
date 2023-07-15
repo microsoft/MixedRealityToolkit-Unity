@@ -37,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         Type ProviderType { get; set; }
 
         /// <summary>
-        /// Specifies the <see cref="MRTKSubsystem{TSubsystem, TSubsystemDescriptor, TProvider}"/>-derived type that forwards casted calls to its provider.
+        /// Specifies the <see cref="MRTKSubsystem{TSubsystem, TSubsystemDescriptor, TProvider}"/> based type that forwards casted calls to its provider.
         /// </summary>
         /// <value>
         /// The type of the subsystem to use for instantiation.

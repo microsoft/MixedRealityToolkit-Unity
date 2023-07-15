@@ -86,6 +86,15 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
             return !(lhs == rhs);
         }
 
+        /// <summary>
+        /// Overridden to disable hash lookups of <see cref="PerformanceStatsSubsystemCinfo"/> types.
+        /// </summary>
+        /// <remarks>
+        /// This will throw a <see cref="ApplicationException"/> if called.
+        /// </remarks>
+        /// <exception cref="ApplicationException">
+        /// Thrown if this function is called.
+        /// </exception>
         public override int GetHashCode()
         {
             throw new ApplicationException("Do not hash subsystem descriptors as keys.");
@@ -103,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// <summary>
         /// Constructs a <c>PerformanceStatsSubsystemDescriptor</c> based on the given parameters.
         /// </summary>
-        /// <param name='PerformanceStatsSubsystemCinfo'>The parameters required to initialize the descriptor.</param>
+        /// <param name="cinfo">The parameters required to initialize the descriptor.</param>
         PerformanceStatsSubsystemDescriptor(PerformanceStatsSubsystemCinfo cinfo)
         {
             Name = cinfo.Name;
@@ -136,12 +145,14 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         #endregion IMRTKDescriptor implementation
 
         /// <summary>
-        /// Creates a <c>PerformanceStatsSubsystemDescriptor</c> based on the given parameters validating that the
-        /// <c>id</c> and <c>implentationType</c> properties are specified.
+        /// Creates a <see cref="PerformanceStatsSubsystemDescriptor"/> based on the given parameters.
         /// </summary>
-        /// <param name='PerformanceStatsSubsystemCinfo'>The parameters required to initialize the descriptor.</param>
+        /// <remarks>
+        /// This will validate that the <c>Name</c> and <c>ProviderType</c> properties are specified.
+        /// </remarks>
+        /// <param name="cinfo">The parameters required to initialize the descriptor.</param>
         /// <returns>
-        /// The created <c>PerformanceStatsSubsystemDescriptor</c>.
+        /// The created <see cref="PerformanceStatsSubsystemDescriptor"/>.
         /// </returns>
         internal static PerformanceStatsSubsystemDescriptor Create(PerformanceStatsSubsystemCinfo cinfo)
         {
