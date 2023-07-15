@@ -39,9 +39,9 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         MRTKSubsystemDescriptor<HandsSubsystem, HandsSubsystem.Provider>
     {
         /// <summary>
-        /// Constructs a <c>HandsSubsystemDescriptor</c> based on the given parameters.
+        /// Initializes a new instance of the <see cref="HandsSubsystemDescriptor"/> class.
         /// </summary>
-        /// <param name='HandsSubsystem'>The parameters required to initialize the descriptor.</param>
+        /// <param name='cinfo'>The parameters required to initialize the descriptor.</param>
         HandsSubsystemDescriptor(HandsSubsystemCinfo cinfo) : base(cinfo)
         {
             IsPhysicalData = cinfo.IsPhysicalData;
@@ -57,12 +57,12 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         public bool IsPhysicalData { get; set; }
 
         /// <summary>
-        /// Creates a <c>HandsSubsystemDescriptor</c> based on the given parameters validating that the
-        /// <c>id</c> and <c>implentationType</c> properties are specified.
+        /// Creates a <see cref="HandsSubsystemDescriptor"/> based on the given parameters validating that the
+        /// <see cref="HandsSubsystemCinfo"/> properties are specified.
         /// </summary>
         /// <param name='cinfo'>The parameters required to initialize the descriptor.</param>
         /// <returns>
-        /// The created <c>HandsSubsystemDescriptor</c>.
+        /// A new instance of the <see cref="HandsSubsystemDescriptor"/> class.
         /// </returns>
         internal static HandsSubsystemDescriptor Create(HandsSubsystemCinfo cinfo)
         {

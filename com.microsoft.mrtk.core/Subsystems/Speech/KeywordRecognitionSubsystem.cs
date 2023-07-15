@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         IKeywordRecognitionSubsystem
     {
         /// <summary>
-        /// Construct the <c>KeywordRecognitionSubsystem</c>.
+        /// Initializes a new instance of the <see cref="KeywordRecognitionSubsystem"/> class.
         /// </summary>
         public KeywordRecognitionSubsystem()
         { }
@@ -71,7 +71,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// <param name="keywordRecognitionSubsystemParams">The parameters defining the KeywordRecognition subsystem functionality implemented
         /// by the subsystem provider.</param>
         /// <returns>
-        /// <c>true</c> if the subsystem implementation is registered. Otherwise, <c>false</c>.
+        /// <see langword="true"/> if the subsystem implementation is registered. Otherwise, <see langword="false"/>.
         /// </returns>
         public static bool Register(KeywordRecognitionSubsystemCinfo keywordRecognitionSubsystemParams)
         {

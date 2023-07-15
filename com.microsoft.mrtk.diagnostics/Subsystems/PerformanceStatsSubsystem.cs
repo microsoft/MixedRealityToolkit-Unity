@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         IPerformanceStatsSubsystem
     {
         /// <summary>
-        /// Construct the <c>PerformanceStatsSubsystem</c>.
+        /// Initializes a new instance of the <see cref="PerformanceStatsSubsystem"/> class.
         /// </summary>
         public PerformanceStatsSubsystem()
         { }

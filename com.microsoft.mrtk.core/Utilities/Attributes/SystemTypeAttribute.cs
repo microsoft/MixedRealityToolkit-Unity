@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit
 
         /// <summary>
         /// Gets or sets whether abstract classes can be selected from drop-down.
-        /// Defaults to a value of <c>false</c> unless explicitly specified.
+        /// Defaults to a value of <see langword="false"/> unless explicitly specified.
         /// </summary>
         public bool AllowAbstract { get; set; } = false;
 

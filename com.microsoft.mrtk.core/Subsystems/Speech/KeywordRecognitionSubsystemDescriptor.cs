@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         MRTKSubsystemDescriptor<KeywordRecognitionSubsystem, KeywordRecognitionSubsystem.Provider>
     {
         /// <summary>
-        /// Constructs a <c>KeywordRecognitionSubsystemDescriptor</c> based on the given parameters.
+        /// Initializes a new instance of the <see cref="KeywordRecognitionSubsystemDescriptor"/> class.
         /// </summary>
         /// <param name='KeywordRecognitionSubsystemCinfo'>The parameters required to initialize the descriptor.</param>
         KeywordRecognitionSubsystemDescriptor(KeywordRecognitionSubsystemCinfo cinfo) : base(cinfo)

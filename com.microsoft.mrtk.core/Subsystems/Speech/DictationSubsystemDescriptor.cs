@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         MRTKSubsystemDescriptor<DictationSubsystem, DictationSubsystem.Provider>
     {
         /// <summary>
-        /// Constructs a <c>DictationSubsystemDescriptor</c> based on the given parameters.
+        /// Initializes a new instance of the <see cref="DictationSubsystemDescriptor"/> class.
         /// </summary>
         /// <param name='cinfo'>The parameters required to initialize the descriptor.</param>
         DictationSubsystemDescriptor(DictationSubsystemCinfo cinfo) : base(cinfo)

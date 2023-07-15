@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         where TProvider : SubsystemProvider<TSubsystem>
     {
         /// <summary>
-        /// Constructs a <c>MRTKSubsystemDescriptor</c> based on the given parameters.
+        /// Initializes a new instance of the <see cref="MRTKSubsystemDescriptor"/> class.
         /// </summary>
         /// <param name='MRTKSubsystemCinfo'>The parameters required to initialize the descriptor.</param>
         public MRTKSubsystemDescriptor(MRTKSubsystemCinfo MRTKSubsystemCinfo)

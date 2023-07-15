@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         public float? Confidence { get; }
 
         /// <summary>
-        /// Construct the <c>DictationResultEventArgs</c>.
+        /// Initializes a new instance of the <see cref="DictationResultEventArgs"/> class.
         /// </summary>
         public DictationResultEventArgs(string result, float? confidence)
         {
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         public string ReasonString { get; }
 
         /// <summary>
-        /// Construct the <c>DictationSessionEventArgs</c>.
+        /// Initializes a new instance of the <see cref="DictationSessionEventArgs"/> class.
         /// </summary>
         public DictationSessionEventArgs(DictationEventReason reason, string reasonString)
         {

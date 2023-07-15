@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         IAccessibilitySubsystem
     {
         /// <summary>
-        /// Construct the <c>AccessibilitySubsystem</c>.
+        /// Initializes a new instance of the <see cref="AccessibilitySubsystem"/> class.
         /// </summary>
         public AccessibilitySubsystem()
         { }
@@ -143,7 +143,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// <param name="accessibilitySubsystemParams">The parameters defining the accessibility subsystem
         /// functionality implemented by the subsystem provider.</param>
         /// <returns>
-        /// <c>true</c> if the subsystem implementation is registered. Otherwise, <c>false</c>.
+        /// <see langword="true"/> if the subsystem implementation is registered. Otherwise, <see langword="false"/>.
         /// </returns>
         /// <exception cref="System.ArgumentException">Thrown when the values specified in the
         /// <see cref="AccessibilitySubsystemCinfo"/> parameter are invalid. Typically, this will occur

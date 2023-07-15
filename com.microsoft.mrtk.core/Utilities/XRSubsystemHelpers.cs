@@ -206,9 +206,13 @@ namespace Microsoft.MixedReality.Toolkit
         #region Subsystem internal utilities
 
         /// <summary>
-        /// Constructs a cInfo struct for the specified subsystem type.
-        /// Used when registering a subsystem.
+        /// Create and initializes an object of type <typeparamref name="CinfoT"/> for the specified subsystem type.
         /// </summary>
+        /// <remarks>
+        /// Used when registering a subsystem.
+        /// </remarks>
+        /// <typeparam name="SubsystemT">The type the subsystem being registered.</typeparam>
+        /// <typeparam name="CinfoT">A <see cref="IMRTKSubsystemDescriptor"/> class type to create.</typeparam>
         public static CinfoT ConstructCinfo<SubsystemT, CinfoT>() where CinfoT : IMRTKSubsystemDescriptor, new()
         {
             var metadata = RetrieveMetadata<SubsystemT>();

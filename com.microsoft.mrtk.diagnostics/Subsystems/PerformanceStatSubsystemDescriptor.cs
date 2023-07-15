@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         IMRTKSubsystemDescriptor
     {
         /// <summary>
-        /// Constructs a <c>PerformanceStatsSubsystemDescriptor</c> based on the given parameters.
+        /// Initializes a new instance of the <see cref="PerformanceStatsSubsystemDescriptor"/> class.
         /// </summary>
         /// <param name="cinfo">The parameters required to initialize the descriptor.</param>
         PerformanceStatsSubsystemDescriptor(PerformanceStatsSubsystemCinfo cinfo)

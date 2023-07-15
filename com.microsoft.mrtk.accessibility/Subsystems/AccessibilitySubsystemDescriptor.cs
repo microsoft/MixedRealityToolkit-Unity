@@ -97,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         IMRTKSubsystemDescriptor
     {
         /// <summary>
-        /// Constructs a <c>AccessibilitySubsystemDescriptor</c> based on the given parameters.
+        /// Initializes a new instance of the <see cref="AccessibilitySubsystemDescriptor"/> class.
         /// </summary>
         /// <param name='AccessibilitySubsystemCinfo'>The parameters required to initialize the descriptor.</param>
         AccessibilitySubsystemDescriptor(AccessibilitySubsystemCinfo accessibilitySubsystemCinfo)

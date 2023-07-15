@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         MRTKSubsystemDescriptor<TextToSpeechSubsystem, TextToSpeechSubsystem.Provider>
     {
         /// <summary>
-        /// Constructs a <c>TextToSpeechSubsystemDescriptor</c> based on the given parameters.
+        /// Initializes a new instance of the <see cref="TextToSpeechSubsystemDescriptor"/> class.
         /// </summary>
         /// <param name="cinfo">The parameters required to initialize the descriptor.</param>
         TextToSpeechSubsystemDescriptor(TextToSpeechSubsystemCinfo cinfo) : base(cinfo)
