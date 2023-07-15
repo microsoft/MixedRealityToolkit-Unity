@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
         /// <summary>
-        /// Constructor that provides the root node
+        /// Initializes a new instance of a <see cref="DataSourceObjects"/> class.
         /// </summary>
         /// <param name="rootNodeType">Type for the root node</param>
         /// <param name="value">The value associated with the root node.</param>

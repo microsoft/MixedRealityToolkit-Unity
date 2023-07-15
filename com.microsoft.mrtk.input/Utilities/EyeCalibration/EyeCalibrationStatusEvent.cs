@@ -19,9 +19,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 		/// </summary>
 		public EyeCalibrationStatus CalibratedStatus { get; set; }
 
-		/// <summary>
-		/// Constructor which sets CalibratedStatus.
-		/// </summary>
+        /// <summary>
+        /// Initializes a <see cref="EyeCalibrationStatusEventArgs"/> struct.
+        /// </summary>
+		/// <param name="calibratedStatus">The eye tracking calibration status.</param>
 		public EyeCalibrationStatusEventArgs(EyeCalibrationStatus calibratedStatus)
 		{
 			CalibratedStatus = calibratedStatus;

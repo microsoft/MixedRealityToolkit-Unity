@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         internal Quaternion Rotation => poseState.rotation;
 
         /// <summary>
-        /// Constructor.
+        /// Initializes a new instance of a <see cref="SimulatedEyeGaze"/> class.
         /// </summary>
         public SimulatedEyeGaze()
         {

@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private bool IsTracked => xrController.currentControllerState.inputTrackingState.HasPositionAndRotation();
 
         #endregion GazePinchInteractor
-
+v
         #region IHandedInteractor
 
         Handedness IHandedInteractor.Handedness => handController.HandNode.ToHandedness();

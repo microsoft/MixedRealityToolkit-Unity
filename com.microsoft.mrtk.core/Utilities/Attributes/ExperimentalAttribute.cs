@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit
                                            "that they are still evolving, and subject to change over time.";
 
         /// <summary>
-        /// Constructor.
+        /// Initializes a new instance of a <see cref="ExperimentalAttribute"/> class.
         /// </summary>
         /// <param name="experimentalText">The experimental text to display in the warning box.</param>
         public ExperimentalAttribute(string experimentalText = defaultText)

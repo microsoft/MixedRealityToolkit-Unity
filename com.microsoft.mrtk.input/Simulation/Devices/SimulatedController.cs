@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         public Handedness Handedness { get; private set; }
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of a <see cref="SimulatedController"/> class.
         /// </summary>
         public SimulatedController(
             Handedness handedness,

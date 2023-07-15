@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 #endif
 
             /// <summary>
-            /// Constructor of WindowsKeywordRecognitionProvider.
+            /// Initializes a new instance of the <see cref="WindowsKeywordRecognitionProvider"/> class.
             /// </summary>
             public WindowsKeywordRecognitionProvider()
             {

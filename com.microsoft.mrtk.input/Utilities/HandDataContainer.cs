@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected HandJointPose[] HandJoints { get; set; } = new HandJointPose[(int)TrackedHandJoint.TotalJoints];
 
         /// <summary>
-        /// Constructor.
+        /// Initializes a new instance of a <see cref="HandDataContainer"/> class.
         /// </summary>
         /// <param name="handNode">The XRNode the hand data pertains to.</param>
         public HandDataContainer(XRNode handNode)

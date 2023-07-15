@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
     public class DialogProperty
     {
         /// <summary>
-        /// Constructor for the <see cref="DialogProperty"/> class.
+        /// Initializes a new instance of the <see cref="DialogProperty"/> class.
         /// </summary>
         /// <param name="title">The title bar string (top-most) on the dialog.</param>
         /// <param name="message">The message content string of the dialog.</param>
@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
         }
 
         /// <summary>
-        /// Constructor for the <see cref="DialogProperty"/> class.
+        /// Initializes a new instance of the <see cref="DialogProperty"/> class.
         /// </summary>
         [Obsolete("This legacy dialog system has been deprecated. Please migrate to the new dialog system, see Microsoft.MixedReality.Toolkit.UX.DialogPool for more details.")]
         public DialogProperty(string title, string message, DialogButtonTypes buttonTypes) : this(title, message)

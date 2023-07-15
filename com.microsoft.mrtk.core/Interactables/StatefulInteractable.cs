@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             /// <summary>
             /// The interactable will not enter toggle states unless forces by code 
-            /// using the <see cref="ForceSetToggled" /> function.
+            /// using the <see cref="ForceSetToggled(bool)"/> function.
             /// </summary>
             Button,
 
@@ -237,11 +237,14 @@ namespace Microsoft.MixedReality.Toolkit
             new ProfilerMarker("[MRTK] StatefulInteractable.GetSelectionProgress");
 
         /// <summary>
-        /// Derived classes should override this method to specify custom variable selection math.
-        /// The default implementation allows for variable selection from the
-        /// <see cref="Microsoft.MixedReality.Toolkit.Input.GazePinchInteractor">GazePinchInteractor</see>, 
-        /// calculated with <see cref="PinchAmount"/>.
+        /// Get the current selection progress of this <see cref="StatefulInteractable"/>.
         /// </summary>
+        /// <remarks>
+        /// Derived classes should override this method to specify custom selection math.
+        /// The default implementation allows for variable selection from 
+        /// <see cref="IVariableSelectInteractor"/> objects, calculated using
+        /// <see cref="IVariableSelectInteractor.SelectProgress"/>.
+        /// </remarks>
         public virtual float GetSelectionProgress()
         {
             using (StatefulInteractableGetSelectionProgressMarker.Auto())

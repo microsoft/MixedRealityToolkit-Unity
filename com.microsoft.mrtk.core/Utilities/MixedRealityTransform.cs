@@ -11,8 +11,9 @@ namespace Microsoft.MixedReality.Toolkit
     public struct MixedRealityTransform : IEqualityComparer
     {
         /// <summary>
-        /// Constructor.
+        /// Initializes a new <see cref="MixedRealityTransform"/> struct.
         /// </summary>
+        /// <param name="transform">The position, rotation, and scale will be initialized using this <see cref="Transform"/></param>
         public MixedRealityTransform(Transform transform)
         {
             this.pose = new Pose(transform.position, transform.rotation);
@@ -20,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Constructor.
+        /// Initializes a new <see cref="MixedRealityTransform"/> struct.
         /// </summary>
         public MixedRealityTransform(Vector3 position, Quaternion rotation, Vector3 scale)
         {

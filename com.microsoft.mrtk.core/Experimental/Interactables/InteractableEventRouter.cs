@@ -563,6 +563,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental
         /// FIlter targets that are being targeted by other <see cref="InteractableEventRouter"/> objects.
         /// </summary>
         /// <param name="origin">The origin that is targeting <see cref="IXRInteractableEventRouteTarget"/>.</param>
+        /// <param name="targets">A <see cref="List{T}"/> of objects to filter.</param>
         private void FilterTargets(GameObject origin, List<T> targets)
         {
             for (int i = targets.Count - 1; i >= 0; i--)

@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit
     public struct HandJointPose : IEqualityComparer
     {
         /// <summary>
-        /// Constructor.
+        /// Initializes a new <see cref="HandJointPose"/> struct.
         /// </summary>
         /// <param name="position">The position of the hand joint.</param>
         /// <param name="rotation">The rotation of the hand joint.</param>
@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Constructor.
+        /// Initializes a new <see cref="HandJointPose"/> struct.
         /// </summary>
         /// <param name="pose">The pose of the hand joint.</param>
         /// <param name="radius">The radius of the hand joint.</param>

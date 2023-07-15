@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         public string SubsystemNamespace => $"{OrganizationName}.MRTK3.Subsystems";
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="SubsystemGenerator"/> class.
         /// </summary>
         public SubsystemGenerator()
         {

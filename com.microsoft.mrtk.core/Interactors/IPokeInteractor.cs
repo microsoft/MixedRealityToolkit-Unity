@@ -18,6 +18,11 @@ namespace Microsoft.MixedReality.Toolkit
     {
         struct PokePath
         {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="PokePath"/> class.
+            /// </summary>
+            /// <param name="start">The poke position at the beginning of the poking path.</param>
+            /// <param name="end">The poke position at the end of the poking path.</param>
             public PokePath(Vector3 start, Vector3 end)
             {
                 Start = start;
