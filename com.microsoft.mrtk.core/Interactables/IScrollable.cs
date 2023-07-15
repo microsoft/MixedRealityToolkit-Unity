@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit
         bool IsScrolling { get; }
 
         /// <summary>
-        /// Get the Unity <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%402.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractor.html"">IXRInteractor</see>
+        /// Get the Unity <see href="https://docs.unity3d.com/Packages/com.unity.xr.interaction.toolkit%402.0/api/UnityEngine.XR.Interaction.Toolkit.IXRInteractor.html">IXRInteractor</see>
         /// that is scrolling or will scroll the specified <see cref="ScrollableTransform"/>.
         /// </summary>
         IXRInteractor ScrollingInteractor { get; }
