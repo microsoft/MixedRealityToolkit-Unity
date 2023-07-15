@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// The other <see cref="PerformanceStatsSubsystemCinfo"/> to compare against.
         /// </param>
         /// <returns>
-        /// `True` if every field in <paramref name="other"/> is equal to this <see cref="PerformanceStatsSubsystemCinfo"/>, otherwise false.
+        /// <see langword="true"/> if every field in <paramref name="other"/> is equal to this <see cref="PerformanceStatsSubsystemCinfo"/>, otherwise false.
         /// </returns>
         public bool Equals(PerformanceStatsSubsystemCinfo other)
         {
@@ -57,8 +57,8 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// Tests for equality.
         /// </summary>
         /// <param name="obj">The `object` to compare against.</param>
-        /// <returns>`True` if <paramref name="obj"/> is of type <see cref="PerformanceStatsSubsystemCinfo"/> and
-        /// <see cref="Equals(PerformanceStatsSubsystemCinfo)"/> also returns `true`; otherwise `false`.</returns>
+        /// <returns><see langword="true"/> if <paramref name="obj"/> is of type <see cref="PerformanceStatsSubsystemCinfo"/> and
+        /// <see cref="Equals(PerformanceStatsSubsystemCinfo)"/> also returns <see langword="true"/>; otherwise <see langword="false"/>.</returns>
         public override bool Equals(System.Object obj)
         {
             return (obj is PerformanceStatsSubsystemCinfo cinfo) && Equals(cinfo);
@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// </summary>
         /// <param name="lhs">The left-hand side of the comparison.</param>
         /// <param name="rhs">The right-hand side of the comparison.</param>
-        /// <returns>`True` if <paramref name="lhs"/> is equal to <paramref name="rhs"/>, otherwise `false`.</returns>
+        /// <returns><see langword="true"/> if <paramref name="lhs"/> is equal to <paramref name="rhs"/>, otherwise <see langword="false"/>.</returns>
         public static bool operator ==(PerformanceStatsSubsystemCinfo lhs, PerformanceStatsSubsystemCinfo rhs)
         {
             return lhs.Equals(rhs);
@@ -80,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// </summary>
         /// <param name="lhs">The left-hand side of the comparison.</param>
         /// <param name="rhs">The right-hand side of the comparison.</param>
-        /// <returns>`True` if <paramref name="lhs"/> is not equal to <paramref name="rhs"/>, otherwise `false`.</returns>
+        /// <returns><see langword="true"/> if <paramref name="lhs"/> is not equal to <paramref name="rhs"/>, otherwise <see langword="false"/>.</returns>
         public static bool operator !=(PerformanceStatsSubsystemCinfo lhs, PerformanceStatsSubsystemCinfo rhs)
         {
             return !(lhs == rhs);

@@ -79,8 +79,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// Apply scale constraints to the given transform.
         /// </summary>
         /// <param name="transform">The transform to be adjusted.</param>
-        /// <param name="isOneHanded">This value should be `true` if the scale is being executed with one hand.</param>
-        /// <param name="isNear">The value should be `true` if the scale is being executed with a near interaction.</param>
+        /// <param name="isOneHanded">This value should be <see langword="true"/> if the scale is being executed with one hand.</param>
+        /// <param name="isNear">The value should be <see langword="true"/> if the scale is being executed with a near interaction.</param>
         public void ApplyScaleConstraints(ref MixedRealityTransform transform, bool isOneHanded, bool isNear)
         {
             ApplyConstraintsForType(ref transform, isOneHanded, isNear, TransformFlags.Scale);
@@ -90,8 +90,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// Apply rotation constraints to the given transform.
         /// </summary>
         /// <param name="transform">The transform to be adjusted.</param>
-        /// <param name="isOneHanded">This value should be `true` if the rotation is being executed with one hand.</param>
-        /// <param name="isNear">The value should be `true` if the rotation is being executed with a near interaction.</param>
+        /// <param name="isOneHanded">This value should be <see langword="true"/> if the rotation is being executed with one hand.</param>
+        /// <param name="isNear">The value should be <see langword="true"/> if the rotation is being executed with a near interaction.</param>
         public void ApplyRotationConstraints(ref MixedRealityTransform transform, bool isOneHanded, bool isNear)
         {
             ApplyConstraintsForType(ref transform, isOneHanded, isNear, TransformFlags.Rotate);
@@ -101,8 +101,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// Apply move or translation constraints to the given transform.
         /// </summary>
         /// <param name="transform">The transform to be adjusted.</param>
-        /// <param name="isOneHanded">This value should be `true` if the move is being executed with one hand.</param>
-        /// <param name="isNear">The value should be `true` if the move is being executed with a near interaction.</param>
+        /// <param name="isOneHanded">This value should be <see langword="true"/> if the move is being executed with one hand.</param>
+        /// <param name="isNear">The value should be <see langword="true"/> if the move is being executed with a near interaction.</param>
         public void ApplyTranslationConstraints(ref MixedRealityTransform transform, bool isOneHanded, bool isNear)
         {
             ApplyConstraintsForType(ref transform, isOneHanded, isNear, TransformFlags.Move);

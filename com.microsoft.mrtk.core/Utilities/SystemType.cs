@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Obtains the equality from the underlying reference string.
         /// </remarks>
         /// <returns>
-        /// `true` if the two instances represent the same <see cref="SystemType"/>; otherwise, `false`.
+        /// <see langword="true"/> if the two instances represent the same <see cref="SystemType"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public override bool Equals(object other)
         {

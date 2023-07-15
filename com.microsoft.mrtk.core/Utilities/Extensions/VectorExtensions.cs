@@ -290,7 +290,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="vector">The 3D vector whose components will be tested.</param>
         /// <returns>
-        /// `true` is all 3D vector components are a numbers and are not infinite, otherwise `false`.
+        /// <see langword="true"/> is all 3D vector components are a numbers and are not infinite, otherwise <see langword="false"/>.
         /// </returns>
         public static bool IsValidVector(this Vector3 vector)
         {
@@ -303,7 +303,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="vector">The 2D vector whose components will be tested.</param>
         /// <returns>
-        /// `true` is all 2D vector components are a numbers and are not infinite, otherwise `false`.
+        /// <see langword="true"/> is all 2D vector components are a numbers and are not infinite, otherwise <see langword="false"/>.
         /// </returns>
         public static bool IsValidVector(this Vector2 vector)
         {

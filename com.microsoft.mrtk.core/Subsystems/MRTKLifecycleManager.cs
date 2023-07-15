@@ -18,7 +18,16 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         MonoBehaviour,
         IDisposable
     {
-        protected List<IMRTKManagedSubsystem> managedSubsystems = new List<IMRTKManagedSubsystem>();
+        private List<IMRTKManagedSubsystem> managedSubsystems = new List<IMRTKManagedSubsystem>();
+
+        /// <summary>
+        /// The list of <see cref="IMRTKManagedSubsystem"/> objects being managed by this class.
+        /// </summary>
+        protected  List<IMRTKManagedSubsystem> ManagedSubsystems
+        {
+            get => managedSubsystems;
+            set => managedSubsystems = value;
+        }
 
         #region MonoBehaviour
 
