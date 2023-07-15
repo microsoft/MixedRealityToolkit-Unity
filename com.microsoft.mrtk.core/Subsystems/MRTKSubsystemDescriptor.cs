@@ -125,11 +125,11 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// Creates a <see cref="MRTKSubsystemDescriptor{T, U}"/> based on the given parameters.
         /// </summary>
         /// <remarks>
-        /// This validated that the <see cref="MRTKSubsystemCinfo"/> properties are specified.
+        /// This function will validate that the <see cref="MRTKSubsystemCinfo"/> properties are valid.
         /// </remarks>
-        /// <param name='cinfo'>The parameters required to initialize the descriptor.</param>
+        /// <param name="cinfo">The parameters required to initialize the descriptor.</param>
         /// <returns>
-        /// The newly created instances of the <see cref="MRTKSubsystemDescriptor{T, U}"/> class.
+        /// The newly created instance of the <see cref="MRTKSubsystemDescriptor{T, U}"/> class.
         /// </returns>
         internal static MRTKSubsystemDescriptor<TSubsystem, TProvider> Create(MRTKSubsystemCinfo cinfo)
         {

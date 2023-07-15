@@ -57,12 +57,14 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         public bool IsPhysicalData { get; set; }
 
         /// <summary>
-        /// Creates a <see cref="HandsSubsystemDescriptor"/> based on the given parameters validating that the
-        /// <see cref="HandsSubsystemCinfo"/> properties are specified.
+        /// Creates a <see cref="HandsSubsystemDescriptor"/> based on the given parameters.
         /// </summary>
-        /// <param name='cinfo'>The parameters required to initialize the descriptor.</param>
+        /// <remarks>
+        /// This function will validate that the <see cref="HandsSubsystemCinfo"/> properties are valid.
+        /// </remarks>
+        /// <param name="cinfo">The parameters required to initialize the descriptor.</param>
         /// <returns>
-        /// A new instance of the <see cref="HandsSubsystemDescriptor"/> class.
+        /// The newly created instance of the <see cref="HandsSubsystemDescriptor"/> class.
         /// </returns>
         internal static HandsSubsystemDescriptor Create(HandsSubsystemCinfo cinfo)
         {

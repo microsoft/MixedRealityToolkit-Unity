@@ -10,6 +10,11 @@ namespace Microsoft.MixedReality.Toolkit
     public enum AxisFlags
     {
         /// <summary>
+        /// No flags have been set.
+        /// </summary>
+        None = 0,
+
+        /// <summary>
         /// The horizontal axis.
         /// </summary>
         XAxis = 1 << 0,
@@ -26,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit
     }
 
     /// <summary>
-    /// Extension methods specific to the <see cref="InteractionFlags"/> enum.
+    /// Extension methods specific to the <see cref="AxisFlags"/> enumeration.
     /// </summary>
     public static class AxisFlagsExtensions
     {
@@ -35,8 +40,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="a"><see cref="AxisFlags"/> value.</param>
         /// <param name="b"><see cref="AxisFlags"/> mask.</param>
-        /// <returns>True if all of the bits in the specified mask are set in the
-        /// current value.</returns>
+        /// <returns><see langword="true"/> if all of the bits in the specified mask are set in the
+        /// current value, otherwise <see langword="false"/>.</returns>
         public static bool IsMaskSet(this AxisFlags a, AxisFlags b)
         {
             return ((a & b) == b);

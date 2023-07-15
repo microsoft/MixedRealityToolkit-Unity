@@ -16,6 +16,9 @@ namespace Microsoft.MixedReality.Toolkit
     [AttributeUsage(AttributeTargets.Field)]
     public sealed class EnumFlagsAttribute : PropertyAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EnumFlagsAttribute"/> class.
+        /// </summary>
         public EnumFlagsAttribute() { }
     }
 }

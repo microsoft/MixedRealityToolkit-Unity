@@ -8,6 +8,9 @@ using System.Reflection;
 
 namespace Microsoft.MixedReality.Toolkit
 {
+    /// <summary>
+    /// Defines extension methods for the <see cref="Assembly"/> type.
+    /// </summary>
     public static class AssemblyExtensions
     {
         /// <summary>

@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// <summary>
         /// Tests for equality.
         /// </summary>
-        /// <param name="other">The other <see cref="MicrosoftTextToSpeechSubsystem"/> to compare against.</param>
+        /// <param name="other">The other <see cref="MRTKSubsystemCinfo"/> to compare against.</param>
         /// <returns><see langword="true"/> if every field in <paramref name="other"/> is equal to this <see cref="TextToSpeechSubsystem"/>, otherwise false.</returns>
         public override bool Equals(MRTKSubsystemCinfo other)
         {
@@ -43,12 +43,14 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         // TODO: Add subsystem specific properties.
 
         /// <summary>
-        /// Creates a <c>TextToSpeechSubsystemDescriptor</c> based on the given parameters validating that the
-        /// <c>id</c> and <c>implentationType</c> properties are specified.
+        /// Creates a <see cref="TextToSpeechSubsystemDescriptor"/> based on the given parameters.
         /// </summary>
+        /// <remarks>
+        /// This function will validate that the <see cref="TextToSpeechSubsystemCinfo"/> properties are valid.
+        /// </remarks>
         /// <param name="cinfo">The parameters required to initialize the descriptor.</param>
         /// <returns>
-        /// The created <c>TextToSpeechSubsystemDescriptor</c>.
+        /// The newly created instance of the <see cref="TextToSpeechSubsystemDescriptor"/> class.
         /// </returns>
         internal static TextToSpeechSubsystemDescriptor Create(TextToSpeechSubsystemCinfo cinfo)
         {

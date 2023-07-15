@@ -141,12 +141,14 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         #endregion IMRTKDescriptor implementation
 
         /// <summary>
-        /// Creates a <c>BoundarySubsystemDescriptor</c> based on the given parameters validating that the
-        /// <c>id</c> and <c>implentationType</c> properties are specified.
+        /// Creates a <see cref="AccessibilitySubsystemDescriptor"/> based on the given parameters.
         /// </summary>
-        /// <param name='cinfo'>The parameters required to initialize the descriptor.</param>
+        /// <remarks>
+        /// This function will validate that the <see cref="AccessibilitySubsystemCinfo"/> properties are valid.
+        /// </remarks>
+        /// <param name="cinfo">The parameters required to initialize the descriptor.</param>
         /// <returns>
-        /// The created <c>BoundarySubsystemDescriptor</c>.
+        /// The newly created instance of the <see cref="AccessibilitySubsystemDescriptor"/> class.
         /// </returns>
         internal static AccessibilitySubsystemDescriptor Create(AccessibilitySubsystemCinfo cinfo)
         {

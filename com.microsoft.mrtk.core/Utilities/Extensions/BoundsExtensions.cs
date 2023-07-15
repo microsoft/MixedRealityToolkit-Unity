@@ -12,52 +12,202 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public static class BoundsExtensions
     {
+        //
         // Corners
+        //
+
+        /// <summary>
+        /// A value representing the bottom-left corner on the 3D object's front.
+        /// </summary>
         public const int LBF = 0;
+
+        /// <summary>
+        /// A value representing the bottom-left corner on the 3D object's back.
+        /// </summary>
         public const int LBB = 1;
+
+        /// <summary>
+        /// A value representing the top-left corner on the 3D object's front.
+        /// </summary>
         public const int LTF = 2;
+
+        /// <summary>
+        /// A value representing the top-left corner on the 3D object's back.
+        /// </summary>
         public const int LTB = 3;
+
+        /// <summary>
+        /// A value representing the bottom-right corner on the 3D object's front.
+        /// </summary>
         public const int RBF = 4;
+
+        /// <summary>
+        /// A value representing the bottom-right corner on the 3D object's back.
+        /// </summary>
         public const int RBB = 5;
+
+        /// <summary>
+        /// A value representing the top-right corner on the 3D object's front.
+        /// </summary>
         public const int RTF = 6;
+
+        /// <summary>
+        /// A value representing the top-right corner on the 3D object's back.
+        /// </summary>
         public const int RTB = 7;
 
+        //
         // X axis
+        //
+
+        /// <summary>
+        /// A value representing the top edge on's midpoint the 3D object's front.
+        /// </summary>
         public const int LTF_RTF = 8;
+
+        /// <summary>
+        /// A value representing the bottom edge's midpoint on the 3D object's front.
+        /// </summary>
         public const int LBF_RBF = 9;
+
+        /// <summary>
+        /// A value representing the top edge's midpoint on the 3D object's back.
+        /// </summary>
         public const int RTB_LTB = 10;
+
+        /// <summary>
+        /// A value representing the bottom edge's midpoint on the 3D object's back.
+        /// </summary>
         public const int RBB_LBB = 11;
 
+        //
         // Y axis
+        //
+
+        /// <summary>
+        /// A value representing the left edge's midpoint on the 3D object's front.
+        /// </summary>
         public const int LTF_LBF = 12;
+
+        /// <summary>
+        /// A value representing the right edge's midpoint on the 3D object's back.
+        /// </summary>
         public const int RTB_RBB = 13;
+
+        /// <summary>
+        /// A value representing the left edge's midpoint on the 3D object's back.
+        /// </summary>
         public const int LTB_LBB = 14;
+        
+        /// <summary>
+        /// A value representing the right edge's midpoint on the 3D object's front.
+        /// </summary>
         public const int RTF_RBF = 15;
 
+        //
         // Z axis
+        //
+        
+        /// <summary>
+        /// A value representing the bottom-right edge's midpoint on the 3D object's side.
+        /// </summary>
         public const int RBF_RBB = 16;
+        
+        /// <summary>
+        /// A value representing the top-right edge's midpoint on the 3D object's side.
+        /// </summary>
         public const int RTF_RTB = 17;
+
+        /// <summary>
+        /// A value representing the bottom-left edge's midpoint on the 3D object's side.
+        /// </summary>
         public const int LBF_LBB = 18;
+
+        /// <summary>
+        /// A value representing the top-left edge's midpoint on the 3D object's side.
+        /// </summary>
         public const int LTF_LTB = 19;
 
+        //
         // 2D corners
+        //
+        
+        /// <summary>
+        /// A value representing the top-left corner of a 2D object.
+        /// </summary>
         public const int LT = 0;
+
+        /// <summary>
+        /// A value representing the bottom-left corner of a 2D object.
+        /// </summary>
         public const int LB = 1;
+
+        /// <summary>
+        /// A value representing the top-right corner of a 2D object.
+        /// </summary>
         public const int RT = 2;
+
+        /// <summary>
+        /// A value representing the bottom-right corner of a 2D object.
+        /// </summary>
         public const int RB = 3;
 
+        //
         // 2D midpoints
+        //
+        
+        /// <summary>
+        /// A value representing the top edge's midpoint on a 2D object.
+        /// </summary>
         public const int LT_RT = 4;
+
+        /// <summary>
+        /// A value representing the right edge's midpoint on a 2D object.
+        /// </summary>
         public const int RT_RB = 5;
+
+        /// <summary>
+        /// A value representing the bottom edge's midpoint on a 2D object.
+        /// </summary>
         public const int RB_LB = 6;
+
+        /// <summary>
+        /// A value representing the left edge's midpoint on a 2D object.
+        /// </summary>
         public const int LB_LT = 7;
 
+        //
         // Face points
+        //
+
+        /// <summary>
+        /// A value representing the top face on a 3D object.
+        /// </summary>
         public const int TOP = 0;
+
+        /// <summary>
+        /// A value representing the bottom face on a 3D object.
+        /// </summary>
         public const int BOT = 1;
+
+        /// <summary>
+        /// A value representing the left face on a 3D object.
+        /// </summary>
         public const int LFT = 2;
+
+        /// <summary>
+        /// A value representing the right face on a 3D object.
+        /// </summary>
         public const int RHT = 3;
+
+        /// <summary>
+        /// A value representing the front face on a 3D object.
+        /// </summary>
         public const int FWD = 4;
+
+        /// <summary>
+        /// A value representing the back face on a 3D object.
+        /// </summary>
         public const int BCK = 5;
 
         // Axis of the capsule’s lengthwise orientation in the object’s local space
@@ -89,9 +239,11 @@ namespace Microsoft.MixedReality.Toolkit
         #region Public Static Functions
 
         /// <summary>
-        /// Returns an instance of the 'Bounds' class which is invalid. An invalid 'Bounds' instance 
-        /// is one which has its size vector set to 'float.MaxValue' for all 3 components. The center
-        /// of an invalid bounds instance is the zero vector.
+        /// Returns a <see cref="Bounds"/> structure that is invalid.
+        /// </summary>
+        /// <remarks>
+        /// An invalid <see cref="Bounds"/> is one which has its size vector set to <see cref="float.MaxValue"/> for 
+        /// all <see cref="Bounds"/> components. The center of an invalid bounds instance is the zero vector.
         /// </summary>
         public static Bounds GetInvalidBoundsInstance()
         {
@@ -99,8 +251,11 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Checks if the specified bounds instance is valid. A valid 'Bounds' instance is
-        /// one whose size vector does not have all 3 components set to 'float.MaxValue'.
+        /// Checks if the specified <see cref="Bounds"/> is valid. 
+        /// </summary>
+        /// <remarks>
+        /// A valid <see cref="Bounds"/> instance is one whose size vector does not have all <see cref="Bounds"/>
+        /// components set to <see cref="float.MaxValue"/>.
         /// </summary>
         public static bool IsValid(this Bounds bounds)
         {
@@ -108,15 +263,20 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Gets all the corner points of the bounds in world space by transforming input bounds using the given transform
+        /// Gets all the corner points of a <see cref="Bounds"/> structure.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The resulting 3D positions will be in world space by transforming input bounds using the given transform.
+        /// </para>
+        /// <para>
+        /// Use <see cref="LBF"/>, <see cref="LBB"/>, <see cref="LTF"/>, <see cref="LTB"/>, <see cref="RBF"/>, 
+        /// <see cref="RBB"/>, <see cref="RTF"/>, and <see cref="RTB"/> values to index into the resulting array.
+        /// </para>
+        /// </remarks>
         /// <param name="transform">Local to world transform</param>
         /// <param name="positions">Output corner positions</param>
         /// <param name="bounds">Input bounds, in local space</param>
-        /// <remarks>
-        /// <para>Use BoxColliderExtensions.{Left|Right}{Bottom|Top}{Front|Back} consts to index into the output
-        /// corners array.</para>
-        /// </remarks>
         public static void GetCornerPositions(this Bounds bounds, Transform transform, ref Vector3[] positions)
         {
             // Calculate the local points to transform.
@@ -148,11 +308,11 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Gets all the corner points of the bounds 
-        /// </summary>
+        /// Gets all the corner points  a <see cref="Bounds"/> structure.
+        /// </summary>        
         /// <remarks>
-        /// <para>Use BoxColliderExtensions.{Left|Right}{Bottom|Top}{Front|Back} consts to index into the output
-        /// corners array.</para>
+        /// Use <see cref="LBF"/>, <see cref="LBB"/>, <see cref="LTF"/>, <see cref="LTB"/>, <see cref="RBF"/>, 
+        /// <see cref="RBB"/>, <see cref="RTF"/>, and <see cref="RTB"/> values to index into the resulting array.
         /// </remarks>
         public static void GetCornerPositions(this Bounds bounds, ref Vector3[] positions)
         {
@@ -185,8 +345,12 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Gets all the corner points from Renderer's Bounds
+        /// Gets all the corner points from a <see cref="Bounds"/> structure.
         /// </summary>
+        /// <remarks>
+        /// Use <see cref="LBF"/>, <see cref="LBB"/>, <see cref="LTF"/>, <see cref="LTB"/>, <see cref="RBF"/>, 
+        /// <see cref="RBB"/>, <see cref="RTF"/>, and <see cref="RTB"/> values to index into the resulting array.
+        /// </remarks>
         public static void GetCornerPositionsFromRendererBounds(this Bounds bounds, ref Vector3[] positions)
         {
             Vector3 center = bounds.center;
@@ -214,6 +378,16 @@ namespace Microsoft.MixedReality.Toolkit
             positions[RTB] = new Vector3(rightEdge, topEdge, backEdge);
         }
 
+        /// <summary>
+        /// Get the 3D positions of faces from a <see cref="Bounds"/> structure.
+        /// </summary>
+        /// <remarks>
+        /// The 3D positions are stored in <see cref="Vector3"/> array at the <see cref="TOP"/>, <see cref="BOT"/>,
+        /// <see cref="LFT"/>, <see cref="RHT"/>, <see cref="FWD"/>, and <see cref="BCK"/> indices.
+        /// </remarks>
+        /// <param name="bounds">The bounds structure in local space.</param>
+        /// <param name="transform">The transform belonging to the bounds.</param>
+        /// <param name="positions">The array will hold the 3D positions of faces on the <see cref="Bounds"/> object.</param>
         public static void GetFacePositions(this Bounds bounds, Transform transform, ref Vector3[] positions)
         {
             Vector3 center = bounds.center;
@@ -234,8 +408,15 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Gets all the corner points and mid points from Renderer's Bounds
+        /// Gets all the corner points and mid points from a <see cref="Bounds"/> structure.
         /// </summary>
+        /// <remarks>
+        /// Use <see cref="LBF"/>, <see cref="LBB"/>, <see cref="LTF"/>, <see cref="LTB"/>, <see cref="RBF"/>, 
+        /// <see cref="RBB"/>, <see cref="RTF"/>, <see cref="RTB"/>, <see cref="LTF_RTF"/>, <see cref="LBF_RBF"/>,
+        /// <see cref="RTB_LTB"/>, <see cref="RBB_LBB"/>, <see cref="LTF_LBF"/>, <see cref="RTB_RBB"/>, 
+        /// <see cref="LTB_LBB"/>, <see cref="RTF_RBF"/>, <see cref="RBF_RBB"/>, <see cref="RTF_RTB"/>,
+        /// <see cref="LBF_LBB"/>, <see cref="LTF_LTB"/> values to index into the resulting array.
+        /// </remarks>
         public static void GetCornerAndMidPointPositions(this Bounds bounds, Transform transform, ref Vector3[] positions)
         {
             // Calculate the local points to transform.
@@ -282,8 +463,12 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Gets all the corner points and mid points from Renderer's Bounds, ignoring the z axis
+        /// Gets all the corner points and mid points from a <see cref="Bounds"/> structure, ignoring the z axis.
         /// </summary>
+        /// <remarks>
+        /// Use <see cref="LT"/>, <see cref="LB"/>, <see cref="RT"/>, <see cref="RB"/>, <see cref="LT_RT"/>, 
+        /// <see cref="RT_RB"/>, <see cref="RB_LB"/>, and <see cref="LB_LT"/> values to index into the resulting array.
+        /// </remarks>
         public static void GetCornerAndMidPointPositions2D(this Bounds bounds, Transform transform, ref Vector3[] positions, Axis flattenAxis)
         {
             // Calculate the local points to transform.
@@ -354,9 +539,12 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Method to get bounds from a collection of points.
         /// </summary>
+        /// <remarks>
+        /// If zero points are present, bounds will not be calculated.
+        /// </remarks>
         /// <param name="points">The points to construct a bounds around.</param>
-        /// <param name="bounds">An AABB in world space around all the points.</param>
-        /// <returns>True if bounds were calculated, if zero points are present bounds will not be calculated.</returns>
+        /// <param name="bounds">A bounds in world space around all the points.</param>
+        /// <returns><see langword="true"/> if bounds were calculated, otherwise <see langword="false"/>.</returns>
         public static bool GetPointsBounds(List<Vector3> points, out Bounds bounds)
         {
             if (points.Count != 0)
@@ -376,12 +564,15 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Method to get bounds using collider method.
+        /// Method to get bounds using <see cref="Collider"/> methods.
         /// </summary>
+        /// <remarks>
+        /// If zero colliders are present, bounds will not be calculated.
+        /// </remarks>
         /// <param name="target">GameObject to generate the bounds around.</param>
-        /// <param name="bounds">An AABB in world space around all the colliders in a gameObject hierarchy.</param>
-        /// <param name="ignoreLayers">A LayerMask to restrict the colliders selected.</param>
-        /// <returns>True if bounds were calculated, if zero colliders are present bounds will not be calculated.</returns>
+        /// <param name="bounds">A bounds in world space around all the colliders in a gameObject hierarchy.</param>
+        /// <param name="ignoreLayers">A layer mask to restrict the colliders selected.</param>
+        /// <returns><see langword="true"/> if bounds were calculated, otherwise <see langword="false"/>.</returns>
         public static bool GetColliderBounds(GameObject target, out Bounds bounds, LayerMask ignoreLayers)
         {
             var boundsPoints = new List<Vector3>();
@@ -391,11 +582,12 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Calculates how much scale is required for this Bounds to match another Bounds.
+        /// Calculates how much scale is required for this <see cref="Bounds"/> to match another <see cref="Bounds"/>.
         /// </summary>
+        /// <param name="bounds">The bounds structure to examine.</param>
         /// <param name="otherBounds">Object representation to be scaled to</param>
         /// <param name="padding">padding multiplied into another bounds</param>
-        /// <returns>Scale represented as a Vector3 </returns>
+        /// <returns>Scale represented as a 3D position.</returns>
         public static Vector3 GetScaleToMatchBounds(this Bounds bounds, Bounds otherBounds, Vector3 padding = default(Vector3))
         {
             Vector3 szA = otherBounds.size + new Vector3(otherBounds.size.x * padding.x, otherBounds.size.y * padding.y, otherBounds.size.z * padding.z);
@@ -405,9 +597,10 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Calculates how much scale is required for this Bounds to fit inside another bounds without stretching.
+        /// Calculates how much scale is required for this <see cref="Bounds"/> to fit inside another bounds without stretching.
         /// </summary>
-        /// <param name="containerBounds">The bounds of the container we're trying to fit this object.</param>
+        /// <param name="bounds">The bounds structure to examine.</param>
+        /// <param name="containerBounds">The bounds of the container attempting to be fit into this object.</param>
         /// <returns>A single scale factor that can be applied to this object to fit inside the container.</returns>
         public static float GetScaleToFitInside(this Bounds bounds, Bounds containerBounds)
         {
@@ -418,12 +611,12 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Method to get bounding box points using Collider method.
+        /// Method to get bounding box points using <see cref="Collider"/> methods.
         /// </summary>
-        /// <param name="target">gameObject that boundingBox bounds.</param>
-        /// <param name="boundsPoints">array reference that gets filled with points</param>
-        /// <param name="ignoreLayers">layerMask to simplify search</param>
-        /// <param name="relativeTo">compute bounds relative to this transform</param>
+        /// <param name="target">A game object that the bounding box bounds.</param>
+        /// <param name="boundsPoints">An array reference that gets filled with 3D positions.</param>
+        /// <param name="ignoreLayers">A layer mask used to simplify the search.</param>
+        /// <param name="relativeTo">Compute bounds relative to this transform.</param>
         public static void GetColliderBoundsPoints(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers, Transform relativeTo = null)
         {
             Collider[] colliders = target.GetComponentsInChildren<Collider>();
@@ -445,11 +638,12 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Method to get bounds from a single Collider
+        /// Method to get bounds from a single <see cref="Collider"/> structure.
         /// </summary>
-        /// <param name="collider">Target collider</param>
-        /// <param name="boundsPoints">array reference that gets filled with points</param>
-        /// <param name="ignoreLayers">layerMask to simplify search</param>
+        /// <param name="collider">Target collider structure to examine.</param>
+        /// <param name="boundsPoints">The array reference that gets filled with 3D positions.</param>
+        /// <param name="ignoreLayers">The layer mask to simplify search.</param>
+        /// <param name="relativeTo">Compute bounds relative to this transform.</param>
         public static void GetColliderBoundsPoints(Collider collider, List<Vector3> boundsPoints, LayerMask ignoreLayers, Transform relativeTo = null)
         {
             if (ignoreLayers == (1 << collider.gameObject.layer | ignoreLayers)) { return; }
@@ -504,12 +698,15 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Method to get bounds using renderer method.
+        /// Get the bounds using <see cref="Renderer"/> methods.
         /// </summary>
-        /// <param name="target">GameObject to generate the bounds around.</param>
-        /// <param name="bounds">An AABB in world space around all the renderers in a gameObject hierarchy.</param>
+        /// <remarks>
+        /// If zero <see cref="Renderer"/> objects are present, that bounds will not be calculated.
+        /// </remarks>
+        /// <param name="target">A game object to generate the bounds around.</param>
+        /// <param name="bounds">A bounds in world space around all the renderers in a game object hierarchy.</param>
         /// <param name="ignoreLayers">A LayerMask to restrict the colliders selected.</param>
-        /// <returns>True if bounds were calculated, if zero renderers are present bounds will not be calculated.</returns>
+        /// <returns><see langword="true"/> if bounds were calculated, otherwise <see langword="false"/>.</returns>
         public static bool GetRenderBounds(GameObject target, out Bounds bounds, LayerMask ignoreLayers)
         {
             var boundsPoints = new List<Vector3>();
@@ -519,11 +716,11 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// GetRenderBoundsPoints gets bounding box points using Render method.
+        /// Gets the bounding box points using <see cref="Renderer"/> methods.
         /// </summary>
-        /// <param name="target">gameObject that boundingbox bounds</param>
-        /// <param name="boundsPoints">array reference that gets filled with points</param>
-        /// <param name="ignoreLayers">layerMask to simplify search</param>
+        /// <param name="target">The game object that the bounding box bounds.</param>
+        /// <param name="boundsPoints">An array reference that gets filled with 3D positions.</param>
+        /// <param name="ignoreLayers">A layer mask used to simplify search.</param>
         public static void GetRenderBoundsPoints(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers)
         {
             Renderer[] renderers = target.GetComponentsInChildren<Renderer>();
@@ -541,12 +738,15 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Method to get bounds using mesh filters method.
+        /// Method to get bounds using <see cref="MeshFilter"/> methods.
         /// </summary>
-        /// <param name="target">GameObject to generate the bounds around.</param>
-        /// <param name="bounds">An AABB in world space around all the mesh filters in a GameObject hierarchy.</param>
-        /// <param name="ignoreLayers">A LayerMask to restrict the colliders selected.</param>
-        /// <returns>True if bounds were calculated, if zero mesh filters are present bounds will not be calculated.</returns>
+        /// <remarks>
+        /// If zero <see cref="MeshFilter"/> objects are present, a bounds will not be calculated.
+        /// </remarks>
+        /// <param name="target">The game object to generate the bounds around.</param>
+        /// <param name="bounds">A bounds in world space around all the mesh filters in a <see cref="GameObject"/> hierarchy.</param>
+        /// <param name="ignoreLayers">A layer mask used to restrict the colliders selected.</param>
+        /// <returns><see langword="true"/> if bounds were calculated, otherwise <see langword="false"/>.</returns>
         public static bool GetMeshFilterBounds(GameObject target, out Bounds bounds, LayerMask ignoreLayers)
         {
             var boundsPoints = new List<Vector3>();
@@ -556,11 +756,11 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// GetMeshFilterBoundsPoints - gets bounding box points using MeshFilter method.
+        /// Get the bounding box points using <see cref="MeshFilter"/> methods.
         /// </summary>
-        /// <param name="target">gameObject that boundingbox bounds</param>
-        /// <param name="boundsPoints">array reference that gets filled with points</param>
-        /// <param name="ignoreLayers">layerMask to simplify search</param>
+        /// <param name="target">The game object that bounding box bounds.</param>
+        /// <param name="boundsPoints">An array reference that gets filled with points.</param>
+        /// <param name="ignoreLayers">A layer mask to simplify search.</param>
         public static void GetMeshFilterBoundsPoints(GameObject target, List<Vector3> boundsPoints, LayerMask ignoreLayers)
         {
             MeshFilter[] meshFilters = target.GetComponentsInChildren<MeshFilter>();
@@ -585,24 +785,24 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Transforms 'bounds' using the specified transform matrix.
+        /// Transforms a <see cref="Bounds"/> using the specified transform matrix.
         /// </summary>
         /// <remarks>
-        /// <para>Transforming a 'Bounds' instance means that the function will construct a new 'Bounds' 
-        /// instance which has its center translated using the translation information stored in
+        /// <para>Transforming a <see cref="Bounds"/> means that the function will construct a new <see cref="Bounds"/> 
+        /// which has its center translated using the translation information stored in
         /// the specified matrix and its size adjusted to account for rotation and scale. The size
-        /// of the new 'Bounds' instance will be calculated in such a way that it will contain the
-        /// old 'Bounds'.</para>
+        /// of the new <see cref="Bounds"/> structure will be calculated in such a way that it will contain the
+        /// old <see cref="Bounds"/>.</para>
         /// </remarks>
         /// <param name="bounds">
-        /// The 'Bounds' instance which must be transformed.
+        /// The <see cref="Bounds"/> which must be transformed.
         /// </param>
         /// <param name="transformMatrix">
-        /// The specified 'Bounds' instance will be transformed using this transform matrix. The function
+        /// The specified <see cref="Bounds"/> will be transformed using this transform matrix. The function
         /// assumes that the matrix doesn't contain any projection or skew transformation.
         /// </param>
         /// <returns>
-        /// The transformed 'Bounds' instance.
+        /// A transformed <see cref="Bounds"/> structure.
         /// </returns>
         public static Bounds Transform(this Bounds bounds, Matrix4x4 transformMatrix)
         {
@@ -625,7 +825,7 @@ namespace Microsoft.MixedReality.Toolkit
             float newSizeY = (Mathf.Abs(rotatedExtentsRight.y) + Mathf.Abs(rotatedExtentsUp.y) + Mathf.Abs(rotatedExtentsLook.y)) * 2.0f;
             float newSizeZ = (Mathf.Abs(rotatedExtentsRight.z) + Mathf.Abs(rotatedExtentsUp.z) + Mathf.Abs(rotatedExtentsLook.z)) * 2.0f;
 
-            // Construct the transformed 'Bounds' instance
+            // Construct the transformed <see cref="Bounds"/> instance
             var transformedBounds = new Bounds();
             transformedBounds.center = transformMatrix.MultiplyPoint(bounds.center);
             transformedBounds.size = new Vector3(newSizeX, newSizeY, newSizeZ);
@@ -635,8 +835,9 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Returns the screen space corner points of the specified 'Bounds' instance.
+        /// Returns the screen space corner points of the specified <see cref="Bounds"/> instance.
         /// </summary>
+        /// <param name="bounds">The bounds structure to examine.</param>
         /// <param name="camera">
         /// The camera used for rendering to the screen. This is needed to perform the
         /// transformation to screen space.
@@ -662,7 +863,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Returns the rectangle which encloses the specifies 'Bounds' instance in screen space.
+        /// Returns the rectangle which encloses the specifies <see cref="Bounds"/> instance in screen space.
         /// </summary>
         public static Rect GetScreenRectangle(this Bounds bounds, Camera camera)
         {
@@ -760,9 +961,9 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Calculate the intersection area between the rectangle and another.
         /// </summary>
-        // https://forum.unity.com/threads/getting-the-area-rect-of-intersection-between-two-rectangles.299140/
         public static bool Intersects(this Rect thisRect, Rect rect, out Rect area)
         {
+            // https://forum.unity.com/threads/getting-the-area-rect-of-intersection-between-two-rectangles.299140/
             area = new Rect();
 
             if (rect.Overlaps(thisRect))

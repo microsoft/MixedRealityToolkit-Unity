@@ -148,11 +148,11 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// Creates a <see cref="PerformanceStatsSubsystemDescriptor"/> based on the given parameters.
         /// </summary>
         /// <remarks>
-        /// This will validate that the <c>Name</c> and <c>ProviderType</c> properties are specified.
+        /// This function will validate that the <see cref="PerformanceStatsSubsystemCinfo"/> properties are valid.
         /// </remarks>
         /// <param name="cinfo">The parameters required to initialize the descriptor.</param>
         /// <returns>
-        /// The created <see cref="PerformanceStatsSubsystemDescriptor"/>.
+        /// The newly created instance of the <see cref="PerformanceStatsSubsystemDescriptor"/> class.
         /// </returns>
         internal static PerformanceStatsSubsystemDescriptor Create(PerformanceStatsSubsystemCinfo cinfo)
         {
