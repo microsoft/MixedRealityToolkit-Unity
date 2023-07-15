@@ -8,8 +8,7 @@ namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// The pose of an individual hand joint. Superset
-    /// of a <see cref="UnityEngine.Pose"/>, adding a
-    /// radius value.
+    /// of a <see cref="UnityEngine.Pose"/>, adding a radius value.
     /// </summary>
     public struct HandJointPose : IEqualityComparer
     {

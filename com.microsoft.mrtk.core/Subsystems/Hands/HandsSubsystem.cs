@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         { }
 
         /// <summary>
-        /// Interface for providing hand functionality for the implementation.
+        /// An abstract class defining hand functionality for a <see cref="HandsSubsystem"/> object.
         /// </summary>
         public abstract class Provider : MRTKSubsystemProvider<HandsSubsystem>, IHandsSubsystem
         {

@@ -119,9 +119,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="handNode">The hand for which the neutral hands shape is being set.</param>
         /// <param name="handshapeId">The desired hand's shape.</param>
-        public void SetNeutralHandshape(XRNode handNode, HandshapeId handShapeId)
+        public void SetNeutralHandshape(XRNode handNode, HandshapeId handshapeId)
         {
-            SyntheticProvider.SetNeutralHandshape(handNode, handShapeId);
+            SyntheticProvider.SetNeutralHandshape(handNode, handshapeId);
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         TryCalculateEntireHand();
                     }
 
-                    result = handJoints;
+                    result = HandJoints;
                     return FullQueryValid;
                 }
             }
@@ -264,7 +264,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         thisQueryValid = FullQueryValid;
                     }
 
-                    pose = handJoints[HandsUtils.ConvertToIndex(joint)];
+                    pose = HandJoints[HandsUtils.ConvertToIndex(joint)];
                     return thisQueryValid;
                 }
             }
@@ -276,7 +276,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             /// <summary>
             /// For a certain hand, query every Bone in the hand, and write all results to the
-            /// handJoints collection. This will also mark handsQueriedThisFrame[handNode] = true.
+            /// HandJoints collection. This will also mark handsQueriedThisFrame[handNode] = true.
             /// </summary>
             private void TryCalculateEntireHand()
             {
@@ -358,7 +358,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                             MirrorJoint(ref currentHandshape[i]);
                         }
 
-                        handJoints[i] = new HandJointPose(
+                        HandJoints[i] = new HandJointPose(
                             origin.TransformPoint((handRotation * currentHandshape[i].Position) + handPosition),
                             origin.rotation * (handRotation * currentHandshape[i].Rotation),
                             currentHandshape[i].Radius);

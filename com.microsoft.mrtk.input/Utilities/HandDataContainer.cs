@@ -26,7 +26,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public bool FullQueryValid { get; protected set; }
 
-        protected HandJointPose[] handJoints = new HandJointPose[(int)TrackedHandJoint.TotalJoints];
+        /// <summary>
+        /// The current <see cref="HandJointPose"/> for the trackable hand joints.
+        /// </summary>
+        protected HandJointPose[] HandJoints { get; set; } = new HandJointPose[(int)TrackedHandJoint.TotalJoints];
 
         /// <summary>
         /// Constructor.

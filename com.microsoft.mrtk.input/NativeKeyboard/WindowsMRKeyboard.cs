@@ -160,6 +160,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion MonoBehaviour Implementation
 
+        /// <summary>
+        /// The text that has been enter after <see cref="ShowKeyboard"/> was been called.
+        /// </summary>
+        /// <remarks>
+        /// This value is initialized to the string passed into <see cref="ShowKeyboard"/>, after which
+        /// this string is appended with the characters entered via the keyboard. To clear this string,
+        /// use the <see cref="ClearKeyboardText"/> function.
+        /// </remarks>
         public string Text { get; protected set; } = string.Empty;
 
         /// <summary>

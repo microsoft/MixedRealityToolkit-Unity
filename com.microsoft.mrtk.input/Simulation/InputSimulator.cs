@@ -328,6 +328,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// <param name="handedness">
         /// The <see cref="Handedness"/> of the controller to be enabled.
         /// </param>
+        /// <param name="ctrlSettings">
+        /// The controller simulation settings to use the simulation.
+        /// </param>
+        /// <param name="startPosition">
+        /// The initial position of the simulated controller.
+        /// </param>
         /// <remarks>
         /// This method creates the controller simulation object(s) as needed. If called while
         /// already enabled, this method does nothing.

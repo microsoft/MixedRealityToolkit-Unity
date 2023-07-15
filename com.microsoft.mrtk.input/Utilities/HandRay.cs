@@ -4,7 +4,13 @@
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input
-{
+{    
+    /// <summary>
+    /// A hand ray which is used by far pointers to direct interactions.
+    /// </summary>
+    /// <remarks>
+    /// This class is managed and updated by a <see cref="HandBasedPoseSource"/> implementation.
+    /// </remarks>
     public class HandRay : IHandRay
     {
         /// <summary>
