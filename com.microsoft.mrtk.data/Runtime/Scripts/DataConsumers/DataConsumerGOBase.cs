@@ -73,10 +73,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         private bool isFixedHierarchyWillUseCachedValues = true;
 
         /// <summary>
-        /// If True, indicates the hierarchy and managed components in this
+        /// If <see langword="true"/>, indicates the hierarchy and managed components in this
         /// object will not change. This will use the cached types and
         /// component references to scan for after they are attained a first
-        /// time. This avoids an extensive amount of GetComponent<> in each
+        /// time. This avoids an extensive amount of <see cref="GameObject.GetComponent{T}()"/> in each
         /// Attach(), which is super expensive especially for DataConsumerText.
         /// </summary>
         public bool IsFixedHierarchyWillUseCachedValues => isFixedHierarchyWillUseCachedValues;
@@ -89,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         private bool autoAttachAndDetach = true;
         /// <summary>
-        /// If True, will ensure that the attachment happens only once, and
+        /// If <see langword="true"/>, will ensure that the attachment happens only once, and
         /// will not be detached. This is useful to optimize items that will
         /// never be recycled. This optimization is disabled automatically for
         /// collections.
@@ -344,7 +344,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Report whether this data consumer should manage components on child game objects
         /// </summary>
-        /// <returns>True if components or other resources on child game objects should be managed.</returns>
+        /// <returns><see langword="true"/> if components or other resources on child game objects should be managed.</returns>
         protected virtual bool ManageChildren()
         {
             return true;

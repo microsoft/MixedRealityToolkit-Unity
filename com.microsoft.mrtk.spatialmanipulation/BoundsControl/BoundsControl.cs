@@ -627,13 +627,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// <summary>
         /// Computes the bounds of the BoundsControl and updates the current bounds visuals to match.
         /// </summary>
+        /// <remarks>
+        /// If <see langword="true"/> is returned, this function should be called again, with
+        /// <paramref name="isSecondPass"/> set to <see langword="true"/>, at least one frame from the 
+        /// current frame. This will allow for <see cref="Canvas"/> elements to compute their layouts.
+        /// </remarks>
         /// <param name="isSecondPass">
         /// Is this the second pass? If not, we'll abort early if we find the need to queue up a second pass.
         /// </param>
         /// <returns>
-        /// True if a second computation pass is required (usually because we found a Canvas element somewhere.)
-        /// You should call this function again (and pass in true) at least one frame from the current frame.
-        /// This allows Canvas elements to compute their layouts.
+        /// <see langword="true"/> if a second computation pass is required, usually because we found a Canvas element somewhere.
         /// </returns>
         private bool ComputeBounds(bool isSecondPass = false)
         {

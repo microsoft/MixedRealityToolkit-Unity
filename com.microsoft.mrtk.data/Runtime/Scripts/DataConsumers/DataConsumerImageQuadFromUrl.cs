@@ -27,14 +27,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         private Material defaultMaterial = null;
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override Type[] GetComponentTypes()
         {
             Type[] types = { typeof(MeshRenderer) };
             return types;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void InitializeForComponent(Component component)
         {
             if (imageQuadMeshRenderer == null)
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void PlaceImageTexture(Texture2D imageTexture)
         {
             imageQuadMeshRenderer.material.mainTexture = imageTexture;

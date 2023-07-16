@@ -286,7 +286,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// Determines if a hand meets the requirements for use with constraining the tracked object.
         /// </summary>
         /// <param name="hand">The XRNode representing the hand to check against.</param>
-        /// <returns>True if this hand should be used from tracking.</returns>
+        /// <returns><see langword="true"/> if this hand should be used from tracking.</returns>
         protected virtual bool IsValidController(XRNode? hand)
         {
             return (hand.HasValue &&
@@ -407,7 +407,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// the right hand or vice versa.
         /// </summary>
         /// <param name="hand">The hand to check against.</param>
-        /// <returns>True, when hands are near each other.</returns>
+        /// <returns><see langword="true"/> when hands are near each other.</returns>
         protected virtual bool IsOppositeHandNear(XRNode? hand)
         {
             using (IsOppositeHandNearPerfMarker.Auto())
@@ -629,7 +629,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         /// <param name="hand">The XRNode representing the hand to evaluate.</param>
         /// <returns>
-        /// True of the palm is facing the camera, or false.
+        /// <see langword="true"/> if the palm is facing the camera, or <see langword="false"/>.
         /// </returns>
         private bool IsPalmFacingCamera(XRNode? hand)
         {

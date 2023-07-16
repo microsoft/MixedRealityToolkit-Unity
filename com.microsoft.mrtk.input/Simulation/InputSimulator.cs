@@ -653,7 +653,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// </summary>
         /// <param name="handedness"><see cref="Handedness"/> value (ex: Left).</param>
         /// <returns>
-        /// True if the specified <see cref="Handedness"/> is supported, or false.
+        /// <see langword="true"/> if the specified <see cref="Handedness"/> is supported, or <see langword="false"/>.
         /// </returns>
         private bool IsSupportedHandedness(Handedness handedness)
         {

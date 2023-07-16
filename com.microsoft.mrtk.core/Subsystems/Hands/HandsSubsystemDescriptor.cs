@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// data stream, or whether it synthesizes poses from non-hand data.
         /// </summary>
         /// <value>
-        /// True if non-synthesized. False if synthesized.
+        /// <see langword="true"/> if non-synthesized, and <see langword="false"/> if synthesized.
         /// </value>
         public bool IsPhysicalData { get; set; }
 
@@ -52,7 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// data stream, or whether it synthesizes poses from non-hand data.
         /// </summary>
         /// <value>
-        /// True if non-synthesized. False if synthesized.
+        /// <see langword="true"/> if non-synthesized, and <see langword="false"/> if synthesized.
         /// </value>
         public bool IsPhysicalData { get; set; }
 

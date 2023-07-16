@@ -23,14 +23,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
     [AddComponentMenu("MRTK/Data Binding/Consumers/Data Consumer Sprite")]
     public class DataConsumerSprite : DataConsumerThemableBase<Sprite>
     {
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override Type[] GetComponentTypes()
         {
             Type[] types = { typeof(SpriteRenderer) };
             return types;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void SetObject(Component component, object inValue, Sprite sprite)
         {
             SpriteRenderer renderer = component as SpriteRenderer;

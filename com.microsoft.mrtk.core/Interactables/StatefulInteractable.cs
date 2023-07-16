@@ -346,7 +346,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Subclasses can override this to add additional requirements for full click/toggle activation,
         /// such as roll-off prevention.
         /// </summary>
-        /// <returns>True if the interactable should fire click/toggle event from this current select event.</returns>
+        /// <returns><see langword="true"/> if the interactable should fire click or toggle event from this current select event.</returns>
         internal protected virtual bool CanClickOnFirstSelectEntered(SelectEnterEventArgs args) => !TriggerOnRelease;
 
         /// <summary>
@@ -354,7 +354,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Subclasses can override this to add additional requirements for full click/toggle activation,
         /// such as roll-off prevention.
         /// </summary>
-        /// <returns>True if the interactable should fire click/toggle event from this current deselect event.</returns>
+        /// <returns><see langword="true"/> if the interactable should fire click or toggle event from this current deselect event.</returns>
         internal protected virtual bool CanClickOnLastSelectExited(SelectExitEventArgs args)
         {
             return TriggerOnRelease && IsRegistered() && IsInteractorTracked() && IsTargetValid();

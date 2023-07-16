@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected object _dataObject = null;
         protected bool _noDataObjectFound = false;
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void AttachDataConsumer()
         {
             if (!string.IsNullOrWhiteSpace(dataReferenceKeyPath))
@@ -96,14 +96,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void DetachDataConsumer()
         {
             _dataObject = null;
             _noDataObjectFound = false;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType)
         {
             if (localKeyPath == dataReferenceKeyPath)

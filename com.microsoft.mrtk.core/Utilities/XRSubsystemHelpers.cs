@@ -302,7 +302,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name='subsystemTypeOverride'>The derived type of the subsystem.</param>
         /// <param name='providerType'>The derived type of the provider.</param>
         /// <returns>
-        /// True if all validation checks pass.
+        /// <see langword="true"/> if all validation checks pass.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when there are errors in the descriptor parameters.
         /// Typically, this will occur in the following cases:

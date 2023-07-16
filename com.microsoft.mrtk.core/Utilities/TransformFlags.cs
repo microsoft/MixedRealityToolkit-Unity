@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="a"><see cref="TransformFlags"/> value.</param>
         /// <param name="b"><see cref="TransformFlags"/> mask.</param>
-        /// <returns>True if all of the bits in the specified mask are set in the
+        /// <returns><see langword="true"/> if all of the bits in the specified mask are set in the
         /// current value.</returns>
         public static bool IsMaskSet(this TransformFlags a, TransformFlags b)
         {

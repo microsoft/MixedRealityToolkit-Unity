@@ -113,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return new DataSourceDictionary();
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void InitializeDataSource()
         {
             if (DataSourceType == null || DataSourceType == "")

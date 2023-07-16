@@ -368,7 +368,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         /// <param name="stateName">The name of the state to remove the effect from.</param>
         /// <param name="effect">The effect to remove.</param>
-        /// <returns>True if the effect was removed, false otherwise.</returns>
+        /// <returns><see langword="true"/> if the effect was removed, <see langword="false"/> otherwise.</returns>
         internal bool RemoveEffect(string stateName, IEffect effect)
         {
             if (stateContainers.ContainsKey(stateName))
@@ -384,12 +384,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
         // TODO: Custom states/effects should probably be able to set their own parameters.
         // Given that custom states can't yet be added to the StateVisualizer, this
         // is a non-issue for now.
+
         /// <summary>
         /// Sets the parameter value on each state. 
         /// Override + extend this method to implement custom state parameters.
         /// </summary>
         /// <returns>
-        /// True if the parameter has changed, false otherwise.
+        /// <see langword="true"/> if the parameter has changed, <see langword="false"/> otherwise.
         /// </returns>
         protected virtual bool UpdateStateValues()
         {
@@ -415,7 +416,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <param name="stateName">The name of the state to set.</param>
         /// <param name="newValue">The value to set the state to.</param>
         /// <returns>
-        /// True if the parameter was changed this frame, false if it remained constant.
+        /// <see langword="true"/> if the parameter was changed this frame, <see langword="false"/> if it remained constant.
         /// </returns>
         internal bool UpdateStateValue(string stateName, float newValue)
         {
@@ -441,9 +442,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// Uses the parameter currently set on the <see cref="StateVisualizer.State"/>.
         /// Call <see cref="StateVisualizer.UpdateStateValues"/> before calling this method.
         /// </summary>
+        /// <remarks>
+        /// The <see cref="StateVisualizer"/> and connected <see cref="Animator"/> will be put to 
+        /// sleep if this returns <see langword="true"/>.
+        /// </remarks>
         /// <returns>
-        /// True if all effects are done playing, false otherwise. The <see cref="StateVisualizer"/>
-        /// and connected <see cref="Animator"/> will be put to sleep if this returns true.
+        /// <see langword="true"/> if all effects are done playing, <see langword="false"/> otherwise. 
         /// </returns>
         private bool EvaluateEffects()
         {

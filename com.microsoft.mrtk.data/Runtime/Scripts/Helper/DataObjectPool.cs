@@ -180,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         ///
         /// Note that if there are prefetched objects, it may be possible to reuse these.
         /// </remarks>
-        /// <returns>True if full.</returns>
+        /// <returns><see langword="true"/> if full.</returns>
         public bool IsFull()
         {
             return _objectPoolObjects.Count + _prefetchedObjects.Count >= _poolMaximumSize;
@@ -221,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Check if an object is already in the prefab prefetch pool.
         /// </summary>
         /// <param name="id">The id to check.</param>
-        /// <returns>True if object with specified id was found in prefetch pool.</returns>
+        /// <returns><see langword="true"/> if object with specified id was found in prefetch pool.</returns>
         public bool ObjectIsPrefetched(int id)
         {
             return _prefetchedObjects.ContainsKey(id);

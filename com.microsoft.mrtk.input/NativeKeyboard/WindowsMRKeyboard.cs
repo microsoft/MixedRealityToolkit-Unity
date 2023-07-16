@@ -195,7 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Opens the keyboard for user interaction.
         /// </summary>
         /// <param name="text">Initial text to populate the keyboard with.</param>
-        /// <param name="multiLine">True, if the return key should signal a newline rather than a commit.</param>
+        /// <param name="multiLine"><see langword="true"/> if the return key should signal a newline rather than a commit.</param>
         public virtual void ShowKeyboard(string text = "", bool multiLine = false)
         {
             Text = text;

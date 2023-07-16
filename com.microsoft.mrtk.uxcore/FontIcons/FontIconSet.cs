@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         /// <param name="iconName">The name of the icon to find.</param>
         /// <param name="unicodeValue">The returned unicode value, or 0 if not found.</param>
-        /// <returns>True if icon name found, otherwise false.</returns>
+        /// <returns><see langword="true"/> if icon name found, otherwise <see langword="false"/>.</returns>
         public bool TryGetGlyphIcon(string iconName, out uint unicodeValue)
         {
             unicodeValue = 0;
@@ -106,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </remarks>
         /// <param name="oldName">The current name of the icon.</param>
         /// <param name="newName">The desired new name of the icon.</param>
-        /// <returns>True if it was able to find and update the name.</returns>
+        /// <returns><see langword="true"/> if it was able to find and update the name.</returns>
         public bool UpdateIconName(string oldName, string newName)
         {
             if (glyphIconsByName.ContainsKey(oldName) && !glyphIconsByName.ContainsKey(newName))

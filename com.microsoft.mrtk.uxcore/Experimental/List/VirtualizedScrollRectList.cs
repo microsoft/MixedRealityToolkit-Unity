@@ -456,7 +456,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
         /// The prefab instance representing the index, or null, if not visible.
         /// </param>
         /// <returns>
-        /// True if the item was visible, false if not.
+        /// <see langword="true"/> if the item was visible, <see langword="false"/> if not.
         /// </returns>
         public bool TryGetVisible(int i, out GameObject visibleObject)
         {

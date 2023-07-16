@@ -1004,7 +1004,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         /// <param name="a"><see cref="ObjectManipulator.ReleaseBehaviorType"/> value.</param>
         /// <param name="b"><see cref="ObjectManipulator.ReleaseBehaviorType"/> mask.</param>
-        /// <returns>True if all of the bits in the specified mask are set in the
+        /// <returns><see langword="true"/> if all of the bits in the specified mask are set in the
         /// current value.</returns>
         public static bool IsMaskSet(this ObjectManipulator.ReleaseBehaviorType a, ObjectManipulator.ReleaseBehaviorType b)
         {

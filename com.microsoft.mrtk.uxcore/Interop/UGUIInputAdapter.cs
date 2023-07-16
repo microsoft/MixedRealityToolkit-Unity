@@ -196,16 +196,15 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         /// <summary>
-        /// Returns true iff the provided pointer event data corresponds to an XRI Interactor,
-        /// false if it corresponds to mouse/keyboard/gamepad/touch/etc.
+        /// Test if the given event data corresponds to a Unity XRI interactor.
         /// </summary>
         /// <remarks>
         /// Used to filter XRI interactions out of all canvas input, so that duplicate events
         /// are not triggered on hybrid/unified UX.
         /// </remarks>
         /// <returns>
-        /// True iff the provided pointer event data corresponds to an XRI Interactor,
-        /// false if it corresponds to mouse/keyboard/gamepad/touch/etc.
+        /// <see langword="true"/> if the provided pointer event data corresponds to a Unity XRI interactor,
+        /// <see langword="false"/> if it corresponds to mouse, keyboard, gamepad, or touch.
         /// </returns>
         protected bool IsXRUIEvent(PointerEventData pointerEventData)
         {

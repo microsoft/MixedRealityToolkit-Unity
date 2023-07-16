@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public override object GetValueInternal(string resolvedKeyPath)
         {
             if (_dataDictionary.ContainsKey(resolvedKeyPath))
@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public override void SetValueInternal(string resolvedKeyPath, object newValue)
         {
             _dataDictionary[resolvedKeyPath] = newValue;

@@ -63,7 +63,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Attempts to retrieve the specified <see cref="BaseSubsystemConfig"/> for a given subsystem type.
         /// </summary>
         /// <returns>
-        /// True if there is a registered configuration for the specified subsystem. False otherwise.
+        /// <see langword="true"/> if there is a registered configuration for the specified subsystem, <see langword="false"/> otherwise.
         /// </returns>
         public bool TryGetConfigForSubsystem(SystemType subsystemType, out BaseSubsystemConfig config)
         {

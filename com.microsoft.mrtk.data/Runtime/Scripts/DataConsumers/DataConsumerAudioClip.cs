@@ -23,14 +23,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
     [AddComponentMenu("MRTK/Data Binding/Consumers/Data Consumer Audio Clip", -10)]
     public class DataConsumerAudioClip : DataConsumerThemableBase<AudioClip>
     {
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override Type[] GetComponentTypes()
         {
             Type[] types = { typeof(AudioSource) };
             return types;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void SetObject(Component component, object inValue, AudioClip audioClip)
         {
             AudioSource audioSource = component as AudioSource;

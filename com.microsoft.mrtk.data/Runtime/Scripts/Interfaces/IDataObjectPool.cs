@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </summary>
         /// <remarks>
         /// It is considered empty if it contains no unused objects and no prefetched objects.</remarks>
-        /// <returns>True if empty.</returns>
+        /// <returns><see langword="true"/> if empty.</returns>
         bool IsEmpty();
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         ///
         /// Note that if there are prefetched objects, it may be possible to reuse these.
         /// </remarks>
-        /// <returns>True if full.</returns>
+        /// <returns><see langword="true"/> if full.</returns>
         bool IsFull();
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Check if an object is already in the prefab prefetch pool.
         /// </summary>
         /// <param name="id">The identifier for the object to check.</param>
-        /// <returns>True if object with specified id was found in prefetch pool.</returns>
+        /// <returns><see langword="true"/> if object with specified id was found in prefetch pool.</returns>
         bool ObjectIsPrefetched(int id);
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// To place a pre-initialized object prefab into the pool, use AddPrefetchedObjectToPool instead.
         /// </remarks>
         /// <param name="objectToReturn">The object to return to the pool.</param>
-        /// <returns>True if there was space for the prefab.</returns>
+        /// <returns><see langword="true"/> if there was space for the prefab.</returns>
         bool ReturnObjectToPool(object objectToReturn);
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="id">The id of object to add.</param>
         /// <param name="objectToReturn">The prefetched object to add.</param>
         /// <param name="asNewest">If true, add as newest item. If false, add as oldest item.</param>
-        /// <returns>True if the object could be added to the pool. False if not added, in which case caller should dispose of or destroy appropriately.</returns>
+        /// <returns><see langword="true"/> if the object could be added to the pool, or <see langword="false"/> if not added, in which case caller should dispose of or destroy appropriately.</returns>
         bool AddPrefetchedObjectToPool(int id, object objectToReturn, bool asNewest = true);
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </summary>
         /// <param name="id">The id of the prefetched object to attempt to retrieve.</param>
         /// <param name="returnedObject">Either prefetched or generic object</param>
-        /// <returns>True if prefetched object found. False if not found and generic object returned.</returns>
+        /// <returns><see langword="true"/> if prefetched object found, or <see langword="false"/> if not found and generic object returned.</returns>
         bool TryGetPrefetchedObject(int id, out object returnedObject);
     }
 }

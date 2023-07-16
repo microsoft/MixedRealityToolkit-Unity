@@ -141,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// A typical collection only manifests in a single list, so the default behavior is false, but can
         /// be overridden for handling more complex scenarios.
         /// </remarks>
-        /// <returns>True = manage DataConsumerCollection objects in this GO's children game objects. False = only manage this one.</returns>
+        /// <returns><see langword="true"/> if manage DataConsumerCollection objects in this GO's children game objects, or <see langword="false"/> if only manage this one.</returns>
         protected override bool ManageChildren()
         {
             return false;
@@ -228,7 +228,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Prefetch items that may soon be requested.
         /// </summary>
-        /// <param name="indexRangeStart"Start of index id range to fetch.</param>
+        /// <param name="itemPlacer">The item placer to use.</param>
+        /// <param name="indexRangeStart">Start of index id range to fetch.</param>
         /// <param name="indexRangeCount">Number of items to fetch.</param>
         public void PrefetchCollectionItems(IDataCollectionItemPlacer itemPlacer, int indexRangeStart, int indexRangeCount)
         {

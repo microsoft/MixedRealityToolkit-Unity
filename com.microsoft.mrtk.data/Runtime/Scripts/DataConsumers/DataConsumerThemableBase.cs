@@ -164,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return null;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override bool ManageChildren()
         {
             return manageComponentsInChildren;
@@ -179,7 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// management of those components.  Some data consumers are not
         /// component centric and therefore can return false to indicate
         /// that no component management is needed.</remarks>
-        /// <returns>True means this is a component centric data consumer.</returns>
+        /// <returns><see langword="true"/> means this is a component centric data consumer.</returns>
         protected virtual bool DoesManageSpecificComponents()
         {
             return false;
@@ -294,7 +294,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void DetachDataConsumer()
         {
             // TODO: free up any resources like lookups?

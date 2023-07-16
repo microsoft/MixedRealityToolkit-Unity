@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="point">The point to test.</param>
         /// <returns>
-        /// True if the point is contained along the raycast step. Otherwise false is returned.
+        /// <see langword="true"/> if the point is contained along the raycast step, otherwise <see langword="false"/>.
         /// </returns>
         public bool Contains(Vector3 point)
         {

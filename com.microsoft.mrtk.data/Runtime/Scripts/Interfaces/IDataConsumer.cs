@@ -67,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Tell whether attached to a DataSource.
         /// </summary>
-        /// <returns>True if currently attached to a data source.</returns>
+        /// <returns><see langword="true"/> if currently attached to a data source.</returns>
         bool IsAttached();
 
         /// <summary>

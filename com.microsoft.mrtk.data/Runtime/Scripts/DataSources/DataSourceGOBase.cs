@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         protected DataKeyPathMapperGODictionary keyPathMapper = null;
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public string DataSourceType
         {
             get => dataSourceType;
@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </summary>
         private string[] _dataSourceTypes = null;
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public IDataController DataController { get => _dataController; set => _dataController = value; }
 
         protected IDataSource DataSource
@@ -102,7 +102,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public string[] GetDataSourceTypes()
         {
             // Most data sources only provide one type of data, so the IDataSourceProvider embedded
@@ -114,13 +114,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return _dataSourceTypes;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected virtual void InitializeDataSource()
         {
             // override for additional initialization.
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public string ResolveKeyPath(string resolvedKeyPathPrefix, string localKeyPath)
         {
             if (DataSource != null)
@@ -133,7 +133,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public void SetDataKeyPathMapper(IDataKeyPathMapper keyPathMapper)
         {
             if (DataSource != null)
@@ -142,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public virtual object GetValue(string resolvedKeyPath)
         {
             if (DataSource != null)
@@ -155,7 +155,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public virtual void SetValue(string resolvedKeyPath, object newValue, bool isAtomicChange = false)
         {
             if (DataSource != null)
@@ -164,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public void AddDataConsumerListener(string resolvedKeyPath, IDataConsumer dataConsumer)
         {
             if (DataSource != null)
@@ -173,7 +173,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public void RemoveDataConsumerListener(string resolvedKeyPath, IDataConsumer dataConsumer)
         {
             if (DataSource != null)
@@ -182,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public void DataChangeSetBegin()
         {
             if (DataSource != null)
@@ -191,7 +191,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public void DataChangeSetEnd()
         {
             if (DataSource != null)
@@ -200,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public virtual bool IsCollectionAtKeyPath(string resolvedKeyPath)
         {
             if (DataSource != null)
@@ -213,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public virtual int GetCollectionCount(string resolvedKeyPath)
         {
             if (DataSource != null)
@@ -226,7 +226,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public virtual string GetNthCollectionKeyPathAt(string resolvedKeyPath, int n)
         {
             if (DataSource != null)
@@ -239,7 +239,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public IEnumerable<string> GetCollectionKeyPathRange(string resolvedKeyPath, int rangeStart, int rangeCount)
         {
             if (DataSource != null)
@@ -252,7 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public void NotifyDataChanged(string resolvedKeyPath, object value, DataChangeType dataChangeType, bool isAtomicChange)
         {
             if (DataSource != null)
@@ -261,7 +261,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public void NotifyAllChanged(DataChangeType dataChangeType = DataChangeType.DatumModified, IDataConsumer whichDataConsumer = null)
         {
             if (DataSource != null)
@@ -270,7 +270,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public bool IsDataAvailable()
         {
             if (DataSource != null)

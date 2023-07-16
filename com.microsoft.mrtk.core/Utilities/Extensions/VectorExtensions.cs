@@ -317,7 +317,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="v1">The first vector.</param>
         /// <param name="v2">The second vector.</param>
         /// <param name="distanceTolerance">The maximum distance that will cause this to return true.</param>
-        /// <returns>True if the distance between the two vectors is within the tolerance, false otherwise.</returns>
+        /// <returns><see langword="true"/> if the distance between the two vectors is within the tolerance, <see langword="false"/> otherwise.</returns>
         public static bool CloseEnoughTo(this Vector3 v1, Vector3 v2, float distanceTolerance = 0.001f)
         {
             return Vector3.Distance(v1, v2) < distanceTolerance;

@@ -61,27 +61,27 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected SpriteRenderer _spriteRenderer;
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override Type[] GetComponentTypes()
         {
             Type[] types = { typeof(SpriteRenderer) };
             return types;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override bool ManageChildren()
         {
             return manageChildren;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void AddVariableKeyPathsForComponent(Component component)
         {
             _spriteRenderer = component as SpriteRenderer;
             AddKeyPathListener(keyPath);
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType)
         {
             if (localKeyPath == keyPath)

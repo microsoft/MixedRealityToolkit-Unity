@@ -48,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         private bool pendingUpdate = false;
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public override void SetValue(string resolvedKeyPath, object newValue, bool isAtomicChange = false)
         {
             base.SetValue(resolvedKeyPath, newValue, isAtomicChange);
@@ -62,13 +62,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public override IDataSource AllocateDataSource()
         {
             return new DataSourceDictionary();
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void InitializeDataSource()
         {
             DataSource.DataChangeSetBegin();

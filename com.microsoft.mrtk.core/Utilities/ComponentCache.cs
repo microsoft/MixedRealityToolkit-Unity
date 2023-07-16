@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Finds the first instance of an object of the given type. 
         /// </summary>
         /// <returns>
-        /// True if an instance was found, and false otherwise. 
+        /// <see langword="true"/> if an instance was found, and <see langword="false"/> otherwise. 
         /// </returns>
         public static bool TryFindFirstActiveInstance(out T result)
         {

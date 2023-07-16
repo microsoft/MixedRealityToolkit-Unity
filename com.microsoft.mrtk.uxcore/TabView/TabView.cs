@@ -78,7 +78,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// Set a tab active based on the tab section's label name.
         /// </summary>
         /// <param name="sectionName">The name of the section</param>
-        /// <returns>True if the section name was set to active</returns>
+        /// <returns><see langword="true"/> if the section name was set to active.</returns>
         public bool ForceSetTabActiveByLabel(string sectionName)
         {
             for (int i = 0; i < TabSections.Length; i++)
@@ -97,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// Check if a section is visible based on the name. 
         /// </summary>
         /// <param name="sectionName">The name of section</param>
-        /// <returns>True if the section is visible</returns>
+        /// <returns><see langword="true"/> if the section is visible.</returns>
         public bool IsSectionVisible(string sectionName)
         {
             for (int i = 0; i < TabSections.Length; i++)

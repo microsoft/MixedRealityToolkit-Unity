@@ -44,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         private Renderer[] renderersToModify;
 
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override Type[] GetComponentTypes()
         {
             Type[] types = { typeof(Renderer) };
@@ -64,13 +64,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override bool DoesManageSpecificComponents()
         {
             return renderersToModify != null && renderersToModify.Length > 0;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void AttachDataConsumer()
         {
             if (renderersToModify != null)
@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             base.AttachDataConsumer();
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override Material GetObjectByKey(string keyValue)
         {
             foreach (ValueToMaterial valueToMaterial in materialLookup)
@@ -97,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return null;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void SetObject(Component component, object inValue, Material materialToSet)
         {
             Renderer renderer = component as Renderer;

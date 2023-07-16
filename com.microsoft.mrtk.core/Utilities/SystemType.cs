@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// An overridable constraint to determine whether a type is valid to serialize.
         /// </summary>
         /// <param name="type">Type to validate.</param>
-        /// <returns>True if the type is valid, or false.</returns>
+        /// <returns><see langword="true"/> if the type is valid, or <see langword="false"/>.</returns>
         protected virtual bool ValidConstraint(Type type)
         {
             return type != null && type.IsValueType && !type.IsEnum && !type.IsAbstract || type.IsClass;

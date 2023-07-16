@@ -290,7 +290,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// </summary>
         /// <param name="disposing">
         /// Are we fully disposing the object?
-        /// True will release all managed resources, unmanaged resources are always released.
+        /// <see langword="true"/> will release all managed resources, unmanaged resources are always released.
         /// </param>
         protected virtual void Dispose(bool disposing)
         {

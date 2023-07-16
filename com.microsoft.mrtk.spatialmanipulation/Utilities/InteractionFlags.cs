@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         /// <param name="a"><see cref="InteractionFlags"/> value.</param>
         /// <param name="b"><see cref="InteractionFlags"/> mask.</param>
-        /// <returns>True if all of the bits in the specified mask are set in the
+        /// <returns><see langword="true"/> if all of the bits in the specified mask are set in the
         /// current value.</returns>
         public static bool IsMaskSet(this InteractionFlags a, InteractionFlags b)
         {

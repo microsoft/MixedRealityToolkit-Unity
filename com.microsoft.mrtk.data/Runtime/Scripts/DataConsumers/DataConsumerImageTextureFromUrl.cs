@@ -57,13 +57,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
             CheckForWaitingUrlToFetch();
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override bool ManageChildren()
         {
             return manageChildren;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void DetachDataConsumer()
         {
             if (_coroutine != null)
@@ -75,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             _waitingUrlToFetch = null;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void AddVariableKeyPathsForComponent(Component component)
         {
             InitializeForComponent(component);
@@ -95,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="imageTexture">The retrieved image as a Texture2D object.</param>
         protected abstract void PlaceImageTexture(Texture2D imageTexture);
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType)
         {
             if (localKeyPath == keyPath)

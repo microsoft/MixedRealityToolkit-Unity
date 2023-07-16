@@ -690,7 +690,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Item is currently in the visible range of items
         /// </summary>
         /// <param name="itemIndex">Which item to check for visibility.</param>
-        /// <returns>True if the specified item is in the currently visible range.</returns>
+        /// <returns><see langword="true"/> if the specified item is in the currently visible range.</returns>
         public bool IsVisible(int itemIndex)
         {
             return itemIndex >= _firstVisibleItem && itemIndex < _firstVisibleItem + _numVisibleItems;
@@ -704,7 +704,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// know if it would be visible if added.
         /// </remarks>
         /// <param name="itemIndex">Which item to check.</param>
-        /// <returns>True if the item at the specified index would be in the visible range if added.</returns>
+        /// <returns><see langword="true"/> if the item at the specified index would be in the visible range if added.</returns>
         public bool ShouldBeVisible(int itemIndex)
         {
             return itemIndex >= _firstVisibleItem && itemIndex < _firstVisibleItem + GetMaxVisibleItemCount();

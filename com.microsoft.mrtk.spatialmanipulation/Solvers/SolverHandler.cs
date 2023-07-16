@@ -532,7 +532,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// Update the cached transform's position to match that of the current track joint. 
         /// </summary>
         /// <returns>
-        /// True, if the tracked joint is found and cached transform is updated. False, otherwise.
+        /// <see langword="true"/> if the tracked joint is found and cached transform is updated, <see langword="false"/> otherwise.
         /// </returns>
         private bool UpdateCachedHandJointTransform()
         {
@@ -627,11 +627,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// Determines if the specified hand is being tracked by the subsystem.
         /// </summary>
         /// <param name="hand">The <see cref="Handedness"/> of the hand being queried.</param>
-        /// <remarks>
-        /// Currently, this returns true always.
-        /// </remarks>
         /// <returns>
-        /// True if the hand is tracked, or false.
+        /// <see langword="true"/> if the hand is tracked, or <see langword="false"/>.
         /// </returns>
         private bool IsHandTracked(Handedness hand)
         {
@@ -648,7 +645,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         /// <param name="hand">The <see cref="Handedness"/> to be validated.</param>
         /// <returns>
-        /// True if the <see cref="Handedness"/> value is valid for solver scenarios, or false.
+        /// <see langword="true"/> if the <see cref="Handedness"/> value is valid for solver scenarios, or <see langword="false"/>.
         /// </returns>
         public static bool IsValidHandedness(Handedness hand)
         {
@@ -662,7 +659,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// The <see cref="TrackedObjectType"/> to be validated.
         /// </param>
         /// <returns>
-        /// True if the <see cref="TrackedObjectType"/> is valid for solver scenarios, or false.
+        /// <see langword="true"/> if the <see cref="TrackedObjectType"/> is valid for solver scenarios, or <see langword="false"/>.
         /// </returns>
         private static bool IsValidTrackedObjectType(TrackedObjectType type)
         {
