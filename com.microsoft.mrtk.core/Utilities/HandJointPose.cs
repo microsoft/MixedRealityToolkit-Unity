@@ -163,7 +163,6 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Convert a <see cref="HandJointPose"/> to a Unity <see cref="Pose"/>.
         /// </summary>
-        /// <param name="pose"></param>
         public static implicit operator Pose(HandJointPose pose) => pose.pose;
         
         #endregion
