@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="point">The 3D point to be rotated.</param>
         /// <param name="pivot">The 3D point that is the pivot.</param>
-        /// <param name="rotation">The 3D vector containing the Euler representation of the rotation to be preformed.</param>
+        /// <param name="eulerAngles">The 3D vector containing the Euler representation of the rotation to be preformed.</param>
         /// <returns>
         /// A new 3D vector containing the rotated point.
         /// </returns>

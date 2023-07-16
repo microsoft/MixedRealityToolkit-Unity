@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Create a reference string from the given assembly qualified class name. The reference 
         /// string will contain the full name and assembly name from the given assembly qualified name.
         /// </summary>
-        /// <param name="assemblyQualifiedClassName">Assembly qualified class name.</param>
+        /// <param name="assemblyQualifiedName">Assembly qualified class name.</param>
         /// <returns>
         /// A new reference string. Will return an empty string if the assembly qualified
         /// name is null or empty.

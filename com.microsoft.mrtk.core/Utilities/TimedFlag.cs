@@ -19,7 +19,9 @@ namespace Microsoft.MixedReality.Toolkit
     [System.Serializable]
     public class TimedFlag
     {
-        // Convenience operator overload.
+        /// <summary>
+        /// Convert a <see cref="TimedFlag"/> to <see langword="bool"/> based on the value of <see cref="TimedFlag.Active"/>. 
+        /// </summary>
         public static implicit operator bool(TimedFlag flag) => flag.Active;
 
         [SerializeField, HideInInspector]
@@ -121,6 +123,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             return Active.ToString();

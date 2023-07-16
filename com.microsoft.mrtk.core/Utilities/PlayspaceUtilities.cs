@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// The first detected XROrigin in the current scene. To transform a trackable's pose
         /// into world space, either use <see cref="XROrigin.CameraFloorOffsetObject"/> or use
-        /// the <see cref="TransformPose"/> and <see cref="TransformJointPose"/> methods.
+        /// the <see cref="TransformPose(Pose)"/> and <see cref="TransformPose(HandJointPose)"/> methods.
         /// </summary>
         public static XROrigin XROrigin
         {
@@ -35,7 +35,13 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
         
-        [ObsoleteAttribute("For transforming trackables poses into worldspace, use XROrigin.CameraFloorOffsetObject.transform.")]
+        /// <summary>
+        /// Get the reference transform for the playspace.
+        /// </summary>
+        /// <remarks>
+        /// This property is obsolete, instead use the transform on Unity's <see cref="XROrigin.CameraFloorOffsetObject"/>.
+        /// </remarks>
+        [ObsoleteAttribute("For transforming poses into world space, use XROrigin.CameraFloorOffsetObject.transform.")]
         public static Transform ReferenceTransform => XROrigin.CameraFloorOffsetObject.transform;
 
         /// <summary>

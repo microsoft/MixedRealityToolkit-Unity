@@ -11,15 +11,26 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public static class MixedRealityRaycaster
     {
+        /// <summary>
+        /// Get or set if debugging visuals are drawn for all <see cref="MixedRealityRaycaster"/> raycasts.
+        /// </summary>
         public static bool DebugEnabled { get; set; }
 
+        /// <summary>
+        /// The maximum raycasts hits that a <see cref="MixedRealityRaycaster"/> instance can support.
+        /// </summary>
         public const int MaxRaycastHitCount = 32;
+        
+        /// <summary>
+        /// The maximum sphere cast hits that a <see cref="MixedRealityRaycaster"/> instance can support.
+        /// </summary>
         public const int MaxSphereCastHitCount = 32;
+
         private static readonly RaycastHit[] RaycastHits = new RaycastHit[MaxRaycastHitCount];
         private static readonly RaycastHit[] SphereCastHits = new RaycastHit[MaxSphereCastHitCount];
 
         /// <summary>
-        /// Simple raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/>.
+        /// Simple raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.RayStep"/>.
         /// </summary>
         /// <returns>Whether or not the raycast hit something.</returns>
         public static bool RaycastSimplePhysicsStep(RayStep step, LayerMask[] prioritizedLayerMasks, bool focusIndividualCompoundCollider, out RaycastHit physicsHit)
@@ -31,7 +42,7 @@ namespace Microsoft.MixedReality.Toolkit
             new ProfilerMarker("[MRTK] MixedRealityRaycaster.RaycastSimplePhysicsStep");
 
         /// <summary>
-        /// Simple raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/> within a
+        /// Simple raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.RayStep"/> within a
         /// specified maximum distance.
         /// </summary>
         /// <returns>Whether or not the raycast hit something.</returns>
@@ -84,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit
             new ProfilerMarker("[MRTK] MixedRealityRaycaster.RaycastBoxPhysicsStep");
 
         /// <summary>
-        /// Box raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/>.
+        /// Box raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.RayStep"/>.
         /// </summary>
         /// <returns>Whether or not the raycast hit something.</returns>
         public static bool RaycastBoxPhysicsStep(
@@ -169,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Sphere raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/>.
+        /// Sphere raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.RayStep"/>.
         /// </summary>
         /// <returns>Whether or not the raycast hit something.</returns>
         public static bool RaycastSpherePhysicsStep(
@@ -192,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit
             new ProfilerMarker("[MRTK] MixedRealityRaycaster.RaycastSpherePhysicsStep");
 
         /// <summary>
-        /// Sphere raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.Physics.RayStep"/> within a
+        /// Sphere raycasts each physics <see cref="Microsoft.MixedReality.Toolkit.RayStep"/> within a
         /// specified maximum distance.
         /// </summary>
         /// <returns>Whether or not the raycast hit something.</returns>

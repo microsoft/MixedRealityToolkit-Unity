@@ -149,10 +149,10 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// <see cref="AccessibilitySubsystemCinfo"/> parameter are invalid. Typically, this will occur
         /// <list type="bullet">
         /// <item>
-        /// <description>if <see cref="AccessibilitySubsystemCinfo.id"/> is <c>null</c> or empty</description>
+        /// <description>if <see cref="AccessibilitySubsystemCinfo.id"/> is <see langword="null"/> or empty</description>
         /// </item>
         /// <item>
-        /// <description>if <see cref="AccessibilitySubsystemCinfo.implementationType"/> is <c>null</c></description>
+        /// <description>if <see cref="AccessibilitySubsystemCinfo.implementationType"/> is <see langword="null"/></description>
         /// </item>
         /// <item>
         /// <description>if <see cref="AccessibilitySubsystemCinfo.implementationType"/> does not derive from the

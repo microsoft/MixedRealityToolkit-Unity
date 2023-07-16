@@ -109,6 +109,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Copy the given ray structure to this raycast step, along with the specified length.
         /// </summary>
+        /// <param name="ray">The ray to copy.</param>
         /// <param name="length">
         /// The new length for this raycast step. The length or magnitude of the raycast step. 
         /// This is the distance from the ray's origin to the terminus.
