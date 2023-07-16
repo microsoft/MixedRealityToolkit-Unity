@@ -211,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             /// Sends a <see cref="InvertTextColorChanged"/> event to registered listeners.
             /// </summary>
             /// <param name="invert">
-            /// True if text color inversion has been enabled, or false.
+            /// <see langword="true"/> if text color inversion has been enabled, or <see langword="false"/>.
             /// </param>
             private void RaiseInvertTextColorChanged(bool invert)
             {
