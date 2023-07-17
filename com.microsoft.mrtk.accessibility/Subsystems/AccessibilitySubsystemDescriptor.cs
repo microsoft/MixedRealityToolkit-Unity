@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         }
 
         /// <summary>
-        /// Overridden to disable hash lookups of <see cref="AccessibilitySubsystemCinfo"/> types.
+        /// This <see cref="GetHashCode"/> override is meant to disable hash lookups of <see cref="AccessibilitySubsystemCinfo"/> objects.
         /// </summary>
         /// <remarks>
         /// This will throw a <see cref="ApplicationException"/> if called.
