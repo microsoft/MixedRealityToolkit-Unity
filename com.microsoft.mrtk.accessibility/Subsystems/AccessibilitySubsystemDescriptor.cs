@@ -144,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// Creates a <see cref="AccessibilitySubsystemDescriptor"/> based on the given parameters.
         /// </summary>
         /// <remarks>
-        /// This function will validate that the <see cref="AccessibilitySubsystemCinfo"/> properties are valid.
+        /// This function will verify that the <see cref="AccessibilitySubsystemCinfo"/> properties are valid.
         /// </remarks>
         /// <param name="cinfo">The parameters required to initialize the descriptor.</param>
         /// <returns>

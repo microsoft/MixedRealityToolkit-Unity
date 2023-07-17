@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// Creates a <see cref="HandsSubsystemDescriptor"/> based on the given parameters.
         /// </summary>
         /// <remarks>
-        /// This function will validate that the <see cref="HandsSubsystemCinfo"/> properties are valid.
+        /// This function will verify that the <see cref="HandsSubsystemCinfo"/> properties are valid.
         /// </remarks>
         /// <param name="cinfo">The parameters required to initialize the descriptor.</param>
         /// <returns>
