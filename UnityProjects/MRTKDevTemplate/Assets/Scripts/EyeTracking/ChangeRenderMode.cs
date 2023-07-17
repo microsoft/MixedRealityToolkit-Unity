@@ -10,7 +10,7 @@ using static Microsoft.MixedReality.GraphicsTools.MeshUtility.MeshCombineSetting
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
-    /// This class changing the render mode on-the-fly. This is, for example, useful when trying to show a semi-transparent preview of an 
+    /// This class allows changing the render mode on-the-fly. This is, for example, useful when trying to show a semi-transparent preview of an 
     /// target.
     /// </summary>
     public static class ChangeRenderMode
