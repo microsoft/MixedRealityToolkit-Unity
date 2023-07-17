@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-using System.Diagnostics;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.XR.Interaction.Toolkit;
+using static Microsoft.MixedReality.Toolkit.Input.XRRayInteractorExtensions;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Experimental
 {
@@ -53,9 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Experimental
             Application.onBeforeRender -= OnBeforeRenderCursor;
         }
 
-        private Vector3 targetLocalHitPoint;
-        private Vector3 targetLocalHitNormal;
-        private Transform hitTargetTransform;
+        private TargetHitDetails selectedHitDetails = new TargetHitDetails();
 
         // reusable lists of the points returned by the XRRayInteractor
         Vector3[] rayPositions;
@@ -68,17 +65,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Experimental
 
         private void LocateTargetHitPoint(SelectEnterEventArgs args)
         {
-            // If no hit, abort.
-            if (!mouseInteractor.TryGetCurrentRaycast(
-                out RaycastHit? raycastHit,
-                out _,
-                out UnityEngine.EventSystems.RaycastResult? raycastResult,
-                out _,
-                out bool isUIHitClosest))
-            {
-                return;
-            }
-
             // Sanity check.
             if (rayPositions == null ||
                 rayPositions.Length == 0 ||
@@ -88,29 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Experimental
                 return;
             }
 
-            // Record relevant data about the hit point.
-            if (raycastResult.HasValue && isUIHitClosest)
-            {
-                hitTargetTransform = raycastResult.Value.gameObject.transform;
-                targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastResult.Value.worldPosition);
-                targetLocalHitNormal = hitTargetTransform.InverseTransformDirection(raycastResult.Value.worldNormal);
-            }
-            else if (raycastHit.HasValue)
-            {
-                // In the case of affordances/handles, we can stick the ray right on to the handle.
-                if (args.interactableObject is ISnapInteractable snappable)
-                {
-                    hitTargetTransform = snappable.HandleTransform;
-                    targetLocalHitPoint = Vector3.zero;
-                    targetLocalHitNormal = Vector3.up;
-                }
-                else
-                {
-                    hitTargetTransform = raycastHit.Value.collider.transform;
-                    targetLocalHitPoint = hitTargetTransform.InverseTransformPoint(raycastHit.Value.point);
-                    targetLocalHitNormal = hitTargetTransform.InverseTransformPoint(raycastHit.Value.normal);
-                }
-            }
+            mouseInteractor.TryLocateTargetHitPoint(args.interactableObject, out selectedHitDetails);
         }
 
         private void OnBeforeRenderCursor()
@@ -142,7 +106,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Experimental
             // If the mouse is selecting an interactable, then position the cursor based on the target transform
             if (mouseInteractor.interactablesSelected.Count > 0)
             {
-                reticlePosition = hitTargetTransform.TransformPoint(targetLocalHitPoint);
+                reticlePosition = selectedHitDetails.HitTargetTransform.TransformPoint(selectedHitDetails.TargetLocalHitPoint);
             }
             // otherwise, try getting reticlePosition from the ray hit or set it a default distance from the user
             else if (!mouseInteractor.TryGetHitInfo(out reticlePosition, out reticleNormal, out endPositionInLine, out bool isValidTarget))
