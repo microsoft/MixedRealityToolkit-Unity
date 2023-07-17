@@ -214,10 +214,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// If there is currently an active selection, the attach transform is computed 
         /// as an offset from selected object, where the offset vector is a function of 
         /// the centroid between all currently participating <see cref="GazePinchInteractor"/>
-        /// objects.
-        /// 
-        /// This models ray-like manipulations, but with virtual attach offsets from
-        /// object, modeled from the relationship between each participating hand.
+        /// objects. This models ray-like manipulations, but with virtual attach offsets
+        /// from object, modeled from the relationship between each participating hand.
         /// When no selection is active, the attach transform is simply set to the
         /// current pinching pose. In all cases, the attach transform's rotation is
         /// set to the controller's grip pose.
