@@ -17,13 +17,13 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         IHandsSubsystem
     {
         /// <summary>
-        /// Construct the <c>HandsSubsystem</c>.
+        /// Initializes a new instance of the <see cref="HandsSubsystem"/> class.
         /// </summary>
         public HandsSubsystem()
         { }
 
         /// <summary>
-        /// Interface for providing hand functionality for the implementation.
+        /// An abstract class defining hand functionality for a <see cref="HandsSubsystem"/> object.
         /// </summary>
         public abstract class Provider : MRTKSubsystemProvider<HandsSubsystem>, IHandsSubsystem
         {
@@ -56,7 +56,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// <param name="handsSubsystemParams">The parameters defining the hands subsystem functionality implemented
         /// by the subsystem provider.</param>
         /// <returns>
-        /// <c>true</c> if the subsystem implementation is registered. Otherwise, <c>false</c>.
+        /// <see langword="true"/> if the subsystem implementation is registered. Otherwise, <see langword="false"/>.
         /// </returns>
         public static bool Register(HandsSubsystemCinfo handsSubsystemParams)
         {

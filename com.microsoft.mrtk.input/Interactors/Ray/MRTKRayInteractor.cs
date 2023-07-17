@@ -15,7 +15,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// A wrapper for the XRRayInteractor which stores extra information for MRTK management/services
     /// </summary>
     [AddComponentMenu("MRTK/Input/MRTK Ray Interactor")]
-
     // This execution order ensures that the MRTKRayInteractor runs its update function right after the
     // XRController. We do this because the MRTKRayInteractor needs to set its own pose after the parent controller transform,
     // but before any physics raycast calls are made to determine selection. The earliest a physics call can be made is within
@@ -194,6 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static readonly ProfilerMarker ProcessInteractorPerfMarker =
             new ProfilerMarker("[MRTK] MRTKRayInteractor.ProcessInteractor");
 
+        /// <inheritdoc />
         public override void ProcessInteractor(XRInteractionUpdateOrder.UpdatePhase updatePhase)
         {
             base.ProcessInteractor(updatePhase);
@@ -228,6 +228,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion XRBaseInteractor
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             // Use Pose Sources to calculate the interactor's pose and the attach transform's position

@@ -20,7 +20,19 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public enum ComparisonType
         {
+            /// <summary>
+            /// Represents an invalid comparison type.
+            /// </summary> 
+            None = 0,
+            
+            /// <summary>
+            /// Testing if two items are equal.
+            /// </summary> 
             Equal = 1,
+
+            /// <summary>
+            /// Testing if two items are not equal.
+            /// </summary>
             NotEqual = 2,
         }
 

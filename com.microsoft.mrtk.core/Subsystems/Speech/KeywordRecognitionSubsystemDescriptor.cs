@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// Tests for equality.
         /// </summary>
         /// <param name="other">The other <see cref="KeywordRecognitionSubsystemCinfo"/> to compare against.</param>
-        /// <returns>`True` if every field in <paramref name="other"/> is equal to this <see cref="KeywordRecognitionSubsystemCinfo"/>, otherwise false.</returns>
+        /// <returns><see langword="true"/> if every field in <paramref name="other"/> is equal to this <see cref="KeywordRecognitionSubsystemCinfo"/>, otherwise false.</returns>
         public override bool Equals(MRTKSubsystemCinfo other)
         {
             return base.Equals(other) && IsCloudBased == (other as KeywordRecognitionSubsystemCinfo)?.IsCloudBased;
@@ -35,26 +35,28 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         MRTKSubsystemDescriptor<KeywordRecognitionSubsystem, KeywordRecognitionSubsystem.Provider>
     {
         /// <summary>
-        /// Constructs a <c>KeywordRecognitionSubsystemDescriptor</c> based on the given parameters.
+        /// Initializes a new instance of the <see cref="KeywordRecognitionSubsystemDescriptor"/> class.
         /// </summary>
-        /// <param name='KeywordRecognitionSubsystemCinfo'>The parameters required to initialize the descriptor.</param>
+        /// <param name="cinfo">The parameters required to initialize the descriptor.</param>
         KeywordRecognitionSubsystemDescriptor(KeywordRecognitionSubsystemCinfo cinfo) : base(cinfo)
         {
             IsCloudBased = cinfo.IsCloudBased;
         }
 
         /// <summary>
-        /// Specifies whether the <c>KeywordRecognitionSubsystem</c> is cloud based.
+        /// Specifies whether the <see cref="KeywordRecognitionSubsystem"/> is cloud based.
         /// </summary>
         public bool IsCloudBased { get; set; }
 
         /// <summary>
-        /// Creates a <c>KeywordRecognitionSubsystemDescriptor</c> based on the given parameters validating that the
-        /// <c>id</c> and <c>implentationType</c> properties are specified.
+        /// Creates a <see cref="KeywordRecognitionSubsystemDescriptor"/> based on the given parameters.
         /// </summary>
-        /// <param name='KeywordRecognitionSubsystemCinfo'>The parameters required to initialize the descriptor.</param>
+        /// <remarks>
+        /// This function will verify that the <see cref="KeywordRecognitionSubsystemCinfo"/> properties are valid.
+        /// </remarks>
+        /// <param name="cinfo">The parameters required to initialize the descriptor.</param>
         /// <returns>
-        /// The created <c>KeywordRecognitionSubsystemDescriptor</c>.
+        /// The newly created instance of the <see cref="KeywordRecognitionSubsystemDescriptor"/> class.
         /// </returns>
         internal static KeywordRecognitionSubsystemDescriptor Create(KeywordRecognitionSubsystemCinfo cinfo)
         {

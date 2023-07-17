@@ -17,19 +17,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public XRNode HandNode { get; protected set; }
 
         /// <summary>
-        /// True if all the hand joint poses been queried.
+        /// Will be <see langword="true"/> if all the hand joint poses been queried.
         /// </summary>
         public bool AlreadyFullQueried { get; protected set; }
 
         /// <summary>
-        /// True if the the hand joint query as successful.
+        /// Will be <see langword="true"/> if the the hand joint query as successful.
         /// </summary>
         public bool FullQueryValid { get; protected set; }
 
-        protected HandJointPose[] handJoints = new HandJointPose[(int)TrackedHandJoint.TotalJoints];
+        /// <summary>
+        /// The current <see cref="HandJointPose"/> for the trackable hand joints.
+        /// </summary>
+        protected HandJointPose[] HandJoints { get; set; } = new HandJointPose[(int)TrackedHandJoint.TotalJoints];
 
         /// <summary>
-        /// Constructor.
+        /// Initializes a new instance of a <see cref="HandDataContainer"/> class.
         /// </summary>
         /// <param name="handNode">The XRNode the hand data pertains to.</param>
         public HandDataContainer(XRNode handNode)
@@ -51,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Implemented in derived classes.  This method gets all of the joint poses for the hand.
         /// </summary>
         /// <param name="joints"> The returned list of HandJointPoses</param>
-        /// <returns>True if the query was successful, otherwise false.</returns>
+        /// <returns><see langword="true"/> if the query was successful, otherwise <see langword="false"/>.</returns>
         public abstract bool TryGetEntireHand(out IReadOnlyList<HandJointPose> joints);
 
         /// <summary>   
@@ -59,7 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="joint">The TrackedHandJoint to retrieve the post for.</param>
         /// <param name="pose">The returned HandJointPose.</param>
-        /// <returns>True if the query was successful, otherwise false.</returns>
+        /// <returns><see langword="true"/> if the query was successful, otherwise <see langword="false"/>.</returns>
         public abstract bool TryGetJoint(TrackedHandJoint joint, out HandJointPose pose);
     }
 }

@@ -14,21 +14,25 @@ using TrackingState = UnityEngine.XR.InputTrackingState;
 namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 {
     /// <summary>
-    /// A simulated eye gaze device patterned after the Unity OpenXR Plugin eye device.
-    /// This eye device is not completely identical in terms of usages or features compared
-    /// to the OpenXR eye device, but it is a close approximation. Bind to this device with
-    /// the usage wildcard */{gaze}/position, *{gaze}/rotation, etc. These usage bindings
-    /// will also match any OpenXR-compliant real-world eye device.
+    /// A simulated eye gaze device patterned after the Unity OpenXR Plugin <see href="https://docs.unity3d.com/Packages/com.unity.xr.openxr%401.4/api/UnityEngine.XR.OpenXR.Features.Interactions.EyeGazeInteraction.EyeGazeDevice.html">EyeGazeDevice</see>.
     /// </summary>
     /// <remarks>
-    /// We would like to be able to simply derive from the *real* OpenXR Eye Gaze device.
-    /// However, they use a duplicated version of the PoseControl type, instead of the
-    /// version found in the Unity Input System package. The OpenXR Plugin package does not
-    /// ship a corresponding PoseState struct along with their version of PoseControl, and
-    /// thus we cannot inject simulated input data into that control from the managed layer.
-    /// 
-    /// When the duplicated PoseControl version is either removed, or receives a corresponding
-    /// state struct, we can inherit directly from the OpenXR eye device.
+    /// <para>
+    /// This eye device is not completely identical in terms of usages or features compared
+    /// to the OpenXR eye device, but it is a close approximation. Bind to this device with
+    /// the usage wildcards; for example, <c>*/{gaze}/position</c> and <c>*{gaze}/rotation</c>. These usage bindings
+    /// will also match any OpenXR compliant device in the real-world.
+    /// <br/>
+    /// It's desirable to simply derive from the official OpenXR eye gaze device.
+    /// However, this class uses a custom <see href="https://docs.unity3d.com/Packages/com.unity.xr.openxr%401.4/api/UnityEngine.XR.OpenXR.Input.PoseControl.html">PoseControl</see> type,
+    /// instead of the version found in the Unity input system package, <see cref="PoseControl"/>. Also, the OpenXR plugin package does not
+    /// ship a corresponding <see cref="PoseState"/> struct along with its own 
+    /// <see href="https://docs.unity3d.com/Packages/com.unity.xr.openxr%401.4/api/UnityEngine.XR.OpenXR.Input.PoseControl.html">PoseControl</see> type,
+    /// as such cannot be injected to simulated input data into that control from the managed layer.
+    /// <br/>
+    /// When the duplicated <see href="https://docs.unity3d.com/Packages/com.unity.xr.openxr%401.4/api/UnityEngine.XR.OpenXR.Input.PoseControl.html">PoseControl</see>
+    /// type is either removed, or receives a corresponding state struct, this can inherit directly from the Unity's <see href="https://docs.unity3d.com/Packages/com.unity.xr.openxr%401.4/api/UnityEngine.XR.OpenXR.Features.Interactions.EyeGazeInteraction.EyeGazeDevice.html">EyeGazeDevice</see>.
+    /// </para>
     /// </remarks>
     [InputControlLayout(
         displayName = "Eye Gaze (MRTK)",
@@ -37,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
     public class SimulatedEyeGazeDevice : InputDevice
     {
         /// <summary>
-        /// A <see cref="PoseControl"/> representing the <see cref="EyeGazeInteraction.pose"/> OpenXR binding.
+        /// A <see cref="PoseControl"/> representing the <c>EyeGazeInteraction.pose</c> OpenXR binding.
         /// </summary>
         [Preserve, InputControl(offset = 0, usages = new[] { "Device", "gaze" })]
         public PoseControl pose { get; private set; }
@@ -80,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         internal Quaternion Rotation => poseState.rotation;
 
         /// <summary>
-        /// Constructor.
+        /// Initializes a new instance of a <see cref="SimulatedEyeGaze"/> class.
         /// </summary>
         public SimulatedEyeGaze()
         {

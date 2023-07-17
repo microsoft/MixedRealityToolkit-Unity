@@ -52,6 +52,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
         static bool physicsFoldout = false;
         static bool smoothingFoldout = false;
 
+        /// <inheritdoc/>
         protected override void OnEnable()
         {
             base.OnEnable();

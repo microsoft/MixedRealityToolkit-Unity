@@ -15,7 +15,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         [Tooltip("The object whose dimensions controls the placement of this object.")]
         private Transform control;
 
-        private void Awake()
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
+        protected virtual void Awake()
         {
             // Calculate the new position of the label based on the current size of the backplate
             float childOffset = ((control.lossyScale.y) / 2f * -1);

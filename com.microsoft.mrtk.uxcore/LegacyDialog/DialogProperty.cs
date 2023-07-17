@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
     public class DialogProperty
     {
         /// <summary>
-        /// Constructor.
+        /// Initializes a new instance of the <see cref="DialogProperty"/> class.
         /// </summary>
         /// <param name="title">The title bar string (top-most) on the dialog.</param>
         /// <param name="message">The message content string of the dialog.</param>
@@ -40,6 +40,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
             ButtonContexts = buttonContexts;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DialogProperty"/> class.
+        /// </summary>
         [Obsolete("This legacy dialog system has been deprecated. Please migrate to the new dialog system, see Microsoft.MixedReality.Toolkit.UX.DialogPool for more details.")]
         public DialogProperty(string title, string message, DialogButtonTypes buttonTypes) : this(title, message)
         {
@@ -56,6 +59,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
             ButtonContexts = buttonTypesList.ToArray();
         }
 
+        /// <summary>
+        /// Convert a <see cref="DialogButtonTypes"/> enumeration value to a see <see cref="DialogButtonType"/> enumeration value 
+        /// </summary>
         [Obsolete("This legacy dialog system has been deprecated. Please migrate to the new dialog system, see Microsoft.MixedReality.Toolkit.UX.DialogPool for more details.")]
         private static DialogButtonType Convert(DialogButtonTypes dialogButtonTypes)
         {
@@ -73,6 +79,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
             }
         }
 
+        /// <summary>
+        /// Convert a <see cref="DialogButtonType"/> enumeration value to a see <see cref="DialogButtonTypes"/> enumeration value 
+        /// </summary>
         [Obsolete("This legacy dialog system has been deprecated. Please migrate to the new dialog system, see Microsoft.MixedReality.Toolkit.UX.DialogPool for more details.")]
         internal static DialogButtonTypes Convert(DialogButtonType dialogButtonTypes)
         {

@@ -39,7 +39,7 @@ namespace Microsoft.MixedReality.Toolkit
         public Vector3 ReticleNormal;
 
         /// <summary>
-        /// Constructor for <see cref="VariableReticleUpdateArgs"/>.
+        /// Initializes a <see cref="VariableReticleUpdateArgs"/> struct.
         /// </summary>
         public VariableReticleUpdateArgs(IXRInteractor interactor, Vector3 reticlePosition, Vector3 reticleNormal)
         {

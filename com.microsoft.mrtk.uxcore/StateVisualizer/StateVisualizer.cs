@@ -26,11 +26,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
         // can "lag" behind their intended motion in some instances.
         private const float keepAliveTime = 0.2f;
 
-        // Number of wakeup events we subscribe to by default.
+        // Number of wake-up events we subscribe to by default.
         // Used for nicer list initialization.
-        private const int defaultWakeupEventCount = 8;
+        private const int defaultWakeUpEventCount = 8;
 
-        [Serializable]
         /// <summary>
         /// A container that holds a list of effects, as well as the
         /// current value of the state.
@@ -41,6 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// Consider using a more appropriate Effect rather than adjusting how
         /// the value is submitted.
         /// </remarks>
+        [Serializable]
         internal class State
         {
             [SerializeReference]
@@ -143,13 +143,16 @@ namespace Microsoft.MixedReality.Toolkit.UX
         // zero when sleep is requested.
         private float sleepTimer = 0;
 
-        // We hold on to a list of actions we use to unsubscribe from the wakeup events.
-        private List<UnityAction> unsubscribeActions = new List<UnityAction>(defaultWakeupEventCount);
+        // We hold on to a list of actions we use to unsubscribe from the wake-up events.
+        private List<UnityAction> unsubscribeActions = new List<UnityAction>(defaultWakeUpEventCount);
 
         // A runtime scratchpad for recording where each IMixableEffect is connected on the mixer.
         private Dictionary<IEffect, int> mixableIndices = new Dictionary<IEffect, int>();
 
-        void OnValidate()
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
+        private void OnValidate()
         {
             EnsureDefaultStates();
             if (interactable == null)
@@ -165,7 +168,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private UnityAction Subscribe<T>(UnityEvent<T> genericEvent, UnityAction callback)
         {
-            // Wrap argumentless callback in generic lambda
+            // Wrap callback in generic lambda
             UnityAction<T> wrapper = (_) => callback();
             genericEvent.AddListener(wrapper);
 
@@ -179,6 +182,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             return () => evt.RemoveListener(callback);
         }
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
         protected virtual void Start()
         {
             OnValidate();
@@ -279,6 +285,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             sleepTimer = keepAliveTime;
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             bool valueChanged = UpdateStateValues();
@@ -304,7 +313,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
                 // Only sleep if we're not currently selected or hovered.
                 // This seems counter-intuitive, but we do this because an animation may need to be
-                // kicked off when the float value of a state changes. We don't have a wakeup event
+                // kicked off when the float value of a state changes. We don't have a wake-up event
                 // for a "value changed", so we just stay awake while we are hovered (or selected).
                 if (sleepTimer <= 0 && interactable != null && !interactable.isSelected && !interactable.isHovered)
                 {
@@ -321,6 +330,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been destroyed.
+        /// </summary>
         private void OnDestroy()
         {
             foreach (var unsubscribeAction in unsubscribeActions)
@@ -356,7 +368,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         /// <param name="stateName">The name of the state to remove the effect from.</param>
         /// <param name="effect">The effect to remove.</param>
-        /// <returns>True if the effect was removed, false otherwise.</returns>
+        /// <returns><see langword="true"/> if the effect was removed, <see langword="false"/> otherwise.</returns>
         internal bool RemoveEffect(string stateName, IEffect effect)
         {
             if (stateContainers.ContainsKey(stateName))
@@ -372,12 +384,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
         // TODO: Custom states/effects should probably be able to set their own parameters.
         // Given that custom states can't yet be added to the StateVisualizer, this
         // is a non-issue for now.
+
         /// <summary>
         /// Sets the parameter value on each state. 
         /// Override + extend this method to implement custom state parameters.
         /// </summary>
         /// <returns>
-        /// True if the parameter has changed, false otherwise.
+        /// <see langword="true"/> if the parameter has changed, <see langword="false"/> otherwise.
         /// </returns>
         protected virtual bool UpdateStateValues()
         {
@@ -389,7 +402,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     parameterChanged |= UpdateStateValue("Disabled", !interactable.enabled ? 1 : 0);
                     parameterChanged |= UpdateStateValue("PassiveHover", interactable.isHovered ? 1 : 0);
                     parameterChanged |= UpdateStateValue("ActiveHover", interactable.IsActiveHovered ? 1 : 0);
-                    parameterChanged |= UpdateStateValue("Select", interactable.Selectedness());
+                    parameterChanged |= UpdateStateValue("Select", interactable.GetSelectionProgress());
                     parameterChanged |= UpdateStateValue("Toggle", interactable.IsToggled ? 1 : 0);
                     return parameterChanged;
                 }
@@ -401,9 +414,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// Manually sets a state to a given value.
         /// </summary>
         /// <param name="stateName">The name of the state to set.</param>
-        /// <param name="value">The value to set the state to.</param>
+        /// <param name="newValue">The value to set the state to.</param>
         /// <returns>
-        /// True if the parameter was changed this frame, false if it remained constant.
+        /// <see langword="true"/> if the parameter was changed this frame, <see langword="false"/> if it remained constant.
         /// </returns>
         internal bool UpdateStateValue(string stateName, float newValue)
         {
@@ -429,9 +442,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// Uses the parameter currently set on the <see cref="StateVisualizer.State"/>.
         /// Call <see cref="StateVisualizer.UpdateStateValues"/> before calling this method.
         /// </summary>
+        /// <remarks>
+        /// The <see cref="StateVisualizer"/> and connected <see cref="Animator"/> will be put to 
+        /// sleep if this returns <see langword="true"/>.
+        /// </remarks>
         /// <returns>
-        /// True if all effects are done playing, false otherwise. The <see cref="StateVisualizer"/>
-        /// and connected <see cref="Animator"/> will be put to sleep if this returns true.
+        /// <see langword="true"/> if all effects are done playing, <see langword="false"/> otherwise. 
         /// </returns>
         private bool EvaluateEffects()
         {

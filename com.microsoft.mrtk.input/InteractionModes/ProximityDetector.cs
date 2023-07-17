@@ -59,6 +59,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         public HashSet<Collider> DetectedColliders => colliders;
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             if (interactionManager == null)
@@ -84,6 +87,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called at an framerate independent frequency, and is only called if this object is enabled.
+        /// </summary>
         private void FixedUpdate()
         {
             detectedAnythingLastFrame = colliders.Count > 0;
@@ -92,6 +98,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             colliders.Clear();
         }
 
+        /// <summary>
+        /// A Unity event function that is called to draw Unity editor gizmos that are also interactable and always drawn.
+        /// </summary>
         private void OnDrawGizmos()
         {
             if (detectionZone != null)

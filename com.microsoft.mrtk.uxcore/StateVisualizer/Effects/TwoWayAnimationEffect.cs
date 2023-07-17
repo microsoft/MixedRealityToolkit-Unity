@@ -9,11 +9,12 @@ using WeightType = Microsoft.MixedReality.Toolkit.UX.IAnimationMixableEffect.Wei
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
-    [Serializable]
     /// <summary>
-    /// An <see cref="IEffect"> that plays two different <see cref="AnimationClip"/>s,
-    /// one for the forward direction, and one for the reverse direction.
+    /// An <see cref="IEffect" /> that plays two different Unity 
+    /// <see href="https://docs.unity3d.com/ScriptReference/AnimationClip.html">AnimationClip"</see> components,
+    /// one for the forward direction and one for the reverse direction.
     /// </summary>
+    [Serializable]
     internal class TwoWayAnimationEffect : PlayableEffect, IAnimationMixableEffect
     {
         [SerializeField]

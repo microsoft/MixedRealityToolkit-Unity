@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         IDictationSubsystem
     {
         /// <summary>
-        /// Construct the <c>DictationSubsystem</c>.
+        /// Initializes a new instance of the <see cref="DictationSubsystem"/> class.
         /// </summary>
         public DictationSubsystem()
         { }
@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// <param name="DictationSubsystemParams">The parameters defining the dictation subsystem functionality implemented
         /// by the subsystem provider.</param>
         /// <returns>
-        /// <c>true</c> if the subsystem implementation is registered. Otherwise, <c>false</c>.
+        /// <see langword="true"/> if the subsystem implementation is registered. Otherwise, <see langword="false"/>.
         /// </returns>
         public static bool Register(DictationSubsystemCinfo DictationSubsystemParams)
         {

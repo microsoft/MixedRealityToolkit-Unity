@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -25,16 +29,16 @@ namespace Microsoft.MixedReality.Toolkit.Data
         public IDataController DataController { get => _dataController; set => _dataController = value; }
         private IDataController _dataController;
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public string DataSourceType { get; set; }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public void SetDataKeyPathMapper(IDataKeyPathMapper keyPathMapper)
         {
             _dataKeyPathMapper = keyPathMapper;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public string ResolveKeyPath(string resolvedKeyPathPrefix, string localKeyPath)
         {
             resolvedKeyPathPrefix ??= string.Empty;
@@ -60,7 +64,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public object GetValue(string resolvedKeyPath)
         {
             if (IsDataAvailable())
@@ -73,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public void SetValue(string resolvedKeyPath, object newValue, bool isAtomicChange = false)
         {
             if (IsDataAvailable())
@@ -83,7 +87,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public virtual void DataChangeSetBegin()
         {
             foreach (IDataConsumer dataConsumer in _dataConsumerKeyPathCounts.Keys)
@@ -92,7 +96,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public virtual void DataChangeSetEnd()
         {
             foreach (IDataConsumer dataConsumer in _dataConsumerKeyPathCounts.Keys)
@@ -119,7 +123,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public void AddDataConsumerListener(string resolvedKeyPath, IDataConsumer dataConsumer)
         {
             if (!_keyPathToDataConsumers.ContainsKey(resolvedKeyPath))
@@ -194,7 +198,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public virtual void RemoveDataConsumerListener(string resolvedKeyPath, IDataConsumer dataConsumer)
         {
             if (_keyPathToDataConsumers.ContainsKey(resolvedKeyPath))
@@ -214,32 +218,32 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public virtual bool IsCollectionAtKeyPath(string resolvedKeyPath)
         {
             return false;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public virtual int GetCollectionCount(string resolvedKeyPath)
         {
             return 0;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public virtual string GetNthCollectionKeyPathAt(string resolvedKeyPath, int n)
         {
             return null;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public virtual IEnumerable<string> GetCollectionKeyPathRange(string resolvedKeyPath, int rangeStart, int rangeCount)
         {
             return null;
         }
 
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public void NotifyDataChanged(string resolvedKeyPath, object value, DataChangeType changeType, bool isAtomicChange)
         {
             if (_keyPathToDataConsumers.ContainsKey(resolvedKeyPath))
@@ -262,7 +266,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public void NotifyAllChanged(DataChangeType dataChangeType = DataChangeType.DatumModified, IDataConsumer whichDataConsumer = null)
         {
             if (IsDataAvailable())
@@ -292,7 +296,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public virtual bool IsDataAvailable()
         {
             // override if an async datasource may not yet have finished loading
@@ -357,3 +361,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     }
 }
+#pragma warning restore CS1591

@@ -19,13 +19,13 @@ namespace Microsoft.MixedReality.Toolkit
 
         private const string defaultText = "<b><color=yellow>This is an experimental feature.</color></b>\n" +
                                            "Parts of the MRTK3 appear to have a lot of value even if the details " +
-                                           "haven’t fully been fleshed out. For these types of features, we want " +
+                                           "haven't fully been fleshed out. For these types of features, we want " +
                                            "the community to see them and get value out of them early. Because " +
                                            "they are early in the cycle, we label them as experimental to indicate " +
                                            "that they are still evolving, and subject to change over time.";
 
         /// <summary>
-        /// Constructor.
+        /// Initializes a new instance of a <see cref="ExperimentalAttribute"/> class.
         /// </summary>
         /// <param name="experimentalText">The experimental text to display in the warning box.</param>
         public ExperimentalAttribute(string experimentalText = defaultText)

@@ -41,6 +41,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 
         private const string AdvancedPropertiesFoldoutKey = "TapToPlaceAdvancedProperties";
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         protected virtual void OnEnable()
         {
             instance = (TapToPlace)target;

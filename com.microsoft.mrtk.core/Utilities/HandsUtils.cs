@@ -187,7 +187,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
 
             /// <summary>
-            /// Constructs a new serialized pose entry with the given joint enum id and pose.
+            /// Initializes a <see cref="ArticulatedHandPoseItem"/> struct.
             /// </summary>
             public ArticulatedHandPoseItem(TrackedHandJoint joint, Pose pose)
             {

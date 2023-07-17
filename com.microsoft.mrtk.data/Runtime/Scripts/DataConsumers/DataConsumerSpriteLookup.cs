@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using System;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -57,27 +61,27 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected SpriteRenderer _spriteRenderer;
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override Type[] GetComponentTypes()
         {
             Type[] types = { typeof(SpriteRenderer) };
             return types;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override bool ManageChildren()
         {
             return manageChildren;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void AddVariableKeyPathsForComponent(Component component)
         {
             _spriteRenderer = component as SpriteRenderer;
             AddKeyPathListener(keyPath);
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType)
         {
             if (localKeyPath == keyPath)
@@ -96,3 +100,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     }
 }
+#pragma warning restore CS1591

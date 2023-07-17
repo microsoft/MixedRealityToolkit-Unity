@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,3 +31,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         public abstract void ProcessCommand(string command, object data, Dictionary<string, object> optionalParameters = null);
     }
 }
+#pragma warning restore CS1591

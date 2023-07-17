@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         protected HashSet<IXRInteractable> validTargets = new HashSet<IXRInteractable>();
 
         /// <summary>
-        /// The last target selected using the <see cref="StartSelect"/> method. This value will
+        /// The last target selected using the <see cref="StartSelect(IXRSelectInteractable)"/> method. This value will
         /// be cleared when <see cref="EndSelect"/> is called.
         /// </summary>
         protected IXRSelectInteractable manualSelectTarget;

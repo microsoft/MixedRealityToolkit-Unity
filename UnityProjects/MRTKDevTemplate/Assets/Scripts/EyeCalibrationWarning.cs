@@ -40,6 +40,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             set => text = value;
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         private void OnEnable()
         {
             if (checker == null)

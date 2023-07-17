@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// The other <see cref="PerformanceStatsSubsystemCinfo"/> to compare against.
         /// </param>
         /// <returns>
-        /// `True` if every field in <paramref name="other"/> is equal to this <see cref="PerformanceStatsSubsystemCinfo"/>, otherwise false.
+        /// <see langword="true"/> if every field in <paramref name="other"/> is equal to this <see cref="PerformanceStatsSubsystemCinfo"/>, otherwise false.
         /// </returns>
         public bool Equals(PerformanceStatsSubsystemCinfo other)
         {
@@ -57,8 +57,8 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// Tests for equality.
         /// </summary>
         /// <param name="obj">The `object` to compare against.</param>
-        /// <returns>`True` if <paramref name="obj"/> is of type <see cref="PerformanceStatsSubsystemCinfo"/> and
-        /// <see cref="Equals(PerformanceStatsSubsystemCinfo)"/> also returns `true`; otherwise `false`.</returns>
+        /// <returns><see langword="true"/> if <paramref name="obj"/> is of type <see cref="PerformanceStatsSubsystemCinfo"/> and
+        /// <see cref="Equals(PerformanceStatsSubsystemCinfo)"/> also returns <see langword="true"/>; otherwise <see langword="false"/>.</returns>
         public override bool Equals(System.Object obj)
         {
             return (obj is PerformanceStatsSubsystemCinfo cinfo) && Equals(cinfo);
@@ -69,7 +69,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// </summary>
         /// <param name="lhs">The left-hand side of the comparison.</param>
         /// <param name="rhs">The right-hand side of the comparison.</param>
-        /// <returns>`True` if <paramref name="lhs"/> is equal to <paramref name="rhs"/>, otherwise `false`.</returns>
+        /// <returns><see langword="true"/> if <paramref name="lhs"/> is equal to <paramref name="rhs"/>, otherwise <see langword="false"/>.</returns>
         public static bool operator ==(PerformanceStatsSubsystemCinfo lhs, PerformanceStatsSubsystemCinfo rhs)
         {
             return lhs.Equals(rhs);
@@ -80,12 +80,21 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// </summary>
         /// <param name="lhs">The left-hand side of the comparison.</param>
         /// <param name="rhs">The right-hand side of the comparison.</param>
-        /// <returns>`True` if <paramref name="lhs"/> is not equal to <paramref name="rhs"/>, otherwise `false`.</returns>
+        /// <returns><see langword="true"/> if <paramref name="lhs"/> is not equal to <paramref name="rhs"/>, otherwise <see langword="false"/>.</returns>
         public static bool operator !=(PerformanceStatsSubsystemCinfo lhs, PerformanceStatsSubsystemCinfo rhs)
         {
             return !(lhs == rhs);
         }
 
+        /// <summary>
+        /// This <see cref="GetHashCode"/> override is meant to disable hash lookups of <see cref="PerformanceStatsSubsystemCinfo"/> objects.
+        /// </summary>
+        /// <remarks>
+        /// This will throw a <see cref="ApplicationException"/> if called.
+        /// </remarks>
+        /// <exception cref="ApplicationException">
+        /// Thrown if this function is called.
+        /// </exception>
         public override int GetHashCode()
         {
             throw new ApplicationException("Do not hash subsystem descriptors as keys.");
@@ -101,9 +110,9 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         IMRTKSubsystemDescriptor
     {
         /// <summary>
-        /// Constructs a <c>PerformanceStatsSubsystemDescriptor</c> based on the given parameters.
+        /// Initializes a new instance of the <see cref="PerformanceStatsSubsystemDescriptor"/> class.
         /// </summary>
-        /// <param name='PerformanceStatsSubsystemCinfo'>The parameters required to initialize the descriptor.</param>
+        /// <param name="cinfo">The parameters required to initialize the descriptor.</param>
         PerformanceStatsSubsystemDescriptor(PerformanceStatsSubsystemCinfo cinfo)
         {
             Name = cinfo.Name;
@@ -136,12 +145,14 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         #endregion IMRTKDescriptor implementation
 
         /// <summary>
-        /// Creates a <c>PerformanceStatsSubsystemDescriptor</c> based on the given parameters validating that the
-        /// <c>id</c> and <c>implentationType</c> properties are specified.
+        /// Creates a <see cref="PerformanceStatsSubsystemDescriptor"/> based on the given parameters.
         /// </summary>
-        /// <param name='PerformanceStatsSubsystemCinfo'>The parameters required to initialize the descriptor.</param>
+        /// <remarks>
+        /// This function will verify that the <see cref="PerformanceStatsSubsystemCinfo"/> properties are valid.
+        /// </remarks>
+        /// <param name="cinfo">The parameters required to initialize the descriptor.</param>
         /// <returns>
-        /// The created <c>PerformanceStatsSubsystemDescriptor</c>.
+        /// The newly created instance of the <see cref="PerformanceStatsSubsystemDescriptor"/> class.
         /// </returns>
         internal static PerformanceStatsSubsystemDescriptor Create(PerformanceStatsSubsystemCinfo cinfo)
         {

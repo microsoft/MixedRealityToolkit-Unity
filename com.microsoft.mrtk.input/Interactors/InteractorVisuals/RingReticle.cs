@@ -50,7 +50,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private float previousNearFadeValue;
 
-        void Awake()
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
+        protected virtual void Awake()
         {
             propertyBlock = new MaterialPropertyBlock();
 
@@ -62,6 +65,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         protected void OnEnable()
         {
             InitializeFadeBehavior(fadeEnabled);

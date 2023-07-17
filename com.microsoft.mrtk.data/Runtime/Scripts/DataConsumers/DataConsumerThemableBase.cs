@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -160,7 +164,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return null;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override bool ManageChildren()
         {
             return manageComponentsInChildren;
@@ -175,7 +179,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// management of those components.  Some data consumers are not
         /// component centric and therefore can return false to indicate
         /// that no component management is needed.</remarks>
-        /// <returns>True means this is a component centric data consumer.</returns>
+        /// <returns><see langword="true"/> means this is a component centric data consumer.</returns>
         protected virtual bool DoesManageSpecificComponents()
         {
             return false;
@@ -290,7 +294,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void DetachDataConsumer()
         {
             // TODO: free up any resources like lookups?
@@ -522,3 +526,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     }
 }
+#pragma warning restore CS1591

@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -80,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// start of the variable's entire token substring.</param>
         /// <param name="tokenEnd">If the function returns true, this is the end
         /// of the variable's entire token substring.</param>
-        /// <returns>True if a variable was found, false if not.</returns>
+        /// <returns><see langword="true"/> if a variable was found, <see langword="false"/> if not.</returns>
         public static bool FindVariable(string templateStr, int searchFromIndex, out int varStart, out int varEnd, out int tokenStart, out int tokenEnd)
         {
             // Based on this regex:
@@ -196,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="str">A string in a format similar to "text[12].var"</param>
         /// <param name="start">The index of the first character inside_ of a '[]' token, -1 if no token is found.</param>
         /// <param name="end">The index of the ']' character in the '[]' token, -1 if no token is found.</param>
-        /// <returns>True if a '[]' token was found, false otherwise.</returns>
+        /// <returns><see langword="true"/> if a '[]' token was found, <see langword="false"/> otherwise.</returns>
         public static bool FindKeypathArrayToken(string str, out int start, out int end)
         {
             start = -1;
@@ -263,3 +267,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     }
 }
+#pragma warning restore CS1591

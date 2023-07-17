@@ -18,6 +18,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
     {
         #region MonoBehaviour
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             ApplyControlSet(ControlSet);
@@ -28,6 +31,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
 
         private bool isSimulating = true;
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             using (UpdatePerfMarker.Auto())
@@ -94,6 +100,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         private void OnDisable()
         {
             DisableSimulatedHMD();
@@ -318,6 +327,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// </summary>
         /// <param name="handedness">
         /// The <see cref="Handedness"/> of the controller to be enabled.
+        /// </param>
+        /// <param name="ctrlSettings">
+        /// The controller simulation settings to use the simulation.
+        /// </param>
+        /// <param name="startPosition">
+        /// The initial position of the simulated controller.
         /// </param>
         /// <remarks>
         /// This method creates the controller simulation object(s) as needed. If called while
@@ -638,7 +653,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// </summary>
         /// <param name="handedness"><see cref="Handedness"/> value (ex: Left).</param>
         /// <returns>
-        /// True if the specified <see cref="Handedness"/> is supported, or false.
+        /// <see langword="true"/> if the specified <see cref="Handedness"/> is supported, or <see langword="false"/>.
         /// </returns>
         private bool IsSupportedHandedness(Handedness handedness)
         {

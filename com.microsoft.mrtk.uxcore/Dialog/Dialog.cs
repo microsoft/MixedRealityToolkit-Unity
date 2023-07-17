@@ -21,10 +21,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// of the dialog view.
     /// </summary> 
     /// <remarks>
-    /// Dialogs are typically spawned, pooled, and killed
+    /// Dialogs are typically spawned, pooled, and destroyed
     /// by <see cref="Microsoft.MixedReality.Toolkit.UX.DialogPool">DialogPools</see>. 
     /// Generally, developers should not directly manage or instantiate instances of their dialogs,
-    /// as it is essential that they are pooled and managed correctly by a pooler.
+    /// as it is essential that they are pooled and managed correctly by a coordinator.
     /// </remarks>
     [AddComponentMenu("MRTK/UX/Dialog")]
     public class Dialog : MonoBehaviour, IDialog
@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         
         #endregion
 
-        #region Viewmodel
+        #region ViewModel
 
         private string header = null;
 
@@ -147,9 +147,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
+        /// <remarks>
         /// Adds the listeners/actions to the buttons that have been
         /// specified/added to the dialog.
-        /// </summary>
+        /// </remarks>
         protected virtual void Awake()
         {
             if (negativeButton.Interactable != null)
@@ -201,7 +204,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 followSolver.Smoothing = true;
                 followSolver.MoveLerpTime = 1.0f;
                 followSolver.RotateLerpTime = 1.0f;
-                followSolver.OrientToControllerDeadzoneDegrees = 25.0f;
+                followSolver.OrientToControllerDeadZoneDegrees = 25.0f;
             }
 #endif
 
@@ -224,6 +227,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
             return this;
         }
 
+        /// <inheritdoc />
         public virtual async Task<DialogDismissedEventArgs> ShowAsync()
         {
             Show();
@@ -258,6 +262,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// and then hide the dialog and invoke the dismissal action. This coroutine
         /// is started by the base <see cref="Dismiss"/> method once all listeners
         /// have been removed.
+        /// </summary>
         private IEnumerator InvokeDismissalAfterAnimation()
         {
             Animator animator = GetComponent<Animator>();

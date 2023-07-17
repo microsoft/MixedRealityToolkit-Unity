@@ -87,7 +87,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
         }
 
-        void FixedUpdate()
+        /// <summary>
+        /// A Unity event function that is called at an framerate independent frequency, and is only called if this object is enabled.
+        /// </summary>
+        private void FixedUpdate()
         {
             hoveredTargets.Clear();
         }

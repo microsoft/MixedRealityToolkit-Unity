@@ -8,16 +8,17 @@ using UnityEngine.Playables;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
-    [Serializable]
     /// <summary>
-    /// An <see cref="IEffect"> that wraps a PlayableBehaviour which can tint arbitrary types of components.
+    /// An <see cref="IEffect" /> that wraps a Unity <see href="https://docs.unity3d.com/ScriptReference/Playables.PlayableBehaviour.html">PlayableBehaviour</see>
+    /// component, and can tint arbitrary types of components.
     /// </summary>
     /// <remarks>
     /// This pattern is to support the tinting of disparate component types that can all be tinted, but
-    /// are not necessarily related by class or type (such as Sprites vs Images).
-    /// Subclass this abstract class to create tinting behaviour for arbitrary tintable components, such as
-    /// SpriteRenderers, TMPros, Graphic components, and even custom materials/meshes.
+    /// are not necessarily related by class or type, such as Unity sprites versus Unity images.
+    ///
+    /// Subclass this class to create tinting behaviour for arbitrary Unity components.
     /// </remarks>
+    [Serializable]
     internal abstract class TintEffect<T> : PlayableEffect, ISerializationCallbackReceiver
     {
         /// <summary>
@@ -145,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 for (int i = 0; i < tintables.Count; i++)
                 {
                     // We grab the *current* color, because this behavior isn't necessarily
-                    // the only thing tinting this tintable! TintBehaviors can stack and blend.
+                    // the only thing tinting this tintable. TintBehaviors can stack and blend.
                     if (!GetColor(tintables[i], out Color currentColor)) { continue; }
 
                     // Compute our target color based on the specified mix mode.
@@ -272,9 +273,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         protected abstract TintBehaviour<T> CreatePlayableAndBehaviour(PlayableGraph graph);
 
-        // Unity doesn't like polymorphic name serialization in ReorderableLists,
+        // Unity doesn't like polymorphic name serialization in re-orderable lists,
         // so we have to do this for the name of the subclasses to show up as the title
-        // of each entry in the reorderablelist.
+        // of each entry in the re-orderable list.
         public void OnBeforeSerialize()
         {
             name = GetType().Name.Replace("Effect", string.Empty);

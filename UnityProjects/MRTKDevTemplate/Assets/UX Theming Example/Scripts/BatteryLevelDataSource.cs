@@ -60,6 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             {
                 return batteryLevel0To1;
             }
+            
             set
             {
                 batteryLevel0To1 = ValidateBatteryLevel(value);
@@ -68,14 +69,19 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
         [SerializeField]
-        [Tooltip("Convenience access to battery charging state for testing")]
+        [Tooltip("Convenience access to battery charging state for testing.")]
         private bool isCharging = false;
+        
+        /// <summary>
+        /// Get or set if the battery currently being charged.
+        /// </summary>
         public bool IsCharging
         {
             get
             {
                 return isCharging;
             }
+
             set
             {
                 isCharging = value;
@@ -83,6 +89,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             if (_valueChanged )
@@ -104,7 +113,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return new DataSourceDictionary();
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void InitializeDataSource()
         {
             if (DataSourceType == null || DataSourceType == "")
@@ -181,13 +190,21 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
             return integralLevel;
         }
-
+    
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         private void OnValidate()
         {
             batteryLevel0To1 = ValidateBatteryLevel(batteryLevel0To1);
             _valueChanged = true;
         }
 
+        /// <summary>
+        /// Clamp the provided battery level to an acceptable range.
+        /// </summary>
+        /// <param name="level">The battery level to clamp.</param>
+        /// <returns>The clamped battery level value.</returns>
         protected float ValidateBatteryLevel(float level)
         {
             return Mathf.Clamp01(level);

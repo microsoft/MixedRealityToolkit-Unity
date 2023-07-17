@@ -72,15 +72,22 @@ namespace Microsoft.MixedReality.Toolkit
             set => clearMode = value;
         }
 
+        /// <summary>
+        /// The default <see cref="Color"/> to apply to <see cref="ClearColor"/> if on an opaque XR headset.
+        /// </summary>
         public static readonly Color DefaultClearColorOpaque = Color.black;
+        
+        /// <summary>
+        /// The default <see cref="Color"/> to apply to <see cref="ClearColor"/> if on a transparent XR headset.
+        /// </summary>
         public static readonly Color DefaultClearColorTransparent = Color.black;
 
         [SerializeField]
-        [Tooltip("Color to use when clearing (does not apply to Skybox or Depth)")]
+        [Tooltip("Color to use when clearing (does not apply to sky box or depth)")]
         private Color clearColor;
 
         /// <summary>
-        /// Color to use when clearing (does not apply to Skybox or Depth).
+        /// Color to use when clearing (does not apply to sky box or depth).
         /// </summary>
         public Color ClearColor
         {
@@ -88,7 +95,14 @@ namespace Microsoft.MixedReality.Toolkit
             set => clearColor = value;
         }
 
+        /// <summary>
+        /// The default value to apply to <see cref="NearPlaneDistance"/> if on an opaque XR headset.
+        /// </summary>
         public static readonly float DefaultNearPlaneDistanceOpaque = 0.1f;
+
+        /// <summary>
+        /// The default value to apply to <see cref="NearPlaneDistance"/> if on a transparent XR headset.
+        /// </summary>
         public static readonly float DefaultNearPlaneDistanceTransparent = 0.1f;
 
         [SerializeField]
@@ -104,15 +118,22 @@ namespace Microsoft.MixedReality.Toolkit
             set => nearPlaneDistance = value;
         }
 
+        /// <summary>
+        /// The default value to apply to <see cref="FarPlaneDistance"/> if on an opaque XR headset.
+        /// </summary>
         public static readonly float DefaultFarPlaneDistanceOpaque = 1000f;
+        
+        /// <summary>
+        /// The default value to apply to <see cref="FarPlaneDistance"/> if on a transparent XR headset.
+        /// </summary>
         public static readonly float DefaultFarPlaneDistanceTransparent = 50f;
 
         [SerializeField]
-        [Tooltip("Furthest distance (in meters) at which holograms will display.")]
+        [Tooltip("Furthest distance,  in meters, at which holograms will display.")]
         private float farPlaneDistance;
 
         /// <summary>
-        /// Furthest distance (in meters) at which holograms will display.
+        /// Furthest distance, in meters, at which holograms will display.
         /// </summary>
         public float FarPlaneDistance
         {
@@ -146,7 +167,14 @@ namespace Microsoft.MixedReality.Toolkit
             set => adjustQualityLevel = value;
         }
 
+        /// <summary>
+        /// The default value to apply to <see cref="QualityLevel"/> if on an opaque XR headset.
+        /// </summary>
         public static readonly int DefaultQualityLevelOpaque = 5;       // Ultra
+
+        /// <summary>
+        /// The default value to apply to <see cref="QualityLevel"/> if on a transparent XR headset.
+        /// </summary>        
         public static readonly int DefaultQualityLevelTransparent = 0;  // Very Low
 
         [SerializeField]

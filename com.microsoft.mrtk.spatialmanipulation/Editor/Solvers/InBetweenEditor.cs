@@ -15,6 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
         private SerializedProperty secondTransformOverrideProperty;
         private SerializedProperty partwayOffsetProperty;
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         protected override void OnEnable()
         {
             base.OnEnable();

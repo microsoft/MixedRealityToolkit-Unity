@@ -547,8 +547,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: StatefulPressableButton defines the pressability of an object, by overriding
-    the virtual Selectedness() function. The PressableButtonVisuals interprets this
-    Selectedness, along with the other conditions + flags exposed by MRTKBaseInteractable
+    the virtual GetSelectionProgress() function. The PressableButtonVisuals interprets this
+    GetSelectionProgress(), along with the other conditions + flags exposed by MRTKBaseInteractable
     and StatefulInteractable, to drive the complex visual feedback you see here.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fea6b26abeefbc547b6aca1dbda0a34d, type: 2}

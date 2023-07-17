@@ -109,6 +109,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Copy the given ray structure to this raycast step, along with the specified length.
         /// </summary>
+        /// <param name="ray">The ray to copy.</param>
         /// <param name="length">
         /// The new length for this raycast step. The length or magnitude of the raycast step. 
         /// This is the distance from the ray's origin to the terminus.
@@ -131,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="point">The point to test.</param>
         /// <returns>
-        /// True if the point is contained along the raycast step. Otherwise false is returned.
+        /// <see langword="true"/> if the point is contained along the raycast step, otherwise <see langword="false"/>.
         /// </returns>
         public bool Contains(Vector3 point)
         {

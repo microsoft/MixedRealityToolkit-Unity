@@ -74,7 +74,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion ISerializationCallbackReceiver
 
-        void Update()
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
+        private void Update()
         {
             if (JointPoseSource != null && JointPoseSource.TryGetPose(out Pose pose))
             {

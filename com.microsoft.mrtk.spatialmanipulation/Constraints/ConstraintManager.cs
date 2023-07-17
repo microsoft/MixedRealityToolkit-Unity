@@ -8,10 +8,12 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
     /// <summary>
-    /// Manages constraints for a given object and ensures that Scale/Rotation/Translation 
+    /// Manages constraints for a given object and ensures that scale, rotation, and translation 
     /// constraints are executed separately.
-    /// We're looking to rework this system in the future. These existing components will be deprecated then. 
     /// </summary>
+    /// <remarks>
+    /// The constraint system might be reworked in the future. In such a case, these existing components will be deprecated.
+    /// </remarks>
     [HelpURL("https://docs.microsoft.com/windows/mixed-reality/mrtk-unity/features/ux-building-blocks/constraint-manager")]
     [AddComponentMenu("MRTK/Spatial Manipulation/Constraint Manager")]
     public class ConstraintManager : MonoBehaviour
@@ -73,16 +75,34 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             selectedConstraints.Remove(constraint);
         }
 
+        /// <summary>
+        /// Apply scale constraints to the given transform.
+        /// </summary>
+        /// <param name="transform">The transform to be adjusted.</param>
+        /// <param name="isOneHanded">This value should be <see langword="true"/> if the scale is being executed with one hand.</param>
+        /// <param name="isNear">The value should be <see langword="true"/> if the scale is being executed with a near interaction.</param>
         public void ApplyScaleConstraints(ref MixedRealityTransform transform, bool isOneHanded, bool isNear)
         {
             ApplyConstraintsForType(ref transform, isOneHanded, isNear, TransformFlags.Scale);
         }
 
+        /// <summary>
+        /// Apply rotation constraints to the given transform.
+        /// </summary>
+        /// <param name="transform">The transform to be adjusted.</param>
+        /// <param name="isOneHanded">This value should be <see langword="true"/> if the rotation is being executed with one hand.</param>
+        /// <param name="isNear">The value should be <see langword="true"/> if the rotation is being executed with a near interaction.</param>
         public void ApplyRotationConstraints(ref MixedRealityTransform transform, bool isOneHanded, bool isNear)
         {
             ApplyConstraintsForType(ref transform, isOneHanded, isNear, TransformFlags.Rotate);
         }
 
+        /// <summary>
+        /// Apply move or translation constraints to the given transform.
+        /// </summary>
+        /// <param name="transform">The transform to be adjusted.</param>
+        /// <param name="isOneHanded">This value should be <see langword="true"/> if the move is being executed with one hand.</param>
+        /// <param name="isNear">The value should be <see langword="true"/> if the move is being executed with a near interaction.</param>
         public void ApplyTranslationConstraints(ref MixedRealityTransform transform, bool isOneHanded, bool isNear)
         {
             ApplyConstraintsForType(ref transform, isOneHanded, isNear, TransformFlags.Move);
@@ -111,6 +131,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
+        /// <summary>
+        /// This function is obsolete.
+        /// </summary>
+        /// <remarks>
+        ///  Use <see cref="Setup"/> instead for first-time initialization, and <see cref="OnManipulationStarted"/> for subsequent manipulation.
+        /// </remarks>
         [Obsolete("Use Setup instead for first-time initialization, and OnManipulationStarted for subsequent manipulation.")]
         public void Initialize(MixedRealityTransform worldPose) { }
 
@@ -148,6 +174,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             constraints.Remove(constraint);
         }
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         protected void Awake()
         {
             var constraintComponents = gameObject.GetComponents<TransformConstraint>();

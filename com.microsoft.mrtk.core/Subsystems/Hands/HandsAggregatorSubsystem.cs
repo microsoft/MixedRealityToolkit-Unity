@@ -11,11 +11,15 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
 {
     /// <summary>
     /// Subsystem for aggregating skeletal hand joint data from all available sources.
-    /// Implementations can aggregate hand joint data from multiple APIs, or from multiple
-    /// HandsSubsystems, or from any other source they choose.
     /// </summary>
     /// <remarks>
-    /// Recommended use is for aggregating from all loaded HandsSubsystems. See <cref see="MRTKHandsAggregatorSubsystem" /> for the MRTK implementation.
+    /// <para>
+    /// Implementations can aggregate hand joint data from multiple APIs, or from multiple
+    /// <see cref="HandsSubsystem"/> objects, or from any other source they choose.
+    /// </para>
+    /// <para>
+    /// Recommended use is for aggregating from all loaded <see cref="HandsSubsystem"/> object. See <c>MRTKHandsAggregatorSubsystem</c> for the MRTK implementation.
+    /// </para>
     /// </remarks>
     [Preserve]
     public class HandsAggregatorSubsystem :
@@ -26,7 +30,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         IHandsAggregatorSubsystem
     {
         /// <summary>
-        /// Construct the <c>HandsAggregatorSubsystem</c>.
+        /// Initializes a new instance of the <see cref="HandsAggregatorSubsystem"/> class.
         /// </summary>
         public HandsAggregatorSubsystem()
         { }
@@ -81,7 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         public bool TryGetJoint(TrackedHandJoint joint, XRNode hand, out HandJointPose jointPose)
             => provider.TryGetJoint(joint, hand, out jointPose);
 
-        ///<inheritdoc/>
+        /// <inheritdoc/>
         public bool TryGetEntireHand(XRNode hand, out IReadOnlyList<HandJointPose> jointPoses) => provider.TryGetEntireHand(hand, out jointPoses);
 
         #endregion IHandsAggregatorSubsystem implementation
@@ -89,10 +93,12 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// <summary>
         /// Registers a hands subsystem implementation based on the given subsystem parameters.
         /// </summary>
-        /// <param name="handsAggregatorSubsystemParams">The parameters defining the hands subsystem functionality implemented
-        /// by the subsystem provider.</param>
+        /// <param name="cinfo">
+        /// The parameters defining the hands subsystem functionality implemented
+        /// by the subsystem provider.
+        /// </param>
         /// <returns>
-        /// <c>true</c> if the subsystem implementation is registered. Otherwise, <c>false</c>.
+        /// <see langword="true"/> if the subsystem implementation is registered. Otherwise, <see langword="false"/>.
         /// </returns>
         public static bool Register(MRTKSubsystemCinfo cinfo)
         {

@@ -115,6 +115,9 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
 
         private static bool suppressSubsystemNotFound = false;
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary> 
         private void OnEnable()
         {
             if ((AccessibilityHelpers.Subsystem == null) && !suppressSubsystemNotFound)
@@ -130,6 +133,9 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         private void OnDisable()
         {
             if (AccessibilityHelpers.Subsystem == null) { return; }

@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using System;
 using UnityEngine;
 
@@ -19,14 +23,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
     [AddComponentMenu("MRTK/Data Binding/Consumers/Data Consumer Sprite")]
     public class DataConsumerSprite : DataConsumerThemableBase<Sprite>
     {
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override Type[] GetComponentTypes()
         {
             Type[] types = { typeof(SpriteRenderer) };
             return types;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void SetObject(Component component, object inValue, Sprite sprite)
         {
             SpriteRenderer renderer = component as SpriteRenderer;
@@ -35,3 +39,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     }
 }
+#pragma warning restore CS1591

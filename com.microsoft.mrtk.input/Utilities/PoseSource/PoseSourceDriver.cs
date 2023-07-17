@@ -15,6 +15,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [SerializeReference, InterfaceSelector]
         private IPoseSource poseSource;
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         protected void Update()
         {
             if (poseSource.TryGetPose(out Pose pose))

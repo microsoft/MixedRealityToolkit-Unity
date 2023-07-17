@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         TryCalculateEntireHand();
                     }
 
-                    result = handJoints;
+                    result = HandJoints;
                     return FullQueryValid;
                 }
             }
@@ -99,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         // and return immediately.
                         if (!handDevice.HasValue)
                         {
-                            pose = handJoints[HandsUtils.ConvertToIndex(joint)];
+                            pose = HandJoints[HandsUtils.ConvertToIndex(joint)];
                             return false;
                         }
 
@@ -107,7 +107,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         Transform origin = PlayspaceUtilities.XROrigin.CameraFloorOffsetObject.transform;
                         if (origin == null)
                         {
-                            pose = handJoints[HandsUtils.ConvertToIndex(joint)];
+                            pose = HandJoints[HandsUtils.ConvertToIndex(joint)];
                             return false;
                         }
 
@@ -134,7 +134,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         thisQueryValid = FullQueryValid;
                     }
 
-                    pose = handJoints[HandsUtils.ConvertToIndex(joint)];
+                    pose = HandJoints[HandsUtils.ConvertToIndex(joint)];
                     return thisQueryValid;
                 }
             }
@@ -190,7 +190,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             /// <summary>
             /// For a certain hand, query every Bone in the hand, and write all results to the
-            /// handJoints collection. This will also mark handsQueriedThisFrame[handNode] = true.
+            /// HandJoints collection. This will also mark handsQueriedThisFrame[handNode] = true.
             /// </summary>
             private void TryCalculateEntireHand()
             {
@@ -228,7 +228,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
                     }
 
-                    // Write root bone into handJoints as palm joint.
+                    // Write root bone into HandJoints as palm joint.
                     handDevice.Value.TryGetRootBone(out Bone rootBone);
                     FullQueryValid &= TryUpdateJoint(TrackedHandJoint.Palm, rootBone, origin);
 
@@ -244,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             /// <summary>
             /// Given a destination jointID, apply the Bone info to the correct struct
-            /// in the handJoints collection.
+            /// in the HandJoints collection.
             /// </summary>
             private bool TryUpdateJoint(TrackedHandJoint jointID, Bone bone, Transform playspaceTransform)
             {
@@ -260,7 +260,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
 
                     // XRSDK does not return joint radius. 0.5cm default.
-                    handJoints[HandsUtils.ConvertToIndex(jointID)] = new HandJointPose(
+                    HandJoints[HandsUtils.ConvertToIndex(jointID)] = new HandJointPose(
                         playspaceTransform.TransformPoint(position),
                         playspaceTransform.rotation * rotation,
                         0.005f);
@@ -275,6 +275,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             private Dictionary<XRNode, XRSDKHandContainer> hands = null;
 
+            /// <inheritdoc/>
             public override void Start()
             {
                 base.Start();

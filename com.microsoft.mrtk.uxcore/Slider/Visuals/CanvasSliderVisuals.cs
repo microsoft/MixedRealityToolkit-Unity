@@ -5,13 +5,12 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
+    /// <summary>    
+    /// A canvas-based visuals script to provide a visual layer on top of <see cref="Slider"/>.
+    /// </summary>
     [RequireComponent(typeof(Slider))]
     [RequireComponent(typeof(RectTransform))]
     [ExecuteAlways]
-    /// <summary>    
-    /// A canvas-based visuals script to provide a visual layer on top of
-    /// <see cref="Slider"/>.
-    /// </summary>
     [AddComponentMenu("MRTK/UX/Canvas Slider Visuals")]
     public class CanvasSliderVisuals : MonoBehaviour
     {
@@ -126,7 +125,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         private UGUIInputAdapter uguiInputAdapter;
 
-        void OnEnable()
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
+        private void OnEnable()
         {
             sliderStart = SliderState.SliderStart.EnsureComponent<RectTransform>();
             sliderEnd = SliderState.SliderEnd.EnsureComponent<RectTransform>();
@@ -145,7 +147,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
             SetLayout(sliderDirection);
         }
 
-        void OnDisable()
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
+        private void OnDisable()
         {
             SliderState.OnValueUpdated.RemoveListener(UpdateHandle);
         }
@@ -155,7 +160,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
         // Keep track of the last direction, so we can re-layout if needed.
         private Direction prevDirection;
 
-        void Update()
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
+        private void Update()
         {
             // Only do this in edit mode, for performance.
             if (Application.isPlaying)

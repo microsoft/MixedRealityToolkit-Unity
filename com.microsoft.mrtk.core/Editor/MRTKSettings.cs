@@ -25,6 +25,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         internal MRTKBuildPreferences BuildPreferences => buildPreferences;
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary> 
         private void OnEnable()
         {
             MRTKProfile.Instance = GetProfileForBuildTarget(BuildTargetGroup.Standalone);

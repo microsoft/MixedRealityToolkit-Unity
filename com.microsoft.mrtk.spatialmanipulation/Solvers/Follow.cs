@@ -3,6 +3,7 @@
 
 using Unity.Profiling;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
@@ -161,16 +162,17 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         [SerializeField]
+        [FormerlySerializedAs("orientToControllerDeadzoneDegrees")]
         [Tooltip("The element will not reorient until the angle between the forward vector and vector to the controller is greater then this value")]
-        private float orientToControllerDeadzoneDegrees = 60f;
+        private float orientToControllerDeadZoneDegrees = 60f;
 
         /// <summary>
         /// The element will not reorient until the angle between the forward vector and vector to the controller is greater then this value.
         /// </summary>
-        public float OrientToControllerDeadzoneDegrees
+        public float OrientToControllerDeadZoneDegrees
         {
-            get => orientToControllerDeadzoneDegrees;
-            set => orientToControllerDeadzoneDegrees = value;
+            get => orientToControllerDeadZoneDegrees;
+            set => orientToControllerDeadZoneDegrees = value;
         }
 
         [SerializeField]
@@ -332,6 +334,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private bool recenterNextUpdate = true;
         private Vector3 boundsExtents = Vector3.one;
 
+        /// <inheritdoc />
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -644,7 +647,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             {
                 Vector3 nodeToCamera = goalPosition - ReferencePosition;
                 float angle = Mathf.Abs(AngleBetweenOnPlane(transform.forward, nodeToCamera, Vector3.up));
-                if (angle < OrientToControllerDeadzoneDegrees)
+                if (angle < OrientToControllerDeadZoneDegrees)
                 {
                     orientation = PreviousGoalRotation;
                     return;

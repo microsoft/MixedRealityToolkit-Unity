@@ -29,13 +29,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         /// <summary>
         /// Gets or sets a function that returns a collection of types that are
-        /// to be excluded from drop-down. A value of <c>null</c> specifies that
+        /// to be excluded from drop-down. A value of <see langword="null"/> specifies that
         /// no types are to be excluded.
         /// </summary>
         /// <remarks>
         /// <para>This property must be set immediately before presenting a class
         /// type reference property field using <see href="https://docs.unity3d.com/ScriptReference/EditorGUI.PropertyField.html">EditorGUI.PropertyField</see>
-        /// since the value of this property is reset to <c>null</c> each time the control is drawn.</para>
+        /// since the value of this property is reset to <see langword="null"/> each time the control is drawn.</para>
         /// <para>Since filtering makes extensive use of <see cref="System.Collections.Generic.ICollection{Type}.Contains"/>
         /// it is recommended to use a collection that is optimized for fast
         /// look ups such as HashSet for better performance.</para>

@@ -137,6 +137,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         [SerializeField]
         private float value = 0.5f;
 
+        /// <summary>
+        /// The current value of the slider.
+        /// </summary>
         [Obsolete("Use Value instead")]
         public float SliderValue => Value;
 
@@ -148,12 +151,18 @@ namespace Microsoft.MixedReality.Toolkit.UX
             get => value;
             set
             {
-                var oldSliderValue = this.value;
-                this.value = value;
-                OnValueUpdated.Invoke(new SliderEventData(oldSliderValue, value));
+                if (this.value != value)
+                {
+                    var oldSliderValue = this.value;
+                    this.value = value;
+                    OnValueUpdated.Invoke(new SliderEventData(oldSliderValue, value));
+                }
             }
         }
 
+        /// <summary>
+        /// The slider's normalized value calculated using the <see cref="MinValue"/> and <see cref="MaxValue"/> properties.
+        /// </summary>
         public float NormalizedValue => (MaxValue - MinValue) != 0 ? (value - MinValue) / (MaxValue - MinValue) : 0;
 
         [SerializeField]
@@ -218,8 +227,18 @@ namespace Microsoft.MixedReality.Toolkit.UX
         #endregion
 
         #region Event Handlers
+
         [Header("Slider Events")]
-        public SliderEvent OnValueUpdated = new SliderEvent();
+
+        [SerializeField]
+        [FormerlySerializedAs("OnValueUpdated")]
+        [Tooltip("A Unity event that is invoked when the slider's value has changed.")]
+        private SliderEvent onValueUpdated = new SliderEvent();
+
+        /// <summary>
+        /// A Unity event that is invoked when <see cref="Value"/> changes.
+        /// </summary>
+        public SliderEvent OnValueUpdated => onValueUpdated;
         #endregion
 
         #region Private Fields
@@ -240,7 +259,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         /// <summary>
         /// The interaction point at the beginning of an interaction.
-        /// Computed by <see cref="GetInteractionPoint"> in <see cref="SetupForInteraction">
         /// </summary>
         protected Vector3 StartInteractionPoint { get; private set; }
 
@@ -248,18 +266,25 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         #region Unity methods
 
+        /// <inheritdoc/>
         protected override void Awake()
         {
             base.Awake();
             ApplyRequiredSettings();
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script should reset it's default values
+        /// </summary>
         protected override void Reset()
         {
             base.Reset();
             ApplyRequiredSettings();
         }
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
         protected virtual void Start()
         {
             // Turn on/off colliders at Start() to avoid bugs with
@@ -274,7 +299,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 handleTransform = colliders[0].transform;
             }
 
-            // Ensure the interactable knows about our trackcollider.
+            // Ensure the interactable knows about our track collider.
             if (!colliders.Contains(trackCollider))
             {
                 colliders.Add(trackCollider);
@@ -288,6 +313,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             OnValueUpdated.Invoke(new SliderEventData(value, value));
         }
 
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         private void OnValidate()
         {
             ApplyRequiredSettings();
@@ -300,7 +328,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         #endregion
 
-        #region Private Methods
+        #region Protected Methods
+        /// <summary>
+        /// Invoked on <see cref="Start"/>, <see cref="Awake"/>, and <see cref="Reset"/> to apply required 
+        /// settings to this <see cref="Slider"/> instance.
+        /// </summary>
+        /// <remarks>
+        /// This is used to force the interactable into single select mode.
+        /// </remarks>
         protected virtual void ApplyRequiredSettings()
         {
             // Sliders use InteractableSelectMode.Single to ignore
@@ -308,7 +343,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             // been acquired.
             selectMode = InteractableSelectMode.Single;
         }
+        #endregion Protected Methods
 
+        #region Private Methods
         /// <summary> 
         /// Private method used to adjust initial slider value to stepwise values
         /// </summary>

@@ -38,6 +38,9 @@ namespace Microsoft.MixedReality.Toolkit
 
         private DisplayType displayType;
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
         private void Start()
         {
             displayType = GetDisplayType();
@@ -47,6 +50,9 @@ namespace Microsoft.MixedReality.Toolkit
         private static readonly ProfilerMarker UpdatePerfMarker =
             new ProfilerMarker("[MRTK] CameraSettingsManager.Update");
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             using (UpdatePerfMarker.Auto())

@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for tests. While nice to have, this documentation is not required.
+#pragma warning disable CS1591
+
 using Microsoft.MixedReality.Toolkit.Core.Tests;
 using Microsoft.MixedReality.Toolkit.Input.Tests;
 using NUnit.Framework;
@@ -34,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         /// a BoundsControl!)
         /// </summary>
         /// <param name="target">An object to spawn and wrap with a <see cref="BoundsControl"/></param>
-        /// <param name="boundsVisual">Prefab to use for bounds visuals.</param>
+        /// <param name="boundsVisualPath">Prefab path to use for bounds visuals.</param>
         private BoundsControl InstantiateSceneAndDefaultBoundsControl(string boundsVisualPath, GameObject target = null)
         {
             GameObject boundsControlGameObject;
@@ -407,3 +410,4 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         }
     }
 }
+#pragma warning restore CS1591

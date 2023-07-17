@@ -22,9 +22,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public string MaxVariableName { get; private set; }
 
-
         /// <summary>
-        /// Constructor for a VariableRangeAttribute.
+        /// Initializes a new instance of a <see cref="VariableRangeAttribute"/> class.
         /// </summary>
         /// <param name="minVariableName">The name of the minimum variable.</param>
         /// <param name="maxVariableName">The name of the maximum variable.</param>

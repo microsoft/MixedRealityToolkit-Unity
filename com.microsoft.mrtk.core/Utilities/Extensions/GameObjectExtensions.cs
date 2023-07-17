@@ -35,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="gameObject">The game object whose layer to test.</param>
         /// <param name="layerMask">The layer mask to test against.</param>
-        /// <returns>True if <paramref name="gameObject"/>'s layer is included in <paramref name="layerMask"/>, false otherwise.</returns>
+        /// <returns><see langword="true"/> if <paramref name="gameObject"/>'s layer is included in <paramref name="layerMask"/>, <see langword="false"/> otherwise.</returns>
         public static bool IsInLayerMask(this GameObject gameObject, LayerMask layerMask)
         {
             LayerMask gameObjectMask = 1 << gameObject.layer;

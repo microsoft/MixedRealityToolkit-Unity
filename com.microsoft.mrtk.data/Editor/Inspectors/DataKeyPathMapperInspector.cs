@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Data.Editor
@@ -10,6 +14,9 @@ namespace Microsoft.MixedReality.Toolkit.Data.Editor
     {
         private SerializedProperty viewKeypathToDataKeypathMapper;
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary> 
         private void OnEnable()
         {
             viewKeypathToDataKeypathMapper = serializedObject.FindProperty("viewKeypathToDataKeypathMapper");
@@ -24,3 +31,4 @@ namespace Microsoft.MixedReality.Toolkit.Data.Editor
         }
     }
 }
+#pragma warning restore CS1591

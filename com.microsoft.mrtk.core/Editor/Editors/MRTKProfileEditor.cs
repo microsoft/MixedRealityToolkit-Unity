@@ -25,10 +25,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private class SubsystemItem
         {
             /// <summary>
-            /// Constructs a <see cref="SubsystemItem"> from a <see cref="Type">.
+            /// Initializes a new instance of the <see cref="SubsystemItem"/> class.
+            /// </summary>
+            /// <remarks>
             /// Will retrieve relevant metadata about the subsystem and populate fields
             /// for use in the inspector.
-            /// </summary>
+            /// </remarks>
             public SubsystemItem(Type type)
             {
                 IMRTKSubsystemDescriptor metadata = XRSubsystemHelpers.RetrieveMetadata(type);
@@ -209,6 +211,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // profile, but not loaded in the project.
         private string missingNames = "";
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary> 
         private void OnEnable()
         {
             serializedSubsystems = serializedObject.FindProperty("loadedSubsystems");

@@ -86,7 +86,7 @@ MonoBehaviour:
   maxViewHorizontalDegrees: 30
   maxViewVerticalDegrees: 20
   reorientWhenOutsideParameters: 0
-  orientToControllerDeadzoneDegrees: 60
+  orientToControllerDeadZoneDegrees: 60
   ignoreAngleClamp: 0
   ignoreDistanceClamp: 0
   ignoreReferencePitchAndRoll: 0

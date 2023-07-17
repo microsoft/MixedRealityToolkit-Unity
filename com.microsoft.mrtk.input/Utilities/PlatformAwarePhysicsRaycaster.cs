@@ -17,6 +17,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </remarks>
     internal class PlatformAwarePhysicsRaycaster : PhysicsRaycaster
     {
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         protected override void Awake()
         {
             base.Awake();

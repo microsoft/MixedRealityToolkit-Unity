@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
@@ -21,8 +25,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         public int IndexPosition { get; }
 
         /// <summary>
-        /// Constructor that establishes the keypath and the index position of the item in the collection
+        /// Initializes a new instance of the <see cref="CollectionItemIdentifier"/> class.
         /// </summary>
+        /// <remarks>
+        /// This will establish a key path and the index position of the item in the collection.
+        /// </remarks>
         /// <param name="keyPath">They fully resolved keypath of the item</param>
         /// <param name="position">The zero-based index position of the item in the collection.</param>
         public CollectionItemIdentifier(string keyPath, int position)
@@ -32,3 +39,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     }
 }
+#pragma warning restore CS1591

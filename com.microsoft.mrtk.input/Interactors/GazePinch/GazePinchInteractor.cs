@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// <summary>
     /// An indirectly-targeted interactor that performs interactions driven by variable pinch distance.
     /// The valid targets of this interactor are harvested from the valid targets of the specified
-    /// <see cref="GazePinchInteractor.dependentInteractor"/>.
+    /// <see cref="GazePinchInteractor.DependentInteractor"/>.
     /// </summary>
     [AddComponentMenu("MRTK/Input/Gaze Pinch Interactor")]
     public class GazePinchInteractor :
@@ -23,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Header("Gaze Pinch interactor settings")]
 
         [SerializeField]
-        [Tooltip("The hand controller used to get the pinchedness values")]
+        [Tooltip("The hand controller used to get the selection progress values")]
         private ArticulatedHandController handController;
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         protected bool PinchReady => handController.PinchSelectReady;
 
         /// <summary>
-        /// The worldspace pose of the hand pinching point.
+        /// The world-space pose of the hand pinching point.
         /// </summary>
         protected Pose PinchPose => (PinchPoseSource != null && PinchPoseSource.TryGetPose(out Pose pinchPose)) ? pinchPose : new Pose(transform.position, transform.rotation);
 
@@ -50,11 +50,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         [SerializeReference]
         [InterfaceSelector(true)]
-        [Tooltip("The pose source representing the worldspace pose of the hand pinching point.")]
+        [Tooltip("The pose source representing the world-space pose of the hand pinching point.")]
         private IPoseSource pinchPoseSource;
 
         /// <summary>
-        /// The pose source representing the worldspace pose of the hand pinching point.
+        /// The pose source representing the world-space pose of the hand pinching point.
         /// </summary>
         protected IPoseSource PinchPoseSource { get => pinchPoseSource; set => pinchPoseSource = value; }
 
@@ -68,10 +68,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         protected IPoseSource AimPoseSource { get => aimPoseSource; set => aimPoseSource = value; }
 
-
         [SerializeField]
         [Tooltip("The interactor we're using to query potential gaze pinch targets")]
         private XRBaseControllerInteractor dependentInteractor;
+
+        /// <summary>
+        /// The pose source representing the ray this interactor uses for aiming and positioning.
+        /// </summary>
+        protected XRBaseControllerInteractor DependentInteractor { get => dependentInteractor; set => dependentInteractor = value; }
 
         [SerializeField]
         [Range(0, 1)]
@@ -103,11 +107,13 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// The distance from the body at the time of selection.
-        /// This is computed with <see cref="InputRayUtilities.GetDistanceToBody"/>,
+        /// </summary>
+        /// <remarks>
+        /// This is computed with <see cref="PoseUtilities.GetDistanceToBody"/>,
         /// which approximates the body distance as the distance of the interactor
         /// position to a 2D line parallel to y+, extending up to the head height
         /// and extending y- infinitely.
-        /// </summary>
+        /// </remarks>
         private float bodyDistanceOnSelect = 0;
 
         /// <summary>
@@ -129,6 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #region IHandedInteractor
 
+        /// <inheritdoc />
         Handedness IHandedInteractor.Handedness => handController.HandNode.ToHandedness();
 
         #endregion IHandedInteractor
@@ -201,16 +208,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// Given the specified interactable, this computes and applies the relevant
-        /// position and rotation to the attach transform. If there is currently
-        /// an active selection, the attach transform is computed as an offset from
-        /// selected object, where the offset vector is a function of the centroid
-        /// between all currently participating <see cref="GazePinchInteractor"/>s.
-        /// This models ray-like manipulations, but with virtual attach offsets from
-        /// object, modeled from the relationship between each participating hand.
+        /// position and rotation to the attach transform. 
+        /// </summary>
+        /// <remarks>
+        /// If there is currently an active selection, the attach transform is computed 
+        /// as an offset from selected object, where the offset vector is a function of 
+        /// the centroid between all currently participating <see cref="GazePinchInteractor"/>
+        /// objects. This models ray-like manipulations, but with virtual attach offsets
+        /// from object, modeled from the relationship between each participating hand.
         /// When no selection is active, the attach transform is simply set to the
         /// current pinching pose. In all cases, the attach transform's rotation is
         /// set to the controller's grip pose.
-        /// </summary>
+        /// </remarks>
         /// <param name="interactable">The interactable to compute the attach transform for.</param>
         private void ComputeAttachTransform(IXRSelectInteractable interactable)
         {
@@ -317,7 +326,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// When other interactors select/deselect the object that we are currently selecting,
         /// we must reset the recorded interactor-local attach point and the bodyDistanceOnSelect.
         /// </summary>
-        private void ResetManipLogic(IXRSelectInteractable interactable)
+        private void ResetManipulationLogic(IXRSelectInteractable interactable)
         {
             var pinchCentroid = GetPinchCentroid(interactable);
 
@@ -332,12 +341,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             Vector3 snapPoint;
 
-            // If this is a snappable affordance, we stick our attachTransform directly to the handle.
+            // If this is a snap point affordance, we stick our attachTransform directly to the handle.
             if (interactable is ISnapInteractable snapInteractable)
             {
                 snapPoint = snapInteractable.HandleTransform.position;
             }
-            // If it's not a snappable affordance, we use the current gaze hitpoint.
+            // If it's not a snap point affordance, we use the current gaze hit point.
             else if (dependentInteractor is FuzzyGazeInteractor gazeInteractor)
             {
                 snapPoint = gazeInteractor.PreciseHitResult.raycastHit.point;
@@ -395,7 +404,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             base.OnSelectEntered(args);
 
-            ResetManipLogic(args.interactableObject);
+            ResetManipulationLogic(args.interactableObject);
 
             args.interactableObject.selectEntered.AddListener(OnAdditionalSelect);
             args.interactableObject.selectExited.AddListener(OnAdditionalDeselect);
@@ -407,7 +416,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (args.interactorObject is IGazePinchInteractor && !args.interactorObject.Equals(this))
             {
-                ResetManipLogic(args.interactableObject);
+                ResetManipulationLogic(args.interactableObject);
                 ComputeAttachTransform(args.interactableObject);
             }
         }
@@ -416,7 +425,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (args.interactorObject is IGazePinchInteractor && !args.interactorObject.Equals(this))
             {
-                ResetManipLogic(args.interactableObject);
+                ResetManipulationLogic(args.interactableObject);
                 ComputeAttachTransform(args.interactableObject);
             }
         }

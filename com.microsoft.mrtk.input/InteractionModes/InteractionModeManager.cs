@@ -86,8 +86,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <remarks>
         /// This function is only intended for use in Unity's inspector window. See 
-        /// <see cref="Microsoft.MixedReality.Toolkit.Input.Editor.InteractionModeManagerEditor"> InteractionModeManagerEditor</see>
-        /// documentation for more details.
+        /// `InteractionModeManagerEditor` documentation for more details.
         /// </remarks>
         public void PopulateModesWithSubtypes()
         {
@@ -233,15 +232,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <summary>
-        /// Unregisters an interactor from this Interaction Mode Manager. Used when the interactor's game object is destroyed or when 
-        /// it is no longer meant to be used in the scene.
+        /// This unregisters an interactor from this <see cref="InteractionModeManager"/>.
         /// </summary>
         /// <remarks>
-        /// Not called by the InteractionManager itself, because we would receive an unregistration
-        /// every time we disabled an interactor. We only call this when we are removing an interactor from
-        /// scene completely, e.g. when a controller is destroyed.
+        /// This is used when the interactor's game object is destroyed or when 
+        /// it is no longer meant to be used in the scene.
+        /// 
+        /// This function should not be called by the <see cref="InteractionManager"/> object. If it were, this class
+        /// would receive an unregister event every time an interactor was disabled. This function should  
+        /// only be called when an interactor is removed scene completely; for example, 
+        /// when a controller is destroyed.
         /// </remarks>
-        /// <param name="controllerInteractor">The XRBaseInteractor to be unregistered</param>
+        /// <param name="interactor">The <see cref="XRBaseInteractor"/> to be unregistered.</param>
         public void UnregisterInteractor(XRBaseInteractor interactor)
         {
             GameObject controllerObject = null;
@@ -261,6 +263,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             registeredControllerInteractors.Remove(interactor);
         }
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             // Sanity check making sure that there are no duplicate entries in the prioritized interaction mode list
@@ -293,6 +298,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             InitializeInteractionModeDetectors();
         }
 
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         private void OnValidate()
         {
             ValidateInteractionModes();
@@ -391,6 +399,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static readonly ProfilerMarker UpdatePerfMarker =
             new ProfilerMarker("[MRTK] InteractionModeManager.Update");
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             using (UpdatePerfMarker.Auto())
@@ -437,7 +448,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     }
 
                     // mediating all of the interactors to ensure the correct ones are active for their controller's given interaction mode
-                    InteractionModeDefinition controllerCurrentMode = prioritizedInteractionModes[controllerMapping[controller].CurrentMode.priority];
+                    InteractionModeDefinition controllerCurrentMode = prioritizedInteractionModes[controllerMapping[controller].CurrentMode.Priority];
 
                     foreach (XRBaseInteractor interactor in controllerMapping[controller].Interactors)
                     {
@@ -473,7 +484,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (controllerMapping.TryGetValue(controller, out ManagedInteractorStatus controllerInteractorStatus))
             {
-                controllerInteractorStatus.CurrentMode = controllerInteractorStatus.CurrentMode.priority > interactionMode.priority ? controllerInteractorStatus.CurrentMode : interactionMode;
+                controllerInteractorStatus.CurrentMode = controllerInteractorStatus.CurrentMode.Priority > interactionMode.Priority ? controllerInteractorStatus.CurrentMode : interactionMode;
             }
         }
 

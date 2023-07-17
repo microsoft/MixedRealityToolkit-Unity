@@ -12,10 +12,12 @@ using UnityEditor;
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
     /// <summary>
-    /// BoundsControl uses an `IBoundsVisuals` prefab to create a bounds visual around the specified object.
-    /// Any <see cref="BoundsHandleInteractable"/>s on the bounds prefab will forward their manipulation events
-    /// to this script, allowing for handle-based manipulation of the target object.
+    /// A <see cref="BoundsControl"/> creates a bounds visual around the specified object.
     /// </summary>
+    /// <remarks>
+    /// Any <see cref="BoundsHandleInteractable"/> component on the bounds game object will forward their manipulation events
+    /// to this script, allowing for handle-based manipulation of the target object.
+    /// </remarks>
     [RequireComponent(typeof(ConstraintManager))]
     [AddComponentMenu("MRTK/Spatial Manipulation/Bounds Control")]
     public class BoundsControl : MonoBehaviour
@@ -500,6 +502,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         // Has the bounds control moved past the toggle threshold throughout the time it was selected?
         private bool hasPassedToggleThreshold = false;
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             if (Interactable == null)
@@ -530,6 +535,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             // If we need to recompute bounds (usually because we found a
@@ -619,13 +627,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// <summary>
         /// Computes the bounds of the BoundsControl and updates the current bounds visuals to match.
         /// </summary>
+        /// <remarks>
+        /// If <see langword="true"/> is returned, this function should be called again, with
+        /// <paramref name="isSecondPass"/> set to <see langword="true"/>, at least one frame from the 
+        /// current frame. This will allow for <see cref="Canvas"/> elements to compute their layouts.
+        /// </remarks>
         /// <param name="isSecondPass">
         /// Is this the second pass? If not, we'll abort early if we find the need to queue up a second pass.
         /// </param>
         /// <returns>
-        /// True if a second computation pass is required (usually because we found a Canvas element somewhere.)
-        /// You should call this function again (and pass in true) at least one frame from the current frame.
-        /// This allows Canvas elements to compute their layouts.
+        /// <see langword="true"/> if a second computation pass is required, usually because we found a Canvas element somewhere.
         /// </returns>
         private bool ComputeBounds(bool isSecondPass = false)
         {

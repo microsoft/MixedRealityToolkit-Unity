@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
         /// <param name="samples">The number of audio samples per channel in the <see cref="waveBytes"/> array.</param>
         /// <param name="sampleRate">The sample rate (ex: 44.1 kHz) of the audio data.</param>
         /// <param name="floatData">The resulting audio data, formatted as float values from -1 to 1.</param>
-        /// <returns>True if the conversion is successful, or false.</returns>
+        /// <returns><see langword="true"/> if the conversion is successful, or <see langword="false"/>.</returns>
         public static bool TryConvertWaveData(
             byte[] waveBytes,
             out int samples,

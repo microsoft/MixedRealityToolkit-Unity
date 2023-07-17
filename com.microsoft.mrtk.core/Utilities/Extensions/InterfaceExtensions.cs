@@ -11,10 +11,10 @@ namespace Microsoft.MixedReality.Toolkit
     public static class InterfaceExtensions
     {
         /// <summary>
-        /// Properly checks an interface for null and returns the MonoBehaviour implementing it.
+        /// Properly checks an interface for <see langword="null"/> and returns the <see cref="MonoBehaviour"/> implementing it.
         /// </summary>
         /// <returns>
-        /// True if the implementer of the interface is a MonoBehaviour and the MonoBehaviour is not null.
+        /// <see langword="true"/> if the implementer of the interface is a <see cref="MonoBehaviour"/> and the <see cref="MonoBehaviour"/> is not <see langword="null"/>.
         /// </returns>
         public static bool TryGetMonoBehaviour<T>(this T @interface, out MonoBehaviour monoBehaviour) where T :
             class => (monoBehaviour = @interface as MonoBehaviour) != null;

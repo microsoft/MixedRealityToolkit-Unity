@@ -14,6 +14,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
     {
         private AudioSource clickSoundPlayer;
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary>
         private void Start()
         {
             EnableTouch();

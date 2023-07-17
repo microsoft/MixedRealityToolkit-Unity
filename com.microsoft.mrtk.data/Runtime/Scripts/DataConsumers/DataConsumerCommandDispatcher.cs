@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected object _dataObject = null;
         protected bool _noDataObjectFound = false;
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void AttachDataConsumer()
         {
             if (!string.IsNullOrWhiteSpace(dataReferenceKeyPath))
@@ -92,14 +96,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void DetachDataConsumer()
         {
             _dataObject = null;
             _noDataObjectFound = false;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType)
         {
             if (localKeyPath == dataReferenceKeyPath)
@@ -109,3 +113,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     }
 }
+#pragma warning restore CS1591

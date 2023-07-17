@@ -54,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private RectTransform rectTransform;
 
         /// <summary>
-        /// The RectTransform to fit the collider onto.
+        /// The <see cref="UnityEngine.RectTransform"/> to fit the collider onto.
         /// </summary>
         public RectTransform RectTransform
         {
@@ -68,7 +68,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
             set => rectTransform = value;
         }
-        void Update()
+
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
+        private void Update()
         {
             if (!(Application.isPlaying && !DynamicFitting) && GridLayoutGroup != null && RectTransform != null && RectTransform.hasChanged)
             {

@@ -7,10 +7,12 @@ using UnityEngine.Playables;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
-    [Serializable]
     /// <summary>
-    /// A <see cref="IEffect"> that generates a <see cref="Playable"> from a <see cref="StateVisualAsset"/>.
+    /// A <see cref="IEffect"/> implementation that generates a 
+    /// <see href="https://docs.unity3d.com/ScriptReference/Playables.Playable.html">Playable</see> component 
+    /// from a <see cref="StateVisualAsset"/> component.
     /// </summary>
+    [Serializable]
     internal class PlayableAssetEffect : PlayableEffect
     {
         [SerializeField]
@@ -20,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 #pragma warning restore CS0414 // Inspector uses this as a helpful label in lists.
 
         [SerializeField]
-        [Tooltip("The ScriptableObject containing the effect.")]
+        [Tooltip("The scriptable object containing the effect.")]
         private StateVisualAsset playableAsset;
 
         [SerializeField]

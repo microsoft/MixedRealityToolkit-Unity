@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using System;
 using UnityEngine;
 
@@ -40,7 +44,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         private Renderer[] renderersToModify;
 
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override Type[] GetComponentTypes()
         {
             Type[] types = { typeof(Renderer) };
@@ -60,13 +64,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override bool DoesManageSpecificComponents()
         {
             return renderersToModify != null && renderersToModify.Length > 0;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void AttachDataConsumer()
         {
             if (renderersToModify != null)
@@ -79,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             base.AttachDataConsumer();
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override Material GetObjectByKey(string keyValue)
         {
             foreach (ValueToMaterial valueToMaterial in materialLookup)
@@ -93,7 +97,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return null;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void SetObject(Component component, object inValue, Material materialToSet)
         {
             Renderer renderer = component as Renderer;
@@ -101,3 +105,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     }
 }
+#pragma warning restore CS1591

@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for tests. While nice to have, this documentation is not required.
+#pragma warning disable CS1591
+
 using System.Collections;
 using UnityEngine;
 
@@ -9,7 +12,7 @@ using HandshapeId = Microsoft.MixedReality.Toolkit.Input.HandshapeTypes.Handshap
 namespace Microsoft.MixedReality.Toolkit.Input.Tests
 {
     /// <summary>
-    /// Convenience wrapper around the underlying <see cref="RuntimeInputTestUtilities"> functions
+    /// Convenience wrapper around the underlying <see cref="InputTestUtilities"/> functions
     /// for manipulating test hands.
     /// </summary>
     public class TestHand : TestController
@@ -119,3 +122,4 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         }
     }
 }
+#pragma warning restore CS1591

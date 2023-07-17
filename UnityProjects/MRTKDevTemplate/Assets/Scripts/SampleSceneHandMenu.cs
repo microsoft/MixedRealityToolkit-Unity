@@ -37,6 +37,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         [SerializeField]
         private GameObject profilerObject;
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             rayToggle.OnClicked.AddListener(() => SetHandRaysActive(rayToggle.IsToggled));

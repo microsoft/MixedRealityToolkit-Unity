@@ -89,8 +89,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private int frameWait = 10;
 
         // How many frames have had the framerate below the target.
-        private int lowFramerateFramecount = 0;
+        private int lowFramerateFrameCount = 0;
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
         private void Start()
         {
             // prevent divide by zero
@@ -105,11 +108,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             // Trigger the test
             descriptionPanel.SetActive(false);
             resultsText.text = string.Empty;
-            lowFramerateFramecount = 0;
+            lowFramerateFrameCount = 0;
             SetModelCount(0);
             testComplete = false;
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame after normal update functions, if this object is enabled.
+        /// </summary>
         private void LateUpdate()
         {
             // Framerate calculations.
@@ -122,6 +128,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             if (testComplete)
@@ -131,10 +140,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
             if (frameRate < targetLowFramerate)
             {
-                lowFramerateFramecount++;
+                lowFramerateFrameCount++;
             }
 
-            if (currentCount < 2000 && lowFramerateFramecount < 60)
+            if (currentCount < 2000 && lowFramerateFrameCount < 60)
             {
                 if (frameWait == 0)
                 {

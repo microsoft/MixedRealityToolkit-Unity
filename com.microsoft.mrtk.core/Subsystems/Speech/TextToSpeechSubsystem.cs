@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         ITextToSpeechSubsystem
     {
         /// <summary>
-        /// Construct the <c>TextToSpeechSubsystem</c>.
+        /// Initializes a new instance of the <see cref="TextToSpeechSubsystem"/> class.
         /// </summary>
         public TextToSpeechSubsystem()
         { }
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// <param name="subsystemParams">The parameters defining the TextToSpeechSubsystem
         /// functionality implemented by the subsystem provider.</param>
         /// <returns>
-        /// <c>true</c> if the subsystem implementation is registered. Otherwise, <c>false</c>.
+        /// <see langword="true"/> if the subsystem implementation is registered. Otherwise, <see langword="false"/>.
         /// </returns>
         public static bool Register(TextToSpeechSubsystemCinfo subsystemParams)
         {

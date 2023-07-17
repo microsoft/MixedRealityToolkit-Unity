@@ -32,6 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static bool advancedFoldout = false;
         private static bool enabledEventsFoldout = false;
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary> 
         protected override void OnEnable()
         {
             base.OnEnable();

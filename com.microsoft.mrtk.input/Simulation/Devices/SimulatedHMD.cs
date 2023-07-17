@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         private const float moveSmoothingTime = 0.02f;
 
         /// <summary>
-        /// Constructor.
+        /// Initializes a new instance of a <see cref="SimulatedHMD"/> class.
         /// </summary>
         public SimulatedHMD()
         {

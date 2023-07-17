@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
@@ -27,3 +31,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         string[] GetDataSourceTypes();
     }
 }
+#pragma warning restore CS1591

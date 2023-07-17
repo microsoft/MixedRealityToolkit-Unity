@@ -83,7 +83,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="point">The 3D point to be rotated.</param>
         /// <param name="pivot">The 3D point that is the pivot.</param>
-        /// <param name="rotation">The 3D vector containing the Euler representation of the rotation to be preformed.</param>
+        /// <param name="eulerAngles">The 3D vector containing the Euler representation of the rotation to be preformed.</param>
         /// <returns>
         /// A new 3D vector containing the rotated point.
         /// </returns>
@@ -290,7 +290,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="vector">The 3D vector whose components will be tested.</param>
         /// <returns>
-        /// `true` is all 3D vector components are a numbers and are not infinite, otherwise `false`.
+        /// <see langword="true"/> is all 3D vector components are a numbers and are not infinite, otherwise <see langword="false"/>.
         /// </returns>
         public static bool IsValidVector(this Vector3 vector)
         {
@@ -303,7 +303,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="vector">The 2D vector whose components will be tested.</param>
         /// <returns>
-        /// `true` is all 2D vector components are a numbers and are not infinite, otherwise `false`.
+        /// <see langword="true"/> is all 2D vector components are a numbers and are not infinite, otherwise <see langword="false"/>.
         /// </returns>
         public static bool IsValidVector(this Vector2 vector)
         {
@@ -317,7 +317,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="v1">The first vector.</param>
         /// <param name="v2">The second vector.</param>
         /// <param name="distanceTolerance">The maximum distance that will cause this to return true.</param>
-        /// <returns>True if the distance between the two vectors is within the tolerance, false otherwise.</returns>
+        /// <returns><see langword="true"/> if the distance between the two vectors is within the tolerance, <see langword="false"/> otherwise.</returns>
         public static bool CloseEnoughTo(this Vector3 v1, Vector3 v2, float distanceTolerance = 0.001f)
         {
             return Vector3.Distance(v1, v2) < distanceTolerance;
@@ -368,10 +368,10 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="source">The source <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> to be mapped to cylinder</param>
         /// <param name="radialRange">The total range of the radial in degrees as a <see cref="float"/></param>
         /// <param name="radius">This is a <see cref="float"/> for the radius of the radial</param>
-        /// <param name="row">The current row as a <see cref="int"/> for the radial calculation</param>
-        /// <param name="totalRows">The total rows as a <see cref="int"/> for the radial calculation</param>
-        /// <param name="column">The current column as a <see cref="int"/> for the radial calculation</param>
-        /// <param name="totalColumns">The total columns as a <see cref="int"/> for the radial calculation</param>
+        /// <param name="row">The current row as a <see langword="int"/> for the radial calculation</param>
+        /// <param name="totalRows">The total rows as a <see langword="int"/> for the radial calculation</param>
+        /// <param name="column">The current column as a <see langword="int"/> for the radial calculation</param>
+        /// <param name="totalColumns">The total columns as a <see langword="int"/> for the radial calculation</param>
         public static Vector3 RadialMapping(this Vector3 source, float radialRange, float radius, int row, int totalRows, int column, int totalColumns)
         {
             float radialCellAngle = radialRange / totalColumns;

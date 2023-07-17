@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using System.Collections.Generic;
 
 namespace Microsoft.MixedReality.Toolkit.Data
@@ -36,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public override object GetValueInternal(string resolvedKeyPath)
         {
             if (_dataDictionary.ContainsKey(resolvedKeyPath))
@@ -50,10 +54,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public override void SetValueInternal(string resolvedKeyPath, object newValue)
         {
             _dataDictionary[resolvedKeyPath] = newValue;
         }
     } // End of class DataSourceDictionary
 } // End of namespace Microsoft.MixedReality.Toolkit.Data
+#pragma warning restore CS1591

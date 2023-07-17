@@ -150,7 +150,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         public Handedness Handedness { get; private set; }
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of a <see cref="SimulatedController"/> class.
         /// </summary>
         public SimulatedController(
             Handedness handedness,
@@ -262,8 +262,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// <param name="controls">The desired state of the controller's controls.</param>
         /// <param name="rotationMode">The <see cref="ControllerRotationMode"/> in which the controller is operating.</param>
         /// <param name="anchorPosition">The position in world space which the controller should be around on</param>
-        /// <param name="shouldUseRayVector">Should pointerRotation be set to the body/head ray vector, instead of the raw rotation?</param>
-        /// <param name="isMovementSmoothed">Should controller movement along the Z axis be smoothed?</param>
+        /// <param name="shouldUseRayVector">Specify if <see cref="MRTKSimulatedController.PointerRotation"/> should be set to the body or head ray vector, instead of the raw rotation.</param>
+        /// <param name="isMovementSmoothed">Set to <see langword="true"/> to smooth controller movement along the Z axis.</param>
         /// <param name="depthSensitivity">The sensitivity multiplier for depth movement.</param>
         /// <param name="jitterStrength">How strong should be the simulated controller jitter (inaccuracy)?</param>
         public void UpdateRelative(
@@ -340,10 +340,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// <summary>
         /// Update the controller simulation with a specified absolute pose in world-space.
         /// </summary>
-        /// <param name="worldPose">The worldspace controller pose.</param>
+        /// <param name="worldPose">The world space controller pose.</param>
         /// <param name="controls">The desired state of the controller's controls.</param>
         /// <param name="rotationMode">The <see cref="ControllerRotationMode"/> in which the controller is operating.</param>
-        /// <param name="shouldUseRayVector">Should pointerRotation be set to the body/head ray vector, instead of the raw rotation?</param>
+        /// <param name="shouldUseRayVector">Specify if <see cref="MRTKSimulatedController.PointerRotation"/> should  be set to the body or head ray vector, instead of the raw rotation.</param>
         public void UpdateAbsolute(
             Pose worldPose,
             ControllerControls controls,
@@ -366,10 +366,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// Update the controller simulation with a specified absolute pose in world-space at which the
         /// poking position (usually index-tip) should be. 
         /// </summary>
-        /// <param name="worldPose">The worldspace pose.</param>
+        /// <param name="worldPose">The world space pose.</param>
         /// <param name="controls">The desired state of the controller's controls.</param>
         /// <param name="rotationMode">The <see cref="ControllerRotationMode"/> in which the controller is operating.</param>
-        /// <param name="shouldUseRayVector">Should pointerRotation be set to the body/head ray vector, instead of the raw rotation?</param>
+        /// <param name="shouldUseRayVector">Specify if <see cref="MRTKSimulatedController.PointerRotation"/> should  be set to the body or head ray vector, instead of the raw rotation.</param>
         public void UpdateAbsoluteWithPokeAnchor(
             Pose worldPose,
             ControllerControls controls,
@@ -383,10 +383,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// Update the controller simulation with a specified absolute pose in world-space at which the
         /// poking position (usually index-tip) should be. 
         /// </summary>
-        /// <param name="worldPose">The worldspace pose.</param>
+        /// <param name="worldPose">The world space pose.</param>
         /// <param name="controls">The desired state of the controller's controls.</param>
         /// <param name="rotationMode">The <see cref="ControllerRotationMode"/> in which the controller is operating.</param>
-        /// <param name="shouldUseRayVector">Should pointerRotation be set to the body/head ray vector, instead of the raw rotation?</param>
+        /// <param name="shouldUseRayVector">Specify if <see cref="MRTKSimulatedController.PointerRotation"/> should  be set to the body or head ray vector, instead of the raw rotation.</param>
         public void UpdateAbsoluteWithGrabAnchor(
             Pose worldPose,
             ControllerControls controls,
@@ -399,10 +399,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// <summary>
         /// Update the controller simulation with a specified absolute pose in world-space anchored at the specified point.
         /// </summary>
-        /// <param name="worldPose">The pose in worldspace.</param>
+        /// <param name="worldPose">The pose in world space.</param>
         /// <param name="controls">The desired state of the controller's controls.</param>
         /// <param name="rotationMode">The <see cref="ControllerRotationMode"/> in which the controller is operating.</param>
-        /// <param name="shouldUseRayVector">Should pointerRotation be set to the body/head ray vector, instead of the raw rotation?</param>
+        /// <param name="shouldUseRayVector">Specify if <see cref="MRTKSimulatedController.PointerRotation"/> should  be set to the body or head ray vector, instead of the raw rotation.</param>
+        /// <param name="anchorPoint">The anchor point used when calculating the next <see cref="WorldPosition"/>.</param>
         public void UpdateAbsoluteWithAnchor(
             Pose worldPose,
             ControllerControls controls,
@@ -461,16 +462,19 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// <summary>
         /// Sets a controller to the specified camera-relative pose.
         /// </summary>
-        /// <param name="position">The desired controller position, in camera relative space.</param>
-        /// <param name="rotation">The desired controller rotation, in camera relative space.</param>
+        /// <param name="cameraRelativePose">The desired controller pose, in camera relative space.</param>
         /// <param name="offset">The amount to offset the controller, in world space</param>
         /// <param name="rotationMode">The <see cref="ControllerRotationMode"/> in which the controller is operating.</param>
-        /// <param name="shouldUseRayVector">
-        /// Should pointerRotation be set to the body/head ray vector, instead of the raw rotation?
-        /// </param>
-        /// <remarks><para>The incoming camera relative space pose is first being transformed into world space because the
-        /// camera relative space is not necessarily the same as the rig relative space (due to the offset GameObject in between).
-        /// Transform the parameters into world space and call SetWorldPose where they will be transformed into rig relative space.</para></remarks>
+        /// <param name="shouldUseRayVector">Specify if <see cref="MRTKSimulatedController.PointerRotation"/> should  be set to the body or head ray vector, instead of the raw rotation.</param>
+        /// <remarks>
+        /// <para>
+        /// The incoming camera relative space pose is first being transformed into world space because the
+        /// camera relative space is not necessarily the same as the relative space of the main MRTK game object rig; 
+        /// this is due to the offset game object in between.
+        /// <br/>
+        /// This will Transform the parameters into world space and call <see cref="SetWorldPose"/>, where the parameters will be transformed into rig relative space.
+        /// </para>
+        /// </remarks>
         private void SetRelativePoseWithOffset(
             Pose cameraRelativePose,
             Vector3 offset,
@@ -489,13 +493,11 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
             new ProfilerMarker("[MRTK] SimulatedController.SetWorldPose");
 
         /// <summary>
-        /// Sets a controller to the specified worldspace pose.
+        /// Sets a controller to the specified world space pose.
         /// </summary>
         /// <param name="worldPose">The desired controller pose, in world space.</param>
         /// <param name="rotationMode">The <see cref="ControllerRotationMode"/> in which the controller is operating.</param>
-        /// <param name="shouldUseRayVector">
-        /// Should pointerRotation be set to the body/head ray vector, instead of the raw rotation?
-        /// </param>
+        /// <param name="shouldUseRayVector">Specify if <see cref="MRTKSimulatedController.PointerRotation"/> should  be set to the body or head ray vector, instead of the raw rotation.</param>
         private void SetWorldPose(
             Pose worldPose,
             ControllerRotationMode rotationMode,
@@ -516,9 +518,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// </summary>
         /// <param name="localPose">The desired controller pose, in camera-offset-local space.</param>
         /// <param name="rotationMode">The <see cref="ControllerRotationMode"/> in which the controller is operating.</param>
-        /// <param name="shouldUseRayVector">
-        /// Should pointerRotation be set to the body/head ray vector, instead of the raw rotation?
-        /// </param>
+        /// <param name="shouldUseRayVector">Specify if <see cref="MRTKSimulatedController.PointerRotation"/> should  be set to the body or head ray vector, instead of the raw rotation.</param>
         private void SetCameraOffsetLocalPose(
             Pose localPose,
             ControllerRotationMode rotationMode,

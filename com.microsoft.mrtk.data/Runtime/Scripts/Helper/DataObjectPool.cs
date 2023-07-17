@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -176,7 +180,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         ///
         /// Note that if there are prefetched objects, it may be possible to reuse these.
         /// </remarks>
-        /// <returns>True if full.</returns>
+        /// <returns><see langword="true"/> if full.</returns>
         public bool IsFull()
         {
             return _objectPoolObjects.Count + _prefetchedObjects.Count >= _poolMaximumSize;
@@ -217,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Check if an object is already in the prefab prefetch pool.
         /// </summary>
         /// <param name="id">The id to check.</param>
-        /// <returns>True if object with specified id was found in prefetch pool.</returns>
+        /// <returns><see langword="true"/> if object with specified id was found in prefetch pool.</returns>
         public bool ObjectIsPrefetched(int id)
         {
             return _prefetchedObjects.ContainsKey(id);
@@ -311,3 +315,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     }
 }
+#pragma warning restore CS1591

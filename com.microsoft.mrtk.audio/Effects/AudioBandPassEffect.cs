@@ -47,6 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         private AudioLowPassFilter lowPassFilter;
         private AudioHighPassFilter highPassFilter;
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             lowPassFilter = gameObject.GetComponent<AudioLowPassFilter>();
@@ -58,6 +61,9 @@ namespace Microsoft.MixedReality.Toolkit.Audio
 
         private AudioBandPassFilter previousFilter = null;
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             if (previousFilter == Filter) { return; }

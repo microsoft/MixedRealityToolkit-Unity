@@ -12,10 +12,15 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// </summary>
     internal class ConstraintExecOrderComparer : IComparer<TransformConstraint>
     {
+        /// <summary>
+        /// Compare two <see cref="TransformConstraint"/> objects.
+        /// </summary>
+        /// <param name="x">The first values to compare.</param>
+        /// <param name="y">The second value to compare.</param>
         /// <returns>
-        /// Returns < 0 if x should be executed first.
-        /// Returns > 0 if y should be executed first.
-        /// Returns = 0 if they are of equivalent execution priority.
+        /// Returns a negative value if <paramref name="x"/> is less than <paramref name="y"/>, zero
+        /// if <paramref name="x"/> and <paramref name="y"/> are equal, and a positive value if
+        /// <paramref name="x"/> is greater than <paramref name="y"/>.
         /// </returns>	
         public virtual int Compare(TransformConstraint x, TransformConstraint y)
         {

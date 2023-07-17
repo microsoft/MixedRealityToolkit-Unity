@@ -32,11 +32,17 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         protected void OnEnable()
         {
             Interactable.selectEntered.AddListener(OnSelectEntered);
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         protected void OnDisable()
         {
             Interactable.selectEntered.RemoveListener(OnSelectEntered);

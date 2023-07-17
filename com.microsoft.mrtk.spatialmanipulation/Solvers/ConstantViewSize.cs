@@ -110,18 +110,31 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
+        /// <summary>
+        /// Get scaling state of this <see cref="ConstantViewSize"/> object.
+        /// </summary>
         public ScalingState ScaleState { get; private set; } = ScalingState.Static;
 
         /// <summary>
-        /// 0 to 1 between MinScale and MaxScale. If current is less than max, then scaling is being applied.
-        /// This value is subject to inaccuracies due to smoothing/interpolation/momentum.
+        /// Get the current scale progress on this <see cref="ConstantViewSize"/> object.
         /// </summary>
+        /// <remarks>
+        /// This is a value between zero and one, representing progress between 
+        /// <see cref="MinScale"/> and <see cref="MaxScale"/>. If current scale is less
+        /// than max,  then scaling is being applied. This value is subject to inaccuracies
+        /// due to smoothing, interpolation, and momentum.
+        /// </remarks>
         public float CurrentScalePercent { get; private set; } = 1f;
 
         /// <summary>
-        /// 0 to 1 between MinDistance and MaxDistance. If current is less than max, object is potentially on a surface [or some other condition like interpolating] (since it may still be on surface, but scale percent may be clamped at max).
-        /// This value is subject to inaccuracies due to smoothing/interpolation/momentum.
+        /// Get the current distance progress on this <see cref="ConstantViewSize"/> object.
         /// </summary>
+        /// <remarks>
+        /// This is a value between zero and one, representing progress between  
+        /// <see cref="MinDistance"/> and <see cref="MaxDistance"/>. If current is less than
+        /// max, object is potentially on a surface. This value is subject to inaccuracies due 
+        /// to smoothing, interpolation, and momentum.
+        /// </remarks>
         public float CurrentDistancePercent { get; private set; } = 1f;
 
         /// <summary>
@@ -143,6 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private float fovScalar = 1f;
         private float objectSize = 1f;
 
+        /// <inheritdoc/>
         protected override void Start()
         {
             base.Start();

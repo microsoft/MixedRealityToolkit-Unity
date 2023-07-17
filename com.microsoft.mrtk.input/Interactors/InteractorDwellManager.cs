@@ -47,6 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </remarks>
         private readonly Dictionary<StatefulInteractable, float> interactableDict = new Dictionary<StatefulInteractable, float>();
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             if (!TryGetComponent(out interactor))
@@ -55,6 +58,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             if (interactableDict.Count > 0)
@@ -101,12 +107,18 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         private void OnEnable()
         {
             interactor.hoverEntered.AddListener(OnHoverEnter);
             interactor.hoverExited.AddListener(OnHoverExit);
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         private void OnDisable()
         {
             interactor.hoverEntered.RemoveListener(OnHoverEnter);

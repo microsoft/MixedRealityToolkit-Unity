@@ -134,8 +134,8 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        private static readonly ProfilerMarker ConecastScoreComparePerfMarker =
-            new ProfilerMarker("[MRTK] FuzzyGazeInteractor.ConecastScoreCompare");
+        private static readonly ProfilerMarker ConeCastScoreComparePerfMarker =
+            new ProfilerMarker("[MRTK] FuzzyGazeInteractor.ConeCastScoreCompare");
 
         /// <summary>
         /// Compares raycast hits by distance in ascending order.
@@ -145,9 +145,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <returns>
         /// Returns -1 if a is a higher priority target than b, otherwise return 1.
         /// </returns>
-        private static int ConecastScoreCompare(GazeRaycastHitResult a, GazeRaycastHitResult b)
+        private static int ConeCastScoreCompare(GazeRaycastHitResult a, GazeRaycastHitResult b)
         {
-            using (ConecastScoreComparePerfMarker.Auto())
+            using (ConeCastScoreComparePerfMarker.Auto())
             {
                 IXRInteractable interactableA = a.targetInteractable;
                 IXRInteractable interactableB = b.targetInteractable;
@@ -202,11 +202,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         private const int MaxRaycastHits = 10;
-        // Allocate space for precision levels 0 -> MaxPrecision, and then reserve 1 more row for a potential dedicated raycast that follows the eye gaze.
-        int[] raycastHitCounts = new int[MaxPrecision + 2];
-        protected RaycastHit[][] allRaycastHits = new RaycastHit[MaxPrecision + 2][];
 
-        protected List<GazeRaycastHitResult> baseTargetsRaycastHitResults = new List<GazeRaycastHitResult>();
+        /// <summary>
+        /// Allocate space for precision levels 0 -> MaxPrecision, and then reserve 1 more row for a potential dedicated raycast that follows the eye gaze.
+        /// </summary>
+        private int[] raycastHitCounts = new int[MaxPrecision + 2];
+
+        /// <summary>
+        /// All the current <see cref="RaycastHit" /> found by this <see cref="FuzzyGazeInteractor"/> object.
+        /// </summary>
+        /// <remarks>
+        /// This or its contents should be updated during calls to <see cref="PreprocessInteractor"/>.
+        /// </remarks>
+        protected RaycastHit[][] AllRaycastHits { get; set; } = new RaycastHit[MaxPrecision + 2][];
+
+        /// <summary>
+        /// All the current <see cref="GazeRaycastHitResult" /> found by this <see cref="FuzzyGazeInteractor"/> object.
+        /// </summary>
+        /// <remarks>
+        /// This or its contents should be updated during calls to <see cref="PreprocessInteractor"/>.
+        /// </remarks>
+        protected List<GazeRaycastHitResult> BaseTargetsRaycastHitResults { get; set; } = new List<GazeRaycastHitResult>();
 
         private GazeRaycastHitResult preciseHitResult;
 
@@ -216,7 +232,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public GazeRaycastHitResult PreciseHitResult => preciseHitResult;
 
         /// <summary>
-        /// A workaround function for getting where the spherecast hit on the target.
+        /// A workaround function for getting where the sphere-cast hit on the target.
         /// This mimics the code in the XRRayInteractor's UpdateRaycastHits() function.
         /// </summary>
         private void UpdateRaycastHits(int targetPrecision, float castRadius)
@@ -225,20 +241,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
             Transform effectiveRayOrigin = rayOriginTransform != null ? rayOriginTransform : transform;
 
             // initialize the jagged array entry if it is null
-            if (allRaycastHits[targetPrecision] == null)
+            if (AllRaycastHits[targetPrecision] == null)
             {
-                allRaycastHits[targetPrecision] = new RaycastHit[MaxRaycastHits];
+                AllRaycastHits[targetPrecision] = new RaycastHit[MaxRaycastHits];
             }
 
             if (castRadius > 0.0f)
             {
                 raycastHitCounts[targetPrecision] = UnityEngine.Physics.SphereCastNonAlloc(effectiveRayOrigin.position, castRadius, effectiveRayOrigin.forward,
-                           allRaycastHits[targetPrecision], maxRaycastDistance, raycastMask, raycastTriggerInteraction);
+                           AllRaycastHits[targetPrecision], maxRaycastDistance, raycastMask, raycastTriggerInteraction);
             }
             else
             {
                 raycastHitCounts[targetPrecision] = UnityEngine.Physics.RaycastNonAlloc(effectiveRayOrigin.position, effectiveRayOrigin.forward,
-                           allRaycastHits[targetPrecision], maxRaycastDistance, raycastMask, raycastTriggerInteraction);
+                           AllRaycastHits[targetPrecision], maxRaycastDistance, raycastMask, raycastTriggerInteraction);
             }
         }
 
@@ -252,7 +268,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             for (var i = 0; i < raycastHitCounts[targetPrecision]; i++)
             {
-                var raycastHit = allRaycastHits[targetPrecision][i];
+                var raycastHit = AllRaycastHits[targetPrecision][i];
 
                 // Gets the interactable associated with the collider
                 // Skip this step if the collider in question is not an interactable
@@ -267,7 +283,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     targetInteractable = interactable,
                     precisionLevel = targetPrecision
                 };
-                baseTargetsRaycastHitResults.Add(gazeRaycastHitResult);
+                BaseTargetsRaycastHitResults.Add(gazeRaycastHitResult);
             }
         }
 
@@ -282,17 +298,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private static readonly Dictionary<IXRInteractable, GazeRaycastHitResult> InteractableRaycastHitMap = new Dictionary<IXRInteractable, GazeRaycastHitResult>();
 
         /// <summary>
-        /// Used to avoid GC alloc that would happen if passing <see cref="ConecastScoreCompare"/> directly
+        /// Used to avoid GC alloc that would happen if passing <see cref="ConeCastScoreCompare"/> directly
         /// as an argument to <see cref="List{T}.Sort(Comparison{T})"/>.
         /// </summary>
-        private static readonly Comparison<GazeRaycastHitResult> InteractableScoreComparison = ConecastScoreCompare;
+        private static readonly Comparison<GazeRaycastHitResult> InteractableScoreComparison = ConeCastScoreCompare;
 
         private static readonly ProfilerMarker SortPerfMarker =
             new ProfilerMarker("[MRTK] FuzzyGazeInteractor.Sort");
 
         /// <summary>
         /// Refreshes <see cref="InteractableScoreMap"/> with the scores for all interactables currently in <paramref name="hitResults"/> according to <paramref name="fuzzyGazeInteractor"/>.
-        /// Then, uses <see cref="ConecastScoreCompare"/> with these refreshed scores to sort <paramref name="hitResults"/>.
+        /// Then, uses <see cref="ConeCastScoreCompare"/> with these refreshed scores to sort <paramref name="hitResults"/>.
         /// </summary>
         private static void Sort(FuzzyGazeInteractor fuzzyGazeInteractor, List<GazeRaycastHitResult> hitResults)
         {
@@ -352,7 +368,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
             {
                 // Populate targets with the first valid interactable for fuzzy gaze targeting
                 targets.Clear();
-                foreach (GazeRaycastHitResult gazeRaycastHitResult in baseTargetsRaycastHitResults)
+                foreach (GazeRaycastHitResult gazeRaycastHitResult in BaseTargetsRaycastHitResults)
                 {
                     IXRInteractable target = gazeRaycastHitResult.targetInteractable;
                     RaycastHit raycastHit = gazeRaycastHitResult.raycastHit;
@@ -398,7 +414,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 // Now associate these targets with their corresponding raycast hit where applicable
                 // The raycast hits are generated from the Fuzzy Gaze Interactor's own cache of raycast hits
                 // In the future, this will derive from the XRRayInteractor
-                baseTargetsRaycastHitResults.Clear();
+                BaseTargetsRaycastHitResults.Clear();
 
                 for (int targetPrecision = 0; targetPrecision <= precision; targetPrecision++)
                 {
@@ -410,7 +426,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     UpdateHitResults(RaycastPrecision);
                 }
 
-                Sort(this, baseTargetsRaycastHitResults);
+                Sort(this, BaseTargetsRaycastHitResults);
             }
 
             base.PreprocessInteractor(updatePhase);
@@ -424,8 +440,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private const float RaycastGizmoScale = 0.07f;
 
         /// <summary>
-        /// When in editor, draws an approximation of what is the "Near Object" area
+        /// A Unity event function that is called to draw Unity editor gizmos that are also interactable and always drawn.
         /// </summary>
+        /// <remarks>
+        /// When in editor, draws an approximation of what is the "Near Object" area
+        /// </remarks>
         private void OnDrawGizmos()
         {
             if (!isHoverActive)
@@ -443,16 +462,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
             float peripheralDist = Mathf.Max(sideDist * (intersectionDist - minGazeDistance) / intersectionDist, 0);
 
             Vector3 coneStart = origin + minGazeDistance * centralAxis;
-            Vector3 coneDropoffPoint = origin + Mathf.Min(Mathf.Max(intersectionDist, minGazeDistance), maxGazeDistance) * centralAxis;
+            Vector3 coneDropOffPoint = origin + Mathf.Min(Mathf.Max(intersectionDist, minGazeDistance), maxGazeDistance) * centralAxis;
             Vector3 coneEnd = origin + maxGazeDistance * centralAxis;
 
             // Draw something approximating the GazeInteractor's field of view
 
-            // Draw the field of view constrained by the spherecast physics calls
+            // Draw the field of view constrained by the sphere cast physics calls
             Gizmos.color = Color.blue;
             Gizmos.DrawLine(coneStart, coneEnd);
-            Gizmos.DrawLine(coneDropoffPoint + Vector3.left * sphereCastRadius, coneEnd + Vector3.left * sphereCastRadius);
-            Gizmos.DrawLine(coneDropoffPoint + Vector3.right * sphereCastRadius, coneEnd + Vector3.right * sphereCastRadius);
+            Gizmos.DrawLine(coneDropOffPoint + Vector3.left * sphereCastRadius, coneEnd + Vector3.left * sphereCastRadius);
+            Gizmos.DrawLine(coneDropOffPoint + Vector3.right * sphereCastRadius, coneEnd + Vector3.right * sphereCastRadius);
 
             // Draw the field of view that is restricted due to the cone angle
             Quaternion leftRayRotation = Quaternion.AngleAxis(-GizmoAngle, upAxis);

@@ -55,7 +55,10 @@ namespace Microsoft.MixedReality.Toolkit
             get => rightHandController;
             set => rightHandController = value;
         }
-
+        
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         private void OnValidate()
         {
             if (FindObjectsByType<ControllerLookup>(FindObjectsSortMode.None).Length > 1)

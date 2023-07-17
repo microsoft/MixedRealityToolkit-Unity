@@ -138,7 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         /// <param name="hand">XRNode representing the hand to validate.</param>
         /// <returns>
-        /// True if this hand should be used for tracking.
+        /// <see langword="true"/> if this hand should be used for tracking.
         /// </returns>
         /// <remarks>
         /// This method will modify the position and rotation behavior of the hand
@@ -221,7 +221,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// The palm's current angle that's used to determine if it meets the min threshold.
         /// </param>
         /// <returns>
-        /// True if the palm is meeting the threshold requirements, or false.
+        /// <see langword="true"/> if the palm is meeting the threshold requirements, or <see langword="false"/>.
         /// </returns>
         private bool IsPalmMeetingThresholdRequirements(
             XRNode hand,
@@ -258,14 +258,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         /// <summary>
         /// Checks to see if the user is currently gazing at the activation point; it first attempts to do so 
-        /// using eyegaze, and then falls back to head-based gaze if eyegaze isn't available for use.
+        /// using eye gaze, and then falls back to head-based gaze if eye gaze isn't available for use.
         /// </summary>
         /// <param name="hand">
         /// The XRNode representing the user's hand that is used to determine if user gaze meets the gaze threshold.
         /// </param>
         /// <returns>
-        /// True if the user's gaze is within the proximity threshold of the activation point (both relative to the
-        /// hand plane), or false.
+        /// <see langword="true"/> if the user's gaze is within the proximity threshold of the activation point (both relative to the
+        /// hand plane), or <see langword="fapse"/>.
         /// </returns>
         private bool IsUserGazeMeetingThresholdRequirements(XRNode hand)
         {
@@ -274,14 +274,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 Ray? gazeRay = null;
                 bool usedEyeGaze = false;
 
-                if (controllerLookup != null &&
-                    controllerLookup.GazeController != null &&
-                    (controllerLookup.GazeController.currentControllerState.inputTrackingState &
+                if (ControllerLookup != null &&
+                    ControllerLookup.GazeController != null &&
+                    (ControllerLookup.GazeController.currentControllerState.inputTrackingState &
                     (InputTrackingState.Position | InputTrackingState.Rotation)) > 0)
                 {
                     gazeRay = new Ray(
-                            controllerLookup.GazeController.transform.position,
-                            controllerLookup.GazeController.transform.forward);
+                            ControllerLookup.GazeController.transform.position,
+                            ControllerLookup.GazeController.transform.forward);
                     usedEyeGaze = true;
                 }
                 else
@@ -294,7 +294,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
                 if (gazeRay.HasValue)
                 {
                     // Define the activation point as a vector between the wrist and pinky knuckle; then cast it against the plane to get a smooth location
-                    // If we can generate the handplane/are able to set an activation point on it, and then are able to raycast against it
+                    // If we can generate the hand plane or are able to set an activation point on it, and then are able to raycast against it
                     if (TryGenerateHandPlaneAndActivationPoint(hand, out Plane handPlane, out Vector3 activationPoint) &&
                         handPlane.Raycast(gazeRay.Value, out float distanceToHandPlane))
                     {
@@ -343,7 +343,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// Out Vector3 that represents the point on the hand-based plane to determine if  the menu activates.
         /// </param>
         /// <returns>
-        /// True if the function can properly generate an activation point using the hand-based plane.
+        /// <see langword="true"/> if the function can properly generate an activation point using the hand-based plane.
         /// </returns>
         private bool TryGenerateHandPlaneAndActivationPoint(
             XRNode hand,
@@ -390,7 +390,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         /// <param name="hand">An instance of the user's hand that is being used to generate an activation point for the menu</param>
         /// <param name="activationPoint"> Out Vector3 that represents the generated activation point for the selected safe zone</param>
-        /// <returns>True if all of the joints used for generating the activation point are present (and the point can be calculated)</returns>
+        /// <returns><see langword="true"/> if all of the joints used for generating the activation point are present (and the point can be calculated)</returns>
         private bool TryGenerateActivationPoint(
             XRNode hand,
             out Vector3 activationPoint)
@@ -484,9 +484,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         #region MonoBehaviour Implementation
 
         /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
+        /// <remarks>
         /// When enabled, ensure that there are no outlying status changes that would prevent HandConstraintPalmUp from 
         /// properly working (like gazeActivationAlreadyTriggered being set to true previously)
-        /// </summary>
+        /// </remarks>
         protected override void OnEnable()
         {
             base.OnEnable();

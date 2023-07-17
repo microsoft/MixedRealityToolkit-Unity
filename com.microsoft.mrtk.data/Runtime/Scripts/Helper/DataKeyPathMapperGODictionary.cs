@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using System;
 using UnityEngine;
 
@@ -33,7 +37,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected DataKeyPathMapperDictionary _dataKeyPathMapperDictionary = new DataKeyPathMapperDictionary();
 
 
-        void OnEnable()
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
+        private void OnEnable()
         {
             foreach (ViewToDataKeypathMap v2dKeyPath in viewKeypathToDataKeypathMapper)
             {
@@ -68,3 +75,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     }
 }
+#pragma warning restore CS1591

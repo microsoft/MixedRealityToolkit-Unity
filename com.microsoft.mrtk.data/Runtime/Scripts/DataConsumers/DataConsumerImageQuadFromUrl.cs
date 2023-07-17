@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using System;
 using UnityEngine;
 
@@ -23,14 +27,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         private Material defaultMaterial = null;
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override Type[] GetComponentTypes()
         {
             Type[] types = { typeof(MeshRenderer) };
             return types;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void InitializeForComponent(Component component)
         {
             if (imageQuadMeshRenderer == null)
@@ -46,10 +50,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void PlaceImageTexture(Texture2D imageTexture)
         {
             imageQuadMeshRenderer.material.mainTexture = imageTexture;
         }
     }
 }
+#pragma warning restore CS1591

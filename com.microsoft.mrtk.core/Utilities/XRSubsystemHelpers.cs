@@ -206,9 +206,13 @@ namespace Microsoft.MixedReality.Toolkit
         #region Subsystem internal utilities
 
         /// <summary>
-        /// Constructs a cInfo struct for the specified subsystem type.
-        /// Used when registering a subsystem.
+        /// Create and initializes an object of type <typeparamref name="CinfoT"/> for the specified subsystem type.
         /// </summary>
+        /// <remarks>
+        /// Used when registering a subsystem.
+        /// </remarks>
+        /// <typeparam name="SubsystemT">The type the subsystem being registered.</typeparam>
+        /// <typeparam name="CinfoT">A <see cref="IMRTKSubsystemDescriptor"/> class type to create.</typeparam>
         public static CinfoT ConstructCinfo<SubsystemT, CinfoT>() where CinfoT : IMRTKSubsystemDescriptor, new()
         {
             var metadata = RetrieveMetadata<SubsystemT>();
@@ -298,22 +302,26 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name='subsystemTypeOverride'>The derived type of the subsystem.</param>
         /// <param name='providerType'>The derived type of the provider.</param>
         /// <returns>
-        /// True if all validation checks pass.
+        /// <see langword="true"/> if all validation checks pass.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when there are errors in the descriptor parameters.
-        /// Typically, this will occur
+        /// Typically, this will occur in the following cases:
         /// <list type="bullet">
-        /// <item>
-        /// <description>if <see cref="name"/> is <c>null</c> or empty</description>
-        /// </item>
-        /// <item>
-        /// <description>if <see cref="subsystemTypeOverride"/> does not subclass the base subsystem type
-        /// </description>
-        /// </item>
-        /// <item>
-        /// <description>if <see cref="providerType"/> does not subclass the base provider type
-        /// </description>
-        /// </item>
+        ///     <item>
+        ///         <description>
+        ///             If <paramref name="name"/> is <see langword="null"/> or empty.
+        ///         </description>
+        ///     </item>
+        ///     <item>
+        ///         <description>
+        ///             If <paramref name="subsystemTypeOverride"/> does not subclass the base subsystem type.
+        ///         </description>
+        ///     </item>
+        ///     <item>
+        ///         <description>
+        ///             If <paramref name="providerType"/> does not subclass the base provider type.
+        ///         </description>
+        ///     </item>
         /// </list>
         /// </exception>
         public static bool CheckTypes<SubsystemT, ProviderT>(string name, Type subsystemTypeOverride, Type providerType)

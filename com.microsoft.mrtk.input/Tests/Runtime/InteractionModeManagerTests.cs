@@ -1,5 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
+
+// Disable "missing XML comment" warning for tests. While nice to have, this documentation is not required.
+#pragma warning disable CS1591
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -97,9 +101,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         }
 
         /// <summary>
-        /// Tests that mode mediation works properly. The interaction mode with the higher priority should be the valid one which affects the controller.
-        /// This test operates on the basic assumption that the priority order is FarRayHover < Near < GrabSelect
+        /// Tests that mode mediation works properly. 
         /// </summary>
+        /// <remarks>
+        /// The interaction mode with the higher priority should be the valid one which affects the controller.
+        /// This test operates on the basic assumption that the priority order is <c>FarRayHover</c> &lt; <c>Near</c> &lt; <c>GrabSelect</c>.
+        /// </remarks>
         [UnityTest]
         public IEnumerator ModeMediationTest()
         {
@@ -135,7 +142,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             InteractionMode nearMode = rightHandController.GetComponentInChildren<ProximityDetector>().ModeOnDetection;
             yield return RuntimeTestUtilities.WaitForUpdates();
             ValidateInteractionModeActive(rightHandController, nearMode);
-            Assert.IsTrue(nearMode.priority > farRayMode.priority);
+            Assert.IsTrue(nearMode.Priority > farRayMode.Priority);
 
             // Finally move in for a grab
             yield return rightHand.MoveTo(cube.transform.position);
@@ -147,7 +154,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             Assert.AreEqual(grabMode, rightHandController.GetComponentInChildren<GrabInteractor>().GetComponent<InteractionDetector>().ModeOnDetection);
             yield return RuntimeTestUtilities.WaitForUpdates();
             ValidateInteractionModeActive(rightHandController, grabMode);
-            Assert.IsTrue(grabMode.priority > nearMode.priority);
+            Assert.IsTrue(grabMode.Priority > nearMode.Priority);
 
             // Run it all in reverse and make sure the interaction stack is in order
             // Now move the hand in range for the proximity detector
@@ -175,7 +182,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
             // We construct the list of managed interactor types manually because we don't want to expose the internal controller mapping implementation to even internal use, since
             // we don't want any other class to be able to modify those collections without going through the Mode Manager or it's in-editor inspector.
             HashSet<System.Type> managedInteractorTypes = new HashSet<System.Type>(InteractionModeManager.Instance.PrioritizedInteractionModes.SelectMany(x => x.AssociatedTypes));
-            HashSet<System.Type> activeInteractorTypes = InteractionModeManager.Instance.PrioritizedInteractionModes.Find(x => x.ModeName == currentMode.name).AssociatedTypes;
+            HashSet<System.Type> activeInteractorTypes = InteractionModeManager.Instance.PrioritizedInteractionModes.Find(x => x.ModeName == currentMode.Name).AssociatedTypes;
 
             // Ensure the prox detector has actually had the desired effect of enabling/disabling interactors.
             foreach (System.Type interactorType in managedInteractorTypes)
@@ -204,4 +211,4 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         }
     }
 }
-
+#pragma warning restore CS1591

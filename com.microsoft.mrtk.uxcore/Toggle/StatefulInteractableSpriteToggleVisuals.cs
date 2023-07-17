@@ -63,7 +63,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         #region MonoBehaviours
 
-        public void Awake()
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
+        protected virtual void Awake()
         {
             // If the StatefulInteractable is null, 
             if (statefulInteractable == null)
@@ -82,7 +85,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
             lastToggleState = isToggled;
         }
 
-        public void LateUpdate()
+        /// <summary>
+        /// A Unity event function that is called every frame after normal update functions, if this object is enabled.
+        /// </summary>
+        protected virtual void LateUpdate()
         {
             UpdateAllVisuals();
         }

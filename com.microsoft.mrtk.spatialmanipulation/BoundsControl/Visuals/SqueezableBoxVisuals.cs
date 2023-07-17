@@ -138,7 +138,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         #region Convex Hull Internals
 
-        // Container for tracking both a handle's interactable and its screenspace-projected position.
+        // Container for tracking both a handle's interactable and its screen space projected position.
         private struct HandlePoint
         {
             public BoundsHandleInteractable Handle;
@@ -160,6 +160,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         #endregion Convex Hull Private Fields
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             boundsControl = GetComponentInParent<BoundsControl>();
@@ -193,6 +196,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             flattenVector = BoundsCalculator.CalculateFlattenVector(transform.lossyScale);
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             // Read state off of the BoundsControl component.
@@ -207,8 +213,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             if (interactable != null)
             {
                 targetActiveFocus = (interactable.IsActiveHovered || interactable.isSelected || handlesActive) ? 1 : 0;
-                targetActivation = interactable.Selectedness();
-                targetShrink = interactable.Selectedness();
+                targetActivation = interactable.GetSelectionProgress();
+                targetShrink = interactable.GetSelectionProgress();
 
                 if (handlesActive)
                 {
@@ -261,6 +267,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         protected virtual void OnEnable()
         {
             // Ensures that when the GameObject is re-enabled, the handles are occluded by default.
@@ -296,7 +305,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// Calculates the squeezable-box-specific values from the current material setup.
         /// </summary>
         /// <param name="renderer">The renderer to write to.</param>
-        /// <param name="propertyBlock">The property block to use. Will be overwritten by this method.</param>
         /// <param name="padding">The original padding from the edge of the box geometry to the rendered box visual edge. World units.</param>
         /// <param name="shrinkFraction">The box will shrink to this fraction of the original padding when the shrink parameter = 1.</param>
         protected virtual void GetBoxProperties(MeshRenderer renderer, out float padding, out float shrinkFraction)
@@ -351,7 +359,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private static readonly ProfilerMarker ConvexHullPerfMarker =
             new ProfilerMarker("[MRTK] SqueezableBoxVisuals.ConvexHull");
 
-        // Compute a convex hull of all handle points in screenspace.
+        // Compute a convex hull of all handle points in screen space.
         // Handles that are a member of the convex hull set (i.e., along the edge of the hull)
         // are considered visible and valid. Handles on the inside of the convex hull are invalid
         // and should be hidden.
