@@ -262,8 +262,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation
         /// <param name="controls">The desired state of the controller's controls.</param>
         /// <param name="rotationMode">The <see cref="ControllerRotationMode"/> in which the controller is operating.</param>
         /// <param name="anchorPosition">The position in world space which the controller should be around on</param>
-        /// <param name="shouldUseRayVector">Should <see cref="PointerRotation"/> be set to the body/head ray vector, instead of the raw rotation?</param>
-        /// <param name="isMovementSmoothed">Should controller movement along the Z axis be smoothed?</param>
+        /// <param name="shouldUseRayVector">Specify if <see cref="MRTKSimulatedController.PointerRotation"/> should be set to the body or head ray vector, instead of the raw rotation.</param>
+        /// <param name="isMovementSmoothed">Set to <see langword="true"/> to smooth controller movement along the Z axis.</param>
         /// <param name="depthSensitivity">The sensitivity multiplier for depth movement.</param>
         /// <param name="jitterStrength">How strong should be the simulated controller jitter (inaccuracy)?</param>
         public void UpdateRelative(

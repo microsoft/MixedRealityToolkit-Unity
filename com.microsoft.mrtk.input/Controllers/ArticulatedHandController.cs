@@ -15,7 +15,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// </summary>
     /// <remarks>
     /// This is able to support variable pinch select through the use of <see cref="HandsAggregatorSubsystem"/>.
-    /// </summary>
+    /// </remarks>
     [AddComponentMenu("MRTK/Input/XR Controller (Articulated Hand)")]
     public class ArticulatedHandController : ActionBasedController
     {

@@ -19,7 +19,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         InteractionMode ModeOnDetection { get; }
 
         /// <summary>
-        /// Determines whether the detector has detected the appropriate conditions.
+        /// Determine whether the detector has detected the appropriate conditions.
         /// </summary>
         /// <remarks>
         /// One possible usage can be when a teleport gesture occurs, am <see cref="IInteractionModeDetector"/> can change the controller's interaction mode to a <see cref="InteractionMode"/> representing teleportation.
@@ -28,9 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         bool IsModeDetected();
 
         /// <summary>
-        /// Gets a list of the <see cref="GameObjects"/> which represent the controllers that this interaction mode detector has jurisdiction over.
+        /// Get a list of the <see cref="GameObject"/> instances which represent the controllers that this interaction mode detector has jurisdiction over.
         /// </summary>
-        /// <returns>The list of the <see cref="GameObjects"/> which represent the controllers that this interaction mode detector has jurisdiction over.</returns>
+        /// <returns>The list of the <see cref="GameObject"/> instances which represent the controllers that this interaction mode detector has jurisdiction over.</returns>
         List<GameObject> GetControllers();
     }
 }

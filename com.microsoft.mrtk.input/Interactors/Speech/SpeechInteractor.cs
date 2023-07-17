@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <remarks>
         /// When this <see cref="SpeechInteractor"/> recognizes the provided <paramref name="keyword"/>, 
-        /// <see cref="XRInteractionManager.SelectEnter"/> is called, passing along the provided
+        /// <see cref="XRInteractionManager.SelectEnter(IXRSelectInteractor, IXRSelectInteractable)"/> is called, passing along the provided
         /// <paramref name="interactable"/>.
         /// </remarks>
         /// <param name="interactable">The <see cref="StatefulInteractable"/> to select when the keyword in recognized.</param>
