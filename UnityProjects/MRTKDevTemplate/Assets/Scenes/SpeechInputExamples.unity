@@ -206,7 +206,6 @@ GameObject:
   m_Component:
   - component: {fileID: 84447622}
   - component: {fileID: 84447625}
-  - component: {fileID: 84447624}
   - component: {fileID: 84447623}
   m_Layer: 0
   m_Name: SectionSubtitle
@@ -330,14 +329,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 84447625}
   m_maskType: 0
---- !u!222 &84447624
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 84447621}
-  m_CullTransparentMesh: 0
 --- !u!23 &84447625
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -494,7 +485,6 @@ GameObject:
   m_Component:
   - component: {fileID: 300813876}
   - component: {fileID: 300813879}
-  - component: {fileID: 300813878}
   - component: {fileID: 300813877}
   m_Layer: 0
   m_Name: SectionTitle (1)
@@ -616,14 +606,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 300813879}
   m_maskType: 0
---- !u!222 &300813878
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 300813875}
-  m_CullTransparentMesh: 0
 --- !u!23 &300813879
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -686,7 +668,6 @@ GameObject:
   m_Component:
   - component: {fileID: 347170310}
   - component: {fileID: 347170313}
-  - component: {fileID: 347170312}
   - component: {fileID: 347170311}
   m_Layer: 0
   m_Name: InteractableSectionTitle
@@ -807,14 +788,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 347170313}
   m_maskType: 0
---- !u!222 &347170312
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 347170309}
-  m_CullTransparentMesh: 0
 --- !u!23 &347170313
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -878,7 +851,6 @@ GameObject:
   m_Component:
   - component: {fileID: 379646600}
   - component: {fileID: 379646603}
-  - component: {fileID: 379646602}
   - component: {fileID: 379646601}
   m_Layer: 0
   m_Name: SectionTitle
@@ -1002,14 +974,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 379646603}
   m_maskType: 0
---- !u!222 &379646602
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 379646599}
-  m_CullTransparentMesh: 0
 --- !u!23 &379646603
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2104,7 +2068,6 @@ GameObject:
   m_Component:
   - component: {fileID: 859809382}
   - component: {fileID: 859809385}
-  - component: {fileID: 859809384}
   - component: {fileID: 859809383}
   m_Layer: 0
   m_Name: SectionTitle
@@ -2225,14 +2188,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 859809385}
   m_maskType: 0
---- !u!222 &859809384
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 859809381}
-  m_CullTransparentMesh: 0
 --- !u!23 &859809385
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4141,7 +4096,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1954006179}
   - component: {fileID: 1954006182}
-  - component: {fileID: 1954006181}
   - component: {fileID: 1954006180}
   m_Layer: 0
   m_Name: SectionTitle
@@ -4262,14 +4216,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 1954006182}
   m_maskType: 0
---- !u!222 &1954006181
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1954006178}
-  m_CullTransparentMesh: 0
 --- !u!23 &1954006182
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4322,7 +4268,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2020163873}
   - component: {fileID: 2020163876}
-  - component: {fileID: 2020163875}
   - component: {fileID: 2020163874}
   m_Layer: 0
   m_Name: SectionSubtitle
@@ -4446,14 +4391,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 2020163876}
   m_maskType: 0
---- !u!222 &2020163875
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2020163872}
-  m_CullTransparentMesh: 0
 --- !u!23 &2020163876
 MeshRenderer:
   m_ObjectHideFlags: 0
