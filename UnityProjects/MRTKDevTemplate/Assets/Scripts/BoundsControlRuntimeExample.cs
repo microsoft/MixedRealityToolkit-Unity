@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
-    /// This example script demonstrates various bounds control runtime configurations
+    /// This example script demonstrates various bounds control runtime configurations.
     /// </summary>
     public class BoundsControlRuntimeExample : MonoBehaviour
     {
@@ -37,9 +37,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
 
         /// <summary>
-        /// Method to update the in scene status text
+        /// Method to update the in-scene status text.
         /// </summary>
-        /// <param name="status"></param>
+        /// <param name="status">The new status text.</param>
         private void SetStatus(string status)
         {
             Debug.Assert(statusText != null, "statusText on BoundsControlRuntimeExample should not be null");
@@ -50,7 +50,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
 
         /// <summary>
-        /// Coroutine method to advance the state of the example scene
+        /// Coroutine method to advance the state of the example scene.
         /// </summary>
         private IEnumerator Sequence()
         {
@@ -199,9 +199,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
 
         /// <summary>
-        /// Set up a BoundsControl component on the target GameObject
+        /// Set up a BoundsControl component on the target GameObject.
         /// </summary>
-        /// <param name="target"></param>
+        /// <param name="target">The gameobject to set up the BoundsControl on.</param>
         /// <returns>The created <see cref="BoundsControl"/> component</returns>
         private BoundsControl InitializeBoundsControl(GameObject target)
         {

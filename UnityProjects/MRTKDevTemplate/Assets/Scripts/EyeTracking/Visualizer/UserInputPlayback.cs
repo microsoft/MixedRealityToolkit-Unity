@@ -165,14 +165,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                 StorageFolder logRootFolder = KnownFolders.MusicLibrary;
                 if (logRootFolder != null)
                 {
-                    //string fullPath = Path.Combine(logRootFolder.Path, LogDirectory);
-
-                    //if (!Directory.Exists(fullPath))
-                    //{
-                    //    return;
-                    //}
-
-                    //sessionFolder = await logRootFolder.GetFolderAsync(LogDirectory);
                     logFile = await logRootFolder.GetFileAsync(playbackLogFilename);
                     return true;
                 }

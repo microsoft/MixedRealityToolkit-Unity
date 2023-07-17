@@ -77,7 +77,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// <summary>
         /// Triggered when the attached <see cref="StatefulInteractable"/> is de-selected.
         /// </summary>
-        /// <param name="_"></param>
         public void OnSelectExited(SelectExitEventArgs _)
         {
             material.color = onHoverColor;
