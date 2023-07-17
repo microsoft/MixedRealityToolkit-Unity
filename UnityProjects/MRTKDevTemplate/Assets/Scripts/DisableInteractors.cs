@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 using System.Collections.Generic;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UX;
@@ -97,6 +100,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
         }
 
+        /// <summary>
+        /// Method triggered by the VR button in the scene
+        /// </summary>
         public void SetVRModeActive()
         {
             interactorBehaviorControls.SetVR();
@@ -105,6 +111,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             SetToggleActive(hololensToggle, false);
         }
 
+        /// <summary>
+        /// Method triggered by the Hololens 2 button in the scene
+        /// </summary>
         public void SetHololensModeActive()
         {
             interactorBehaviorControls.SetHololens();

@@ -8,6 +8,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
     using SpatialManipulation;
     using UnityEngine.XR.Interaction.Toolkit;
 
+    /// <summary>
+    /// Manager class for the SolverExamples scene
+    /// </summary>
     [AddComponentMenu("Scripts/MRTK/Examples/SolverExampleManager")]
     public class SolverExampleManager : MonoBehaviour
     {
@@ -42,31 +45,49 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         private readonly Vector3 HandJointRotationFix = new Vector3(90f, 0f, 0f);
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             SetRadialView();
         }
 
+        /// <summary>
+        /// Method to change the tracking type to the user's head
+        /// </summary>
         public void SetTrackedHead()
         {
             TrackedType = TrackedObjectType.Head;
         }
 
+        /// <summary>
+        /// Method to change the tracking type to controller ray
+        /// </summary>
         public void SetTrackedController()
         {
             TrackedType = TrackedObjectType.ControllerRay;
         }
 
+        /// <summary>
+        /// Method to change the tracking type to the hand joint
+        /// </summary>
         public void SetTrackedHands()
         {
             TrackedType = TrackedObjectType.HandJoint;
         }
 
+        /// <summary>
+        /// Method to change the tracking type to custom
+        /// </summary>
         public void SetTrackedCustom()
         {
             TrackedType = TrackedObjectType.CustomOverride;
         }
 
+        /// <summary>
+        /// Method to change to the <see cref="RadialView"/> solver
+        /// </summary>
         public void SetRadialView()
         {
             DestroySolver();
@@ -74,6 +95,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             AddSolver<RadialView>();
         }
 
+        /// <summary>
+        /// Method to change to the <see cref="Orbital"/> solver
+        /// </summary>
         public void SetOrbital()
         {
             DestroySolver();
@@ -85,6 +109,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             orbital.LocalOffset = new Vector3(0.0f, -0f, 1.0f);
         }
 
+        /// <summary>
+        /// Method to change to the <see cref="SurfaceMagnetism"/> solver
+        /// </summary>
         public void SetSurfaceMagnetism()
         {
             DestroySolver();

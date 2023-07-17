@@ -35,10 +35,29 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         [SerializeField]
         private XRBaseInteractor gazeInteractor;
 
+        /// <summary>
+        /// event triggered when hand rays are toggled on or off
+        /// </summary>
         public event Action<bool> onHandRayToggled;
+
+        /// <summary>
+        /// event triggered when controller rays are toggled on or off
+        /// </summary>
         public event Action<bool> onControllerRayToggled;
+
+        /// <summary>
+        /// event triggered when grab interactors are toggled on/off
+        /// </summary>
         public event Action<bool> onGrabToggled;
+
+        /// <summary>
+        /// event triggered when poke interactors are toggled on/off
+        /// </summary>
         public event Action<bool> onPokeToggled;
+
+        /// <summary>
+        /// event triggered when gaze interactors are toggled on/off
+        /// </summary>
         public event Action<bool> onGazeToggled;
 
         /// <summary>

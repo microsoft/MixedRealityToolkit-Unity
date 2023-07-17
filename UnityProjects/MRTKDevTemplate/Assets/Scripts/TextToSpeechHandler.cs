@@ -53,6 +53,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         private TextToSpeechSubsystem textToSpeechSubsystem;
 
+        /// <summary>
+        /// Method to demonstrate the text to speech capability
+        /// </summary>
         public void Speak()
         {
 

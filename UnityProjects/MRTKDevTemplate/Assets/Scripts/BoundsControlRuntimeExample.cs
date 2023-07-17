@@ -14,13 +14,20 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// </summary>
     public class BoundsControlRuntimeExample : MonoBehaviour
     {
-        public TextMeshPro statusText;
+        [SerializeField]
+        private TextMeshPro statusText;
 
-        public Material darkGrayMaterial;
-        public Material redMaterial;
-        public Material cyanMaterial;
+        [SerializeField]
+        private Material darkGrayMaterial;
 
-        public GameObject boundsVisualsPrefab;
+        [SerializeField]
+        private Material redMaterial;
+
+        [SerializeField]
+        private Material cyanMaterial;
+
+        [SerializeField]
+        private GameObject boundsVisualsPrefab;
 
         private bool nextTriggeredFlag;
         private Vector3 cubePosition = new Vector3(0, 1.2f, 2);
