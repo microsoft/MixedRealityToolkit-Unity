@@ -39,13 +39,13 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             /// <summary>
             /// Attempts to get the collection of accessible objects based on the specified constraints.
             /// </summary>
-            /// <param name="classifications">The classifications (people, places, things, etc.) of the <see cref="GameObject"/>s to be returned.</param>
-            /// <param name="readerView">In how much of the scene should <see cref="GameObject"/>s be returned?</param>
-            /// <param name="maxDistance">The cutoff distance beyond which <see cref="GameObject"/>s will not be returned.</param>
-            /// <param name="accessibleObjectsList">`Container in which the requested collection of <see cref="GameObject"/>s will be placed.</param>
+            /// <param name="classifications">The classifications (people, places, things, etc.) of the <see cref="GameObject"/> instances to be returned.</param>
+            /// <param name="readerView">In how much of the scene should <see cref="GameObject"/> instances be returned?</param>
+            /// <param name="maxDistance">The cutoff distance beyond which <see cref="GameObject"/> instances will not be returned.</param>
+            /// <param name="accessibleObjectsList">`Container in which the requested collection of  <see cref="GameObject"/> instances will be placed.</param>
             /// <returns><see langword="true"/> if the collection of (zero or more) accessible objects is being returned, or <see langword="false"/>.</returns>
             /// <remarks>
-            /// When this method returns, the contents of objectList will be cleared and the requested <see cref="GameObject"/>s will be returned.
+            /// When this method returns, the contents of objectList will be cleared and the requested <see cref="GameObject"/> instances will be returned.
             /// <para/>
             /// The contents of the objectList collection is indeterminate when this method returns <see langword="false"/>.
             /// </remarks>

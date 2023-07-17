@@ -208,16 +208,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         /// <summary>
         /// Given the specified interactable, this computes and applies the relevant
-        /// position and rotation to the attach transform. If there is currently
-        /// an active selection, the attach transform is computed as an offset from
-        /// selected object, where the offset vector is a function of the centroid
-        /// between all currently participating <see cref="GazePinchInteractor"/>s.
+        /// position and rotation to the attach transform. 
+        /// </summary>
+        /// <remarks>
+        /// If there is currently an active selection, the attach transform is computed 
+        /// as an offset from selected object, where the offset vector is a function of 
+        /// the centroid between all currently participating <see cref="GazePinchInteractor"/>
+        /// objects.
+        /// 
         /// This models ray-like manipulations, but with virtual attach offsets from
         /// object, modeled from the relationship between each participating hand.
         /// When no selection is active, the attach transform is simply set to the
         /// current pinching pose. In all cases, the attach transform's rotation is
         /// set to the controller's grip pose.
-        /// </summary>
+        /// </remarks>
         /// <param name="interactable">The interactable to compute the attach transform for.</param>
         private void ComputeAttachTransform(IXRSelectInteractable interactable)
         {

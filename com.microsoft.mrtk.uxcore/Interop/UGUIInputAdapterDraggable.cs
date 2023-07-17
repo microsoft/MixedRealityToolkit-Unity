@@ -25,7 +25,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private Plane plane;
 
         /// <summary>
-        ///  When dragging is occurring this will be called every time the cursor is moved.
+        /// When dragging is occurring this will be called every time the cursor is moved.
+        /// </summary>
         /// <param name="pointerEventData">The event data associated with this event.</param>
         public virtual void OnDrag(PointerEventData pointerEventData)
         {

@@ -17,13 +17,16 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// </remarks>
     public abstract class ManipulationLogic<T>
     {
+        /// <summary>
+        /// The number of <see cref="IXRSelectInteractor"/> objects currently selecting this object.
+        /// </summary>
         protected int NumInteractors { get; private set; }
 
         /// <summary>
         /// Setup the manipulation logic. Called automatically by Update if the number of interactor points has changed.
         /// </summary>
         /// <param name="interactors">
-        /// List of all <see cref="IXRSelectInteractor"/>s selecting this object.
+        /// List of all <see cref="IXRSelectInteractor"/> objects selecting this object.
         ///</param>
         /// <param name= "interactable">
         /// The <see cref="IXRSelectInteractable"/> that is being manipulated.
@@ -42,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// different than the last time Update was called, Setup will be called automatically to re-initialize the manipulation.
         /// </summary>
         /// <param name="interactors">
-        /// List of all <see cref="IXRSelectInteractor"/>s selecting this object.
+        /// List of all <see cref="IXRSelectInteractor"/> objects selecting this object.
         ///</param>
         /// <param name= "interactable">
         /// The <see cref="IXRSelectInteractable"/> that is being manipulated.

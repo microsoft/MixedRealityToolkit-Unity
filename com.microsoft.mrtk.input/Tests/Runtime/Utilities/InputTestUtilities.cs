@@ -190,9 +190,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         }
 
         /// <summary>
-        /// Creates the simulated devices (two <see cref="SimulatedController"/>s and a <see cref="SimulatedHMD"/>)
-        /// as well as the associated <see cref="ControllerControls"/> for each.
+        /// Create simulated devices.
         /// </summary>
+        /// <remarks>
+        /// This will create two <see cref="SimulatedController"/> object, a <see cref="SimulatedHMD"/>
+        /// object, and the associated <see cref="ControllerControls"/> objects. 
+        /// </remarks>
         /// <param name="rayHalfLife">
         /// Optional value for ray smoothing halflife, handy for suppressing smoothing during automated tests.
         /// </param>
