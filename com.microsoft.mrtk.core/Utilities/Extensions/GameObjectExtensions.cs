@@ -91,11 +91,11 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// Checks if any MonoBehaviour on the given GameObject is using the RequireComponentAttribute requiring type T
         /// </summary>
-        /// <remarks>Only functions when called within a UNITY_EDITOR context. Outside of UNITY_EDITOR, always returns false</remarks>
+        /// <remarks>Only functions when called within a UNITY_EDITOR context. Outside of UNITY_EDITOR, always returns <see langword="false"/>.</remarks>
         /// <typeparam name="T">The potentially required component</typeparam>
         /// <param name="gameObject">the GameObject requiring the component</param>
         /// <param name="requiringTypes">A list of types that do require the component in question</param>
-        /// <returns>true if <typeparamref name="T"/> appears in any RequireComponentAttribute, otherwise false </returns>
+        /// <returns><see langword="true"/> if <typeparamref name="T"/> appears in any RequireComponentAttribute, otherwise <see langword="false"/>.</returns>
         public static bool IsComponentRequired<T>(this GameObject gameObject, out List<Type> requiringTypes) where T : Component
         {
             var genericType = typeof(T);

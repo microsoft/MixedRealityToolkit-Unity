@@ -171,7 +171,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         /// <param name="buttonText">text to place in button</param>
         /// <param name="options">layout options</param>
-        /// <returns>true if button clicked, false if otherwise</returns>
+        /// <returns><see langword="true"/> if button clicked, <see langword="false"/> if otherwise</returns>
         public static bool RenderIndentedButton(string buttonText, params GUILayoutOption[] options)
         {
             return RenderIndentedButton(() => { return GUILayout.Button(buttonText, options); });
@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <param name="content">What to draw in button</param>
         /// <param name="style">Style configuration for button</param>
         /// <param name="options">layout options</param>
-        /// <returns>true if button clicked, false if otherwise</returns>
+        /// <returns><see langword="true"/> if button clicked, <see langword="false"/> if otherwise.</returns>
         public static bool RenderIndentedButton(GUIContent content, GUIStyle style, params GUILayoutOption[] options)
         {
             return RenderIndentedButton(() => { return GUILayout.Button(content, style, options); });
@@ -193,7 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// Helper function to support primary overloaded version of this functionality
         /// </summary>
         /// <param name="renderButton">The code to render button correctly based on parameter types passed</param>
-        /// <returns>true if button clicked, false if otherwise</returns>
+        /// <returns><see langword="true"/> if button clicked, <see langword="false"/> if otherwise.</returns>
         public static bool RenderIndentedButton(Func<bool> renderButton)
         {
             bool result = false;
@@ -208,7 +208,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// Render documentation button routing to relevant URI
         /// </summary>
         /// <param name="docURL">documentation URL to open on button click</param>
-        /// <returns>true if button clicked, false otherwise</returns>
+        /// <returns><see langword="true"/> if button clicked, <see langword="false"/> otherwise.</returns>
         public static bool RenderDocumentationButton(string docURL, float width = DocLinkWidth)
         {
             if (!string.IsNullOrEmpty(docURL))
@@ -238,7 +238,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// Render a documentation header with button if Object contains HelpURLAttribute
         /// </summary>
         /// <param name="targetType">Type to test for HelpURLAttribute</param>
-        /// <returns>true if object drawn and button clicked, false otherwise</returns>
+        /// <returns><see langword="true"/> if object drawn and button clicked, <see langword="false"/> otherwise.</returns>
         public static bool RenderHelpURL(Type targetType)
         {
             bool result = false;
@@ -259,7 +259,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// Render a documentation header with button for given url value
         /// </summary>
         /// <param name="url">Url to open if button is clicked</param>
-        /// <returns>true if object drawn and button clicked, false otherwise</returns>
+        /// <returns><see langword="true"/> if object drawn and button clicked, <see langword="false"/> otherwise.</returns>
         public static bool RenderDocumentationSection(string url)
         {
             bool result = false;
@@ -292,7 +292,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// A button that is as wide as the label
         /// </summary>
-        /// <returns>true if button clicked, false otherwise</returns>
+        /// <returns><see langword="true"/> if button clicked, <see langword="false"/> otherwise.</returns>
         public static bool FlexButton(GUIContent label, int[] indexArr, MultiListButtonEvent callback, SerializedProperty prop = null)
         {
             if (FlexButton(label))
@@ -308,7 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// A button that is as wide as the label
         /// </summary>
         /// <param name="label">content for button</param>
-        /// <returns>true if button clicked, false otherwise</returns>
+        /// <returns><see langword="true"/> if button clicked, <see langword="false"/> otherwise.</returns>
         public static bool FlexButton(GUIContent label)
         {
             GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
@@ -328,7 +328,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// A button that is as wide as the available space
+        /// A button that is as wide as the available space.
         /// </summary>
         public static bool FullWidthButton(GUIContent label, float padding, int index, ListButtonEvent callback, SerializedProperty prop = null)
         {
@@ -354,7 +354,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// A button that is as wide as the available space
+        /// A button that is as wide as the available space.
         /// </summary>
         public static bool FullWidthButton(GUIContent label, float padding, int[] indexArr, MultiListButtonEvent callback, SerializedProperty prop = null)
         {
@@ -383,7 +383,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// A small button, good for a single icon like + or - with single index callback events
         /// </summary>
         /// <param name="label">content to place in the button</param>
-        /// <returns>true if button selected, false otherwise</returns>
+        /// <returns><see langword="true"/> if button selected, <see langword="false"/> otherwise.</returns>
         public static bool SmallButton(GUIContent label, int index, ListButtonEvent callback, SerializedProperty prop = null)
         {
             if (SmallButton(label))
@@ -399,7 +399,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// A small button, good for a single icon like + or - with multi-index callback events
         /// </summary>
         /// <param name="label">content to place in the button</param>
-        /// <returns>true if button selected, false otherwise</returns>
+        /// <returns><see langword="true"/> if button selected, <see langword="false"/> otherwise.</returns>
         public static bool SmallButton(GUIContent label, int[] indexArr, MultiListButtonEvent callback, SerializedProperty prop = null)
         {
             if (SmallButton(label))
@@ -415,7 +415,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// A small button, good for a single icon like + or -
         /// </summary>
         /// <param name="label">content to place in the button</param>
-        /// <returns>true if button selected, false otherwise</returns>
+        /// <returns><see langword="true"/> if button selected, <see langword="false"/> otherwise.</returns>
         public static bool SmallButton(GUIContent label)
         {
             GUIStyle smallButton = new GUIStyle(EditorStyles.miniButton);

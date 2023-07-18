@@ -255,17 +255,21 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         }
 
         /// <summary>
-        /// Moves the hand from startPos to endPos, rotates the hand from startRot to endRot, and lerps the pinchedness
-        /// based on the provided handshapeId.
+        /// Update the test hand's position, rotation, and shape.
         /// </summary>
-        /// <remarks>
-        /// <para>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
-        /// default number of steps should be used (i.e. ControllerMoveSteps). ControllerMoveSteps is not a compile
-        /// time constant, which is a requirement for default parameter values.</para>
+        /// <para>
+        /// This moves the hand from <paramref name="startPosition"/> to <paramref name="endPosition"/>, rotates the hand from 
+        /// <paramref name="startRotation"/> to <paramref name="endRotation"/>, and smooths the handshape
+        /// based on the provided <paramref name="handshapeId"/> over the number of steps provided by <paramref name="numSteps"/>.
+        /// </para>
+        /// <para>
+        /// The <paramref name="numSteps"/> parameter defaults to a value of -1, which is a sentinel value to indicate that the
+        /// default number of steps should be used as specified by <see cref="ControllerMoveSteps"/>.
+        /// </para>
         /// </remarks>
         public static IEnumerator UpdateHand(
-            Vector3 startPos, Vector3 endPos,
-            Quaternion startRot, Quaternion endRot,
+            Vector3 startPosition, Vector3 endPosition,
+            Quaternion startRotation, Quaternion endRotation,
             HandshapeId handshapeId, Handedness handedness,
             int numSteps = ControllerMoveStepsSentinelValue)
         {
@@ -285,8 +289,8 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
                 float t = i / (float)numSteps;
 
                 Pose handPose = new Pose(
-                    Vector3.Lerp(startPos, endPos, t),
-                    Quaternion.Lerp(startRot, endRot, t)
+                    Vector3.Lerp(startPosition, endPosition, t),
+                    Quaternion.Lerp(startRotation, endRotation, t)
                 );
                 float pinchAmount = Mathf.Lerp(startPinch, isPinching ? 1 : 0, t);
 
@@ -310,76 +314,97 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
                 yield return null;
             }
         }
-
+/
         /// <summary>
-        /// Moves the hand from startPos to endPos and lerps the pinchedness based on the provided handshapeId.
+        /// Move the test hand.
         /// </summary>
         /// <remarks>
-        /// <para>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
-        /// default number of steps should be used (i.e. ControllerMoveSteps). ControllerMoveSteps is not a compile
-        /// time constant, which is a requirement for default parameter values.</para>
+        /// <para>
+        /// This moves the hand from <paramref name="startPosition"/> to <paramref name="endPosition"/>, and smooths the handshape
+        /// based on the provided <paramref name="handshapeId"/> over the number of steps provided by <paramref name="numSteps"/>.
+        /// </para>
+        /// </para>
+        /// <para>
+        /// The <paramref name="numSteps"/> parameter defaults to a value of -1, which is a sentinel value to indicate that the
+        /// default number of steps should be used as specified by <see cref="ControllerMoveSteps"/>.
+        /// </para>
         /// </remarks>
         public static IEnumerator MoveHand(
-            Vector3 startPos, Vector3 endPos,
+            Vector3 startPosition, Vector3 endPosition,
             HandshapeId handshapeId, Handedness handedness,
             int numSteps = ControllerMoveStepsSentinelValue)
         {
             SimulatedController controller = handedness == Handedness.Right ? rightController : leftController;
             Quaternion rot = controller.WorldRotation;
-            return UpdateHand(startPos, endPos, rot, rot, handshapeId, handedness, numSteps);
+            return UpdateHand(startPosition, endPosition, rot, rot, handshapeId, handedness, numSteps);
         }
 
         /// <summary>
-        /// Moves the hand to newPos from its current position and lerps the pinchedness based on the provided handshapeId.
+        /// Move the test hand.
         /// </summary>
         /// <remarks>
-        /// <para>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
-        /// default number of steps should be used (i.e. ControllerMoveSteps). ControllerMoveSteps is not a compile
-        /// time constant, which is a requirement for default parameter values.</para>
+        /// <para>
+        /// This moves the hand to <paramref name="newPosition"/>, and smooths the handshape based on the provided
+        /// <paramref name="handshapeId"/> over the number of steps provided by <paramref name="numSteps"/>.
+        /// </para>
+        /// <para>
+        /// The <paramref name="numSteps"/> parameter defaults to a value of -1, which is a sentinel value to indicate that the
+        /// default number of steps should be used as specified by <see cref="ControllerMoveSteps"/>.
+        /// </para>
         /// </remarks>
         public static IEnumerator MoveHandTo(
-            Vector3 newPos, HandshapeId handshapeId, Handedness handedness,
+            Vector3 newPosition, HandshapeId handshapeId, Handedness handedness,
             int numSteps = ControllerMoveStepsSentinelValue)
         {
             Vector3 pos = GetHandPose(handedness).position;
 
-            return MoveHand(pos, newPos, handshapeId, handedness, numSteps);
+            return MoveHand(pos, newPosition, handshapeId, handedness, numSteps);
         }
 
         /// <summary>
-        /// Rotates the hand from startRot to endRot and lerps the pinchedness based on the provided handshapeId.
+        /// Rotate the test hand.
         /// </summary>
         /// <remarks>
-        /// <para>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
-        /// default number of steps should be used (i.e. ControllerMoveSteps). ControllerMoveSteps is not a compile
-        /// time constant, which is a requirement for default parameter values.</para>
+        /// <para>
+        /// This rotates the hand from  <paramref name="startRotation"/> to <paramref name="endRotation"/>, and smooths the handshape
+        /// based on the provided <paramref name="handshapeId"/> over the number of steps provided by <paramref name="numSteps"/>.
+        /// </para>
+        /// <para>
+        /// The <paramref name="numSteps"/> parameter defaults to a value of -1, which is a sentinel value to indicate that the
+        /// default number of steps should be used as specified by <see cref="ControllerMoveSteps"/>.
+        /// </para>
         /// </remarks>
         public static IEnumerator RotateHand(
-            Quaternion startRot, Quaternion endRot,
+            Quaternion startRotation, Quaternion endRotation,
             HandshapeId handshapeId, Handedness handedness,
             int numSteps = ControllerMoveStepsSentinelValue)
         {
             SimulatedController controller = handedness == Handedness.Right ? rightController : leftController;
             Vector3 pos = GetHandPose(handedness).position;
-            return UpdateHand(pos, pos, startRot, endRot, handshapeId, handedness, numSteps);
+            return UpdateHand(pos, pos, startRotation, endRotation, handshapeId, handedness, numSteps);
         }
 
         /// <summary>
-        /// Rotates the hand to newRot from its current rotation and lerps the pinchedness based on the
-        /// provided handshapeId.
+        /// Rotate the test hand.
         /// </summary>
         /// <remarks>
-        /// <para>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
-        /// default number of steps should be used (i.e. ControllerMoveSteps). ControllerMoveSteps is not a compile
-        /// time constant, which is a requirement for default parameter values.</para>
+        /// <para>
+        /// This rotates the hand to <paramref name="newRotation"/>, and smooths the handshape based on the provided 
+        /// <paramref name="handshapeId"/> over the number of steps provided by <paramref name="numSteps"/>.
+        /// </para>
+        /// <remarks>
+        /// <para>
+        /// The <paramref name="numSteps"/> parameter defaults to a value of -1, which is a sentinel value to indicate that the
+        /// default number of steps should be used as specified by <see cref="ControllerMoveSteps"/>.
+        /// </para>
         /// </remarks>
         public static IEnumerator RotateHandTo(
-            Quaternion newRot, HandshapeId handshapeId, Handedness handedness,
+            Quaternion newRotation, HandshapeId handshapeId, Handedness handedness,
             int numSteps = ControllerMoveStepsSentinelValue)
         {
             SimulatedController controller = handedness == Handedness.Right ? rightController : leftController;
             Quaternion rot = controller.WorldRotation;
-            return RotateHand(rot, newRot, handshapeId, handedness, numSteps);
+            return RotateHand(rot, newRotation, handshapeId, handedness, numSteps);
         }
 
         /// <summary>
@@ -402,6 +427,22 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         }
 
 
+        /// <summary>
+        /// Set the handshape of the test hand.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This smooths the handshape based on the provided/ <paramref name="handshapeId"/> over the number of 
+        /// steps provided by <paramref name="numSteps"/>.
+        /// </para>
+        /// <para>
+        /// The <paramref name="numSteps"/> parameter defaults to a value of -1, which is a sentinel value to indicate that the
+        /// default number of steps should be used as specified by <see cref="ControllerMoveSteps"/>.
+        /// </para>
+        /// </remarks>
+        /// <param name="handshapeId">The new handshape to apply to the test hand.</param>
+        /// <param name="handedness">Specifies to the left or right test hand.</param>
+        /// <param name="numSteps">The number of steps to take when smoothing the change to the next handshape. The more step, the smoother the transition.</param>
         public static IEnumerator SetHandshape(HandshapeId handshapeId, Handedness handedness, int numSteps = ControllerMoveStepsSentinelValue)
         {
             SimulatedController controller = handedness == Handedness.Right ? rightController : leftController;
@@ -489,9 +530,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// Moves eye gaze rotation from the start rotation to the end rotation.
         /// </summary>
         /// <remarks>
-        /// <para>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
-        /// default number of steps should be used (i.e. ControllerMoveSteps). ControllerMoveSteps is not a compile
-        /// time constant, which is a requirement for default parameter values.</para>
+        /// <para>
+        /// The <paramref name="numSteps"/> parameter defaults to a value of -1, which is a sentinel value to indicate that the
+        /// default number of steps should be used as specified by <see cref="ControllerMoveSteps"/>.
+        /// </para>
         /// </remarks>
         public static IEnumerator UpdateEyeGaze(
             Quaternion startRotation,
@@ -512,9 +554,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// Moves head gaze rotation from the start rotation to the end rotation.
         /// </summary>
         /// <remarks>
-        /// <para>Note that numSteps defaults to a value of -1, which is a sentinel value to indicate that the
-        /// default number of steps should be used (i.e. ControllerMoveSteps). ControllerMoveSteps is not a compile
-        /// time constant, which is a requirement for default parameter values.</para>
+        /// <para>
+        /// The <paramref name="numSteps"/> parameter defaults to a value of -1, which is a sentinel value to indicate that the
+        /// default number of steps should be used as specified by <see cref="ControllerMoveSteps"/>.
+        /// </para>
         /// </remarks>
         public static IEnumerator UpdateHeadGaze(
             Quaternion startRotation,
@@ -586,7 +629,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// <summary>
         /// Disables gaze interactions.
         /// </summary>
-        /// <remarks>This is currently done by disabling the Fuzzy Gaze Interactor GameObject. Ideally, we'd want to do this via a more system level approach</remarks>
+        /// <remarks>
+        /// This is currently done by disabling the <see cref="GazeInteractor"/> component. Ideally, we'd want to do this via a more system level approach.
+        /// </remarks>
         public static void DisableGazeInteractor()
         {
             GameObject.FindObjectOfType<GazeInteractor>().gameObject.SetActive(false);
@@ -595,7 +640,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// <summary>
         /// Enables gaze interactions.
         /// </summary>
-        /// <remarks>This is currently done by enabling the Fuzzy Gaze Interactor GameObject.  Ideally, we'd want to do this via a more system level approach</remarks>
+        /// <remarks>
+        /// This is currently done by enabling the <see cref="GazeInteractor"/> component.  Ideally, we'd want to do this via a more system level approach.
+        /// </remarks>
         public static void EnableGazeInteractor()
         {
             GameObject.FindObjectOfType<GazeInteractor>().gameObject.SetActive(true);

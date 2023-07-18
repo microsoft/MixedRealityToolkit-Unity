@@ -40,7 +40,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// Tests for equality.
         /// </summary>
         /// <param name="other">The other <see cref="AccessibilitySubsystemCinfo"/> to compare against.</param>
-        /// <returns><see langword="true"/> if every field in <paramref name="other"/> is equal to this <see cref="AccessibilitySubsystemCinfo"/>, otherwise false.</returns>
+        /// <returns><see langword="true"/> if every field in <paramref name="other"/> is equal to this <see cref="AccessibilitySubsystemCinfo"/>, otherwise <see langword="false"/>.</returns>
         public bool Equals(AccessibilitySubsystemCinfo other)
         {
             return

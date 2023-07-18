@@ -564,11 +564,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return null;
         }
 
-
         /// <summary>
         /// Add a key path to the data source so that this object will be notified when it has changed.
         /// </summary>
         /// <param name="localKeyPath">Local key path prior to any key path mapping or resolving.</param>
+        /// <param name="specificDataSource">The specific data source to add a listener too. If null, the <see cref="ResolvedKeyPathPrefix"/> is used to resolve the data source.</param>
         /// <returns>The fully resolved keypath for the specified local keypath.</returns>
         protected string AddKeyPathListener(string localKeyPath, IDataSource specificDataSource = null)
         {

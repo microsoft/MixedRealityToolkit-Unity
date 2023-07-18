@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// Tests for equality.
         /// </summary>
         /// <param name="other">The other <see cref="MRTKSubsystemCinfo"/> to compare against.</param>
-        /// <returns><see langword="true"/> if every field in <paramref name="other"/> is equal to this <see cref="MRTKSubsystemCinfo"/>, otherwise false.</returns>
+        /// <returns><see langword="true"/> if every field in <paramref name="other"/> is equal to this <see cref="MRTKSubsystemCinfo"/>, otherwise <see langword="false"/>.</returns>
         public virtual bool Equals(MRTKSubsystemCinfo other)
         {
             return

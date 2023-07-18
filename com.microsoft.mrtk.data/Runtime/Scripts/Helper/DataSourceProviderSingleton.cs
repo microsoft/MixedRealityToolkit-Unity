@@ -14,8 +14,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
     /// <summary>
     /// Inherit from this base class to create a singleton.
-    /// e.g. public class MyClassName : Singleton<MyClassName> {}
     /// </summary>
+    /// <example> 
+    /// An example usage may look like:
+    /// 
+    /// <code>
+    ///     public class MyClassName : Singleton&lt;MyClassName&gt; {}
+    /// </code>
+    /// </example>
     [Serializable]
     [AddComponentMenu("MRTK/Data Binding/Sources/Data Source Provider Singleton")]
     public class DataSourceProviderSingleton : MonoBehaviour, IDataSourceProvider

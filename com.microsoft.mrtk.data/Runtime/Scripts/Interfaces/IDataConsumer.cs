@@ -10,27 +10,37 @@ using System.Collections.Generic;
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
-    /// Interface for all data consumers. A data consumer is the intermediary between a data source and a view used to
+    /// Interface for all data consumers.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// A data consumer is the intermediary between a data source and a view used to
     /// present information. The view will typically be a prefab where specific pieces of information identify which
     /// datum will be used to modify that presented information at runtime.
-    ///
+    /// </para>
+    /// <para>
     /// Key Concepts:
-    ///
+    /// </para>
+    /// <para> 
     /// Key Path (string) - See IDataSource for more information. A key path identifies a specific datum in the data source.
     /// That datum may be a primitive, or an entire data subset.
-    ///
+    /// </para>
+    /// <para>
     /// Change Set - A grouping of data changes. All data source notifications of changed data will be within a Change Set.
     /// This allows for multiple related changes to be grouped into one atomic update of a data view. This is critical when
     /// multiple data items influence a single piece of presented information, like a single sentence with 3 pieces of variable
     /// information.
-    ///
+    /// </para>
+    /// <para>
     /// Data Change Notifications - All changes to a data source are provide via change notifications. Every data consumer can
     /// sign up to listen or any number of data changes to specific data items within the data source. Also multiple consumers
     /// can listen to the same data source.
-    ///
-    /// For data that represents a collection (e.g. list) of items, a data consumer can request specific subsets of that list.
+    /// </para>
+    /// <para>
+    /// For data that represents a collection or list of items, a data consumer can request specific subsets of that list.
     /// This allows for pagination and for virtualization, which is critical for supporting large data sets.
-    /// </summary>
+    /// </para>
+    /// </remarks>
     public interface IDataConsumer
     {
         /// <summary>

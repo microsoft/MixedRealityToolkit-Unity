@@ -331,7 +331,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="vec">The vector to test</param>
         /// <param name="lower">The lower bounds</param>
         /// <param name="upper">The upper bounds</param>
-        /// <returns>true if in range, otherwise false</returns>
+        /// <returns><see langword="true"/> if in range, otherwise <see langword="false"/>.</returns>
         public static bool InRange(Vector2 vec, Vector2 lower, Vector2 upper)
         {
             return vec.x >= lower.x && vec.x <= upper.x && vec.y >= lower.y && vec.y <= upper.y;
@@ -343,7 +343,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <param name="vec">The vector to test</param>
         /// <param name="lower">The lower bounds</param>
         /// <param name="upper">The upper bounds</param>
-        /// <returns>true if in range, otherwise false</returns>
+        /// <returns><see langword="true"/> if in range, otherwise <see langword="false"/>.</returns>
         public static bool InRange(Vector3 vec, Vector3 lower, Vector3 upper)
         {
             return vec.x >= lower.x && vec.x <= upper.x && vec.y >= lower.y && vec.y <= upper.y && vec.z >= lower.z && vec.z <= upper.z;
