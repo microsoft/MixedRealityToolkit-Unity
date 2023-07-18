@@ -17,7 +17,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
         private SerializedProperty targetToFace;
         private SerializedProperty pivotAxis;
         private SerializedProperty reorientWhenOutsideParameters;
-        private SerializedProperty orientToControllerDeadzoneDegrees;
+        private SerializedProperty orientToControllerDeadZoneDegrees;
 
         // Distance
         private SerializedProperty ignoreDistanceClamp;
@@ -42,6 +42,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 
         private Follow solverInBetween;
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -52,7 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
             targetToFace = serializedObject.FindProperty("targetToFace");
             pivotAxis = serializedObject.FindProperty("pivotAxis");
             reorientWhenOutsideParameters = serializedObject.FindProperty("reorientWhenOutsideParameters");
-            orientToControllerDeadzoneDegrees = serializedObject.FindProperty("orientToControllerDeadzoneDegrees");
+            orientToControllerDeadZoneDegrees = serializedObject.FindProperty("orientToControllerDeadZoneDegrees");
 
             ignoreDistanceClamp = serializedObject.FindProperty("ignoreDistanceClamp");
             minDistance = serializedObject.FindProperty("minDistance");
@@ -102,7 +105,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
                 EditorGUILayout.PropertyField(reorientWhenOutsideParameters);
                 if (reorientWhenOutsideParameters.boolValue)
                 {
-                    EditorGUILayout.PropertyField(orientToControllerDeadzoneDegrees);
+                    EditorGUILayout.PropertyField(orientToControllerDeadZoneDegrees);
                 }
             }
 

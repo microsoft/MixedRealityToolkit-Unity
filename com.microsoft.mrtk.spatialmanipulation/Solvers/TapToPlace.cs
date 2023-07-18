@@ -17,7 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     [AddComponentMenu("MRTK/Spatial Manipulation/Solvers/Tap To Place")]
     public class TapToPlace : Solver
     {
-
         // todo: needed? [Space(10)]
         [SerializeField]
         [Tooltip("If true, the game object to place will start selected.  The object will immediately start" +
@@ -193,6 +192,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         protected internal int GameObjectLayer { get; protected set; }
 
+        /// <summary>
+        /// Get if the associated game object has a Unity `Collider` present.
+        /// </summary>
         protected internal bool IsColliderPresent => gameObject != null && gameObject.GetComponent<Collider>() != null;
 
         /// <summary>
@@ -204,21 +206,58 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private int ignoreRaycastLayer;
 
+        private RayStep currentRay;
+
         /// <summary>
-        /// The current ray is based on the TrackedTargetType (Controller Ray, Head, Hand Joint).
-        /// The following properties are updated each frame while the game object is selected to determine
-        /// object placement if there is a hit on a surface.
+        /// Get or set the current <see cref="RayStep"/> being using by this object.
         /// </summary>
-        protected RayStep CurrentRay;
+        /// <remarks>
+        /// This ray should be based on the current <see cref="SolverHandler.TrackedTargetType"/> value.
+        /// 
+        /// This value should be updated each frame while the game object is selected so to determine
+        /// object placement if there is a hit on a surface.
+        /// </remarks>
+        protected RayStep CurrentRay
+        {
+            get => currentRay;
+            set => currentRay = value;
+        }
 
-        protected bool DidHitSurface;
+        /// <summary>
+        /// Get or set whether the <see cref="CurrentRay"/> hit a surface.
+        /// </summary>
+        /// <remarks>
+        /// This value should be updated each frame while the game object is selected.
+        /// </remarks>
+        protected bool DidHitSurface { get; set; }
 
-        protected RaycastHit CurrentHit;
+        private RaycastHit currentHit;
 
-        // Used to record the time (seconds) between OnPointerClicked calls to avoid two calls in a row.
-        protected float LastTimeClicked = 0;
+        /// <summary>
+        /// Get or set the <see cref="RaycastHit"/> of the <see cref="CurrentRay"/>.
+        /// </summary>
+        /// <remarks>
+        /// This value should be updated each frame while the game object is selected.
+        /// </remarks>
+        protected RaycastHit CurrentHit
+        {
+            get => currentHit;
+            set => currentHit = value;
+        }
 
-        protected float DoubleClickTimeout = 0.5f;
+        /// <summary>
+        /// Get or set the last time a clicked occurred.
+        /// </summary>
+        /// <remarks>
+        /// This is used to record the time, in seconds, between `OnPointerClicked` calls 
+        /// so to avoid two calls in a row.
+        /// </remarks>
+        private float lastTimeClicked = 0;
+
+        /// <summary>
+        /// Get or set the max time, in seconds, between clicks used when recognizing double clicks.
+        /// </summary>
+        protected float DoubleClickTimeout { get; set; }= 0.5f;
 
         // Used to mark whether Start() has been called.
         private bool startCalled;
@@ -234,6 +273,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         #region MonoBehaviour Implementation
 
+        /// <inheritdoc/>
         protected override void Start()
         {
             base.Start();
@@ -259,6 +299,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         protected override void OnDisable()
         {
             StopPlacement();
@@ -283,13 +326,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // selected and then immediately unselected. If two calls occur within the
             // double click timeout, then return to prevent an immediate object state switch.
             // Also, check that time is no 0 to allow for auto start functionality.
-            if (Time.time != 0 && (Time.time - LastTimeClicked) < DoubleClickTimeout)
+            if (Time.time != 0 && (Time.time - lastTimeClicked) < DoubleClickTimeout)
             {
                 return;
             }
 
             // Get the time of this click action
-            LastTimeClicked = Time.time;
+            lastTimeClicked = Time.time;
 
             using (StartPlacementPerfMarker.Auto())
             {
@@ -349,12 +392,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             // succession. If these methods are called twice very rapidly, the object will be
             // selected and then immediately unselected. If two calls occur within the
             // double click timeout, then return to prevent an immediate object state switch.
-            if ((Time.time - LastTimeClicked) < DoubleClickTimeout)
+            if ((Time.time - lastTimeClicked) < DoubleClickTimeout)
             {
                 return;
             }
             // Get the time of this click action
-            LastTimeClicked = Time.time;
+            lastTimeClicked = Time.time;
 
             using (StopPlacementPerfMarker.Auto())
             {
@@ -398,6 +441,12 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private static readonly ProfilerMarker PerformRaycastPerfMarker =
             new ProfilerMarker("[MRTK] TapToPlace.PerformRaycast");
 
+        /// <summary>
+        /// Update execute a ray cast to determine if the <see cref="TapToPlace"/> component has intersected with a <see cref="MagneticSurfaces"/> layer.
+        /// </summary>
+        /// <remarks>
+        /// This should update the values of <see cref="CurrentRay"/>, <see cref="DidHitSurface"/>, and <see cref="CurrentHit"/>.
+        /// </remarks>
         protected virtual void PerformRaycast()
         {
             using (PerformRaycastPerfMarker.Auto())
@@ -407,17 +456,21 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
                 Vector3 origin = transform.position;
                 Vector3 endpoint = transform.position + transform.forward;
-                CurrentRay.UpdateRayStep(in origin, in endpoint);
+                currentRay.UpdateRayStep(in origin, in endpoint);
 
                 // Check if the current ray hits a magnetic surface
-                DidHitSurface = MixedRealityRaycaster.RaycastSimplePhysicsStep(CurrentRay, MaxRaycastDistance, MagneticSurfaces, false, out CurrentHit);
+                DidHitSurface = MixedRealityRaycaster.RaycastSimplePhysicsStep(CurrentRay, MaxRaycastDistance, MagneticSurfaces, false, out currentHit);
             }
         }
 
         /// <summary>
-        /// Change the position of the game object if there was a hit, if not then place the object at the default distance
-        /// relative to the TrackedTargetType origin position
+        /// Update the goal position of the game object.
         /// </summary>
+        /// <remarks>
+        /// If there was no hit, then place the object at the default distance
+        /// relative to the tracked game object's origin position as defined be
+        /// the <see cref="SolverHandler.TrackedTargetType"/> value.
+        /// </remarks>
         protected virtual void SetPosition()
         {
             if (DidHitSurface)
@@ -445,6 +498,13 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
+        /// <summary>
+        /// Update the goal rotation of the game object.
+        /// </summary>
+        /// <remarks>
+        /// If there was hit, then rotation should be based on normal of 
+        /// the <see cref="CurrentHit"/>.
+        /// </remarks>
         protected virtual void SetRotation()
         {
             Vector3 direction = CurrentRay.Direction;

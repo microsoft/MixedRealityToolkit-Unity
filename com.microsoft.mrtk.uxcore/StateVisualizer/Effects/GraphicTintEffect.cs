@@ -8,13 +8,13 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
-    [Serializable]
     /// <summary>
-    /// A <see cref="TintEffect<T>"> that wraps a PlayableBehaviour which can tint <see cref="Graphic"> components.
+    /// A <see cref="TintEffect{T}"/> that wraps a PlayableBehaviour which can tint Unity <see href="https://docs.unity3d.com/Packages/com.unity.ugui%401.0/api/UnityEngine.UI.Graphic.html">Graphic</see> components.
     /// </summary>
     /// <remarks>
-    /// Useful for tinting UI Image/RawImages, TMPros, etc.
+    /// This component is useful for tinting images and text meshes.
     /// </remarks>
+    [Serializable]
     internal class GraphicTintEffect : TintEffect<Graphic>
     {
         /// <inheritdoc />

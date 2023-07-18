@@ -144,7 +144,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// Render the Mixed Reality Toolkit Logo.
         /// </summary>
-        /// <returns>True if the logo was loadable and renderable or false if a text fallback was used.</returns>
+        /// <returns><see langword="true"/> if the logo was loadable and can be rendered, or <see langword="false"/> if a text fallback was used.</returns>
         public static bool RenderMixedRealityToolkitLogo()
         {
             if (IsMixedRealityToolkitLogoAssetPresent())

@@ -38,8 +38,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         internal HashSet<Type> AssociatedTypes => associatedTypesHashSet;
 
         /// <summary>
-        /// Constructor for a mode definition, requires a name and the interactor types which are to be enabled while in this mode.
+        /// Initializes a new instance of the <see cref="InteractionModeDefinition"/> class.
         /// </summary>
+        /// <remarks>
+        /// This requires a name and the interactor types which are to be enabled while in this mode.
+        /// </remarks>
         public InteractionModeDefinition(string name, List<SystemType> associatedTypes)
         {
             modeName = name;

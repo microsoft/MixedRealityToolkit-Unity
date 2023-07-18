@@ -17,13 +17,13 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         #region Accessible object management
 
         /// <summary>
-        /// Attempts to retrieve the collection of <see cref="AccessibleObjectClassification"/>s for the objects
+        /// Attempts to retrieve the collection of <see cref="AccessibleObjectClassification"/> instances for the objects
         /// that have been registered.
         /// </summary>
-        /// <param name="classifications">List to receive the collection of registered <see cref="AccessibleObjectClassification"/>s.</param>
-        /// <returns>True if classifications have been successfully retrieved, or false.</returns>
+        /// <param name="classifications">List to receive the collection of registered <see cref="AccessibleObjectClassification"/> instances.</param>
+        /// <returns><see langword="true"/> if classifications have been successfully retrieved, or <see langword="false"/>.</returns>
         /// <remarks>
-        /// The passed in list will be cleared then filled with all <see cref="AccessibleObjectClassification"/>s that matach
+        /// The passed in list will be cleared then filled with all <see cref="AccessibleObjectClassification"/> instances that match
         /// a previously registered object. Classifications are not removed after all matching objects have been
         /// unregistered.
         /// </remarks>
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// </summary>
         /// <param name="accessibleObject">The <see cref="GameObject"/> to be registered.</param>
         /// <param name="classification">The classification (people, places, things, etc.) for the <see cref="GameObject"/>.</param>
-        /// <returns>True if successfully registered or false.</returns>
+        /// <returns><see langword="true"/> if successfully registered or <see langword="false"/>.</returns>
         /// <remarks>
         /// The registration process requires that a <see cref="GameObject"/> belongs to exactly one classification.
         /// </remarks>
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// Provides a material which should have it's text color modified.
         /// </summary>
         /// <param name="material">The material to which to apply text color inversion.</param>
-        /// <param name="enable">True to enable inversion, or false.</param>
+        /// <param name="enable"><see langword="true"/> to enable inversion, or <see langword="false"/>.</param>
         /// <remarks>
         /// This method requires the material to use the Text Mesh Pro shader which is
         /// provided in the Microsoft Mixed Reality Toolkit Graphics Tools package.

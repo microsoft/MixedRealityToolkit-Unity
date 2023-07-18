@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -44,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
         /// <summary>
-        /// Constructor that provides the root node
+        /// Initializes a new instance of a <see cref="DataSourceObjects"/> class.
         /// </summary>
         /// <param name="rootNodeType">Type for the root node</param>
         /// <param name="value">The value associated with the root node.</param>
@@ -275,3 +279,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     } // End of class DataSourceObjects
 } // End of namespace Microsoft.MixedReality.Toolkit.Data
+#pragma warning restore CS1591

@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for tests. While nice to have, this documentation is not required.
+#pragma warning disable CS1591
+
 using Microsoft.MixedReality.Toolkit.Core.Tests;
 using Microsoft.MixedReality.Toolkit.Input.Tests;
 using NUnit.Framework;
@@ -19,11 +22,11 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
     /// </summary>
     public class StateVisualizerTests : BaseRuntimeInputTests
     {
-        [UnityTest]
         /// <summary>
         /// Tests to see if StateVisualizer can correctly evaluate/execute the SetTargetActiveEffect.
         /// Adds/removes the SetTargetActiveEffect from a few different states to make sure everything works.
         /// </summary>
+        [UnityTest]
         public IEnumerator TestSetTargetsActiveEffect()
         {
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -137,11 +140,11 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             }
         }
 
-        [UnityTest]
         /// <summary>
         /// Tests to see whether StateVisualizer can properly evaluate/execute a custom effect,
         /// defined above (CustomTestEffect).
         /// </summary>
+        [UnityTest]
         public IEnumerator TestCustomEffect()
         {
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -176,10 +179,10 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.AreEqual(customEffect.LastSetParameter, 0.0f, 0.00001f, "The custom effect should have received the parameter value of 0.0f.");
         }
 
-        [UnityTest]
         /// <summary>
         /// Makes sure StateVisualizer is going to sleep/waking up correctly to save resources.
         /// </summary>
+        [UnityTest]
         public IEnumerator TestSleepWakeBehavior()
         {
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -243,11 +246,11 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             }
         }
 
-        [UnityTest]
         /// <summary>
         /// Uses TestEffectThatJustKeepsGoing to see if the StateVisualizer will stay awake
         /// waiting for the effect to be done.
         /// </summary>
+        [UnityTest]
         public IEnumerator TestWaitForLongRunningEffect()
         {
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -322,10 +325,10 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.IsFalse(sv.Animator.enabled, "StateVisualizer did not go back to sleep!");
         }
 
-        [UnityTest]
         /// <summary>
         /// Makes sure an Animator component is added when necessary.
         /// </summary>
+        [UnityTest]
         public IEnumerator TestAnimatorMissing()
         {
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -338,3 +341,4 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         }
     }
 }
+#pragma warning restore CS1591

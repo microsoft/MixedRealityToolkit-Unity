@@ -28,6 +28,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return new DataSourceObjects();
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             _counter++;

@@ -7,10 +7,10 @@ using UnityEngine.XR;
 
 namespace Microsoft.MixedReality.Toolkit.Input
 {
-    [Serializable]
     /// <summary>
-    /// A pose source which tracks a specific hand joint on a specific hand
+    /// A pose source which tries to obtain the joint pose from a hand specified by the <see cref="HandBasedPoseSource.Hand"/> property.
     /// </summary>
+    [Serializable]
     public class HandJointPoseSource : HandBasedPoseSource
     {
         [SerializeField]

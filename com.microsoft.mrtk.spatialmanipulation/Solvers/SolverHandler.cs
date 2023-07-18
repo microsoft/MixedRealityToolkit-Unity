@@ -192,7 +192,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             set => updateSolvers = value;
         }
 
-        protected List<Solver> solvers = new List<Solver>();
+        private List<Solver> solvers = new List<Solver>();
 
         /// <summary>
         /// List of solvers that this handler will manage and update.
@@ -252,7 +252,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         }
 
         // Stores currently attached hand if valid (only possible values Left, Right, or None)
-        protected Handedness currentTrackedHandedness = Handedness.None;
+        private Handedness currentTrackedHandedness = Handedness.None;
 
         /// <summary>
         /// Currently tracked hand or motion controller, if applicable.
@@ -263,7 +263,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         public Handedness CurrentTrackedHandedness => currentTrackedHandedness;
 
         // Stores controller side to favor if TrackedHandedness is set to both left and right.
-        protected Handedness preferredTrackedHandedness = Handedness.Left;
+        private Handedness preferredTrackedHandedness = Handedness.Left;
 
         /// <summary>
         /// Controller side to favor and pick first if the <see cref="Handedness"/>
@@ -296,6 +296,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         #region MonoBehaviour Implementation
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             GoalScale = Vector3.one;
@@ -305,7 +308,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
             if (!IsValidHandedness(trackedHandedness))
             {
-                Debug.LogError("Using invalid SolverHandler.TrackedHandness value. Defaulting to Handedness.Both");
+                Debug.LogError("Using invalid SolverHandler.TrackedHandedness value. Defaulting to Handedness.Both");
                 TrackedHandedness = Handedness.Both;
             }
 
@@ -316,11 +319,17 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary>
         protected virtual void Start()
         {
             RefreshTrackedObject();
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         protected virtual void Update()
         {
             if (IsInvalidTracking())
@@ -339,6 +348,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             lastUpdateTime = Time.realtimeSinceStartup;
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame after normal update functions, if this object is enabled.
+        /// </summary>
         private void LateUpdate()
         {
             if (UpdateSolvers)
@@ -360,6 +372,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been destroyed.
+        /// </summary>
         protected void OnDestroy()
         {
             if (trackingTarget != null)
@@ -379,7 +394,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             AttachToNewTrackedObject();
         }
 
-        // Used to cache and reduce allocs for getting the solver components on this GameObject
+        // Used to cache and reduce allocations for getting the solver components on this GameObject
         private List<Solver> inspectorOrderedSolvers = new List<Solver>();
 
         /// <summary>
@@ -408,6 +423,14 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             solvers.Remove(solver);
         }
 
+        /// <summary>
+        /// Clear the parent of the internally created tracking-target game object. 
+        /// </summary>
+        /// <remarks>
+        /// A tracking-target is created when <see cref="AttachToNewTrackedObject"/> is called, and
+        /// represents the object being tracked as defined by the <see cref="TrackedTargetType"/>
+        /// property. When created, the tracking-target's parent is set to the object being tracked.
+        /// </remarks>
         protected virtual void DetachFromCurrentTrackedObject()
         {
             if (trackingTarget != null)
@@ -421,6 +444,10 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private static readonly ProfilerMarker AttachToNewTrackedObjectPerfMarker =
             new ProfilerMarker("[MRTK] SolverHandler.AttachToNewTrackedObject");
 
+
+        /// <summary>
+        /// Begin the process of tracking a new object as defined by the <see cref="TrackedTargetType"/> property.
+        /// </summary>
         protected virtual void AttachToNewTrackedObject()
         {
             using (AttachToNewTrackedObjectPerfMarker.Auto())
@@ -505,7 +532,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// Update the cached transform's position to match that of the current track joint. 
         /// </summary>
         /// <returns>
-        /// True, if the tracked joint is found and cached transform is updated. False, otherwise.
+        /// <see langword="true"/> if the tracked joint is found and cached transform is updated, <see langword="false"/> otherwise.
         /// </returns>
         private bool UpdateCachedHandJointTransform()
         {
@@ -600,11 +627,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// Determines if the specified hand is being tracked by the subsystem.
         /// </summary>
         /// <param name="hand">The <see cref="Handedness"/> of the hand being queried.</param>
-        /// <remarks>
-        /// Currently, this returns true always.
-        /// </remarks>
         /// <returns>
-        /// True if the hand is tracked, or false.
+        /// <see langword="true"/> if the hand is tracked, or <see langword="false"/>.
         /// </returns>
         private bool IsHandTracked(Handedness hand)
         {
@@ -621,7 +645,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         /// <param name="hand">The <see cref="Handedness"/> to be validated.</param>
         /// <returns>
-        /// True if the <see cref="Handedness"/> value is valid for solver scenarios, or false.
+        /// <see langword="true"/> if the <see cref="Handedness"/> value is valid for solver scenarios, or <see langword="false"/>.
         /// </returns>
         public static bool IsValidHandedness(Handedness hand)
         {
@@ -635,7 +659,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// The <see cref="TrackedObjectType"/> to be validated.
         /// </param>
         /// <returns>
-        /// True if the <see cref="TrackedObjectType"/> is valid for solver scenarios, or false.
+        /// <see langword="true"/> if the <see cref="TrackedObjectType"/> is valid for solver scenarios, or <see langword="false"/>.
         /// </returns>
         private static bool IsValidTrackedObjectType(TrackedObjectType type)
         {

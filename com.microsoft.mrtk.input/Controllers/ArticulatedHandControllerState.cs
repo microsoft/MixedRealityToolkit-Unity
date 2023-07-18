@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public bool PinchSelectReady;
 
         /// <summary>
-        /// Constructs a new ArticulatedHandControllerState with default values.
+        /// Initializes a new instance of the <see cref="ArticulatedHandControllerState"/> class.
         /// </summary>
         public ArticulatedHandControllerState() : base()
         {

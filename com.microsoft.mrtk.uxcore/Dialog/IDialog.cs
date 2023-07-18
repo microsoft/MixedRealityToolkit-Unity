@@ -18,13 +18,36 @@ namespace Microsoft.MixedReality.Toolkit.UX
 {
     /// <summary>
     /// The semantic action associated with a button on a dialog.
-    /// Derived/custom Dialogs may return Other types of buttons.
     /// </summary>
+    /// <remarks>
+    /// Custom dialogs may specify additional button types. In such a case, the <see cref="DialogButtonType"/> value
+    /// should be <see cref="DialogButtonType.Other"/> and the event receiver should cast the event arguments 
+    /// to a custom type so to obtain more specific information about the action.
+    /// </remarks>d
     public enum DialogButtonType
     {
+        /// <summary>
+        /// An affirmative button, such as an "okay" or "yes" button, used to confirm an action or inquiry.
+        /// </summary>
         Positive = 0,
+
+        /// <summary>
+        /// An negative button, such as a "no" button, used to reject an action or inquiry.
+        /// </summary>
         Negative = 1,
+
+        /// <summary>
+        /// An neutral button, such as a "cancel" button, used to neither confirm or reject an action or inquiry.
+        /// </summary>
         Neutral = 2,
+
+        /// <summary>
+        /// Represents extended button behavior.
+        /// </summary>
+        /// <remarks>
+        /// When receiving this value, the receiver should cast the associated event arguments 
+        /// to a custom type so to obtain more specific information about the button.
+        /// </remarks>
         Other = 255
     }
 
@@ -36,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// IDialogs are typically spawned, pooled, and killed
     /// by <see cref="Microsoft.MixedReality.Toolkit.UX.DialogPool">DialogPools</see>. 
     /// Generally, developers should not directly manage or instantiate instances of their dialogs,
-    /// as it is essential that they are pooled and managed correctly by a pooler.
+    /// as it is essential that they are pooled and managed correctly by a coordinator.
     /// </remarks>
     public interface IDialog
     {
@@ -45,13 +68,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// in a more prominent position and/or with more prominent styling
         /// than the body text.
         /// </summary>
-        /// <returns> Itself, for chaining. </returns>
+        /// <returns>This <see cref="IDialog"/> object, so to enable function chaining.</returns>
         IDialog SetHeader(string header);
 
         /// <summary>
         /// Sets the body text on the dialog.
         /// </summary>
-        /// <returns> Itself, for chaining. </returns>
+        /// <returns>This <see cref="IDialog"/> object, so to enable function chaining.</returns>
         IDialog SetBody(string body);
         
         /// <summary>
@@ -59,9 +82,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// when the option is selected. <paramref name="label"/> will be affixed to the
         /// associated button.
         /// </summary>
-        /// <param name="label"/> The text to affix to the button.</param>
-        /// <param name="action"/> The action to invoke when the button is selected.</param>
-        /// <returns> Itself, for chaining. </returns>
+        /// <param name="label"> The text to affix to the button.</param>
+        /// <param name="action"> The action to invoke when the button is selected.</param>
+        /// <returns>This <see cref="IDialog"/> object, so to enable function chaining.</returns>
         IDialog SetPositive(string label, Action<DialogButtonEventArgs> action = null);
 
         /// <summary>
@@ -69,9 +92,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// when the option is selected. <paramref name="label"/> will be affixed to the
         /// associated button.
         /// </summary>
-        /// <param name="label"/> The text to affix to the button.</param>
-        /// <param name="action"/> The action to invoke when the button is selected.</param>
-        /// <returns> Itself, for chaining. </returns>
+        /// <param name="label">The text to affix to the button.</param>
+        /// <param name="action">The action to invoke when the button is selected.</param>
+        /// <returns>This <see cref="IDialog"/> object, so to enable function chaining.</returns>
         IDialog SetNegative(string label, Action<DialogButtonEventArgs> action = null);
 
         /// <summary>
@@ -79,9 +102,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// when the option is selected. <paramref name="label"/> will be affixed to the
         /// associated button.
         /// </summary>
-        /// <param name="label"/> The text to affix to the button.</param>
-        /// <param name="action"/> The action to invoke when the button is selected.</param>
-        /// <returns> Itself, for chaining. </returns>
+        /// <param name="label"> The text to affix to the button.</param>
+        /// <param name="action"> The action to invoke when the button is selected.</param>
+        /// <returns>This <see cref="IDialog"/> object, so to enable function chaining.</returns>
         IDialog SetNeutral(string label, Action<DialogButtonEventArgs> action = null);
         
         /// <summary>
@@ -90,10 +113,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// taking precedence.
         /// </summary>
         /// <remarks>
-        /// For other actions (such as button presses, text field submits, etc)
-        /// provide your own delegates through the fluent methods, such as
-        /// <see cref="SetPositive(string label, Action<DialogButtonEventArgs> action)"/>
-        /// Any async methods awaiting on the result of <see cref="ShowAsync()"/> will
+        /// For other actions, such as button presses and text field submits,
+        /// provide your own delegates through the fluent methods. For example,
+        /// use <see cref="SetPositive"/> for these types of actions.
+        ///
+        /// Any asynchronous method awaiting on the result of <see cref="ShowAsync"/> will
         /// be unblocked when this event is fired.
         /// </remarks>
         Action<DialogDismissedEventArgs> OnDismissed { get; set; }
@@ -110,48 +134,49 @@ namespace Microsoft.MixedReality.Toolkit.UX
         void Reset();
         
         /// <summary>
-        /// Shows the dialog. Call this method after the content and actions
-        /// have been specified with the fluent methods <see cref="SetHeader(string)"/>,
-        /// <see cref="SetBody(string)"/>, <see cref="SetPositive(string, Action{DialogButtonEventArgs})"/>, etc.
+        /// Shows this <see cref="IDialog"/> object. Call this method after the content and actions
+        /// have been specified with the fluent methods.
         /// </summary>
         /// <remarks>
+        /// Call this method after the content and actions have been specified with the fluent methods.
+        /// These methods include <see cref="SetHeader"/>, <see cref="SetBody"/>, and  <see cref="SetPositive"/>.
+        ///
         /// When implementing custom dialog types, be sure to override this to
         /// show your custom dialog in an appropriate way.
         /// </remarks>
-        /// <returns> Itself, for chaining. </returns>
+        /// <returns>This <see cref="IDialog"/> object, so to enable function chaining.</returns>
         IDialog Show();
 
         /// <summary>
-        /// Returns a Task<DialogDismissedEventArgs> representing the result
-        /// of the user's choice. The task will complete when the dialog is
-        /// dismissed, either by user action or by some other foreground action.
-        /// If the user didn't select an option, the DialogDismissedEventArgs.Choice
-        /// will be null.
+        /// An asynchronous operation that returns a <see cref="DialogDismissedEventArgs"/> that represents the result
+        /// of the user's choice. The task will complete once the dialog dismissed, either by user action or by some 
+        /// other foreground action. If the user does not select an option, the 
+        /// <see cref="DialogDismissedEventArgs.Choice"/> property will be null.
         /// </summary>
         /// <remarks>
         /// This is usually implemented by a TaskCompletionSource listening on the
         /// the <see cref="OnDismissed"/> delegate. This allows for either synchronous
-        /// or async usage of the <see cref="IDialog"/>.
+        /// or asynchronous usage of the <see cref="IDialog"/>.
         /// </remarks>
         Task<DialogDismissedEventArgs> ShowAsync();
 
         /// <summary>
         /// Dismisses the dialog. Unsubscribes all listeners from the dialog's
-        /// events, plays the dismiss animation, and then invokes onDismissed.
-        /// OnDismissed may not be invoked immediately.
+        /// events, plays the dismiss animation, and then invokes <see cref="OnDismissed"/> immediately.
         /// </summary>
         /// <remarks>
-        /// Those writing subclassed Dialogs should unsubscribe listeners from their custom
-        /// events, if any, as well. Also, this base implementation should be called
-        /// after your derived implementation, as it will trigger the dismissal animation
-        /// and invoke the onDismissed event for you.
-        /// Any async methods awaiting on the result of ShowAsync() will be completed at the
+        /// When creating a <see cref="IDialog"/>, the implementation should unsubscribe listeners 
+        /// from their custom events, if any. Also, this base implementation should be called
+        /// after the derived implementation, as the provided base implementation will trigger 
+        /// the dismissal animation and invoke the <see cref="OnDismissed"/> event for the application.
+        ///
+        /// Any asynchronous methods awaiting on the result of <see cref="ShowAsync"/> will be completed at the
         /// same time as the OnDismissed delegate is invoked.
         /// </remarks>
         void Dismiss();
 
         /// <summary>
-        /// The dialog's root GameObject, used for setting visibility.
+        /// The dialog's root Unity game object, used for setting visibility.
         /// </summary>
         GameObject VisibleRoot { get; }
     }

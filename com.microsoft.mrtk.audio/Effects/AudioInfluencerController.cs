@@ -154,6 +154,9 @@ namespace Microsoft.MixedReality.Toolkit.Audio
 
         private float nextUpdate = 0f;
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             effectsToApply = new List<IAudioInfluencer>(maxObjects);
@@ -177,6 +180,9 @@ namespace Microsoft.MixedReality.Toolkit.Audio
             nextUpdate = Time.time;
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             // Audio influences are generally not updated every frame.

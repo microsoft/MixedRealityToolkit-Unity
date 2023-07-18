@@ -665,15 +665,15 @@ MonoBehaviour:
   <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  smoothSelectedness: 1
+  smoothSelectionProgress: 1
   distanceSpaceMode: 1
   startPushPlane: -0.01550013
   endPushPlane: 0.008935698
   returnSpeed: 0.25
   enforceFrontPush: 1
-  rejectXYRolloff: 1
-  rolloffXYDepth: 3
-  rejectZRolloff: 0
+  rejectXYRollOff: 1
+  rollOffXYDepth: 3
+  rejectZRollOff: 0
   extendSpeed: 0.5
 --- !u!114 &364946990158920408
 MonoBehaviour:
@@ -1651,15 +1651,15 @@ MonoBehaviour:
   <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  smoothSelectedness: 1
+  smoothSelectionProgress: 1
   distanceSpaceMode: 1
   startPushPlane: -0.01550013
   endPushPlane: 0.008935698
   returnSpeed: 0.25
   enforceFrontPush: 1
-  rejectXYRolloff: 1
-  rolloffXYDepth: 3
-  rejectZRolloff: 0
+  rejectXYRollOff: 1
+  rollOffXYDepth: 3
+  rejectZRollOff: 0
   extendSpeed: 0.5
 --- !u!114 &364946991772111255
 MonoBehaviour:
@@ -2020,15 +2020,15 @@ MonoBehaviour:
   <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  smoothSelectedness: 1
+  smoothSelectionProgress: 1
   distanceSpaceMode: 1
   startPushPlane: -0.01550013
   endPushPlane: 0.008935698
   returnSpeed: 0.25
   enforceFrontPush: 1
-  rejectXYRolloff: 1
-  rolloffXYDepth: 3
-  rejectZRolloff: 0
+  rejectXYRollOff: 1
+  rollOffXYDepth: 3
+  rejectZRollOff: 0
   extendSpeed: 0.5
 --- !u!4 &4878508417286007359 stripped
 Transform:
@@ -2383,15 +2383,15 @@ MonoBehaviour:
   <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  smoothSelectedness: 1
+  smoothSelectionProgress: 1
   distanceSpaceMode: 1
   startPushPlane: -0.01550013
   endPushPlane: 0.008935698
   returnSpeed: 0.25
   enforceFrontPush: 1
-  rejectXYRolloff: 1
-  rolloffXYDepth: 3
-  rejectZRolloff: 0
+  rejectXYRollOff: 1
+  rollOffXYDepth: 3
+  rejectZRollOff: 0
   extendSpeed: 0.5
 --- !u!4 &1984765899938696116 stripped
 Transform:
@@ -2758,15 +2758,15 @@ MonoBehaviour:
   <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  smoothSelectedness: 1
+  smoothSelectionProgress: 1
   distanceSpaceMode: 1
   startPushPlane: -0.015500131
   endPushPlane: 0.008935698
   returnSpeed: 0.25
   enforceFrontPush: 1
-  rejectXYRolloff: 1
-  rolloffXYDepth: 3
-  rejectZRolloff: 0
+  rejectXYRollOff: 1
+  rollOffXYDepth: 3
+  rejectZRollOff: 0
   extendSpeed: 0.5
 --- !u!114 &364946991423420959
 MonoBehaviour:
@@ -3127,15 +3127,15 @@ MonoBehaviour:
   <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  smoothSelectedness: 1
+  smoothSelectionProgress: 1
   distanceSpaceMode: 1
   startPushPlane: -0.01550013
   endPushPlane: 0.008935698
   returnSpeed: 0.25
   enforceFrontPush: 1
-  rejectXYRolloff: 1
-  rolloffXYDepth: 3
-  rejectZRolloff: 0
+  rejectXYRollOff: 1
+  rollOffXYDepth: 3
+  rejectZRollOff: 0
   extendSpeed: 0.5
 --- !u!4 &219735984879457998 stripped
 Transform:
@@ -3487,15 +3487,15 @@ MonoBehaviour:
   <OnDisabled>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  smoothSelectedness: 1
+  smoothSelectionProgress: 1
   distanceSpaceMode: 1
   startPushPlane: -0.01550013
   endPushPlane: 0.008935698
   returnSpeed: 0.25
   enforceFrontPush: 1
-  rejectXYRolloff: 1
-  rolloffXYDepth: 3
-  rejectZRolloff: 0
+  rejectXYRollOff: 1
+  rollOffXYDepth: 3
+  rejectZRollOff: 0
   extendSpeed: 0.5
 --- !u!82 &3976558279943476820 stripped
 AudioSource:

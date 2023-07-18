@@ -30,7 +30,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         [Tooltip("How much should the UI elements be curved, in local units? This is the distance from the content base position, to the curvature's maximum Z distance from the base position.")]
         private float curveDepth = 20;
 
-        void Awake()
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
+        private void Awake()
         {
             if (scrollRect == null)
             {
@@ -39,10 +42,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             scrollRect.onValueChanged.AddListener(a => UpdatePositions());
         }
 
-        void OnTransformChildrenChanged() => UpdatePositions();
-        void OnValidate()                 => UpdatePositions();
+        private void OnTransformChildrenChanged() => UpdatePositions();
 
-        void UpdatePositions()
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
+        private void OnValidate() => UpdatePositions();
+
+        private void UpdatePositions()
         {
             if (scrollRect == null) { return; }
 

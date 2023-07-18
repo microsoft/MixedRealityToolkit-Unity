@@ -54,11 +54,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
             set => targetAnimator = value;
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         protected virtual void Update()
         {
             if (Interactable != null && TargetAnimator != null)
             {
-                TargetAnimator.SetFloat("Selected", Interactable.Selectedness());
+                TargetAnimator.SetFloat("Selected", Interactable.GetSelectionProgress());
                 TargetAnimator.SetFloat("ActiveFocus", Interactable.IsActiveHovered ? 1 : 0);
                 TargetAnimator.SetFloat("PassiveFocus", Interactable.isHovered ? 1 : 0);
             }

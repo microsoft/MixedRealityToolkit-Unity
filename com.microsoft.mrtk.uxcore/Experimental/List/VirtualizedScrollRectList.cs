@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
     /// This is an experimental feature. This class is early in the cycle, it has 
     /// been labeled as experimental to indicate that it is still evolving, and 
     /// subject to change over time. Parts of the MRTK, such as this class, appear 
-    /// to have a lot of value even if the details haven’t fully been fleshed out. 
+    /// to have a lot of value even if the details haven't fully been fleshed out. 
     /// For these types of features, we want the community to see them and get 
     /// value out of them early enough so to provide feedback. 
     /// </remarks>
@@ -264,6 +264,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
             ? (scroll * (layoutPrefabSize / layoutRowsOrColumns)) + (margin - gutter)
             : (-scroll * (layoutPrefabSize / layoutRowsOrColumns)) + (margin - gutter);
 
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         private void OnValidate()
         {
             // We only want to reset things if it has already been initialized,
@@ -276,6 +279,9 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
             Initialize();
         }
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary>
         private void Start()
         {
             visibleValid = false;
@@ -450,7 +456,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
         /// The prefab instance representing the index, or null, if not visible.
         /// </param>
         /// <returns>
-        /// True if the item was visible, false if not.
+        /// <see langword="true"/> if the item was visible, <see langword="false"/> if not.
         /// </returns>
         public bool TryGetVisible(int i, out GameObject visibleObject)
         {

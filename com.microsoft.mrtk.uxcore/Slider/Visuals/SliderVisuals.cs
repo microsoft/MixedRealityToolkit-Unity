@@ -5,12 +5,11 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
+    /// <summary>
+    /// A visuals script to provide a visual layer on top of a <see cref="Slider"/> component.
+    /// </summary>
     [RequireComponent(typeof(Slider))]
     [ExecuteAlways]
-    /// <summary>
-    /// A visuals script to provide a visual layer on top of
-    /// <see cref="Slider"/>.
-    /// </summary>
     [AddComponentMenu("MRTK/UX/Slider Visuals")]
     public class SliderVisuals : MonoBehaviour
     {
@@ -74,7 +73,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
-        void Update()
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
+        private void Update()
         {
             handle.position = SliderState.SliderStart.position + (SliderState.NormalizedValue * SliderState.SliderTrackDirection);
             trackArea.transform.position = (SliderState.SliderStart.position + SliderState.SliderEnd.position) * 0.5f;

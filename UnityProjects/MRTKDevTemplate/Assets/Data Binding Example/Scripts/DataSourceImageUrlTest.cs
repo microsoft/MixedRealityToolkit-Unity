@@ -42,6 +42,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
             _time = secondsBetweenFetches;
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             _time += Time.deltaTime;

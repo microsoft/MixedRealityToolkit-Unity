@@ -1,7 +1,5 @@
-//
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
-//
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
@@ -10,19 +8,24 @@ namespace Microsoft.MixedReality.Toolkit.UX
     /// </summary>
     public class SliderEventData
     {
-        public SliderEventData(float o, float n)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SliderEventData"/> class.
+        /// </summary>
+        /// <param name="oldValue">The previous value of the slider.</param>
+        /// <param name="newValue">The current value of the slider.</param>
+        public SliderEventData(float oldValue, float newValue)
         {
-            OldValue = o;
-            NewValue = n;
+            OldValue = oldValue;
+            NewValue = newValue;
         }
 
         /// <summary>
-        /// The previous value of the slider
+        /// The previous value of the slider.
         /// </summary>
         public float OldValue { get; private set; }
 
         /// <summary>
-        /// The current value of the slider
+        /// The current value of the slider.
         /// </summary>
         public float NewValue { get; private set; }
     }

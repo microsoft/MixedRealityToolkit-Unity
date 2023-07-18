@@ -20,7 +20,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         protected ControllerLookup controllerLookup = null;
 
-        public void Awake()
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
+        protected void Awake()
         {
             controllerLookup = ComponentCache<ControllerLookup>.FindFirstActiveInstance();
         }

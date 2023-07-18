@@ -54,6 +54,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         // or through the API itself.
         private const string CanvasDialogPrefabGUID = "cca6164bb2744884a92a100266f5f3aa";
 
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         protected virtual void OnValidate()
         {
 #if UNITY_EDITOR

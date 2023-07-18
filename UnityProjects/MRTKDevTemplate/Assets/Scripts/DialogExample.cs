@@ -10,7 +10,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     {
         public DialogPool DialogPool;
 
-        public void Awake()
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
+        protected virtual void Awake()
         {
             if (DialogPool == null)
             {

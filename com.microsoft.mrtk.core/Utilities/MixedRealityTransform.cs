@@ -7,12 +7,16 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit
 {
+    /// <summary>
+    /// A structure that wraps position, rotation, and scale structures.
+    /// </summary>
     [Serializable]
     public struct MixedRealityTransform : IEqualityComparer
     {
         /// <summary>
-        /// Constructor.
+        /// Initializes a new <see cref="MixedRealityTransform"/> struct.
         /// </summary>
+        /// <param name="transform">The position, rotation, and scale will be initialized using this <see cref="Transform"/></param>
         public MixedRealityTransform(Transform transform)
         {
             this.pose = new Pose(transform.position, transform.rotation);
@@ -20,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Constructor.
+        /// Initializes a new <see cref="MixedRealityTransform"/> struct.
         /// </summary>
         public MixedRealityTransform(Vector3 position, Quaternion rotation, Vector3 scale)
         {
@@ -80,21 +84,31 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public Vector3 Scale { get { return scale; } set { scale = value; } }
 
+        /// <summary>
+        /// Add two instances of <see cref="MixedRealityTransform"/> together.
+        /// </summary>
         public static MixedRealityTransform operator +(MixedRealityTransform left, MixedRealityTransform right)
         {
             return new MixedRealityTransform(left.Position + right.Position, left.Rotation * right.Rotation, Vector3.Scale(left.Scale, right.Scale));
         }
 
+        /// <summary>
+        /// Test if two <see cref="MixedRealityTransform"/> structures are equal.
+        /// </summary>
         public static bool operator ==(MixedRealityTransform left, MixedRealityTransform right)
         {
             return left.Equals(right);
         }
 
+        /// <summary>
+        /// Test if two <see cref="MixedRealityTransform"/> structures are not equal.
+        /// </summary>
         public static bool operator !=(MixedRealityTransform left, MixedRealityTransform right)
         {
             return !left.Equals(right);
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             return $"{pose.position} | {pose.rotation} | {scale}";
@@ -125,12 +139,16 @@ namespace Microsoft.MixedReality.Toolkit
             return ((MixedRealityTransform)left).Equals((MixedRealityTransform)right);
         }
 
+        /// <summary>
+        /// Test if the given <see cref="MixedRealityTransform"/> is equal to this structure.
+        /// </summary>
         public bool Equals(MixedRealityTransform other)
         {
             return Position == other.Position &&
                    Rotation.Equals(other.Rotation);
         }
 
+        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) { return false; }
@@ -143,6 +161,7 @@ namespace Microsoft.MixedReality.Toolkit
             return obj is MixedRealityTransform transform ? transform.GetHashCode() : 0;
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             return base.GetHashCode();

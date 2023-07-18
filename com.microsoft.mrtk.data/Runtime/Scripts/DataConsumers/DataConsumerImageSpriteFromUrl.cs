@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using System;
 using UnityEngine;
 
@@ -19,14 +23,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         private SpriteRenderer imageSpriteRenderer;
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override Type[] GetComponentTypes()
         {
             Type[] types = { typeof(SpriteRenderer) };
             return types;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void InitializeForComponent(Component component)
         {
             if (imageSpriteRenderer == null)
@@ -37,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void PlaceImageTexture(Texture2D imageTexture)
         {
             float pixelsPerUnit = Math.Max(imageTexture.width, imageTexture.height);
@@ -47,3 +51,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     }
 }
+#pragma warning restore CS1591

@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using System;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -44,7 +48,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         private bool pendingUpdate = false;
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public override void SetValue(string resolvedKeyPath, object newValue, bool isAtomicChange = false)
         {
             base.SetValue(resolvedKeyPath, newValue, isAtomicChange);
@@ -58,13 +62,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public override IDataSource AllocateDataSource()
         {
             return new DataSourceDictionary();
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void InitializeDataSource()
         {
             DataSource.DataChangeSetBegin();
@@ -79,6 +83,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         #region Unity methods
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             if (pendingUpdate)
@@ -88,7 +95,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         private void OnValidate()
         {
             pendingUpdate = true;
@@ -111,3 +120,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     }
 }
+#pragma warning restore CS1591

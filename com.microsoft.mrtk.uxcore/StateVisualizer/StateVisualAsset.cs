@@ -6,16 +6,16 @@ using UnityEngine.Playables;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
-    [System.Serializable]
     /// <summary>
-    /// A ScriptableObject-based asset that can be used with <see cref="PlayableAssetEffect">.
+    /// A Unity object that can be used with <see cref="PlayableAssetEffect"/> to generate a <see href="https://docs.unity3d.com/ScriptReference/Playables.Playable.html">Playable</see> component.
     /// </summary>
     /// <remarks>
-    /// Writing custom <see cref="StateVisualAsset"/>s is useful if you would like to share
-    /// common effects across prefab types without apply changes to the prefab.
-    /// For prefab-specific effects, just add an <see cref="IEffect"/> to the
+    /// Writing custom <see cref="StateVisualAsset"/> components is useful when sharing
+    /// common effects across prefab types without applying changes to the prefab.
+    /// For prefab specific effects, just add an <see cref="IEffect"/> to the
     /// <see cref="StateVisualizer"/> directly.
     /// </remarks>
+    [System.Serializable]
     internal abstract class StateVisualAsset : PlayableAsset
     {
         [SerializeField]

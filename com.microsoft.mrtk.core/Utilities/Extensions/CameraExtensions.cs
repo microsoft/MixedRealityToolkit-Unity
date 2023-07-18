@@ -27,9 +27,10 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Returns if a point will be rendered on the screen in either eye
+        /// Test if a point will be rendered on the screen in either eye.
         /// </summary>
-        /// <param name="camera">The camera to check the point against</param>
+        /// <param name="camera">The camera to check the point against.</param>
+        /// <param name="position">The 3D position to test.</param>
         public static bool IsInFOV(this Camera camera, Vector3 position)
         {
             Vector3 screenPoint = camera.WorldToViewportPoint(position);
@@ -41,14 +42,19 @@ namespace Microsoft.MixedReality.Toolkit
 
 
         /// <summary>
-        /// Returns true if a point is in the a cone inscribed into the Camera's frustum, false otherwise
-        /// The cone is inscribed to a radius equal to the vertical height of the camera's FOV.
-        /// By default, the cone's tip is "chopped off" by an amount defined by the camera's
-        /// far and near clip planes.
+        /// Test if a point in the cone inscribed into the view frustum of the given camera.
         /// </summary>
+        /// <remarks>
+        /// The cone is inscribed to a radius equal to the vertical height of the camera's field
+        /// of view.  By default, the cone's tip is severed by an amount defined by the camera's
+        /// far and near clip planes.
+        /// </remarks>
+        /// <param name="camera">The camera to check the point against.</param>
         /// <param name="point">Point to test</param>
         /// <param name="coneAngleBufferDegrees">Degrees to expand the cone radius by.</param>
-        public static bool IsInFOVCone(this Camera camera,
+        /// <returns><see langword="true"/> if the given point is in the cone inscribed into the view frustum of the given camera, otherwise <see langword="false"/>.</returns>
+        public static bool IsInFOVCone(
+            this Camera camera,
             Vector3 point,
             float coneAngleBufferDegrees = 0)
         {

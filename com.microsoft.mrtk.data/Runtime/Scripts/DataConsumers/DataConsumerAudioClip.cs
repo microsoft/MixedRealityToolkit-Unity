@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using System;
 using UnityEngine;
 
@@ -19,14 +23,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
     [AddComponentMenu("MRTK/Data Binding/Consumers/Data Consumer Audio Clip", -10)]
     public class DataConsumerAudioClip : DataConsumerThemableBase<AudioClip>
     {
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override Type[] GetComponentTypes()
         {
             Type[] types = { typeof(AudioSource) };
             return types;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void SetObject(Component component, object inValue, AudioClip audioClip)
         {
             AudioSource audioSource = component as AudioSource;
@@ -35,3 +39,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     }
 }
+#pragma warning restore CS1591

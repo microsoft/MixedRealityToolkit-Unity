@@ -125,16 +125,25 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         #region MonoBehaviour Implementation
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         private void OnEnable()
         {
             StartCoroutine(BlinkCaret());
         }
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
         private void Start()
         {
             ApplyShellSolverParameters();
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame after normal update functions, if this object is enabled.
+        /// </summary>
         private void LateUpdate()
         {
             if (layoutInvalidated)

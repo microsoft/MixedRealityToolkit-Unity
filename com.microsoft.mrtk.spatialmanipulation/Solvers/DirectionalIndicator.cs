@@ -55,6 +55,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         // Private scratchpad to reduce allocs.
         private static List<Renderer> childRenderers = new List<Renderer>();
 
+        /// <inheritdoc/>
         protected override void Start()
         {
             base.Start();
@@ -65,6 +66,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private static readonly ProfilerMarker UpdatePerfMarker =
             new ProfilerMarker("[MRTK] DirectionalIndicator.Update");
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             using (UpdatePerfMarker.Auto())

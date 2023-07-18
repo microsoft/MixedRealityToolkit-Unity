@@ -29,7 +29,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         // Used draw a full line between current frame + last frame's "paintbrush" position.
         private Dictionary<IXRInteractor, Vector2> lastPositions = new Dictionary<IXRInteractor, Vector2>();
 
-        void Start()
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
+        private void Start()
         {
             // Create new texture and bind it to renderer/material.
             texture = new Texture2D(TextureSize, TextureSize, TextureFormat.RGBA32, false);
@@ -59,6 +62,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             drawingColor = new Color(1.0f, 0.0f, 0.2f, 1.0f);
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been destroyed.
+        /// </summary>
         protected override void OnDestroy()
         {
             Object.Destroy(texture);

@@ -14,7 +14,7 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         IPerformanceStatsSubsystem
     {
         /// <summary>
-        /// Construct the <c>PerformanceStatsSubsystem</c>.
+        /// Initializes a new instance of the <see cref="PerformanceStatsSubsystem"/> class.
         /// </summary>
         public PerformanceStatsSubsystem()
         { }
@@ -63,22 +63,24 @@ namespace Microsoft.MixedReality.Toolkit.Diagnostics
         /// <param name="performanceStatsSubsystemParams">The parameters defining the PerformanceStats subsystem
         /// functionality implemented by the subsystem provider.</param>
         /// <returns>
-        /// <c>true</c> if the subsystem implementation is registered. Otherwise, <c>false</c>.
+        /// <see langword="true"/> if the subsystem implementation is registered. Otherwise, <see langword="false"/>.
         /// </returns>
-        /// <exception cref="System.ArgumentException">Thrown when the values specified in the
-        /// <see cref="PerformanceStatsSubsystemCinfo"/> parameter are invalid. Typically, this will occur
+        /// <exception cref="System.ArgumentException">
+        /// Thrown when the values specified in the
+        /// <see cref="PerformanceStatsSubsystemCinfo"/> parameter are invalid. Typically, this will occur in the following cases:
         /// <list type="bullet">
-        /// <item>
-        /// <description>if <see cref="PerformanceStatsSubsystemCinfo.id"/> is <c>null</c> or empty</description>
-        /// </item>
-        /// <item>
-        /// <description>if <see cref="PerformanceStatsSubsystemCinfo.implementationType"/> is <c>null</c></description>
-        /// </item>
-        /// <item>
-        /// <description>if <see cref="PerformanceStatsSubsystemCinfo.implementationType"/> does not derive from the
-        /// <see cref="PerformanceStatsSubsystem"/> class
-        /// </description>
-        /// </item>
+        ///     <item>
+        ///         <description>The <see cref="PerformanceStatsSubsystemCinfo.Name"/> is <see langword="null"/>  or empty</description>
+        ///     </item>
+        ///     <item>
+        ///         <description>The <see cref="PerformanceStatsSubsystemCinfo.ProviderType"/> is <see langword="null"/></description>
+        ///     </item>
+        ///     <item>
+        ///         <description>The <see cref="PerformanceStatsSubsystemCinfo.ProviderType"/> does not derive from the <see cref="PerformanceStatsSubsystem.Provider"/> type.</description>
+        ///     </item>
+        ///     <item>
+        ///         <description>The <see cref="PerformanceStatsSubsystemCinfo.SubsystemTypeOverride"/> does not derive from the <see cref="PerformanceStatsSubsystem"/> type.</description>
+        ///     </item>
         /// </list>
         /// </exception>
         public static bool Register(PerformanceStatsSubsystemCinfo performanceStatsSubsystemParams)

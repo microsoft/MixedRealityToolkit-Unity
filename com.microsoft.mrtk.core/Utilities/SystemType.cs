@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Create a reference string from the given assembly qualified class name. The reference 
         /// string will contain the full name and assembly name from the given assembly qualified name.
         /// </summary>
-        /// <param name="assemblyQualifiedClassName">Assembly qualified class name.</param>
+        /// <param name="assemblyQualifiedName">Assembly qualified class name.</param>
         /// <returns>
         /// A new reference string. Will return an empty string if the assembly qualified
         /// name is null or empty.
@@ -116,7 +116,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// Obtains the equality from the underlying reference string.
         /// </remarks>
         /// <returns>
-        /// `true` if the two instances represent the same <see cref="SystemType"/>; otherwise, `false`.
+        /// <see langword="true"/> if the two instances represent the same <see cref="SystemType"/>; otherwise, <see langword="false"/>.
         /// </returns>
         public override bool Equals(object other)
         {
@@ -183,7 +183,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// An overridable constraint to determine whether a type is valid to serialize.
         /// </summary>
         /// <param name="type">Type to validate.</param>
-        /// <returns>True if the type is valid, or false.</returns>
+        /// <returns><see langword="true"/> if the type is valid, or <see langword="false"/>.</returns>
         protected virtual bool ValidConstraint(Type type)
         {
             return type != null && type.IsValueType && !type.IsEnum && !type.IsAbstract || type.IsClass;

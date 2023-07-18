@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// An abstract XRDirectInteractor that represents a near interaction
-    /// driven by articulated hand data. Implementers should define GetInteractionPoint
+    /// driven by articulated hand data. Implementers should define <see cref="TryGetInteractionPoint"/>
     /// to specify the desired interaction point, using the cached reference to
     /// the hands aggregator subsystem.
     /// </summary>

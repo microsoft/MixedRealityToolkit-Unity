@@ -6,10 +6,12 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
     /// <summary>
-    /// Component for limiting the rotation axes for ObjectManipulator
-    /// or BoundsControl
-    /// We're looking to rework this system in the future. These existing components will be deprecated then.
+    /// Component for limiting the rotation axes for <see cref="ObjectManipulator"/>
+    /// or <see cref="BoundsControl"/> components.
     /// </summary>
+    /// <remarks>
+    /// The constraint system might be reworked in the future. In such a case, these existing components will be deprecated.
+    /// </remarks>
     public class RotationAxisConstraint : TransformConstraint
     {
         #region Properties
@@ -41,6 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             set => useLocalSpaceForConstraint = value;
         }
 
+        /// <inheritdoc />
         public override TransformFlags ConstraintType => TransformFlags.Rotate;
 
         #endregion Properties

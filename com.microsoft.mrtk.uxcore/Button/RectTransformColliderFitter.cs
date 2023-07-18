@@ -10,23 +10,29 @@ using UnityEngine.UI;
 namespace Microsoft.MixedReality.Toolkit.UX
 {
     /// <summary>
-    /// This script fits a BoxCollider onto a canvas element.
-    /// **You should have this script disabled most of the time for performance reasons.**
-    /// By default, for performance, it only recomputes the mask intersections and collider bounds when parent
-    /// dimensions have been updated, the mask has changed, or a parent scrollrect has scrolled.
-    /// If you need more frequent collider updates, you can enable the script.
-    /// Works in both Edit and Play modes. Only fits the X and Y axes, and preserves the Z axis.
+    /// This script fits a Unity <see href="https://docs.unity3d.com/ScriptReference/BoxCollider.html">BoxCollider</see>
+    /// component onto a canvas element.
     /// </summary>
+    /// <remarks>
+    /// This script should be disabled most of the time for performance reasons.
+    /// By default, for performance, this class will only recomputes the mask intersections and collider bounds when parent
+    /// dimensions have been updated, the mask has changed, or a parent scroll rectangle has scrolled.
+    /// If you need more frequent collider updates, you can enable the script.
+    ///
+    /// This script works in both edit and play modes.
+    ///
+    /// Only fits the X and Y axes values will be modified, while the z axis value is preserved.
+    /// </remarks>
     [ExecuteAlways]
     [AddComponentMenu("MRTK/UX/Rect Transform Collider Fitter")]
     public class RectTransformColliderFitter : UIBehaviour, IClippable
     {
         [SerializeField]
-        [Tooltip("The collider to fit to the RectTransform.")]
+        [Tooltip("The collider to fit to the AttachedRectTransform.")]
         private BoxCollider thisCollider;
 
         /// <summary>
-        /// The collider to fit to the RectTransform.
+        /// The collider to fit to the AttachedRectTransform.
         /// </summary>
         public BoxCollider ThisCollider
         {
@@ -42,18 +48,26 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         [SerializeField]
-        [Tooltip("The RectTransform to fit the collider onto.")]
+        [Tooltip("The AttachedRectTransform to fit the collider onto.")]
         [FormerlySerializedAs("rectTransform")]
         private RectTransform attachedRectTransform;
 
-        public RectTransform rectTransform => attachedRectTransform;
+        /// <summary>
+        /// Get the attached Unity rect transform.
+        /// </summary>
+        public RectTransform AttachedRectTransform => attachedRectTransform;
+
+        /// <summary>
+        /// Get the attached Unity rect transform.
+        /// </summary>
+        RectTransform IClippable.rectTransform => attachedRectTransform;
 
         [SerializeField]
-        [Tooltip("2D padding around the RectTransform.")]
+        [Tooltip("2D padding around the AttachedRectTransform.")]
         private Vector2 padding = Vector2.zero;
 
         /// <summary>
-        /// 2D padding around the rect transform.
+        /// Get or set the 2D padding around the rect transform.
         /// </summary>
         public Vector2 Padding
         {
@@ -90,6 +104,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         #endregion
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         protected override void Awake()
         {
             base.Awake();
@@ -131,6 +148,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             enabled = forceUpdateEveryFrame;
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been destroyed.
+        /// </summary>
         protected override void OnDestroy()
         {
             if (scrollRect != null)
@@ -159,9 +179,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
             Awake();
         }
 
-        private void Update()
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
+        protected virtual void Update()
         {
-            if (rectTransform.hasChanged)
+            if (AttachedRectTransform.hasChanged)
             {
                 Fit();
             }
@@ -170,24 +193,24 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private static readonly ProfilerMarker ColliderFitterFitPerMarker =
             new ProfilerMarker("[MRTK] RectTransformColliderFitter.Fit");
 
-        // Fits collider to RectTransform, clipping to the mask if one exists.
+        // Fits collider to AttachedRectTransform, clipping to the mask if one exists.
         private void Fit()
         {
             using (ColliderFitterFitPerMarker.Auto())
             {
-                if (rectTransform == null || thisCollider == null) { return; }
+                if (AttachedRectTransform == null || thisCollider == null) { return; }
 
                 Rect computedRect = attachedRectTransform.rect;
 
                 if (mask != null)
                 {
                     // Transform the mask's rect to our local space.
-                    Matrix4x4 matrix = rectTransform.worldToLocalMatrix * mask.transform.localToWorldMatrix;
+                    Matrix4x4 matrix = AttachedRectTransform.worldToLocalMatrix * mask.transform.localToWorldMatrix;
                     Vector3 localClipCorner = matrix.MultiplyPoint(new Vector2(mask.rectTransform.rect.x, mask.rectTransform.rect.y));
                     Rect localClipRect = new Rect(localClipCorner.x, localClipCorner.y, mask.rectTransform.rect.width, mask.rectTransform.rect.height);
 
                     // Compute the intersection.
-                    bool intersects = rectTransform.rect.Intersects(localClipRect, out computedRect);
+                    bool intersects = AttachedRectTransform.rect.Intersects(localClipRect, out computedRect);
 
                     if (thisCollider != null)
                     {

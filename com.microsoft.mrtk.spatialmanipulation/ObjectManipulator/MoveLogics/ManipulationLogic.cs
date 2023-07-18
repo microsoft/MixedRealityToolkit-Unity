@@ -9,21 +9,24 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 {
     /// <summary>
     /// Abstract class defining all logics that define the logic by which an object
-    /// is manipulated by ObjectManipulator.
-    /// 
-    /// Usage:
-    /// When a manipulation starts, call Setup.
-    /// Call Update any time to update the move logic and get a new target value for the object.
+    /// is manipulated by a <see cref="ObjectManipulator"/> object.
     /// </summary>
+    /// <remarks>
+    /// When a manipulation starts, call <see cref="Setup"/>. Then call <see cref="Update"/>
+    /// any time to update the move logic and get a new target value for the object.
+    /// </remarks>
     public abstract class ManipulationLogic<T>
     {
+        /// <summary>
+        /// The number of <see cref="IXRSelectInteractor"/> objects currently selecting this object.
+        /// </summary>
         protected int NumInteractors { get; private set; }
 
         /// <summary>
         /// Setup the manipulation logic. Called automatically by Update if the number of interactor points has changed.
         /// </summary>
         /// <param name="interactors">
-        /// List of all <see cref="IXRSelectInteractor"/>s selecting this object.
+        /// List of all <see cref="IXRSelectInteractor"/> objects selecting this object.
         ///</param>
         /// <param name= "interactable">
         /// The <see cref="IXRSelectInteractable"/> that is being manipulated.
@@ -42,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// different than the last time Update was called, Setup will be called automatically to re-initialize the manipulation.
         /// </summary>
         /// <param name="interactors">
-        /// List of all <see cref="IXRSelectInteractor"/>s selecting this object.
+        /// List of all <see cref="IXRSelectInteractor"/> objects selecting this object.
         ///</param>
         /// <param name= "interactable">
         /// The <see cref="IXRSelectInteractable"/> that is being manipulated.

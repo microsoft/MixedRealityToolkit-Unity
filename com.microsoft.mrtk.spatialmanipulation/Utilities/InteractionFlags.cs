@@ -15,22 +15,22 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         None = 0,
 
         /// <summary>
-        /// Near interaction, typically from a <see cref="GrabInteractor">
+        /// Near interaction, typically from a <c>Microsoft.MixedReality.Toolkit.Input.GrabInteractor</c> object.
         /// </summary>
         Near = 1 << 0,
 
         /// <summary>
-        /// Far-ray interaction, typically from an <see cref="MRTKRayInteractor">
+        /// Far-ray interaction, typically from a <c>Microsoft.MixedReality.Toolkit.Input.MRTKRayInteractor</c> object.
         /// </summary>
         Ray = 1 << 1,
 
         /// <summary>
-        /// Gaze-pinch interaction, typically from a <see cref="GazePinchInteractor">
+        /// Gaze-pinch interaction, typically from a <c>Microsoft.MixedReality.Toolkit.Input.GazePinchInteractor</c> object.
         /// </summary>
         Gaze = 1 << 2,
 
         /// <summary>
-        /// Generic/unknown interaction, typically from an interactor that does not
+        /// A generic or an unknown interaction, typically from an interactor that does not
         /// implement or inherit from any MRTK-standard interfaces or base implementations.
         /// </summary>
         Generic = 1 << 31
@@ -46,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// </summary>
         /// <param name="a"><see cref="InteractionFlags"/> value.</param>
         /// <param name="b"><see cref="InteractionFlags"/> mask.</param>
-        /// <returns>True if all of the bits in the specified mask are set in the
+        /// <returns><see langword="true"/> if all of the bits in the specified mask are set in the
         /// current value.</returns>
         public static bool IsMaskSet(this InteractionFlags a, InteractionFlags b)
         {

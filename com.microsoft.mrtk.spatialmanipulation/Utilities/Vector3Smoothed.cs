@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         public float SmoothTime { get; set; }
 
         /// <summary>
-        /// Constructor.
+        /// Initializes a <see cref="Vector3Smoothed"/> struct.
         /// </summary>
         /// <param name="value">The initial value of the vector.</param>
         /// <param name="smoothingTime">The amount of time to perform the smoothing.</param>

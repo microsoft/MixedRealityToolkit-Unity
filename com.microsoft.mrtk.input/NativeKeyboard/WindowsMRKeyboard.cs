@@ -101,8 +101,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
 #if WINDOWS_UWP
 
         /// <summary>
-        /// Initializes the UWP input pane.
-        /// </summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
+        /// <remarks>
+        /// This will initialize the UWP input pane.
+        /// </remarks>
         protected virtual void Start()
         {
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
@@ -117,7 +120,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             OnKeyboardHiding();
         }
 
-        void OnDestroy()
+        /// <summary>
+        /// A Unity event function that is called when the script component has been destroyed.
+        /// </summary>
+        private void OnDestroy()
         {
             UnityEngine.WSA.Application.InvokeOnUIThread(() =>
             {
@@ -144,6 +150,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 #endif // WINDOWS_UWP
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         private void OnDisable()
         {
             HideKeyboard();
@@ -151,6 +160,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         #endregion MonoBehaviour Implementation
 
+        /// <summary>
+        /// The text that has been enter after <see cref="ShowKeyboard"/> was been called.
+        /// </summary>
+        /// <remarks>
+        /// This value is initialized to the string passed into <see cref="ShowKeyboard"/>, after which
+        /// this string is appended with the characters entered via the keyboard. To clear this string,
+        /// use the <see cref="ClearKeyboardText"/> function.
+        /// </remarks>
         public string Text { get; protected set; } = string.Empty;
 
         /// <summary>
@@ -178,7 +195,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// Opens the keyboard for user interaction.
         /// </summary>
         /// <param name="text">Initial text to populate the keyboard with.</param>
-        /// <param name="multiLine">True, if the return key should signal a newline rather than a commit.</param>
+        /// <param name="multiLine"><see langword="true"/> if the return key should signal a newline rather than a commit.</param>
         public virtual void ShowKeyboard(string text = "", bool multiLine = false)
         {
             Text = text;

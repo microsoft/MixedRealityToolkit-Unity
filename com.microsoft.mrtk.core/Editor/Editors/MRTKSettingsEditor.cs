@@ -27,6 +27,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private const string MRTKDefaultProfileGUID = "c677e5c4eb85b7849a8da406775c299d";
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary> 
         private void OnEnable()
         {
             profileDict = serializedObject.FindProperty("settings");

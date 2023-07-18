@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for tests. While nice to have, this documentation is not required.
+#pragma warning disable CS1591
+
 using Microsoft.MixedReality.Toolkit.Core.Tests;
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.Input.Tests;
@@ -298,5 +301,4 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         }
     }
 }
-
-
+#pragma warning restore CS1591

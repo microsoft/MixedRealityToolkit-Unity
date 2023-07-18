@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for tests. While nice to have, this documentation is not required.
+#pragma warning disable CS1591
+
 using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
@@ -145,3 +148,4 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         }
     }
 }
+#pragma warning restore CS1591

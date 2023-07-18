@@ -51,16 +51,28 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
             }
         }
 
+        /// <summary>
+        /// Called in response to the lifecycle manager
+        /// update event function being called, if this subsystem is running.
+        /// </summary>
         protected virtual void OnUpdate()
         {
             provider.Update();
         }
 
+        /// <summary>
+        /// Called in response to the lifecycle manager
+        /// late update event function being called, if this subsystem is running.
+        /// </summary>
         protected virtual void OnLateUpdate()
         {
             provider.LateUpdate();
         }
 
+        /// <summary>
+        /// Called in response to the lifecycle manager
+        /// fix update event function being called, if this subsystem is running.
+        /// </summary>
         protected virtual void OnFixedUpdate()
         {
             provider.FixedUpdate();

@@ -41,17 +41,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty startPushPlane;
         private SerializedProperty endPushPlane;
 
-        private SerializedProperty smoothSelectedness;
+        private SerializedProperty smoothSelectionProgress;
         private SerializedProperty returnSpeed;
         private SerializedProperty extendSpeed;
         private SerializedProperty enforceFrontPush;
-        private SerializedProperty rejectXYRolloff;
-        private SerializedProperty rolloffXYDepth;
-        private SerializedProperty rejectZRolloff;
+        private SerializedProperty rejectXYRollOff;
+        private SerializedProperty rollOffXYDepth;
+        private SerializedProperty rejectZRollOff;
 
         private static readonly Vector3[] startPlaneVertices = new Vector3[4];
         private static readonly Vector3[] endPlaneVertices = new Vector3[4];
 
+        /// <inheritdoc/>
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -69,14 +70,14 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             startPushPlane = serializedObject.FindProperty("startPushPlane");
             endPushPlane = serializedObject.FindProperty("endPushPlane");
 
-            smoothSelectedness = serializedObject.FindProperty("smoothSelectedness");
+            smoothSelectionProgress = serializedObject.FindProperty("smoothSelectionProgress");
             extendSpeed = serializedObject.FindProperty("extendSpeed");
             returnSpeed = serializedObject.FindProperty("returnSpeed");
 
             enforceFrontPush = serializedObject.FindProperty("enforceFrontPush");
-            rejectXYRolloff = serializedObject.FindProperty("rejectXYRolloff");
-            rolloffXYDepth = serializedObject.FindProperty("rolloffXYDepth");
-            rejectZRolloff = serializedObject.FindProperty("rejectZRolloff");
+            rejectXYRollOff = serializedObject.FindProperty("rejectXYRollOff");
+            rollOffXYDepth = serializedObject.FindProperty("rollOffXYDepth");
+            rejectZRollOff = serializedObject.FindProperty("rejectZRollOff");
         }
 
         [DrawGizmo(GizmoType.Selected)]
@@ -238,18 +239,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.PropertyField(endPushPlane);
 
                     // Other settings
-                    EditorGUILayout.PropertyField(smoothSelectedness);
+                    EditorGUILayout.PropertyField(smoothSelectionProgress);
                     EditorGUILayout.PropertyField(extendSpeed);
                     EditorGUILayout.PropertyField(returnSpeed);
 
                     // Rolloff rejection
                     EditorGUILayout.PropertyField(enforceFrontPush);
-                    EditorGUILayout.PropertyField(rejectXYRolloff);
-                    if (rejectXYRolloff.boolValue)
+                    EditorGUILayout.PropertyField(rejectXYRollOff);
+                    if (rejectXYRollOff.boolValue)
                     {
-                        EditorGUILayout.PropertyField(rolloffXYDepth);
+                        EditorGUILayout.PropertyField(rollOffXYDepth);
                     }
-                    EditorGUILayout.PropertyField(rejectZRolloff);
+                    EditorGUILayout.PropertyField(rejectZRollOff);
                 }
             }
 

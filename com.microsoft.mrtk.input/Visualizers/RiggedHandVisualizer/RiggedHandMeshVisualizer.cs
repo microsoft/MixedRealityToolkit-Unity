@@ -84,6 +84,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // at the end of a finger, which is discarded.
         private const string endJointName = "end";
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         protected virtual void Awake()
         {
             propertyBlock = new MaterialPropertyBlock();
@@ -128,6 +131,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         protected void OnEnable()
         {
             // Ensure hand is not visible until we can update position first time.
@@ -144,6 +150,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         protected void OnDisable()
         {
             // Disable the rigged hand renderer when this component is disabled
@@ -159,6 +168,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             OnEnable();
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             // Query all joints in the hand.

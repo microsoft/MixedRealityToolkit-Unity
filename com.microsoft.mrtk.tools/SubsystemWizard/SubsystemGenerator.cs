@@ -139,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         public string SubsystemNamespace => $"{OrganizationName}.MRTK3.Subsystems";
 
         /// <summary>
-        /// Constructor
+        /// Initializes a new instance of the <see cref="SubsystemGenerator"/> class.
         /// </summary>
         public SubsystemGenerator()
         {
@@ -233,7 +233,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// C# language.
         /// </summary>
         /// <param name="error">String describing the encountered error.</param>
-        /// <returns>True of successful, or false.</returns>
+        /// <returns><see langword="true"/> if successful, or <see langword="false"/>.</returns>
         public bool ValidateBaseClassName(out string error)
         {
             // Ensure a name was provided.
@@ -256,7 +256,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// C# language.
         /// </summary>
         /// <param name="error">String describing the encountered error.</param>
-        /// <returns>True of successful, or false.</returns>
+        /// <returns><see langword="true"/> if successful, or <see langword="false"/>.</returns>
         public bool ValidateNamespace(out string error)
         {
             // Ensure a name was provided.
@@ -294,7 +294,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// C# language.
         /// </summary>
         /// <param name="error">String describing the encountered error.</param>
-        /// <returns>True of successful, or false.</returns>
+        /// <returns><see langword="true"/> if successful, or <see langword="false"/>.</returns>
         public bool ValidateSubsystemName(out string error)
         {
             // Ensure a name was provided.
@@ -332,7 +332,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// <see cref="FileInfo"/> object representing the template file that contains information on
         /// the code to apply when configuration is desired.
         /// </param>
-        /// <returns>True if the collection of templates can all be validated, or false.</returns>
+        /// <returns><see langword="true"/> if the collection of templates can all be validated, or <see langword="false"/>.</returns>
         public bool ValidateTemplates(
             List<string> errors,
             out FileInfo descriptorTemplate,
@@ -411,7 +411,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// If the subsystem does not utilize a configuration, an empty is to be provided
         /// in the 'code' parameter.
         /// <para/>
-        /// For 'sourceFile' to be properly updated, its contents must contain the "%APPLYCONFIG%"
+        /// For <paramref name="sourceFile"/> to be properly updated, its contents must contain the <c>"%APPLYCONFIG%"</c>
         /// token. This is used to indicate the correct location at which to place the code.
         /// </remarks>
         private void ApplyConfigCode(
@@ -491,7 +491,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// <param name="guid">The guid that represents the asset.</param>
         /// <param name="fileInfo"><see cref="FileInfo"/> object representing the asset.</param>
         /// <param name="error">Error message.</param>
-        /// <returns>True if the asset was acquired, or false.</returns>
+        /// <returns><see langword="true"/> if the asset was acquired, or <see langword="false"/>.</returns>
         private bool GetAsset(
             string guid,
             out FileInfo fileInfo,
@@ -540,7 +540,7 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// Validates that the specified name is a valid identifier for C#.
         /// </summary>
         /// <param name="name">The name to validate/</param>
-        /// <returns>True if the name is a valid C# identifier, or false.</returns>
+        /// <returns><see langword="true"/> if the name is a valid C# identifier, or <see langword="false"/>.</returns>
         private bool ValidateName(string name)
         {
             // Verify that the name is valid within C#

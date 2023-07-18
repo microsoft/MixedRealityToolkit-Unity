@@ -8,10 +8,10 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
-    [Serializable]
     /// <summary>
-    /// A <see cref="IEffect"> that switches a <see cref="UnityEngine.UI.Image"/> between two sprites.
+    /// A <see cref="IEffect" /> that switches a Unity image between two sprites.
     /// </summary>
+    [Serializable]
     internal class SpriteSwapEffect : IEffect
     {
         [SerializeField]

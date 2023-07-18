@@ -574,7 +574,7 @@ MonoBehaviour:
   sliderStepDivisions: 1
   sliderStart: {fileID: 5677198133136054594}
   sliderEnd: {fileID: 5677198132965683087}
-  OnValueUpdated:
+  onValueUpdated:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &5677198132984834575

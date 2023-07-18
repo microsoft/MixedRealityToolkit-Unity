@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// Checks if any active controls match this InputAction's bindings.
         /// </summary>
-        /// <returns>True if <paramref name="action"/> is non-null and there are any number of controls matching its bindings.</returns>
+        /// <returns><see langword="true"/> if <paramref name="action"/> is non-null and there are any number of controls matching its bindings.</returns>
         public static bool HasAnyControls(this InputAction action)
         {
             return action?.controls.Count > 0;
@@ -31,7 +31,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="action">The action that was raised.</param>
         /// <returns>
-        /// True if at least one of the controls used to raise the action was on a keyboard, or false.
+        /// <see langword="true"/> if at least one of the controls used to raise the action was on a keyboard, or <see langword="false"/>.
         /// </returns>
         public static bool RaisedByKeyboard(this InputAction action)
         {
@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// </summary>
         /// <param name="action">The action that was raised.</param>
         /// <returns>
-        /// True if at least one of the controls used to raise the action was on a mouse, or false.
+        /// <see langword="true"/> if at least one of the controls used to raise the action was on a mouse, or <see langword="false"/>.
         /// </returns>
         public static bool RaisedByMouse(this InputAction action)
         {
@@ -57,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <param name="action">The action that was raised.</param>
         /// <param name="deviceName">The name (ex: "mouse") of the desired device type.</param>
         /// <returns>
-        /// True if at least one of the controls which raised the action was on the requested device type, or false.
+        /// <see langword="true"/> if at least one of the controls which raised the action was on the requested device type, or <see langword="false"/>.
         /// </returns>
         private static bool CheckDeviceType(InputAction action, string deviceName)
         {

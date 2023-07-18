@@ -40,18 +40,35 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     }
 
     /// <summary>
-    /// Enum describing the type of handle grabbed; can be a rotation (edge-mounted)
+    /// An enumeration describing a type of handle on a <see cref="BoundsControl"/>. grabbed can be a rotation (edge-mounted)
     /// handle, a scaling (corner-mounted) handle, or a translation (face-mounted)
     /// handle.
     /// </summary>
     [Flags]
     public enum HandleType
     {
+        /// <summary>
+        /// No handles on the <see cref="BoundsControl"/>.
+        /// </summary>
         None = 0,
+
+        /// <summary>
+        /// A handle that is mounted to the edge of a <see cref="BoundsControl"/>, and can rotate the object.
+        /// </summary>
         Rotation = 1 << 0,
+        
+        /// <summary>
+        /// A handle that is mounted to the corner of a <see cref="BoundsControl"/>, and can scale the object.
+        /// </summary>
         Scale = 1 << 1,
+        
+        /// <summary>
+        /// A handle that is mounted to the face of a <see cref="BoundsControl"/>, and can move the object.
+        /// </summary>
+        /// <remarks>
+        /// Handles of this type are currently not supported.
+        /// </remarks>
         Translation = 1 << 2,
-        Resize = 1 << 3,
     }
 
     /// <summary>

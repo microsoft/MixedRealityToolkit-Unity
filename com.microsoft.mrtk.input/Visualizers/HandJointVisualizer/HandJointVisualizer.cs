@@ -46,6 +46,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         // Transformation matrix for each joint.
         private List<Matrix4x4> jointMatrices = new List<Matrix4x4>();
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         protected void OnEnable()
         {
             Debug.Assert(handNode == XRNode.LeftHand || handNode == XRNode.RightHand, $"HandVisualizer has an invalid XRNode ({handNode})!");
@@ -65,7 +68,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
         }
 
-        void OnDrawGizmos()
+        /// <summary>
+        /// A Unity event function that is called to draw Unity editor gizmos that are also interactable and always drawn.
+        /// </summary>
+        private void OnDrawGizmos()
         {
             if (!enabled) { return; }
             
@@ -96,6 +102,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             OnEnable();
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             // Query all joints in the hand.

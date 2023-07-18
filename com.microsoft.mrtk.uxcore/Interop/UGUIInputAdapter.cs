@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private IXRInteractable thisInteractable;
 
         /// <summary>
-        /// The associated <see cref="XRBaseInteractable"> on behalf of which
+        /// The associated <see cref="XRBaseInteractable"/> on behalf of which
         /// this adapter will translate input events.
         /// </summary>
         protected IXRInteractable ThisInteractable
@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// For the movable axes, what distance should be moved on each OnMove event?
         /// </summary>
         /// <remarks>
-        /// This is applied along object's local axes, but scaled in worldspace distance.
+        /// This is applied along object's local axes, but scaled in world space distance.
         /// </remarks>
         public float OnMoveDelta => onMoveDelta;
 
@@ -68,7 +68,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private List<IXRInteractor> interactorQueryList = new List<IXRInteractor>();
 
         /// <summary>
-        /// The associated <see cref="XRBaseInteractable"> on behalf of which
+        /// The associated <see cref="XRBaseInteractable"/> on behalf of which
         /// this shim will translate input events.
         /// </summary>
         protected IProxyInteractor ProxyInteractor => proxyInteractor;
@@ -103,6 +103,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
 #if UNITY_EDITOR
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         protected override void OnValidate()
         {   
             base.OnValidate();
@@ -114,6 +117,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 #endif
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         protected override void Awake()
         {
             base.Awake();
@@ -141,6 +147,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         protected override void OnDisable()
         {
             base.OnDisable();
@@ -153,6 +162,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
+        /// <summary>
+        /// Called when a an <see cref="IXRInteractor"/> is registered with a Unity <see cref="XRInteractionManager"/>.
+        /// </summary>
+        /// <remarks>
+        /// The <see cref="InteractorRegisteredEventArgs"/> passed to each listener is only valid while the event is invoked,
+        /// do not hold a reference to it.
+        /// </remarks>
+        /// <param name="args">The <see cref="InteractorRegisteredEventArgs"/> holding the event data associated with the event when an <see cref="IXRInteractor"/> is registered with an <see cref="XRInteractionManager"/>.</param>
         protected virtual void OnInteractorRegistered(InteractorRegisteredEventArgs args)
         {
             if (args.interactorObject is IProxyInteractor)
@@ -161,6 +178,14 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
+        /// <summary>
+        /// Called when a an <see cref="IXRInteractor"/> is unregistered with a Unity <see cref="XRInteractionManager"/>.
+        /// </summary>
+        /// <remarks>
+        /// The <see cref="InteractorRegisteredEventArgs"/> passed to each listener is only valid while the event is invoked,
+        /// do not hold a reference to it.
+        /// </remarks>
+        /// <param name="args">The <see cref="InteractorRegisteredEventArgs"/> holding the event data associated with the event when an <see cref="IXRInteractor"/> is unregistered with an <see cref="XRInteractionManager"/>.</param>
         protected virtual void OnInteractorUnregistered(InteractorUnregisteredEventArgs args)
         {
             if (args.interactorObject is IProxyInteractor unregisteredProxyInteractor &&
@@ -171,16 +196,15 @@ namespace Microsoft.MixedReality.Toolkit.UX
         }
 
         /// <summary>
-        /// Returns true iff the provided pointer event data corresponds to an XRI Interactor,
-        /// false if it corresponds to mouse/keyboard/gamepad/touch/etc.
+        /// Test if the given event data corresponds to a Unity XRI interactor.
         /// </summary>
         /// <remarks>
         /// Used to filter XRI interactions out of all canvas input, so that duplicate events
         /// are not triggered on hybrid/unified UX.
         /// </remarks>
         /// <returns>
-        /// True iff the provided pointer event data corresponds to an XRI Interactor,
-        /// false if it corresponds to mouse/keyboard/gamepad/touch/etc.
+        /// <see langword="true"/> if the provided pointer event data corresponds to a Unity XRI interactor,
+        /// <see langword="false"/> if it corresponds to mouse, keyboard, gamepad, or touch.
         /// </returns>
         protected bool IsXRUIEvent(PointerEventData pointerEventData)
         {
@@ -189,7 +213,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         #region Canvas/UnityUI Event Hooks
 
-        // Map PointerEnter/Exit to XRI Hover
+        /// <summary>
+        /// Evaluate current state and transition to appropriate state.
+        /// New state could be pressed or hover depending on pressed state.
+        /// </summary>
+        /// <param name="pointerEventData">The event data associated with the event.</param>
         public override void OnPointerEnter(PointerEventData pointerEventData)
         {
             base.OnPointerEnter(pointerEventData);
@@ -206,6 +234,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
+        /// <summary>
+        /// Evaluate current state and transition to normal state.
+        /// </summary>
+        /// <param name="pointerEventData">The event data associated with the event.</param>
         public override void OnPointerExit(PointerEventData pointerEventData)
         {
             base.OnPointerExit(pointerEventData);
@@ -221,7 +253,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
             OnDeselect(pointerEventData);
         }
 
-        // Map PointerDown to XRI Select
+        /// <summary>
+        /// Evaluate current state and transition to pressed state.
+        /// </summary>
+        /// <param name="pointerEventData">The event data associated with the event.</param>
         public override void OnPointerDown(PointerEventData pointerEventData)
         {
             base.OnPointerDown(pointerEventData);
@@ -241,7 +276,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
-        // Map PointerUp to XRI Deselect
+        /// <summary>
+        /// Evaluate eventData and transition to appropriate state.
+        /// </summary>
+        /// <param name="pointerEventData">The event data associated with the event.</param>
         public override void OnPointerUp(PointerEventData pointerEventData)
         {
             base.OnPointerUp(pointerEventData);
@@ -265,7 +303,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
-        // Map Select/Deselect to XRI Hover (yes, it's confusing)
+        /// <summary>
+        /// Set selection and transition to appropriate state.
+        /// </summary>
+        /// <param name="eventData">The event data associated with the event.</param>
         public override void OnSelect(BaseEventData eventData)
         {
             base.OnSelect(eventData);
@@ -277,7 +318,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
-        // Map Select/Deselect to XRI Hover (yes, it's confusing)
+        /// <summary>
+        /// Unset selection and transition to appropriate state.
+        /// </summary>
+        /// <param name="eventData">The event data associated with the event.</param>
         public override void OnDeselect(BaseEventData eventData)
         {
             base.OnDeselect(eventData);
@@ -289,7 +333,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Determine in which of the 4 move directions the next selectable object should be found.
+        /// </summary>
+        /// <param name="eventData">The event data associated with the event.</param>
         public override void OnMove(AxisEventData eventData)
         {
             // Use base OnMove if object is either inactive or un-interactable
@@ -367,13 +414,17 @@ namespace Microsoft.MixedReality.Toolkit.UX
                 }
             }
         }
-
-        // Map Submit to XRI Select, but using a coroutine
-        // to simulate a selection/deselection. This is the
-        // same way that UnityUI Buttons do this.
-        // Gamepads fire Submit on pressing a button.
+        
+        /// <summary>
+        /// Called when the Unity UGUI element is selected.
+        /// </summary>
         public virtual void OnSubmit(BaseEventData eventData)
         {
+            // Map submit event to XRI Select, but using a coroutine
+            // to simulate a selection/deselection. This is the
+            // same way that UnityUI Buttons do this.
+            // Gamepads fire submit event on pressing a button.
+
             // This will start the coroutine, as well as manage
             // the internal Selectable state transitions and notify
             // the XRI proxy interactor.
@@ -386,11 +437,12 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
         /// <summary>
         /// Click the interactable. This will result in the interactable being selected and
-        /// then deselected after a short period of time; this is the same behavior that occurs
-        /// when this adapter receives a UGUI OnSubmit event.
+        /// then deselected after a short period of time. This is the same behavior that occurs
+        /// when this adapter receives a Unity UGUI <see cref="OnSubmit"/> event.
         /// </summary>
-        /// <remarks> This is useful for accessibility features that need to induce a full
-        /// "OnSubmit"-like behavior from a UnityEvent that can't call the OnSubmit directly.
+        /// <remarks> 
+        /// This is useful for accessibility features that need to induce a full
+        /// submit like behavior from a Unity event that can't invoke the submit event directly.
         /// </remarks>
         public void Click()
         {

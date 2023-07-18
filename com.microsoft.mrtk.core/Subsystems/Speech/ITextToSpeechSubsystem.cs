@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// </summary>
         /// <param name="phrase">The phrase to be spoken.</param>
         /// <param name="audioSource">The audio source on which to play the generated audio.</param>
-        /// <returns>True if the phrase was successfully synthesized and audio playback has begun, otherwise false.</returns>
+        /// <returns><see langword="true"/> if the phrase was successfully synthesized and audio playback has begun, otherwise <see langword="false"/>.</returns>
         Task<bool> TrySpeak(string phrase, AudioSource audioSource);
     }
 }

@@ -29,6 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private GUIStyle valueLabelStyle;
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         protected virtual void OnEnable()
         {
             instance = target as StateVisualizer;

@@ -21,9 +21,13 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// Called by the <see cref="StateVisualizer"/> every frame.Playable-based effects should
         /// update their internal state and control their <see cref="Playable"/> here.
         /// </summary>
+        /// <remarks>
+        /// If all registered <see cref="IEffect"/> objects return <see langword="true"/>,
+        /// the <see cref="PlayableGraph"/> will be stopped and the animator disabled until 
+        /// an interaction occurs.
+        /// </remarks>
         /// <returns>
-        /// True if the effect is "done". If all registered <see cref="IEffect"/>s return true,
-        /// the PlayableGraph will be stopped and the animator disabled until an interaction occurs.
+        /// <see langword="true"/> if the effect is complete. 
         /// </returns>
         bool Evaluate(float parameter);
     }

@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// data stream, or whether it synthesizes poses from non-hand data.
         /// </summary>
         /// <value>
-        /// True if non-synthesized. False if synthesized.
+        /// <see langword="true"/> if non-synthesized, and <see langword="false"/> if synthesized.
         /// </value>
         public bool IsPhysicalData { get; set; }
 
@@ -24,7 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// Tests for equality.
         /// </summary>
         /// <param name="other">The other <see cref="HandsSubsystem"/> to compare against.</param>
-        /// <returns>`True` if every field in <paramref name="other"/> is equal to this <see cref="HandsSubsystem"/>, otherwise false.</returns>
+        /// <returns><see langword="true"/> if every field in <paramref name="other"/> is equal to this <see cref="HandsSubsystem"/>, otherwise false.</returns>
         public override bool Equals(MRTKSubsystemCinfo other)
         {
             return base.Equals(other) && IsPhysicalData == (other as HandsSubsystemCinfo)?.IsPhysicalData;
@@ -39,9 +39,9 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         MRTKSubsystemDescriptor<HandsSubsystem, HandsSubsystem.Provider>
     {
         /// <summary>
-        /// Constructs a <c>HandsSubsystemDescriptor</c> based on the given parameters.
+        /// Initializes a new instance of the <see cref="HandsSubsystemDescriptor"/> class.
         /// </summary>
-        /// <param name='HandsSubsystem'>The parameters required to initialize the descriptor.</param>
+        /// <param name='cinfo'>The parameters required to initialize the descriptor.</param>
         HandsSubsystemDescriptor(HandsSubsystemCinfo cinfo) : base(cinfo)
         {
             IsPhysicalData = cinfo.IsPhysicalData;
@@ -52,17 +52,19 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// data stream, or whether it synthesizes poses from non-hand data.
         /// </summary>
         /// <value>
-        /// True if non-synthesized. False if synthesized.
+        /// <see langword="true"/> if non-synthesized, and <see langword="false"/> if synthesized.
         /// </value>
         public bool IsPhysicalData { get; set; }
 
         /// <summary>
-        /// Creates a <c>HandsSubsystemDescriptor</c> based on the given parameters validating that the
-        /// <c>id</c> and <c>implentationType</c> properties are specified.
+        /// Creates a <see cref="HandsSubsystemDescriptor"/> based on the given parameters.
         /// </summary>
-        /// <param name='cinfo'>The parameters required to initialize the descriptor.</param>
+        /// <remarks>
+        /// This function will verify that the <see cref="HandsSubsystemCinfo"/> properties are valid.
+        /// </remarks>
+        /// <param name="cinfo">The parameters required to initialize the descriptor.</param>
         /// <returns>
-        /// The created <c>HandsSubsystemDescriptor</c>.
+        /// The newly created instance of the <see cref="HandsSubsystemDescriptor"/> class.
         /// </returns>
         internal static HandsSubsystemDescriptor Create(HandsSubsystemCinfo cinfo)
         {

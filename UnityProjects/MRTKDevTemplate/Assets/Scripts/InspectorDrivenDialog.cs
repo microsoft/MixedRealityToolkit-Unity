@@ -10,6 +10,9 @@ using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
+    /// <summary>
+    /// A helper component for creating a <see cref="DialogPool"/> and showing <see cref="IDialog"/> objects.
+    /// </summary>
     public class InspectorDrivenDialog : MonoBehaviour
     {
         // A handy struct for keeping button actions and their labels together.
@@ -39,6 +42,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         [SerializeField]
         private Option neutral;
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         protected virtual void OnEnable()
         {
             if (DialogPool == null)
@@ -47,6 +53,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
         }
 
+        /// <summary>
+        /// Show a <see cref="IDialog"/> object using the currently set text and button options.
+        /// </summary>
         public void Show()
         {
             // Any fields left blank in the inspector are considered

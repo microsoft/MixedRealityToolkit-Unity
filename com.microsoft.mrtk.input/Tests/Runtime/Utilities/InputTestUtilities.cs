@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for tests. While nice to have, this documentation is not required.
+#pragma warning disable CS1591
+
 using Microsoft.MixedReality.Toolkit.Input.Simulation;
 using System.Collections;
 using UnityEngine;
@@ -187,9 +190,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         }
 
         /// <summary>
-        /// Creates the simulated devices (two <see cref="SimulatedController"/>s and a <see cref="SimulatedHMD"/>)
-        /// as well as the associated <see cref="ControllerControls"/> for each.
+        /// Create simulated devices.
         /// </summary>
+        /// <remarks>
+        /// This will create two <see cref="SimulatedController"/> object, a <see cref="SimulatedHMD"/>
+        /// object, and the associated <see cref="ControllerControls"/> objects. 
+        /// </remarks>
         /// <param name="rayHalfLife">
         /// Optional value for ray smoothing halflife, handy for suppressing smoothing during automated tests.
         /// </param>
@@ -619,3 +625,4 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         }
     }
 }
+#pragma warning restore CS1591

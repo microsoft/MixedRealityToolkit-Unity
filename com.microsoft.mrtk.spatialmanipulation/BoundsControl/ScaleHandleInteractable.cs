@@ -24,13 +24,17 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         #endregion Private Fields
 
-        #region Monobehaviour Methods
+        #region MonoBehaviour Methods
 
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         private void OnValidate()
         {
             HandleType = HandleType.Scale;
         }
 
+        /// <inheritdoc/>
         protected override void Awake()
         {
             base.Awake();
@@ -41,6 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             originalLocalRight = transform.parent.InverseTransformDirection(transform.right);
         }
 
+        /// <inheritdoc/>
         protected override void LateUpdate()
         {
             if (!IsOccluded)
@@ -104,7 +109,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             base.LateUpdate();
         }
 
-        #endregion Monobehaviour Methods
+        #endregion MonoBehaviour Methods
 
         #region Private Helpers
 

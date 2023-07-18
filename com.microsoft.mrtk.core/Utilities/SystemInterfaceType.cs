@@ -6,10 +6,17 @@ using System;
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// Reference to a <see cref="System.Type"/>, that may or may not be instantiable.
-    /// Similar to <see cref="SystemType"/>, but without the concrete/non-interface-type
-    /// constraints.
+    /// Reference to a class <see cref="System.Type"/> with support for Unity serialization.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// Reference to a <see cref="System.Type"/>, that may or may not be instantiable.
+    /// </para>
+    /// <para>
+    /// This class is similar to <see cref="SystemType"/>, but without the concrete, non-interface, type
+    /// constraints.
+    /// </para>
+    /// </remarks>
     [Serializable]
     public sealed class SystemInterfaceType : SystemType
     {
@@ -34,11 +41,17 @@ namespace Microsoft.MixedReality.Toolkit
             return t != null;
         }
 
+        /// <summary>
+        /// Convert a <see cref="SystemInterfaceType"/> to a <see cref="Type"/>.
+        /// </summary>
         public static implicit operator Type(SystemInterfaceType type)
         {
             return type.Type;
         }
 
+        /// <summary>
+        /// Convert a <see cref="Type"/> to a <see cref="SystemInterfaceType"/>.
+        /// </summary>
         public static implicit operator SystemInterfaceType(Type type)
         {
             return new SystemInterfaceType(type);

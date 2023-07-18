@@ -5650,7 +5650,7 @@ PrefabInstance:
         selection.
 
 
-        The virtual Selectedness method can be overridden to
+        The virtual GetSelectionProgress() method can be overridden to
         support more kinds of variable selection, like volumetric press. By default,
         StatefulInteractables will receive the variable selection amount from all
         participating IVariableSelectInteractors.'
@@ -20980,7 +20980,7 @@ PrefabInstance:
     - target: {fileID: 2446705927233332293, guid: e8c3ea3c1046f8b4bbd682c2b7a0e4fe, type: 3}
       propertyPath: m_text
       value: 'PressableButton defines the pressability of an object by overriding
-        the virtual Selectedness() function.
+        the virtual GetSelectionProgress() function.
 
 
         Notably, PressableButton,

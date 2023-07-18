@@ -15,8 +15,8 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// <summary>
         /// Tests for equality.
         /// </summary>
-        /// <param name="other">The other <see cref="MicrosoftTextToSpeechSubsystem"/> to compare against.</param>
-        /// <returns>`True` if every field in <paramref name="other"/> is equal to this <see cref="TextToSpeechSubsystem"/>, otherwise false.</returns>
+        /// <param name="other">The other <see cref="MRTKSubsystemCinfo"/> to compare against.</param>
+        /// <returns><see langword="true"/> if every field in <paramref name="other"/> is equal to this <see cref="TextToSpeechSubsystem"/>, otherwise false.</returns>
         public override bool Equals(MRTKSubsystemCinfo other)
         {
             // TODO: Add comparison of subsystem specific property values.
@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         MRTKSubsystemDescriptor<TextToSpeechSubsystem, TextToSpeechSubsystem.Provider>
     {
         /// <summary>
-        /// Constructs a <c>TextToSpeechSubsystemDescriptor</c> based on the given parameters.
+        /// Initializes a new instance of the <see cref="TextToSpeechSubsystemDescriptor"/> class.
         /// </summary>
         /// <param name="cinfo">The parameters required to initialize the descriptor.</param>
         TextToSpeechSubsystemDescriptor(TextToSpeechSubsystemCinfo cinfo) : base(cinfo)
@@ -43,12 +43,14 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         // TODO: Add subsystem specific properties.
 
         /// <summary>
-        /// Creates a <c>TextToSpeechSubsystemDescriptor</c> based on the given parameters validating that the
-        /// <c>id</c> and <c>implentationType</c> properties are specified.
+        /// Creates a <see cref="TextToSpeechSubsystemDescriptor"/> based on the given parameters.
         /// </summary>
+        /// <remarks>
+        /// This function will verify that the <see cref="TextToSpeechSubsystemCinfo"/> properties are valid.
+        /// </remarks>
         /// <param name="cinfo">The parameters required to initialize the descriptor.</param>
         /// <returns>
-        /// The created <c>TextToSpeechSubsystemDescriptor</c>.
+        /// The newly created instance of the <see cref="TextToSpeechSubsystemDescriptor"/> class.
         /// </returns>
         internal static TextToSpeechSubsystemDescriptor Create(TextToSpeechSubsystemCinfo cinfo)
         {

@@ -159,9 +159,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         private readonly float minDiffAngleForVerticalPlacement = 50f;
         #endregion
 
-        public override float Selectedness()
+        public override float GetSelectionProgress()
         {
-            return objectIsGrabbed ? 1f : base.Selectedness();
+            return objectIsGrabbed ? 1f :  base.GetSelectionProgress();
         }
 
         /// <summary>

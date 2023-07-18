@@ -25,11 +25,17 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// </summary>
         public Transform MovingVisuals => movingVisuals;
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             buttonState = GetComponent<PressableButton>();
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame after normal update functions, if this object is enabled.
+        /// </summary>
         private void LateUpdate()
         {
             UpdateMovingVisualsPosition();

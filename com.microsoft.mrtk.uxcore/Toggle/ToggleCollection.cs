@@ -98,6 +98,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         // List of the actions for the toggles in ToggleCollection.
         private List<UnityAction<float>> toggleActions = new List<UnityAction<float>>();
 
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         private void OnValidate()
         {
             // Refresh this when modified, so that the desired changes are propagated
@@ -105,6 +108,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             AllowSwitchOff = allowSwitchOff;
         }
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
         private void Start()
         {
             // If we don't already have any toggles listed, we scan for toggles
@@ -164,6 +170,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
             }
         }
 
+        /// <summary>
+        /// This method is called when <see cref="CurrentIndex"/> changes. 
+        /// </summary>
+        /// <param name="index">The new value of <see cref="CurrentIndex"/>.</param>
         protected virtual void OnSelection(int index)
         {
             for (int i = 0; i < Toggles.Count; i++)
@@ -212,6 +222,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
             toggleActions.Clear();
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been destroyed.
+        /// </summary>
         private void OnDestroy()
         {
             RemoveSelectionListeners();

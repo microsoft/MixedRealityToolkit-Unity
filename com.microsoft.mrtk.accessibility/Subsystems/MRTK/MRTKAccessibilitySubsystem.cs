@@ -117,11 +117,11 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             }
 
             /// <summary>
-            /// Collects the registered <see cref="GameObject"/>s from the requested <see cref="AccessibleObjectClassification"/>s.
+            /// Collects the registered <see cref="GameObject"/> instances from the requested <see cref="AccessibleObjectClassification"/> objects.
             /// </summary>
             /// <param name="classifications">The combined flags specifiying the desired classification(s) (people, places, things, etc.).</param>
-            /// <param name="accessibleObjectsList">The collection which will receive the requested <see cref="GameObject"/>s.</param>
-            /// <remarks>When this method is called, the objectList will be cleared prior to adding the requested <see cref="GameObject"/>s.</remarks>
+            /// <param name="accessibleObjectsList">The collection which will receive the requested <see cref="GameObject"/> instances.</param>
+            /// <remarks>When this method is called, the objectList will be cleared prior to adding the requested <see cref="GameObject"/> instances.</remarks>
             private void AssembleAccessibleObjects(
                 List<AccessibleObjectClassification> classifications,
                 List<GameObject> accessibleObjectsList)
@@ -133,12 +133,12 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             }
 
             /// <summary>
-            /// Filters the provided collection of <see cref="GameObject"/>s based on the visibility to the main camera
+            /// Filters the provided collection of <see cref="GameObject"/> instances based on the visibility to the main camera
             /// and the maximum allowed distance.
             /// </summary>
-            /// <param name="visibility">The desired visibility (in field of view, full surround, etc.) of the <see cref="GameObject"/>s.</param>
-            /// <param name="maxDistance">The distance, in meters, beyond which <see cref="GameObject"/>s will be filtered.</param>
-            /// <param name="objectList">The collection of <see cref="GameObject"/>s that will be filtered based on visibility and distance.</param>
+            /// <param name="visibility">The desired visibility (in field of view, full surround, etc.) of the <see cref="GameObject"/> instances.</param>
+            /// <param name="maxDistance">The distance, in meters, beyond which <see cref="GameObject"/> instances will be filtered.</param>
+            /// <param name="objectList">The collection of <see cref="GameObject"/> instances that will be filtered based on visibility and distance.</param>
             private void FilterAccessibleObjects(
                 AccessibleObjectVisibility visibility,
                 float maxDistance,
@@ -211,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             /// Sends a <see cref="InvertTextColorChanged"/> event to registered listeners.
             /// </summary>
             /// <param name="invert">
-            /// True if text color inversion has been enabled, or false.
+            /// <see langword="true"/> if text color inversion has been enabled, or <see langword="false"/>.
             /// </param>
             private void RaiseInvertTextColorChanged(bool invert)
             {

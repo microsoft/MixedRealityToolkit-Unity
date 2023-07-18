@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for tests. While nice to have, this documentation is not required.
+#pragma warning disable CS1591
+
 using Microsoft.MixedReality.Toolkit.Core.Tests;
 using System.Collections;
 using UnityEngine.InputSystem;
@@ -24,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         private XRInteractionManager cachedInteractionManager = null;
 
         /// <summary>
-        /// A cached reference to the <see cref="MRTKInteractionManager"/> on the XR rig.
+        /// A cached reference to the <see cref="XRInteractionManager"/> on the XR rig.
         /// Cleared during <see cref="TearDown"/> at the end of each test.
         /// </summary>
         protected XRInteractionManager CachedInteractionManager
@@ -94,4 +97,4 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         }
     }
 }
-
+#pragma warning restore CS1591

@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using System;
 using System.Collections.Generic;
 using TMPro;
@@ -176,20 +180,20 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /* Used to find all keypaths that influence a specific component to make sure all variable data is updated when any one element changes */
         protected Dictionary<Component, ComponentInformation> _componentInfoLookup = new Dictionary<Component, ComponentInformation>();
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override Type[] GetComponentTypes()
         {
             Type[] types = { typeof(TextMeshProUGUI), typeof(UnityEngine.UI.Text), typeof(TextMeshPro) };
             return types;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override bool ManageChildren()
         {
             return manageChildren;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         public override void DataChangeSetEnd(IDataSource dataSource)
         {
             foreach (ComponentInformation componentInfo in _componentInfoLookup.Values)
@@ -198,7 +202,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType)
         {
             foreach (ComponentInformation componentInfo in _componentInfoLookup.Values)
@@ -207,7 +211,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void DetachDataConsumer()
         {
             foreach (ComponentInformation ci in _componentInfoLookup.Values)
@@ -221,7 +225,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void AddVariableKeyPathsForComponent(Component component)
         {
             if (_componentInfoLookup.TryGetValue(component, out ComponentInformation componentInfo))
@@ -239,6 +243,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             foreach (Component managedComponent in FindComponentsToManage())
@@ -255,3 +262,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     }
 }
+#pragma warning restore CS1591

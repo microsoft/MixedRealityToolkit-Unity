@@ -11,6 +11,9 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
     {
         private SerializedProperty voiceProperty;
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         private void OnEnable()
         {
             voiceProperty = serializedObject.FindProperty("voice");

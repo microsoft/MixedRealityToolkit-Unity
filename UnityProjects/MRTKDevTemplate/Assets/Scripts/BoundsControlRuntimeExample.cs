@@ -140,10 +140,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 boundsControl.EnabledHandles = HandleType.None;
                 yield return WaitForButtonPressOrCommand();
 
-                SetStatus("HandleType Resize");
-                boundsControl.EnabledHandles = HandleType.Resize;
-                yield return WaitForButtonPressOrCommand();
-
                 SetStatus("HandleType Rotation");
                 boundsControl.EnabledHandles = HandleType.Rotation;
                 yield return WaitForButtonPressOrCommand();

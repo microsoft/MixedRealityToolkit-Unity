@@ -7,11 +7,11 @@ using UnityEngine.Playables;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
-    [Serializable]
     /// <summary>
-    /// An abstract <see cref="IPlayableEffect"> that controls a <see cref="Playable"/> based on the
-    /// supplied parameter.
+    /// An abstract <see cref="IPlayableEffect"/> that controls a Unity <see href="https://docs.unity3d.com/ScriptReference/Playables.Playable.html">Playable</see> 
+    /// component based on the supplied parameter.
     /// </summary>
+    [Serializable]
     internal abstract class PlayableEffect : IPlayableEffect
     {
         internal enum PlaybackType
@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     Playable.SetSpeed(!Mathf.Approximately(parameter, 0.0f) ? Speed : -Speed);
 
                     // Clamp playable time to > 0.
-                    // Not sure why the playables system doesn't do this to begin with.
+                    // Not sure why the playable system doesn't do this to begin with.
                     if (Playable.GetTime() < 0)
                     {
                         Playable.SetTime(0);

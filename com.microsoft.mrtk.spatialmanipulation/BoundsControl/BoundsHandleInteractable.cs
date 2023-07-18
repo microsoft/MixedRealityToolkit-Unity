@@ -90,6 +90,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
 
         private float initialParentScale;
 
+        /// <inheritdoc/>
         protected override void Awake()
         {
             base.Awake();
@@ -101,13 +102,19 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             HideOnStartup();
         }
 
-        // Record initial values at Start(), so that we
-        // capture the bounds sizing, etc.
-        void Start()
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary>
+        public void Start()
         {
+            // Record initial values at Start(), so that we
+            // capture the bounds sizing, etc.
             initialParentScale = MaxComponent(transform.parent.lossyScale);
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame after normal update functions, if this object is enabled.
+        /// </summary>
         protected virtual void LateUpdate()
         {
             // Do our IsOccluded "setter" in Update so we don't do this multiple times a frame.

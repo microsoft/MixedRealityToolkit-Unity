@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -69,10 +73,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         private bool isFixedHierarchyWillUseCachedValues = true;
 
         /// <summary>
-        /// If True, indicates the hierarchy and managed components in this
+        /// If <see langword="true"/>, indicates the hierarchy and managed components in this
         /// object will not change. This will use the cached types and
         /// component references to scan for after they are attained a first
-        /// time. This avoids an extensive amount of GetComponent<> in each
+        /// time. This avoids an extensive amount of <see cref="GameObject.GetComponent{T}()"/> in each
         /// Attach(), which is super expensive especially for DataConsumerText.
         /// </summary>
         public bool IsFixedHierarchyWillUseCachedValues => isFixedHierarchyWillUseCachedValues;
@@ -85,7 +89,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [SerializeField]
         private bool autoAttachAndDetach = true;
         /// <summary>
-        /// If True, will ensure that the attachment happens only once, and
+        /// If <see langword="true"/>, will ensure that the attachment happens only once, and
         /// will not be detached. This is useful to optimize items that will
         /// never be recycled. This optimization is disabled automatically for
         /// collections.
@@ -155,14 +159,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
         #region Unity MonoBehaviour methods
 
         /// <summary>
-        /// Unity's OnEnable() method.
+        /// A Unity event function that is called when the script component has been enabled.
         /// </summary>
-        ///
         /// <remarks>
         /// Note that this should rarely be overridden but is declared virtual for circumstances
         /// where this is required. If overridden, make sure to call this default behavior.
         ///
-        /// Any initialization should be accomplished by overriding IniitalizeDataConsumer().
+        /// Any initialization should be accomplished by overriding <see cref="InitializeDataConsumer"/>.
         /// </remarks>
         public virtual void OnEnable()
         {
@@ -172,11 +175,17 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             InitializeDataConsumer();
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         protected virtual void OnDisable()
         {
             if (IsAttached() && autoAttachAndDetach)
@@ -335,7 +344,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Report whether this data consumer should manage components on child game objects
         /// </summary>
-        /// <returns>True if components or other resources on child game objects should be managed.</returns>
+        /// <returns><see langword="true"/> if components or other resources on child game objects should be managed.</returns>
         protected virtual bool ManageChildren()
         {
             return true;
@@ -850,3 +859,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         #endregion protected and private methods
     }
 }
+#pragma warning restore CS1591

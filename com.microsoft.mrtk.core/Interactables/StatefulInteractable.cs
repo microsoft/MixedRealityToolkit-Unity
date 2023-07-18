@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit
         {
             /// <summary>
             /// The interactable will not enter toggle states unless forces by code 
-            /// using the <see cref="ForceSetToggled" /> function.
+            /// using the <see cref="ForceSetToggled(bool)"/> function.
             /// </summary>
             Button,
 
@@ -50,17 +50,17 @@ namespace Microsoft.MixedReality.Toolkit
         public ToggleType ToggleMode { get; set; } = ToggleType.Button;
 
         /// <summary>
-        /// The threshold of variable Selectedness at which the interactable will be selected.
+        /// The threshold of selection progress at which the interactable will be selected.
         /// </summary>
         [field: SerializeField, FormerlySerializedAs("selectThreshold"),
-            Tooltip("The threshold of variable Selectedness at which the interactable will be selected.")]
+            Tooltip("The threshold of variable GetSelectionProgress at which the interactable will be selected.")]
         public float SelectThreshold { get; set; } = 0.9f;
 
         /// <summary>
-        /// The threshold of variable Selectedness at which the interactable will be deselected.
+        /// The threshold of selection progress at which the interactable will be deselected.
         /// </summary>
         [field: SerializeField, FormerlySerializedAs("deselectThreshold"),
-            Tooltip("The threshold of variable Selectedness at which the interactable will be deselected.")]
+            Tooltip("The threshold of variable GetSelectionProgress at which the interactable will be deselected.")]
         public float DeselectThreshold { get; set; } = 0.1f;
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 if (value != allowSelectByVoice)
                 {
-                    // Unregister and reregister the interactable to update the speech interactor with latest info
+                    // Unregister and re-register the interactable to update the speech interactor with latest info
                     interactionManager.UnregisterInteractable(this as IXRInteractable);
                     allowSelectByVoice = value;
                     interactionManager.RegisterInteractable(this as IXRInteractable);
@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit
             {
                 if (value != speechRecognitionKeyword)
                 {
-                    // Unregister and reregister the interactable to update the speech interactor with latest info
+                    // Unregister and re-register the interactable to update the speech interactor with latest info
                     interactionManager.UnregisterInteractable(this as IXRInteractable);
                     speechRecognitionKeyword = value;
                     interactionManager.RegisterInteractable(this as IXRInteractable);
@@ -191,18 +191,27 @@ namespace Microsoft.MixedReality.Toolkit
 
         #region MonoBehaviour Implementation
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         protected override void OnEnable()
         {
             base.OnEnable();
             OnEnabled.Invoke();
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         protected override void OnDisable()
         {
             base.OnDisable();
             OnDisabled.Invoke();
         }
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         protected override void Awake()
         {
             base.Awake();
@@ -211,6 +220,9 @@ namespace Microsoft.MixedReality.Toolkit
             lastSelectExited.AddListener(OnLastSelectExited);
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been destroyed.
+        /// </summary>
         protected override void OnDestroy()
         {
             base.OnDestroy();
@@ -221,27 +233,29 @@ namespace Microsoft.MixedReality.Toolkit
 
         #endregion MonoBehaviour Implementation
 
-        private static readonly ProfilerMarker StatefulInteractableSelectednessMarker =
-            new ProfilerMarker("[MRTK] StatefulInteractable.Selectedness");
+        private static readonly ProfilerMarker StatefulInteractableGetSelectionProgressMarker =
+            new ProfilerMarker("[MRTK] StatefulInteractable.GetSelectionProgress");
 
         /// <summary>
-        /// Derived classes should override this method to
-        /// specify custom variable selection math.
-        /// The default implementation allows for variable selection
-        /// from the <see cref="GazePinchInteractor"/>, calculated with
-        /// <see cref="PinchAmount"/>.
+        /// Get the current selection progress of this <see cref="StatefulInteractable"/>.
         /// </summary>
-        public virtual float Selectedness()
+        /// <remarks>
+        /// Derived classes should override this method to specify custom selection math.
+        /// The default implementation allows for variable selection from 
+        /// <see cref="IVariableSelectInteractor"/> objects, calculated using
+        /// <see cref="IVariableSelectInteractor.SelectProgress"/>.
+        /// </remarks>
+        public virtual float GetSelectionProgress()
         {
-            using (StatefulInteractableSelectednessMarker.Auto())
+            using (StatefulInteractableGetSelectionProgressMarker.Auto())
             {
-                float selectedness = 0.0f;
+                float selectionProgress = 0.0f;
 
                 foreach (var interactor in interactorsHovering)
                 {
                     if (interactor is IVariableSelectInteractor variableSelectInteractor)
                     {
-                        selectedness = Mathf.Max(selectedness, variableSelectInteractor.SelectProgress);
+                        selectionProgress = Mathf.Max(selectionProgress, variableSelectInteractor.SelectProgress);
                     }
                 }
 
@@ -249,15 +263,15 @@ namespace Microsoft.MixedReality.Toolkit
                 {
                     if (interactor is IVariableSelectInteractor variableSelectInteractor)
                     {
-                        selectedness = Mathf.Max(selectedness, variableSelectInteractor.SelectProgress);
+                        selectionProgress = Mathf.Max(selectionProgress, variableSelectInteractor.SelectProgress);
                     }
                     else
                     {
-                        selectedness = 1.0f;
+                        selectionProgress = 1.0f;
                     }
                 }
 
-                return selectedness;
+                return selectionProgress;
             }
         }
 
@@ -330,17 +344,17 @@ namespace Microsoft.MixedReality.Toolkit
         /// <summary>
         /// This function determines whether the interactable should fire a click event at a given select event.
         /// Subclasses can override this to add additional requirements for full click/toggle activation,
-        /// such as rolloff prevention.
+        /// such as roll-off prevention.
         /// </summary>
-        /// <returns>True if the interactable should fire click/toggle event from this current select event.</returns>
+        /// <returns><see langword="true"/> if the interactable should fire click or toggle event from this current select event.</returns>
         internal protected virtual bool CanClickOnFirstSelectEntered(SelectEnterEventArgs args) => !TriggerOnRelease;
 
         /// <summary>
         /// This function determines whether the interactable should fire a click event at a given deselect event.
         /// Subclasses can override this to add additional requirements for full click/toggle activation,
-        /// such as rolloff prevention.
+        /// such as roll-off prevention.
         /// </summary>
-        /// <returns>True if the interactable should fire click/toggle event from this current deselect event.</returns>
+        /// <returns><see langword="true"/> if the interactable should fire click or toggle event from this current deselect event.</returns>
         internal protected virtual bool CanClickOnLastSelectExited(SelectExitEventArgs args)
         {
             return TriggerOnRelease && IsRegistered() && IsInteractorTracked() && IsTargetValid();

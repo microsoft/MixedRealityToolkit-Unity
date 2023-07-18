@@ -13,6 +13,9 @@ namespace Microsoft.MixedReality.Toolkit
     /// </summary>
     public static class MathUtilities
     {
+        /// <summary>
+        /// The total number of bytes in a megabyte.
+        /// </summary>
         public const int Megabyte = 1048576; // 1024 * 1024
 
         /// <summary>
@@ -193,7 +196,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Project vector onto XY plane
+        /// Project vector onto the XY plane.
         /// </summary>
         /// <returns>result of projecting v onto XY plane</returns>
         public static Vector3 XYProject(Vector3 v)
@@ -202,7 +205,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Returns the distance between a point and an infinite line defined by two points; linePointA and linePointB
+        /// Get the distance between a given <paramref name="point"/> and an infinite line defined by two other points.
         /// </summary>
         public static float DistanceOfPointToLine(Vector3 point, Vector3 linePointA, Vector3 linePointB)
         {
@@ -210,6 +213,9 @@ namespace Microsoft.MixedReality.Toolkit
             return (point - closestPoint).magnitude;
         }
 
+        /// <summary>
+        /// Get the closest point from a given <paramref name="point"/> and an infinite line defined by two other points.
+        /// </summary>
         public static Vector3 ClosestPointOnLineToPoint(Vector3 point, Vector3 linePointA, Vector3 linePointB)
         {
             Vector3 v = linePointB - linePointA;
@@ -224,12 +230,18 @@ namespace Microsoft.MixedReality.Toolkit
             return pointB;
         }
 
+        /// <summary>
+        /// Get the distance between a given <paramref name="point"/> and a line segment defined by two other points.
+        /// </summary>
         public static float DistanceOfPointToLineSegment(Vector3 point, Vector3 lineStart, Vector3 lineEnd)
         {
             Vector3 closestPoint = ClosestPointOnLineSegmentToPoint(point, lineStart, lineEnd);
             return (point - closestPoint).magnitude;
         }
 
+        /// <summary>
+        /// Get the closest point from a given <paramref name="point"/> and a line segment defined by two other points.
+        /// </summary>
         public static Vector3 ClosestPointOnLineSegmentToPoint(Vector3 point, Vector3 lineStart, Vector3 lineEnd)
         {
             Vector3 v = lineEnd - lineStart;
@@ -254,6 +266,20 @@ namespace Microsoft.MixedReality.Toolkit
             return pointB;
         }
 
+        /// <summary>
+        /// Test if the given planes are inside the given bounds.
+        /// </summary>
+        /// <param name="planes">An array of planes to test.</param>
+        /// <param name="planeMask">
+        /// A mask that can be used to ignore planes in <paramref name="planes"/>.
+        /// Each bit represents a single index in <paramref name="planes"/>, where 
+        /// the least significant bit is the first plane index.
+        /// </param>
+        /// <param name="bounds">The bounds structure to test.</param>
+        /// <param name="entirelyInside">Will be <see langword="true"/> if all planes are the in the bounds structure, otherwise <see langword="false"/>.</param>
+        /// <returns>
+        /// <see langword="true"/> if the test was successful and <paramref name="entirelyInside"/> contains a valid value, otherwise <see langword="false"/>.
+        /// </returns>
         public static bool TestPlanesAABB(Plane[] planes, int planeMask, Bounds bounds, out bool entirelyInside)
         {
             int planeIndex = 0;
@@ -611,6 +637,5 @@ namespace Microsoft.MixedReality.Toolkit
             var degrees = Mathf.Acos(pointDist / dirToPoint.magnitude) * Mathf.Rad2Deg;
             return degrees < fieldOfView * 0.5f;
         }
-
     }
 }

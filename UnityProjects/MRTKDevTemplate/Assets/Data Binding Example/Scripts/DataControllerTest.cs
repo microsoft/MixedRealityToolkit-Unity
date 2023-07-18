@@ -23,6 +23,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         private IDataSource _dataSource;
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         private void OnEnable()
         {
             GetNearestDataSource("data");

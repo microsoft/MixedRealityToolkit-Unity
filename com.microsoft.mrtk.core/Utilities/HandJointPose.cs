@@ -8,13 +8,12 @@ namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
     /// The pose of an individual hand joint. Superset
-    /// of a <see cref="UnityEngine.Pose"/>, adding a
-    /// radius value.
+    /// of a <see cref="UnityEngine.Pose"/>, adding a radius value.
     /// </summary>
     public struct HandJointPose : IEqualityComparer
     {
         /// <summary>
-        /// Constructor.
+        /// Initializes a new <see cref="HandJointPose"/> struct.
         /// </summary>
         /// <param name="position">The position of the hand joint.</param>
         /// <param name="rotation">The rotation of the hand joint.</param>
@@ -29,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit
         }
 
         /// <summary>
-        /// Constructor.
+        /// Initializes a new <see cref="HandJointPose"/> struct.
         /// </summary>
         /// <param name="pose">The pose of the hand joint.</param>
         /// <param name="radius">The radius of the hand joint.</param>
@@ -96,6 +95,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         public Vector3 Right => pose.right;
 
+        /// <inheritdoc />
         public override string ToString()
         {
             return $"{pose} | {radius}";
@@ -111,6 +111,9 @@ namespace Microsoft.MixedReality.Toolkit
             return ((HandJointPose)left).Equals((HandJointPose)right);
         }
 
+        /// <summary>
+        /// Test if the given <see cref="HandJointPose"/> is equal to this structure.
+        /// </summary>
         public bool Equals(HandJointPose other)
         {
             return Position == other.Position &&
@@ -118,6 +121,7 @@ namespace Microsoft.MixedReality.Toolkit
                    Radius.Equals(other.Radius);
         }
 
+        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) { return false; }
@@ -130,16 +134,23 @@ namespace Microsoft.MixedReality.Toolkit
             return obj is HandJointPose pose ? pose.GetHashCode() : 0;
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             return base.GetHashCode();
         }
 
+        /// <summary>
+        /// Test if two <see cref="HandJointPose"/> structures are equal.
+        /// </summary>
         public static bool operator ==(HandJointPose left, HandJointPose right)
         {
             return left.Equals(right);
         }
 
+        /// <summary>
+        /// Test if two <see cref="HandJointPose"/> structures are not equal.
+        /// </summary>
         public static bool operator !=(HandJointPose left, HandJointPose right)
         {
             return !(left == right);
@@ -149,6 +160,9 @@ namespace Microsoft.MixedReality.Toolkit
 
         #region Conversions
 
+        /// <summary>
+        /// Convert a <see cref="HandJointPose"/> to a Unity <see cref="Pose"/>.
+        /// </summary>
         public static implicit operator Pose(HandJointPose pose) => pose.pose;
         
         #endregion

@@ -8,10 +8,10 @@ using UnityEngine.Playables;
 
 namespace Microsoft.MixedReality.Toolkit.UX
 {
-    [Serializable]
     /// <summary>
-    /// A <see cref="IEffect"> that sets a collection of specified GameObjects active or inactive.
+    /// A <see cref="IEffect"/> that sets a collection of specified Unity game objects as active or inactive.
     /// </summary>
+    [Serializable]
     internal class SetTargetsActiveEffect : IEffect
     {
         [SerializeField]
@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private bool invert;
 
         [SerializeField]
-        [Tooltip("The list of gameobjects to be toggled.")]
+        [Tooltip("The list of Unity game objects to be toggled.")]
         private List<GameObject> targets;
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// <summary>
         /// Initializes a new instance of the <see cref="SetTargetsActiveEffect"/> class.
         /// </summary>
-        /// <param name="targets">The list of gameobjects to be set active/inactive.</param>
+        /// <param name="targets">The list of Unity game objects to be set active/inactive.</param>
         /// <param name="invert">If true, the specified objects will be set inactive when the state is on, and vice versa.</param>
         public SetTargetsActiveEffect(List<GameObject> targets, bool invert = false)
         {

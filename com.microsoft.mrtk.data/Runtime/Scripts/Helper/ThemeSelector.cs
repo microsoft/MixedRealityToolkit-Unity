@@ -1,6 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
@@ -49,8 +53,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         private void OnStart()
         {
             SetTheme(currentTheme);
-        }
+        }   
 
+        /// <summary>
+        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// </summary>
         private void OnValidate()
         {
             if (CurrentTheme < 0)
@@ -65,3 +72,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     }
 }
+#pragma warning restore CS1591

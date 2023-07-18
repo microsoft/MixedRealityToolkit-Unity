@@ -82,23 +82,35 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
 
         #region MonoBehaviour
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
         private void Start()
         {
             GetTextMaterial();
             accessibilitySubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<AccessibilitySubsystem>();
             RegisterHandlers();
         }
-
+        
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary> 
         private void OnEnable()
         {
             RegisterHandlers();
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         private void OnDisable()
         {
             UnregisterHandlers();
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been destroyed.
+        /// </summary>
         private void OnDestroy()
         {
             accessibilitySubsystem = null;

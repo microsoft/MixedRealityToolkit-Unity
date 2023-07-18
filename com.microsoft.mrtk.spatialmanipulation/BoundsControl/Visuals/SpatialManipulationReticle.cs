@@ -23,9 +23,11 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private Quaternion worldRotationCache;
 
         /// <summary>
-        /// Called by once per frame by <see cref="MRTKRayReticleVisual"/> from its UpdateReticle.
-        /// Rotates the cursor reticle based on the hovered or selected handle's position relative to the box visuals. 
+        /// Called by once per frame by reticle visuals on MRTK's ray interactors.
         /// </summary>
+        /// <remarks>
+        /// Rotates the cursor reticle based on the hovered or selected handle's position relative to the box visuals. 
+        /// </remarks>
         public void UpdateVisuals(VariableReticleUpdateArgs args)
         {
             if (args.Interactor is XRRayInteractor rayInteractor)

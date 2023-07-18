@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for the experimental package.
+// While nice to have, documentation is not required for this experimental package.
+#pragma warning disable CS1591
+
 using System;
 using System.Collections;
 using UnityEngine;
@@ -45,18 +49,21 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected const float FramesPerMillisecond = 60.0f / 1000.0f; // 60 frames per 1000 milliseconds
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
         private void Update()
         {
             CheckForWaitingUrlToFetch();
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override bool ManageChildren()
         {
             return manageChildren;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void DetachDataConsumer()
         {
             if (_coroutine != null)
@@ -68,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
             _waitingUrlToFetch = null;
         }
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void AddVariableKeyPathsForComponent(Component component)
         {
             InitializeForComponent(component);
@@ -88,7 +95,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="imageTexture">The retrieved image as a Texture2D object.</param>
         protected abstract void PlaceImageTexture(Texture2D imageTexture);
 
-        /// </inheritdoc/>
+        /// <inheritdoc/>
         protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object value, DataChangeType dataChangeType)
         {
             if (localKeyPath == keyPath)
@@ -169,3 +176,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     }
 }
+#pragma warning restore CS1591

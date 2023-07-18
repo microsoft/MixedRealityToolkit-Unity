@@ -13,9 +13,9 @@ using UnityEngine.XR;
 namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
-    /// The MRTK implementation of a <cref see="HandsAggregatorSubsystem">, which supports
+    /// The MRTK implementation of a <see cref="HandsAggregatorSubsystem"/>, which supports
     /// lazy loading/reuse of hand data per-frame. This aggregator pulls skeletal joint data
-    /// from all actively running <cref see="HandsSubsystem"/>.
+    /// from all actively running <see cref="HandsSubsystem"/>.
     /// </summary>
     [Preserve]
     [MRTKSubsystem(
@@ -79,7 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                 // subsystems we're listening to, we can consider ourselves
                                 // to have valid data this frame.
                                 FullQueryValid |= true;
-                                Array.Copy((HandJointPose[])data, handJoints, (int)TrackedHandJoint.TotalJoints);
+                                Array.Copy((HandJointPose[])data, HandJoints, (int)TrackedHandJoint.TotalJoints);
                             }
 
                             if (gotPhysicalData) { break; }
@@ -91,7 +91,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         AlreadyFullQueried = true;
                     }
 
-                    joints = handJoints;
+                    joints = HandJoints;
                     return FullQueryValid;
                 }
             }
@@ -128,7 +128,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                                 gotPhysicalData |= sys.subsystemDescriptor.IsPhysicalData;
 
                                 thisQueryValid |= true;
-                                handJoints[jointIndex] = data;
+                                HandJoints[jointIndex] = data;
                             }
 
                             if (gotPhysicalData) { break; }
@@ -141,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         thisQueryValid = FullQueryValid;
                     }
 
-                    pose = handJoints[jointIndex];
+                    pose = HandJoints[jointIndex];
                     return thisQueryValid;
                 }
             }

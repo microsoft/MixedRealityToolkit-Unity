@@ -41,7 +41,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="node">The XRNode to be queried.</param>
         /// <returns>
-        /// True if the specified XRNode represents the left or right hand, or false.
+        /// <see langword="true"/> if the specified XRNode represents the left or right hand, or <see langword="false"/>.
         /// </returns>
         public static bool IsHand(this XRNode node)
         {
@@ -53,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="node">The XRNode to be queried.</param>
         /// <returns>
-        /// True if the specified XRNode represents the left hand, or false.
+        /// <see langword="true"/> if the specified XRNode represents the left hand, or <see langword="false"/>.
         /// </returns>
         public static bool IsLeftHand(this XRNode node)
         {
@@ -65,7 +65,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </summary>
         /// <param name="node">The XRNode to be queried.</param>
         /// <returns>
-        /// True if the specified XRNode represents the right hand, or false.
+        /// <see langword="true"/> if the specified XRNode represents the right hand, or <see langword="false"/>.
         /// </returns>
         public static bool IsRightHand(this XRNode node)
         {

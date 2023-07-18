@@ -14,12 +14,14 @@ namespace Microsoft.MixedReality.Toolkit
     /// <summary>
     /// Represents a flag that can be activated or deactivated, and whose active duration is tracked and 
     /// obtained via the <see cref="GetTimeElapsedSinceSetActive"/> function. Instances of this object
-    /// will also raise <see cref="OnEntered"/> and <see cref "OnExited"/> events when their activate state is altered.
+    /// will also raise <see cref="OnEntered"/> and <see cref="OnExited"/> events when their activate state is altered.
     /// </summary>
     [System.Serializable]
     public class TimedFlag
     {
-        // Convenience operator overload.
+        /// <summary>
+        /// Convert a <see cref="TimedFlag"/> to <see langword="bool"/> based on the value of <see cref="TimedFlag.Active"/>. 
+        /// </summary>
         public static implicit operator bool(TimedFlag flag) => flag.Active;
 
         [SerializeField, HideInInspector]
@@ -121,6 +123,7 @@ namespace Microsoft.MixedReality.Toolkit
             }
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             return Active.ToString();

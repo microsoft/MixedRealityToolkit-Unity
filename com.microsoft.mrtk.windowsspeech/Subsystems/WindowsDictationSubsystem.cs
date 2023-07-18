@@ -100,7 +100,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 #endif
 
             /// <summary>
-            /// Constructor of WindowsDictationProvider.
+            /// Initializes a new instance of the <see cref="WindowsDictationProvider"/> class.
             /// </summary>
             public WindowsDictationProvider()
             {

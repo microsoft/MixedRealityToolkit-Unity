@@ -35,6 +35,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 
         private List<int> indicesToRemove = new List<int>(); // list for deferred deletion in our selected constraint list to not break unity GUI layout
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         private void OnEnable()
         {
             constraintManager = (ConstraintManager)target;

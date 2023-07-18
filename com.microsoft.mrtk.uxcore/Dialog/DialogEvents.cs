@@ -30,10 +30,9 @@ namespace Microsoft.MixedReality.Toolkit.UX
         /// The semantic type of the button that generated this event.
         /// </summary>
         /// <remarks>
-        /// Subclassed Dialog classes that utilize more specific
-        /// semantic types may specify a <see cref="DialogButtonType.Other"/>
-        /// button type. You should cast the button event args down to the
-        /// derived type to obtain more specific information about the action.
+        /// Custom dialogs may specify additional button types. In such as case, the <see cref="ButtonType"/> value
+        /// should be <see cref="DialogButtonType.Other"/> and the event receiver should cast the event arguments 
+        /// to a custom type so to obtain more specific information about the action.
         /// </remarks>
         public DialogButtonType ButtonType { get; set; }
 

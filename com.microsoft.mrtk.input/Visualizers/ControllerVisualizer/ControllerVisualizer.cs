@@ -54,6 +54,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         [Tooltip("The input action we key into to determine whether this controller is tracked or not")]
         private InputActionProperty controllerDetectedAction;
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         protected void OnEnable()
         {
             Debug.Assert(handNode == XRNode.LeftHand || handNode == XRNode.RightHand, $"HandVisualizer has an invalid XRNode ({handNode})!");
@@ -76,6 +79,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
             controllerDetectedAction.EnableDirectAction();
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         protected void OnDisable()
         {
             if (controllerDetectedAction == null || controllerDetectedAction.action == null) { return; }

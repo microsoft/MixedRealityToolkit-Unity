@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for tests. While nice to have, this documentation is not required.
+#pragma warning disable CS1591
+
 using Microsoft.MixedReality.Toolkit.Core.Tests;
 using Microsoft.MixedReality.Toolkit.Input.Tests;
 using NUnit.Framework;
@@ -72,7 +75,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             PressableButton buttonComponent = testButton.GetComponent<PressableButton>();
 
             // We don't get inheritdoc summaries here for some reason?
-            var selectedness = buttonComponent.Selectedness();
+            var selectedness = buttonComponent.GetSelectionProgress();
 
             Assert.IsTrue(selectedness == 0.0f, "The button prefabs should start with 0 selectedness");
 
@@ -166,7 +169,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             yield return PressAndReleaseButtonWithHand(testButton.transform.position + Vector3.forward * 0.1f);
 
             Assert.IsFalse(buttonComponent.enabled, "Button did not get disabled on press");
-            Assert.IsTrue(Mathf.Approximately(buttonComponent.Selectedness(), 0.0f), "Button did not un-press when disabled");
+            Assert.IsTrue(Mathf.Approximately(buttonComponent.GetSelectionProgress(), 0.0f), "Button did not un-press when disabled");
 
             Object.Destroy(testButton);
 
@@ -365,8 +368,8 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             buttonClicked = false;
 
             // test XY rolloff
-            Assert.IsTrue(buttonComponent.RejectXYRolloff, "Default behavior of button should be to reject XY rolloff");
-            Assert.IsFalse(buttonComponent.RejectZRolloff, "Default behavior of button should be to  *not* reject Z rolloff");
+            Assert.IsTrue(buttonComponent.RejectXYRollOff, "Default behavior of button should be to reject XY rolloff");
+            Assert.IsFalse(buttonComponent.RejectZRollOff, "Default behavior of button should be to  *not* reject Z rolloff");
 
             yield return PressButtonWithHand(testButton.transform.position);
             yield return ReleaseButtonWithHand(testButton.transform.position, doRolloff: true);
@@ -380,42 +383,42 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             buttonClicked = false;
 
             // test XY rolloff rejection disabled
-            buttonComponent.RejectXYRolloff = false;
+            buttonComponent.RejectXYRollOff = false;
 
             yield return PressButtonWithHand(testButton.transform.position);
             yield return ReleaseButtonWithHand(testButton.transform.position, doRolloff: true);
 
             Assert.IsTrue(buttonPressed, $"Button did not get pressed when hand moved to press it.");
             Assert.IsTrue(buttonReleased, $"Button did not get released when hand exited the button.");
-            Assert.IsTrue(buttonClicked, $"OnClicked should have been fired despite rolloff, because RejectXYRolloff = false.");
+            Assert.IsTrue(buttonClicked, $"OnClicked should have been fired despite rolloff, because RejectXYRollOff = false.");
 
             buttonPressed = false;
             buttonReleased = false;
             buttonClicked = false;
 
             // test Z rolloff rejection = true;
-            buttonComponent.RejectZRolloff = true;
+            buttonComponent.RejectZRollOff = true;
 
             // Press *through* the button
             yield return PressAndReleaseButtonWithHand(testButton.transform.position + Vector3.forward * 0.1f);
 
             Assert.IsTrue(buttonPressed, $"Button did not get pressed when hand moved to press it.");
             Assert.IsTrue(buttonReleased, $"Button did not get released when hand exited the button.");
-            Assert.IsFalse(buttonClicked, $"Button should not have fired OnClicked when the finger goes all the way through the button w/ RejectZRolloff = true.");
+            Assert.IsFalse(buttonClicked, $"Button should not have fired OnClicked when the finger goes all the way through the button w/ RejectZRollOff = true.");
 
             buttonPressed = false;
             buttonReleased = false;
             buttonClicked = false;
 
             // test Z rolloff rejection = true;
-            buttonComponent.RejectZRolloff = false;
+            buttonComponent.RejectZRollOff = false;
 
             // Press *through* the button
             yield return PressAndReleaseButtonWithHand(testButton.transform.position + Vector3.forward * 0.1f);
 
             Assert.IsTrue(buttonPressed, $"Button did not get pressed when hand moved to press it.");
             Assert.IsTrue(buttonReleased, $"Button did not get released when hand exited the button.");
-            Assert.IsTrue(buttonClicked, $"Button should have fired OnClicked when the finger goes all the way through the button w/ RejectZRolloff = false.");
+            Assert.IsTrue(buttonClicked, $"Button should have fired OnClicked when the finger goes all the way through the button w/ RejectZRollOff = false.");
 
             Object.Destroy(testButton);
 
@@ -843,3 +846,4 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         #endregion Private methods
     }
 }
+#pragma warning restore CS1591

@@ -7,8 +7,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// Interface defining a hand ray, which is used by far pointers to direct interactions.
-    /// Implementations of this class are managed and updated by a BaseHand implementation.
     /// </summary>
+    /// <remarks>
+    /// Implementations of this interface are managed and updated by <see cref="HandBasedPoseSource"/> implementations.
+    /// </remarks>
     public interface IHandRay
     {
         /// <summary>
