@@ -122,7 +122,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7942278510844116557}
-  - component: {fileID: 7942278510844116558}
+  - component: {fileID: 2018958471043176084}
   m_Layer: 0
   m_Name: EyeCalibrationChecker
   m_TagString: Untagged
@@ -146,7 +146,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7942278510844116558
+--- !u!114 &2018958471043176084
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -155,11 +155,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7942278510844116559}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f11861ee7a629a4193c38be7fdabf61, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b0ab44b6f20884458aa9e1d5ea5cf22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorTestUserIsCalibrated: 1
-  OnEyeCalibrationDetected:
+  EditorTestIsCalibrated: 4
+  calibrated:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7942278511695666203}
@@ -174,7 +174,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnNoEyeCalibrationDetected:
+  notCalibrated:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 7942278511695666203}
@@ -189,6 +189,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  calibratedStatusChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &7942278511449526424
 GameObject:
   m_ObjectHideFlags: 0
@@ -557,8 +560,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8a73b0e0df7d8f438e39978b1a88714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 2
-  RotationThreshInDegrees: 3
+  speed: 2
+  rotationThresholdInDegrees: 3
 --- !u!1 &7942278511777747279
 GameObject:
   m_ObjectHideFlags: 0
