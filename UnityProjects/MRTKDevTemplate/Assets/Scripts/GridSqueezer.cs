@@ -6,13 +6,13 @@ using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
-    [RequireComponent(typeof(GridLayoutGroup))]
-    [ExecuteAlways]
     /// <summary>
     /// Demonstration script showing how to squeeze/resize
     /// a grid layout to fit a fixed number of columns, while
     /// resizing children to fit.
     /// </summary>
+    [RequireComponent(typeof(GridLayoutGroup))]
+    [ExecuteAlways]
     [AddComponentMenu("MRTK/Examples/Grid Squeezer")]
     public class GridSqueezer : MonoBehaviour
     {

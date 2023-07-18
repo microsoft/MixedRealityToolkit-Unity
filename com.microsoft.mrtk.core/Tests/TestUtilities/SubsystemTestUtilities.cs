@@ -39,9 +39,9 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
         }
 
         /// <summary>
-        /// Creates the subsystem specified by <typeparamref name="TSubsystem">
-        /// and <typeparamref name="TDescriptor">, and ensures that it can be queried
-        /// from <see cref="XRSubsystemHelpers">.
+        /// Creates the subsystem specified by <typeparamref name="TSubsystem"/>
+        /// and <typeparamref name="TDescriptor"/>, and ensures that it can be queried
+        /// from <see cref="XRSubsystemHelpers"/>.
         /// </summary>
         /// <typeparam name="TSubsystem">
         /// The type of the subsystem to be created.

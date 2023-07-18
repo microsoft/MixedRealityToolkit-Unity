@@ -11,13 +11,14 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
     internal static class TextToSpeechHelpers
     {
         /// <summary>
-        /// Attempts to convert the provided wave data from an array of bytes to an array of floats,
+        /// Attempts to convert the provided wave data from a <see langword="byte"/> array to a <see langword="float"/> array,
         /// in the range of -1 to 1.
         /// </summary>
         /// <param name="waveBytes">The audio data, including the wave header, formatted as an array of bytes.</param>
-        /// <param name="samples">The number of audio samples per channel in the <see cref="waveBytes"/> array.</param>
-        /// <param name="sampleRate">The sample rate (ex: 44.1 kHz) of the audio data.</param>
+        /// <param name="samples">The number of audio samples per channel in the <paramref name="waveBytes"/> array.</param>
+        /// <param name="sampleRate">The number of samples per second for the audio data; for example, 44100 Hz.</param>
         /// <param name="floatData">The resulting audio data, formatted as float values from -1 to 1.</param>
+        /// <param name="channels">The number of channels in the audio data</param>
         /// <returns><see langword="true"/> if the conversion is successful, or <see langword="false"/>.</returns>
         public static bool TryConvertWaveData(
             byte[] waveBytes,
@@ -111,9 +112,9 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
         /// </summary>
         /// <param name="clipName">The name to give to the clip.</param>
         /// <param name="waveData">The audio data which will be contained within the clip.</param>
-        /// <param name="samples">The number of audio samples per channel in the <see cref="waveData"/> array.</param>
+        /// <param name="samples">The number of audio samples per channel in the <paramref name="waveBytes"/> array.</param>
         /// <param name="channels">The number of audio channels, typically 1 (mono) or 2 (stereo).</param>
-        /// <param name="sampleRate">The frequency rate (ex: 44100 Hz) of the audio data.</param>
+        /// <param name="sampleRate">The frequency rate of the audio data; for example, 44100 Hz.</param>
         /// <returns>A Unity AudioClip object containing the provided sound data.</returns>
         public static AudioClip CreateAudioClip(
             string clipName,

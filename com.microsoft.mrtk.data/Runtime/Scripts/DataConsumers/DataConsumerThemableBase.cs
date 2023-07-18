@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     // This helps get around issue when mixing generics, concrete classes and interfaces in the inheritance.
     public abstract class DataConsumerThemableBase : DataConsumerGOBase, IDataBindable
     {
-        [Tooltip("One or more data binding profiles to map data and theme keypaths to the materials they should manage.")]
+        [Tooltip("One or more data binding profiles to map data and theme key paths to the materials they should manage.")]
         [SerializeField]
         private DataBindingProfile[] dataBindingProfiles;
         public DataBindingProfile[] DataBindingProfiles
@@ -54,23 +54,32 @@ namespace Microsoft.MixedReality.Toolkit.Data
     }
 
     /// <summary>
-    /// This class provides a way to load a resource via many different
-    /// potential retrieval means based on the nature of the value received
-    /// from the data source:
-    ///
-    ///    Object of correct type provided directly
-    ///    Numeric index lookup
-    ///    key-value pair lookup
-    ///    Resource path to load a Unity resource ("resource://pathToUnityResource")
-    ///    Streaming asset path to a file that can be loaded using any appropriate means ("file://pathToUnityStreamingAsset")
-    ///
-    /// Generic type T is the type of object expected from the data source
-    /// Generic type U is the Component type in the scene hierarchy where that object of type T will be modified.
-    ///
+    /// This class provides a way to load a resource via many different sources.
     /// </summary>
-
-    /// <typeparam name="T">The type of the object expected such as Image, Material, Texture2D, Sprite, Mesh</typeparam>
-    /// <typeparam name="U">The type of Component to be managed, typically a Renderer, Material, or Texture2D</typeparam>
+    /// <remarks>
+    /// <para>
+    /// The potential sources are based on the nature of the value received
+    /// from the data source. For example the methods of the value retrieval can be:
+    /// </para>
+    /// <list type="bullet">
+    ///    <item>
+    ///        <description>Object of correct type provided directly</description>
+    ///    </item>
+    ///    <item>
+    ///        <description>Numeric index lookup</description>
+    ///    </item>
+    ///    <item>
+    ///        <description>Key-value pair lookup</description>
+    ///    </item>
+    ///    <item>
+    ///        <description>Resource path to load a Unity resource; for example, "resource://pathToUnityResource"</description>
+    ///    </item>
+    ///    <item>
+    ///        <description>Streaming asset path to a file that can be loaded using any appropriate means; for example, "file://pathToUnityStreamingAsset"</description>
+    ///    </item>
+    /// </list>
+    /// </remarks>
+    /// <typeparam name="T">The type of the object expected from the data source, such as Image, Material, Texture2D, Sprite, Mesh</typeparam>
     [Serializable]
     public abstract class DataConsumerThemableBase<T> : DataConsumerThemableBase where T : class
     {
@@ -148,9 +157,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         /// <summary>
         /// Get a value within a binding profile using this <paramref name="keyValue"/> string.
-        /// </summary>
-        /// <summary>
-        /// Given a string key, lookup desired theme keypath to retrieve the theme value.
         /// </summary>
         /// <remarks>
         /// Override this method to support data sources that provide string key values

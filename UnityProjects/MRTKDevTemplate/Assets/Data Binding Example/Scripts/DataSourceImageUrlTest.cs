@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// its reported content, in this case an image that populates a sprite.
     /// </summary>
     /// <remarks>
-    /// Using a simple <key,value> store, it's possible to separate data from view
+    /// Using a simple key-value store, it's possible to separate data from view
     /// to simplify the integration of generic view prefabs that are populated from
     /// external information.
     /// </remarks>

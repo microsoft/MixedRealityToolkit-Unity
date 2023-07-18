@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
     /// Utilities that are useful for all runtime tests. Mainly used for scene setup and controlling test flow.
     /// </summary>
     /// <remarks>
-    /// Does not include utilities for input tests; see <see cref="RuntimeInputTestUtilities"/>
+    /// Does not include utilities for input tests; see <c>Microsoft.MixedReality.Toolkit.Input.Tests.InputTestUtilities</c>
     /// for utilities for working with simulated input devices.
     /// </remarks>
     public static class RuntimeTestUtilities

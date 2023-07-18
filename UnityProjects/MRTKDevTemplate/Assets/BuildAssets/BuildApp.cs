@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the Apache License.
 
+// Disable "missing XML comment" warning for samples. While nice to have, this XML documentation is not required for samples.
+#pragma warning disable CS1591
+
 using System;
 using System.IO;
 using System.Linq;
@@ -129,3 +132,4 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Build
         }
     }
 }
+#pragma warning restore CS1591

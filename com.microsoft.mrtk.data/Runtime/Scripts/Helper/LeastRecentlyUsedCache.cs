@@ -25,7 +25,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         // Makes it possible to efficiently find linked list node by index
         private Dictionary<KT, LinkedListNode<VT>> _lruIndexLookup;
 
-        // Pre-allocated all nodes at initialize time to avoid allocs later.
+        // Pre-allocated all nodes at initialize time to avoid allocations later.
         private Stack<LinkedListNode<VT>> _lruNodeFreePool;
 
         private int _maxEntries = 0;
@@ -64,10 +64,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         /// <summary>
         /// Change the size of the cache.
-        ///
-        /// NOTE: You can only currently increase the size.
         /// </summary>
+        /// <remarks>
+        /// NOTE: You can only currently increase the size.
+        /// </remarks>
         /// <param name="newSize">The new size to make cache.</param>
+        /// <param name="preallocate">Whether to preallocate space to avoid cost later.</param>
         public void SetSize(int newSize, bool preallocate = true)
         {
             if (preallocate)
@@ -89,26 +91,30 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
 
         /// <summary>
-        /// Add or update a value in the cache with associated key
+        /// Add or update a value in the cache with associated key.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// The key can be used for efficient retrieval of any value, which
         /// then makes it the most recently used entry.
-        ///
+        /// </para>
+        /// <para>
         /// If the key already exists, the value is updated and it is moved
         /// to the most recently used (newest) slot.
-        ///
+        /// </para>
+        /// <para>
         /// By default it will be positioned as the newest value, but if
-        /// the addAsNewest argument is false, it is also possible to add it
+        /// the <paramref name="makeNewest"/> argument is <see langword="false"/>, it is also possible to add it
         /// as the oldest (and hence first to be reused). This is useful
         /// for putting already allocated items back in the list instead of
         /// destroying them as a speculative possibility that it MAY get
         /// reused in the future even though you're actually done with it
         /// for now.
+        /// </para>
         /// </remarks>
         /// <param name="key">A key associated with the value.</param>
         /// <param name="value">The value to add.</param>
-        /// <param name="addAsNewest">If true add as the most recently used item. If false, add as oldest item.</param>
+        /// <param name="makeNewest">If <see langword="true"/> add as the most recently used item. If <see langword="false"/>, add as oldest item.</param>
         public void AddOrUpdateValue(KT key, VT value, bool makeNewest = true)
         {
             if (makeNewest == true || _lruNodeFreePool.Count > 0)

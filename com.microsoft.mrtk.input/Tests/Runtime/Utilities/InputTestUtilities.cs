@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
 
         /// <summary>
         /// The default number of frames that elapse when in slow test controller mode.
-        /// See UseSlowTestController for more information.
+        /// See <see cref="UseSlowTestController"/> for more information.
         /// </summary>
         private const int ControllerMoveStepsSlow = 60;
 
@@ -45,19 +45,21 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// </summary>
         /// <example> 
         /// <code>
-        /// [UnityTest]
-        /// public IEnumerator YourTestCase()
-        /// {
-        ///     RuntimeInputTestUtils.UseSlowTestController = true;
-        ///     ...
-        ///     RuntimeInputTestUtils.UseSlowTestController = false;
-        /// }
+        ///     [UnityTest]
+        ///     public IEnumerator YourTestCase()
+        ///     {
+        ///         RuntimeInputTestUtils.UseSlowTestController = true;
+        ///         ...
+        ///         RuntimeInputTestUtils.UseSlowTestController = false;
+        ///     }
         /// </code>
         /// </example>
         /// <remarks>
-        /// <para>Note that this value is reset to false after each play mode test that uses
-        /// PlayModeTestUtilities.Setup() - this is to reduce the chance that a forgotten
-        /// UseSlowTestController = true ends up slowing all subsequent tests.</para>
+        /// <para>
+        /// Note that this value is reset to <see langword="false"/> after each play mode test that uses
+        /// <see cref="Core.Tests.BaseRuntimeTests.Setup"/>, this is to reduce the chance that a forgotten
+        /// <see langword="true"/> value for <see cref="UseSlowTestController"/> ends up slowing all subsequent tests.
+        /// </para>
         /// </remarks>
         public static bool UseSlowTestController { get; set; } = false;
 

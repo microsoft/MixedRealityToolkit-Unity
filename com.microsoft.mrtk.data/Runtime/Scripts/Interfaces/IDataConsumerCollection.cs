@@ -18,10 +18,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Request specific items from an item placer for immediate use.
         /// </summary>
         /// <remarks>
-        /// The individual items will be provided one at a time to PlaceItem() method of the calling itemPlacer. This allows data fetching and data presenting to occur
-        /// in a pseudo parallel fashion.
-        ///
-        /// This is used by an Item Placer to request only the subset of items in the collection that are currently relevant, usually those that are currently visible.
+        /// <para>
+        /// The individual items will be provided one at a time to <see cref="IDataCollectionItemPlacer.PlaceItem"/> method of the calling <paramref name="itemPlacer"/>. 
+        /// This allows data fetching and data presenting to occur in a pseudo parallel fashion.
+        /// </para>
+        /// <para>
+        /// This is used by an item placer to request only the subset of items in the collection that are currently relevant, usually those that are currently visible.
+        /// </para>
         /// </remarks>
         /// <param name="itemPlacer">The Item Placer making this request.</param>
         /// <param name="rangeStart">The zero-based start index of the range to retrieve.</param>
@@ -33,13 +36,16 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Request specific items from an item placer for future use.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// The individual items will be cached for potential future use.
-        ///
+        /// </para>
+        /// <para>
         /// This is used by an Item Placer to predictively request a subset of items in the collection that may soon become visible.
+        /// </para>
         /// </remarks>
         /// <param name="itemPlacer">The Item Placer making this request.</param>
-        /// <param name="rangeStart">The zero-based start index of the range to retrieve.</param>
-        /// <param name="rangeCount">The number of items to retrieve. If end of collection is reached, fewer items may be provided.</param>
+        /// <param name="indexRangeStart">The zero-based start index of the range to retrieve.</param>
+        /// <param name="indexRangeCount">The number of items to retrieve. If end of collection is reached, fewer items may be provided.</param>
         void PrefetchCollectionItems(IDataCollectionItemPlacer itemPlacer, int indexRangeStart, int indexRangeCount);
 
         /// <summary>
@@ -52,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Return a game object that is no longer needed for visual presentation.
         /// </summary>
         /// <param name="itemIndex">The index in the collection of the item to return.</param>
-        /// <param name="itemGO">The actual gameobject to return, usually a prefab.</param>
+        /// <param name="itemGO">The actual game object to return, usually a prefab.</param>
         void ReturnGameObjectForReuse(int itemIndex, GameObject itemGO);
     }
 }

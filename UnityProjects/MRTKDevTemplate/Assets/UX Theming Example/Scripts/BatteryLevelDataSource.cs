@@ -9,18 +9,23 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// <summary>
     /// A data source that manages a battery level and provides information that can be
     /// used by any data consumer related to battery level.
-    ///
+    /// <summary>
+    /// <remarks>
+    /// <para>
     /// As the battery level and charging state change, the desired icon may change.
     /// This class contains the logic to take the actual reported analog charge level
     /// and properly calculate the correct icon.
-    ///
+    /// </para>
+    /// <para>
     /// The icons are retrieved from a separate data source. This allows the actual icon
     /// assets to be organized and managed in a theme profile along with other theme profile
     /// assets.
-    ///
+    /// </para>
+    /// <para>
     /// The information this data source makes available are managed in a dictionary with the
-    /// following keypaths available for data consumers:
-    ///
+    /// following key paths available for data consumers:
+    /// </para>
+    /// 
     /// Data Type    Keypath       Description
     /// ========================================================
     /// Sprite       batteryIcon   The current sprite
@@ -28,7 +33,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// string       label         Status text, usually a % of charge
     /// int          intLevel      Integral level from 0 .. # sprites - 1
     /// float        realLevel     Analog level from 0..1
-    /// </summary>
+    /// </remarks>
     [Serializable]
     [AddComponentMenu("MRTK/Examples/Battery Level Data Source")]
     public class BatteryLevelDataSource : DataSourceGOBase
@@ -169,7 +174,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
         /// <summary>
-        /// Calculate an integral level from 0 to < numIntegralLevels based on charging state and analogLevel.
+        /// Calculate an integral level from 0 to &lt; <paramref name="numIntegralLevels"/> based on charging state and <paramref name="analogLevel"/>.
         /// </summary>
         /// <param name="level">Current battery level from 0 to 1 inclusive.</param>
         /// <param name="charging">Whether it is currently in the state of being charged.</param>

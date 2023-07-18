@@ -158,7 +158,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// book of contacts, and the JSON data for the data source looks like this:
         /// </para>
         /// <code>
-        ///    {
+        ///     {
         ///       "data_result" :
         ///         {
         ///            "result_code" : 0,
