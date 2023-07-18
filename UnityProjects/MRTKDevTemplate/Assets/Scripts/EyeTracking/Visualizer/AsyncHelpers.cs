@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for sample. While nice to have, this documentation is not required for samples.
+#pragma warning disable CS1591
+
 #if WINDOWS_UWP
 using System;
 using System.Collections.Generic;
@@ -135,3 +138,5 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
     }
 }
 #endif
+
+#pragma warning restore CS1591

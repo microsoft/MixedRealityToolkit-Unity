@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for sample. While nice to have, this documentation is not required for samples.
+#pragma warning disable CS1591
+
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
@@ -209,3 +212,5 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         }
     }
 }
+
+#pragma warning restore CS1591

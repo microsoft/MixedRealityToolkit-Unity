@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             audioSource = GetComponent<AudioSource>();
         }
 
-        void OnTriggerEnter(Collider other)
+        private void OnTriggerEnter(Collider other)
         {
             if (respawnReference != null)
             {
