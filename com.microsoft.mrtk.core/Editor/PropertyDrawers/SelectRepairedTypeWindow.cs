@@ -21,7 +21,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         public static bool WindowOpen 
         { 
-            get =>? window != null; 
+            get => window != null; 
         }
 
         /// <summary>
