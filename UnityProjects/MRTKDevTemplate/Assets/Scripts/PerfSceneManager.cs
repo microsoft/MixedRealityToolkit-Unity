@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         [SerializeField]
         private GameObject descriptionPanel;
 
-        // Reference to the game object to spawn.
+        // Reference to the GameObject to spawn.
         [SerializeField]
         private GameObject model;
 
