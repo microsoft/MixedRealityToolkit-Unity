@@ -1,16 +1,20 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for samples. While nice to have, this XML documentation is not required for samples.
+#pragma warning disable CS1591
+
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
-    /// A simple data source that fetches JSON data from a specified URL every N seconds.
-    ///
+    /// A simple data source that fetches JSON data from a specified URL at a specified rate.
+    /// </summary>
+    /// <remarks>
     /// This will trigger notification changes by the base class once the data has been
     /// parsed.
-    /// </summary>
+    /// </remarks>
     [AddComponentMenu("MRTK/Examples/Data Binding/Data Source Json Test")]
     public class DataSourceJsonTest : DataSourceGOJson
     {
@@ -45,3 +49,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     }
 }
+#pragma warning restore CS1591

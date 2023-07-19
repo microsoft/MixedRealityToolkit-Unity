@@ -58,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Deprecated
         public DialogButtonContext ButtonContext => buttonContext;
 
         /// <summary>
-        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// A Unity Editor only event function that is called when the script is loaded or a value changes in the Unity Inspector.
         /// </summary>
         [Obsolete("This legacy dialog system has been deprecated. Please migrate to the new dialog system, see Microsoft.MixedReality.Toolkit.UX.DialogPool for more details.")]
 

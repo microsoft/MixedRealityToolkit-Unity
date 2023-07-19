@@ -12,8 +12,10 @@ namespace Microsoft.MixedReality.Toolkit.Audio
     /// Class which supports components implementing <see cref="IAudioInfluencer"/>.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// AudioInfluencerController requires an <see href="https://docs.unity3d.com/ScriptReference/AudioSource.html">AudioSource</see> component.
     /// If one is not attached, it will be added automatically.
+    /// </para>
     /// <para>
     /// Each sound playing game object should have an AudioInfluencerController
     /// attached in order to have its audio properly influenced.
@@ -47,43 +49,55 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         /// </summary>
         private AudioSource audioSource;
 
-        /// <summary>
-        /// Time, in seconds, between audio influence updates.
-        /// </summary>
-        /// <remarks>
-        /// The UpdateInterval range is between 0.0 and 1.0, inclusive. The default
-        /// value is 0.25.
-        /// <para>
-        /// A value of 0.0f indicates that updates occur every frame.
-        /// </para>
-        /// </remarks>
         [Tooltip("Time, in seconds, between audio influence updates. 0 indicates to update every frame.")]
         [Range(0.0f, 1.0f)]
         [SerializeField]
         private float updateInterval = 0.25f;
+
+        /// <summary>
+        /// Time, in seconds, between audio influence updates.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The UpdateInterval range is between 0.0 and 1.0, inclusive. The default
+        /// value is 0.25.
+        /// </para>
+        /// <para>
+        /// A value of 0.0 indicates that updates occur every frame.
+        /// </para>
+        /// </remarks>
         public float UpdateInterval
         {
-            get { return updateInterval; }
+            get 
+            {
+                 return updateInterval;
+            }
+
             set
             {
                 updateInterval = Mathf.Clamp(value, 0.0f, 1.0f);
             }
         }
 
-        /// <summary>
-        /// Maximum distance, in meters, to look when attempting to find the user and
-        /// any influencers.
-        /// </summary>
-        /// <remarks>
-        /// The MaxDistance range is 1.0 to 50.0, inclusive. The default value is 20.0.
-        /// </remarks>
         [Tooltip("Maximum distance, in meters, to look when attempting to find the user and any influencers.")]
         [Range(1.0f, 50.0f)]
         [SerializeField]
         private float maxDistance = 20.0f;
+
+        /// <summary>
+        /// Maximum distance, in meters, to look when attempting to find the user and
+        /// any influencer.
+        /// </summary>
+        /// <remarks>
+        /// The max distance range is 1.0 to 50.0, inclusive. The default value is 20.0.
+        /// </remarks>
         public float MaxDistance
         {
-            get { return maxDistance; }
+            get 
+            {
+                 return maxDistance; 
+            }
+
             set
             {
                 maxDistance = Mathf.Clamp(value, 1.0f, 50.0f);
@@ -91,14 +105,16 @@ namespace Microsoft.MixedReality.Toolkit.Audio
         }
 
         /// <summary>
-        /// Maximum number of objects that will be considered when looking for influencers. 
+        /// Maximum number of objects that will be considered when looking for an influencer.
+        /// </summary>
+        /// <remarks> 
+        /// <para>
         /// Setting this value too high may have a negative impact on the performance of your
         /// experience.
-        /// </summary>
-        /// <remarks>
-        /// <para>MaxObjects can only be set in the Unity Inspector.
-        /// The MaxObjects range is 1 to 25, inclusive.
-        /// The default value is 10.</para>
+        /// </para>
+        /// <para>This value can only be set in Unity's inspector windows, in a range from 1 to 25, inclusive.
+        /// The default value is 10.
+        /// </para>
         /// </remarks>
         [Tooltip("Maximum number of objects that will be considered when looking for influencers.")]
         [Range(1, 25)]

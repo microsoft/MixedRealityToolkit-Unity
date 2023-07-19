@@ -1,14 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for samples. While nice to have, this XML documentation is not required for samples.
+#pragma warning disable CS1591
+
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
     /// Simple data source that generates a large list of randomly generated entries.
-    /// This can be used to test paging and virtualization.
     /// </summary>
+    /// <remarks>
+    /// This can be used to test paging and virtualization.
+    /// </remarks>
     [AddComponentMenu("MRTK/Examples/Data Binding/Data Source Dynamic List")]
     public class DataSourceDynamicList : DataSourceGOBase
     {
@@ -128,3 +133,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     }
 }
+#pragma warning restore CS1591

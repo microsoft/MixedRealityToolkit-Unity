@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for samples. While nice to have, this XML documentation is not required for samples.
+#pragma warning disable CS1591
+
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UX;
 using TMPro;
@@ -9,8 +12,8 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
-    /// An example script that delegates keyboard API access either to the WMR MixedRealityKeyboard
-    /// or Unity's TouchScreenKeyboard API depending on the platform.
+    /// An example script that delegates keyboard API access either to the WinRT <c>MixedRealityKeyboard</c> class
+    /// or Unity's <see cref="TouchScreenKeyboard"/> class depending on the platform.
     /// </summary>
     /// <remarks>
     /// <para>Note that like Unity's TouchScreenKeyboard API, this script only supports WSA, iOS, and Android.</para>
@@ -143,7 +146,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         {
             // non-Windows mixed reality keyboard initialization goes here
             // for non-Windows mixed reality keyboards just use Unity's default
-            // touchscreenkeyboard.
+            // touch screen keyboard.
             if (touchscreenKeyboard != null)
             {
                 string KeyboardText = touchscreenKeyboard.text;
@@ -170,3 +173,4 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         #endregion MonoBehaviour Implementation
     }
 }
+#pragma warning restore CS1591

@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for samples. While nice to have, this XML documentation is not required for samples.
+#pragma warning disable CS1591
+
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -9,8 +12,8 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
     /// Manager for the performance evaluation scene.
-    /// It instantiates gameobjects until the FPS drops below a set
-    /// limit, currently 50 fps.
+    /// It instantiates game objects until the frame rate drops below a set
+    /// limit
     /// </summary>
     public class PerfSceneManager : MonoBehaviour
     {
@@ -200,3 +203,4 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
     }
 }
+#pragma warning restore CS1591

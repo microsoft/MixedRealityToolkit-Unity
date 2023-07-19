@@ -6,9 +6,11 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Audio
 {
     /// <summary>
-    /// Defines an audio bandpass (frequencies between a lower and upper value
-    /// are preserved) filter.
+    /// Defines an audio band pass filter.
     /// </summary>
+    /// <remarks>
+    /// Frequencies between a lower and upper value are preserved.
+    /// </remarks>
     [CreateAssetMenu(fileName = "BandPassFilter.asset", menuName = "MRTK/Audio/Bandpass Filter")]
     public class AudioBandPassFilter : ScriptableObject
     {
@@ -33,7 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Audio
 
         /// <summary>
         /// The frequency above which sound will not be heard.
-        /// </summary
+        /// </summary>
         public float HighFrequencyCutoff
         {
             get => highFrequencyCutoff;

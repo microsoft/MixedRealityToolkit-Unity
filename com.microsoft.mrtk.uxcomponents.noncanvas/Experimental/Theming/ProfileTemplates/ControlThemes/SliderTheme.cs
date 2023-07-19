@@ -9,15 +9,15 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
     /// <summary>
     /// All themable elements of a MRTK UX Slider.
     ///
-    /// Note that by default the UXBindingProfile only maps
-    /// to UX.Common.xxx instead of UX.Button.xxx for any
+    /// Note that by default the <see cref="UXBindingProfileTemplate"/> only maps
+    /// to <c>UX.Common.xxx</c> instead of UX.Button.xxx for any
     /// element that is common across all UX elements.
     /// </summary>
     /// <remarks>
     /// This is an experimental feature. This class is early in the cycle, it has 
     /// been labeled as experimental to indicate that it is still evolving, and 
     /// subject to change over time. Parts of the MRTK, such as this class, appear 
-    /// to have a lot of value even if the details haven’t fully been fleshed out. 
+    /// to have a lot of value even if the details haven't fully been fleshed out. 
     /// For these types of features, we want the community to see them and get 
     /// value out of them early enough so to provide feedback. 
     /// </remarks>

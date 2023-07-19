@@ -1,13 +1,20 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for samples. While nice to have, this XML documentation is not required for samples.
+#pragma warning disable CS1591
+
+
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
-    /// Helper script to respawn objects if they go too far from their original position. Useful for objects that will fall forever etc.
+    /// Helper script to re-spawn objects if they go too far from their original position. 
     /// </summary>
+    /// <remarks>
+    /// The helper is useful for objects that will fall forever.
+    /// </remarks>
     [AddComponentMenu("MRTK/Examples/Tethered Placement")]
     internal class TetheredPlacement : MonoBehaviour
     {
@@ -52,3 +59,4 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
     }
 }
+#pragma warning restore CS1591

@@ -104,7 +104,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
 #if UNITY_EDITOR
         /// <summary>
-        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// A Unity Editor only event function that is called when the script is loaded or a value changes in the Unity Inspector.
         /// </summary>
         protected override void OnValidate()
         {   
