@@ -12,9 +12,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
     /// Manager for the performance evaluation scene.
-    /// It instantiates game objects until the frame rate drops below a set
-    /// limit
     /// </summary>
+    /// <remarks>
+    /// This will instantiate game objects until the frame rate drops below a set limit.
+    /// </remarks>
     public class PerfSceneManager : MonoBehaviour
     {
         // Reference to the description panel.  The description is disabled when the test is run.
