@@ -17,16 +17,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// This will trigger notification changes by the base class once the data has been
     /// parsed.
     /// </para>
-    /// <para>
-    /// Note: The theme can be changed by pressing theme buttons at http://TryMRTK.com.
-    /// </para>
     /// </remarks>
     [AddComponentMenu("MRTK/Examples/Data Binding/Data Source Json Theme Test")]
     public class DataSourceJsonThemeTest : DataSourceGOJson
     {
         [Tooltip("URL for a json data source")]
         [SerializeField]
-        private string url = "http://TryMRTK.com/api/data";
+        private string url = string.Empty;
 
         [Tooltip("How many seconds between fetching the data source and notifying all consumer of changes.")]
         [SerializeField]
@@ -61,7 +58,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         {
             _time += Time.deltaTime;
 
-            if (_time >= secondsBetweenFetches)
+            if (_time >= secondsBetweenFetches && !string.IsNullOrEmpty(url))
             {
                 _time -= secondsBetweenFetches;
 
