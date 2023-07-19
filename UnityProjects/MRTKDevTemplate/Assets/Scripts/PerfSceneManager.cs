@@ -22,19 +22,19 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         [SerializeField]
         private GameObject descriptionPanel;
 
-        // Reference to the gameobject to spawn.
+        // Reference to the game object to spawn.
         [SerializeField]
         private GameObject model;
 
-        // TextmeshPro text field for the number of objects instantiated.
+        // TextMeshPro text field for the number of objects instantiated.
         [SerializeField]
         private TextMeshProUGUI countText;
 
-        // TextmeshPro text field for displaying the current framerate
+        // TextMeshPro text field for displaying the current framerate
         [SerializeField]
         private TextMeshProUGUI framerateText;
 
-        // TextmeshPro text field for displaying the results of the test.
+        // TextMeshPro text field for displaying the results of the test.
         [SerializeField]
         private TextMeshProUGUI resultsText;
 
