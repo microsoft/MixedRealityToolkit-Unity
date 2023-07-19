@@ -10,7 +10,7 @@ using Assembly = System.Reflection.Assembly;
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
-    /// Custom property drawer for <see cref="Utilities.SystemType"/> properties.
+    /// Custom property drawer for <see cref="SystemType"/> properties.
     /// </summary>
     [CustomPropertyDrawer(typeof(SystemType))]
     [CustomPropertyDrawer(typeof(SystemTypeAttribute), true)]
@@ -351,11 +351,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #endregion Control Drawing / Event Handling
 
+        /// <inheritdoc />
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             return EditorStyles.popup.CalcHeight(GUIContent.none, 0);
         }
 
+        /// <inheritdoc />
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             DrawTypeSelectionControl(position, property.FindPropertyRelative("reference"), label, attribute as SystemTypeAttribute);

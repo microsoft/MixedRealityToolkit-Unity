@@ -7,9 +7,13 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UX.Experimental
 {
     /// <summary>
-    /// All theme elements of a MRTK UX Button.
+    /// All theme elements of a MRTK UX <c>ActionButton</c>.
     /// </summary>
     /// <remarks>
+    /// <para>
+    /// A MRTK <c>ActionButton</c> object can be added to the an object via the MRTK
+    /// game object menu item in Unity.
+    /// </para>
     /// <para>
     /// Note, that by default whenever a theme element
     /// is shared by different control types, the same

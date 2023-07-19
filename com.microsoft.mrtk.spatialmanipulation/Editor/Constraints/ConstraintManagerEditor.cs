@@ -216,6 +216,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
             }
         }
 
+        /// <summary>
+        /// Called by the Unity editor to render custom inspector UI for this component.
+        /// </summary>
         public override void OnInspectorGUI()
         {
             if (target != null)

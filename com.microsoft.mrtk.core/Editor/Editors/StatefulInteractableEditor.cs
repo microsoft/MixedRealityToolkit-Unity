@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
+    /// <summary>
+    /// A custom editor for the <see cref="StatefulInteractable"/> class. 
+    /// </summary>
     [CustomEditor(typeof(StatefulInteractable), true)]
     [CanEditMultipleObjects]
     public class StatefulInteractableEditor : BaseInteractableEditor
@@ -26,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private SerializedProperty FarDwellTime;
         private SerializedProperty OnClicked;
         private SerializedProperty OnToggled;
-        private SerializedProperty OnDetoggled;
+        private SerializedProperty OnUntoggled;
         private SerializedProperty OnEnabled;
         private SerializedProperty OnDisabled;
         private static bool advancedFoldout = false;
@@ -39,46 +42,49 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         {
             base.OnEnable();
 
-            IsToggled = SetUpAutoProp(nameof(IsToggled));
+            IsToggled = SetUpAutoProperty(nameof(IsToggled));
             IsToggledStateActive = IsToggled.FindPropertyRelative("active");
 
-            SelectThreshold = SetUpAutoProp(nameof(SelectThreshold));
-            DeselectThreshold = SetUpAutoProp(nameof(DeselectThreshold));
+            SelectThreshold = SetUpAutoProperty(nameof(SelectThreshold));
+            DeselectThreshold = SetUpAutoProperty(nameof(DeselectThreshold));
 
-            ToggleMode = SetUpAutoProp(nameof(ToggleMode));
-            TriggerOnRelease = SetUpAutoProp(nameof(TriggerOnRelease));
+            ToggleMode = SetUpAutoProperty(nameof(ToggleMode));
+            TriggerOnRelease = SetUpAutoProperty(nameof(TriggerOnRelease));
 
             allowSelectByVoice = SetUpProperty(nameof(allowSelectByVoice));
             speechRecognitionKeyword = SetUpProperty(nameof(speechRecognitionKeyword));
-            VoiceRequiresFocus = SetUpAutoProp(nameof(VoiceRequiresFocus));
+            VoiceRequiresFocus = SetUpAutoProperty(nameof(VoiceRequiresFocus));
 
-            SelectRequiresHover = SetUpAutoProp(nameof(SelectRequiresHover));
+            SelectRequiresHover = SetUpAutoProperty(nameof(SelectRequiresHover));
 
-            UseGazeDwell = SetUpAutoProp(nameof(UseGazeDwell));
-            GazeDwellTime = SetUpAutoProp(nameof(GazeDwellTime));
-            UseFarDwell = SetUpAutoProp(nameof(UseFarDwell));
-            FarDwellTime = SetUpAutoProp(nameof(FarDwellTime));
+            UseGazeDwell = SetUpAutoProperty(nameof(UseGazeDwell));
+            GazeDwellTime = SetUpAutoProperty(nameof(GazeDwellTime));
+            UseFarDwell = SetUpAutoProperty(nameof(UseFarDwell));
+            FarDwellTime = SetUpAutoProperty(nameof(FarDwellTime));
 
-            OnClicked = SetUpAutoProp(nameof(OnClicked));
+            OnClicked = SetUpAutoProperty(nameof(OnClicked));
 
-            OnEnabled = SetUpAutoProp(nameof(OnEnabled));
-            OnDisabled = SetUpAutoProp(nameof(OnDisabled));
+            OnEnabled = SetUpAutoProperty(nameof(OnEnabled));
+            OnDisabled = SetUpAutoProperty(nameof(OnDisabled));
 
-            // OnToggle/Detoggle aliases to IsToggled.OnEntered/IsToggled.OnExited
+            // OnToggled and OnUntoggled aliases to IsToggled.OnEntered and IsToggled.OnExited
             OnToggled = IsToggled.FindPropertyRelative("onEntered");
-            OnDetoggled = IsToggled.FindPropertyRelative("onExited");
+            OnUntoggled = IsToggled.FindPropertyRelative("onExited");
         }
 
+        /// <inheritdoc/>
         protected override void DrawProperties()
         {
             DrawProperties(true);
         }
 
         /// <summary>
-        /// Overload to <see cref="DrawProperties"/> to allow subclasses to specify whether they'd like
-        /// to show toggle-related properties. Some subclasses hide this,
-        /// as showing toggle settings wouldn't make much sense for their use case.
+        /// Overload to <see cref="DrawProperties()"/> to allow subclasses to specify whether they'd like
+        /// to show toggle-related properties. 
         /// </summary>
+        /// <remarks>
+        /// Some subclasses hide this, as showing toggle settings wouldn't make much sense for their use case.
+        /// </remarks>
         protected void DrawProperties(bool showToggleMode)
         {
             EditorGUILayout.Space();
@@ -123,7 +129,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 if ((StatefulInteractable.ToggleType)ToggleMode.intValue != StatefulInteractable.ToggleType.Button)
                 {
                     EditorGUILayout.PropertyField(OnToggled, new GUIContent("On Toggled", "Fired when the toggle state has changed from false to true."));
-                    EditorGUILayout.PropertyField(OnDetoggled, new GUIContent("On Detoggled", "Fired when the toggle state has changed from true to false."));
+                    EditorGUILayout.PropertyField(OnUntoggled, new GUIContent("On Untoggled", "Fired when the toggle state has changed from true to false."));
                 }
             }
 
@@ -173,6 +179,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             serializedObject.ApplyModifiedProperties();
         }
 
+        /// <summary>
+        /// Draw the serialized flags fields from the <see cref="StatefulInteractable"/> object.
+        /// </summary>
         protected override void DrawMRTKInteractableFlags()
         {
             Color previousGUIColor = GUI.color;

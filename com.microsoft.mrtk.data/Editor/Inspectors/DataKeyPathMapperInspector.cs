@@ -22,7 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.Data.Editor
             viewKeypathToDataKeypathMapper = serializedObject.FindProperty("viewKeypathToDataKeypathMapper");
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Called by the Unity editor to render custom inspector UI for this component.
+        /// </summary>
         public override void OnInspectorGUI()
         {
             serializedObject.Update();

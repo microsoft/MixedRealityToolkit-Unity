@@ -259,6 +259,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// <summary>
         /// Update the test hand's position, rotation, and shape.
         /// </summary>
+        /// <remarks>
         /// <para>
         /// This moves the hand from <paramref name="startPosition"/> to <paramref name="endPosition"/>, rotates the hand from 
         /// <paramref name="startRotation"/> to <paramref name="endRotation"/>, and smooths the handshape
@@ -316,7 +317,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
                 yield return null;
             }
         }
-/
+
         /// <summary>
         /// Move the test hand.
         /// </summary>
@@ -324,7 +325,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// <para>
         /// This moves the hand from <paramref name="startPosition"/> to <paramref name="endPosition"/>, and smooths the handshape
         /// based on the provided <paramref name="handshapeId"/> over the number of steps provided by <paramref name="numSteps"/>.
-        /// </para>
         /// </para>
         /// <para>
         /// The <paramref name="numSteps"/> parameter defaults to a value of -1, which is a sentinel value to indicate that the

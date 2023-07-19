@@ -68,6 +68,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private Vector2 scrollPos;
 
+        /// <summary>
+        /// A function called by Unity to render and handle GUI events.
+        /// </summary>
         private void OnGUI()
         {
             if (window == null)

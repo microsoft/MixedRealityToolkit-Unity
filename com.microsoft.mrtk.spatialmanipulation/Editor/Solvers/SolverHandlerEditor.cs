@@ -6,6 +6,9 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 {
+    /// <summary>
+    /// A custom editor for the <see cref="SolverHandler"/> class.
+    /// </summary>
     [CustomEditor(typeof(SolverHandler))]
     [CanEditMultipleObjects]
     public class SolverHandlerEditor : UnityEditor.Editor
@@ -40,6 +43,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
             solverHandler = target as SolverHandler;
         }
 
+        /// <summary>
+        /// Called by the Unity editor to render custom inspector UI for this component.
+        /// </summary>
         public override void OnInspectorGUI()
         {
             serializedObject.Update();

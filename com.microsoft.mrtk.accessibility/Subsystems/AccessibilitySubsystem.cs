@@ -10,10 +10,11 @@ using UnityEngine.SubsystemsImplementation;
 
 namespace Microsoft.MixedReality.Toolkit.Accessibility
 {
-    [Preserve]
     /// <summary>
-    /// A subsystem that exposes information about the current enabled assistive technologies.
+    /// A subsystem that exposes information about the current enabled 
+    /// assistive technologies.
     /// </summary>
+    [Preserve]
     public class AccessibilitySubsystem :
         MRTKSubsystem<AccessibilitySubsystem, AccessibilitySubsystemDescriptor, AccessibilitySubsystem.Provider>,
         IAccessibilitySubsystem
@@ -25,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         { }
 
         /// <summary>
-        /// Interface for providing accessibility functionality for the implementation.
+        /// An abstract class for providing accessibility functionality for the implementation.
         /// </summary>
         [Preserve]
         public abstract class Provider :
@@ -148,17 +149,28 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// <exception cref="System.ArgumentException">Thrown when the values specified in the
         /// <see cref="AccessibilitySubsystemCinfo"/> parameter are invalid. Typically, this will occur
         /// <list type="bullet">
-        /// <item>
-        /// <description>if <see cref="AccessibilitySubsystemCinfo.id"/> is <see langword="null"/> or empty</description>
-        /// </item>
-        /// <item>
-        /// <description>if <see cref="AccessibilitySubsystemCinfo.implementationType"/> is <see langword="null"/></description>
-        /// </item>
-        /// <item>
-        /// <description>if <see cref="AccessibilitySubsystemCinfo.implementationType"/> does not derive from the
-        /// <see cref="AccessibilitySubsystem"/> class
-        /// </description>
-        /// </item>
+        ///     <item>
+        ///         <description>
+        ///             If <see cref="AccessibilitySubsystemCinfo.Name"/> is <see langword="null"/> or empty.
+        ///         </description>
+        ///     </item>
+        ///     <item>
+        ///         <description>
+        ///             If <see cref="AccessibilitySubsystemCinfo.ProviderType"/> is <see langword="null"/>.
+        ///         </description>
+        ///     </item>
+        ///     <item>
+        ///         <description>
+        ///             The <see cref="AccessibilitySubsystemCinfo.ProviderType"/> does not derive from
+        ///             the <see cref="AccessibilitySubsystem.Provider"/> type.
+        ///         </description>
+        ///     </item>
+        ///     <item>
+        ///         <description>
+        ///             If <see cref="AccessibilitySubsystemCinfo.SubsystemTypeOverride"/> does not derive from the
+        ///             <see cref="AccessibilitySubsystem"/> class.
+        ///         </description>
+        ///     </item>
         /// </list>
         /// </exception>
         public static bool Register(AccessibilitySubsystemCinfo accessibilitySubsystemParams)

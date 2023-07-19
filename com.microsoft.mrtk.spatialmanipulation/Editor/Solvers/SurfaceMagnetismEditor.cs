@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 {
+    /// <summary>
+    /// A custom editor for the <see cref="SurfaceMagnetism"/> class.
+    /// </summary>
     [CustomEditor(typeof(SurfaceMagnetism))]
     [CanEditMultipleObjects]
     public class SurfaceMagnetismEditor : SolverEditor
@@ -62,6 +65,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
             surfaceMagnetism = target as SurfaceMagnetism;
         }
 
+        /// <summary>
+        /// Called by the Unity editor to render custom inspector UI for this component.
+        /// </summary>
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();

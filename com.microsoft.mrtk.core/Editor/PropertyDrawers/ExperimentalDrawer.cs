@@ -13,7 +13,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     public class ExperimentalDrawer : DecoratorDrawer
     {
         /// <summary>
-        /// Unity calls this function to draw the GUI.
+        /// A function called by Unity to render and handle GUI events.
         /// </summary>
         /// <param name="position">Rectangle to display the GUI in</param>
         public override void OnGUI(Rect position)

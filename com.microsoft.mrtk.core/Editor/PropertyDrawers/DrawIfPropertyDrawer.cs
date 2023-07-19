@@ -7,15 +7,17 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// Conditionally draws a property based on the value associated
-    /// with the <see cref="DrawIfAttribute"/> attribute.
+    /// A custom property drawer for fields decorated with the <see cref="DrawIfAttribute"/> attribute.
     /// </summary>
     /// <remarks>
-    /// Based on: https://forum.unity.com/threads/draw-a-field-only-if-a-condition-is-met.448855/
+    /// Conditionally draws a property based on the value associated
+    /// with the <see cref="DrawIfAttribute"/> attribute.
     /// </remarks>
     [CustomPropertyDrawer(typeof(DrawIfAttribute))]
     public class DrawIfPropertyDrawer : PropertyDrawer
     {
+        // Based on: https://forum.unity.com/threads/draw-a-field-only-if-a-condition-is-met.448855/
+
         /// <inheritdoc />
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {

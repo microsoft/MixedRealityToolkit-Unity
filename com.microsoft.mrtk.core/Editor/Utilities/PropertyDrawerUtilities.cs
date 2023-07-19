@@ -11,8 +11,19 @@ namespace Microsoft.MixedReality.Toolkit.Editor
     /// </summary>
     public static class PropertyDrawerUtilities
     {
+        /// <summary>
+        /// The default vertical padding for the drawn properties.
+        /// </summary>
         public const int VerticalPadding = 2;
+
+        /// <summary>
+        /// The default height for the drawn properties.
+        /// </summary>
         public const int Height = 16;
+
+        /// <summary>
+        /// The default vertical spacing for the drawn properties.
+        /// </summary>
         public const int VerticalSpacing = Height + VerticalPadding;
 
         /// <summary>
@@ -35,7 +46,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <param name="rowMultiplier">The "row number" for the control.</param>
         /// <param name="height">The height of the row.</param>
         /// <returns>
-        /// Rect providing the position at which to place the control.
+        /// A <see cref="Rect"/> providing the position at which to place the control.
         /// </returns>
         public static Rect GetPosition(
             Rect rootPosition,

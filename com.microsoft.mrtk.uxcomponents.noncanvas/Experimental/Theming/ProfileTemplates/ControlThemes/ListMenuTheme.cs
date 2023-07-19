@@ -7,9 +7,13 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UX.Experimental
 {
     /// <summary>
-    /// All theme elements of a MRTK UX Dialog slate.
+    /// All theme elements of a MRTK UX <c>ListMenu</c>.
     /// </summary>
     /// <remarks>
+    /// <para>
+    /// A MRTK <c>ListMenu</c> object can be added to the an object via the MRTK
+    /// game object menu item in Unity.
+    /// </para>
     /// <para>
     /// Note that by default the <see cref="UXBindingProfileTemplate"/> only maps
     /// to <c>UX.Common.xxx</c> instead of <c>UX.List.xxx</c> for any

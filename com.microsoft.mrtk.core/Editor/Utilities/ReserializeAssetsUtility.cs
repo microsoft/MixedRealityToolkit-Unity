@@ -8,14 +8,19 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
-    /// Adds menu items to automate reserializing specific files in Unity.
+    /// Adds menu items to automate re-serialize specific files in Unity.
     /// </summary>
     /// <remarks>
-    /// <para>Reserialization can be needed between Unity versions or when the
-    /// underlying script or asset definitions are changed.</para>
+    /// <para>
+    /// The process of re-serializing can be needed between Unity versions or when the
+    /// underlying script or asset definitions are changed.
+    /// </para>
     /// </remarks>
     public class ReserializeUtility
     {
+        /// <summary>
+        /// Re-serialize all Unity prefab and scene assets.
+        /// </summary>
         [MenuItem("Mixed Reality/MRTK3/Utilities/Reserialize/Prefabs, Scenes, and ScriptableObjects")]
         private static void ReserializePrefabsAndScenes()
         {
@@ -24,6 +29,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Debug.Log($"Reserialized {array.Length} assets.");
         }
 
+        /// <summary>
+        /// Re-serialize all Unity material assets.
+        /// </summary>
         [MenuItem("Mixed Reality/MRTK3/Utilities/Reserialize/Materials and Textures")]
         private static void ReserializeMaterials()
         {
@@ -32,6 +40,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             Debug.Log($"Reserialized {array.Length} assets.");
         }
 
+        /// <summary>
+        /// Re-serialize the currently selected set of Unity assets.
+        /// </summary>
         [MenuItem("Mixed Reality/MRTK3/Utilities/Reserialize/Reserialize Selection")]
         [MenuItem("Assets/Mixed Reality/MRTK3/Reserialize Selection")]
         public static void ReserializeSelection()

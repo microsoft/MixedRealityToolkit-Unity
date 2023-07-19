@@ -11,6 +11,10 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
     /// </summary>
     /// <remarks>
     /// <para>
+    /// A MRTK <c>Dialog</c> component can be added to the an object via the MRTK
+    /// menu items within Unity's add component menu.
+    /// </para>
+    /// <para>
     /// Note that by default the <see cref="UXBindingProfileTemplate"/> only maps
     /// to <c>UX.Common.xxx</c> instead of <c>UX.Dialog.xxx</c> for any
     /// element that is common across all UX elements.
@@ -35,6 +39,5 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
         /// Backplate material for a dialog slate.
         /// </summary>
         public Material BackplateMaterial => backplateMaterial;
-
     }
 }

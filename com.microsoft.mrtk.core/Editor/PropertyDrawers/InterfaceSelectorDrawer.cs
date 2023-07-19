@@ -9,12 +9,18 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
+    /// <summary>
+    /// A custom property drawer for fields decorated with the <see cref="InterfaceSelectorAttribute"/> attribute.
+    /// </summary>
     [CustomPropertyDrawer(typeof(InterfaceSelectorAttribute))]
     public class InterfaceSelectorDrawer : PropertyDrawer
     {
         private GUIContent dropLabel;
         private GUIStyle labelStyle;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InterfaceSelectorDrawer"/> class.
+        /// </summary>
         public InterfaceSelectorDrawer()
         {
             // Cache some items used frequently in OnGUI
@@ -24,9 +30,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             dropLabel.tooltip = "This will search the project for classes that match this property's interface, and create an instance of that class.";
         }
 
+        /// <inheritdoc />
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
             => EditorGUI.GetPropertyHeight(property, true);
 
+        /// <inheritdoc />
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             EditorGUI.BeginProperty(position, label, property);

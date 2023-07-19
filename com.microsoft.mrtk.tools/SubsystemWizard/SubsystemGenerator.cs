@@ -325,6 +325,9 @@ namespace Microsoft.MixedReality.Toolkit.Tools
         /// <param name="baseClassTemplate">
         /// <see cref="FileInfo"/> object representing the subsystem class template file.
         /// </param>
+        /// <param name="derivedClassTemplate">
+        /// <see cref="FileInfo"/> object representing the derived class template file.
+        /// </param>
         /// <param name="configTemplate">
         /// <see cref="FileInfo"/> object representing the subsystem configuration template file.
         /// </param>

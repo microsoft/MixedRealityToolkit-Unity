@@ -72,12 +72,17 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
             magneticSurfaces = serializedObject.FindProperty("magneticSurfaces");
         }
 
+        /// <summary>
+        /// Called by the Unity editor to render custom inspector UI for this component.
+        /// </summary>
         public override void OnInspectorGUI()
         {
             RenderCustomInspector();
         }
-
-        // Render the custom inspector with the basic and advanced properties
+        
+        /// <summary>
+        /// Render the custom inspector with the basic and advanced properties
+        /// </summary>
         private void RenderCustomInspector()
         {
             serializedObject.Update();

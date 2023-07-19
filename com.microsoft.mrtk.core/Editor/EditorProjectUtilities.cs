@@ -5,6 +5,9 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
+    /// <summary>
+    /// Static class containing helpers for a Unity editor project.
+    /// </summary>
     [InitializeOnLoad]
     public static class EditorProjectUtilities
     {

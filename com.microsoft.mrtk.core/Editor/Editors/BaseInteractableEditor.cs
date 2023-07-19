@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
+    /// <summary>
+    /// A base class for custom <see cref="MRTKBaseInteractable"/> editors.
+    /// </summary>
     [CustomEditor(typeof(MRTKBaseInteractable), true)]
     public class BaseInteractableEditor : XRBaseInteractableEditor
     {
@@ -61,17 +64,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Sets up a serialized property based on the name of the autoproperty with an
-        /// implicitly-defindd backing serialized field.
+        /// Sets up a serialized property based on the name of the auto property with an
+        /// implicitly defined backing serialized field.
         /// </summary>
         /// <seealso cref="SetUpProperty(string)"/>
         /// <seealso cref="InspectorUIUtility.GetBackingField(string)"/>
-        protected SerializedProperty SetUpAutoProp(string autoPropName)
+        protected SerializedProperty SetUpAutoProperty(string autoPropName)
         {
             string backingField = InspectorUIUtility.GetBackingField(autoPropName);
             return SetUpProperty(backingField);
         }
 
+        /// <inheritdoc/>
         protected override List<string> GetDerivedSerializedPropertyNames()
         {
             var propNames = base.GetDerivedSerializedPropertyNames();
@@ -81,6 +85,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         static bool xriBaseFoldout = false;
 
+        /// <inheritdoc/>
         protected override void DrawProperties()
         {
             xriBaseFoldout = EditorGUILayout.Foldout(xriBaseFoldout, EditorGUIUtility.TrTempContent("Base XRI Settings"), true, EditorStyles.foldoutHeader);
@@ -93,6 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        /// <inheritdoc/>
         protected override void DrawInteractableEvents()
         {
             EditorGUILayout.PropertyField(disabledInteractorTypes);
@@ -112,6 +118,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        /// <summary>
+        /// Draw the serialized flags fields from the <see cref="MRTKBaseInteractable"/> object.
+        /// </summary>
         protected virtual void DrawMRTKInteractableFlags()
         {
             Color previousGUIColor = GUI.color;
@@ -144,6 +153,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        /// <summary>
+        /// Draw a <see cref="TimedFlag"/> field.
+        /// </summary>
         protected void DrawTimedFlag(SerializedProperty property, TimedFlag timedFlag, Color previousColor, Color activeColor)
         {
             GUI.color = previousColor;

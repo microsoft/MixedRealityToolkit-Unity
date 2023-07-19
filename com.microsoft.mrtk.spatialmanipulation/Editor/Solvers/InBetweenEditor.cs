@@ -5,6 +5,9 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 {
+    /// <summary>
+    /// A custom editor for the <see cref="InBetween"/> class.
+    /// </summary>
     [CustomEditor(typeof(InBetween))]
     [CanEditMultipleObjects]
     public class InBetweenEditor : SolverEditor
@@ -29,6 +32,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
             partwayOffsetProperty = serializedObject.FindProperty("partwayOffset");
         }
 
+        /// <summary>
+        /// Called by the Unity editor to render custom inspector UI for this component.
+        /// </summary>
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();

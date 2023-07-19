@@ -7,11 +7,15 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
+    /// <summary>
+    /// A custom Unity editor for the <see cref="Slider"/> class.
+    /// </summary>
     [CustomEditor(typeof(Slider), true)]
     public class SliderInspector : StatefulInteractableEditor
     {
         private static GUIStyle labelStyle;
 
+        /// <inheritdoc />
         protected override void DrawProperties()
         {
             base.DrawProperties(showToggleMode: false);

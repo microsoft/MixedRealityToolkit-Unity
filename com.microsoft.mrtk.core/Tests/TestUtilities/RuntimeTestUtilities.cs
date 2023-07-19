@@ -111,7 +111,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
                 window.Show();
             }
 
-            void OnGUI()
+            /// <summary>
+            /// A function called by Unity to render and handle GUI events.
+            /// </summary>
+            private void OnGUI()
             {
                 GUILayout.Label("Test Paused for Debugging", EditorStyles.boldLabel);
                 if (GUILayout.Button("Resume Test"))

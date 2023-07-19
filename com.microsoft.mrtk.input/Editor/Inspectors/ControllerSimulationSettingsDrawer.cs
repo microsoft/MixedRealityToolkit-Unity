@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
 {
     /// <summary>
-    /// Custom inspector drawing for the ControllerSimulationSettings object.
+    /// A custom property drawer for <see cref="ControllerSimulationSettings"/> fields.
     /// </summary>
     [CustomPropertyDrawer(typeof(ControllerSimulationSettings))]
     public class ControllerSimulationSettingsDrawer : PropertyDrawer
@@ -45,6 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
         private readonly GUIContent triggerContent = new GUIContent("Trigger");
         private readonly GUIContent gripContent = new GUIContent("Grip");
 
+        /// <inheritdoc />
         public override float GetPropertyHeight(
             SerializedProperty property,
             GUIContent label)
@@ -52,6 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
             return PropertyDrawerUtilities.CalculatePropertyHeight(29);
         }
 
+        /// <inheritdoc />
         public override void OnGUI(
             Rect position,
             SerializedProperty property,

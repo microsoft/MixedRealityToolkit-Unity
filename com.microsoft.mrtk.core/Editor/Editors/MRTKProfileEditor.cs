@@ -64,12 +64,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
             /// <summary>
             /// The serialized type reference to the concrete subsystem type.
-            /// Generated with <see cref="SystemType.GetReference(Type type)">
+            /// Generated with <see cref="SystemType.GetReference(Type)"/>
             /// </summary>
             public readonly string Reference;
 
             /// <summary>
-            /// The <see cref="SystemType"> of the least-derived configuration
+            /// The <see cref="SystemType"/> of the least-derived configuration
             /// class that is compatible with this subsystem.
             /// </summary>
             /// <remarks> 
@@ -220,6 +220,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             serializedConfigs = serializedObject.FindProperty("subsystemConfigs");
         }
 
+        /// <summary>
+        /// Called by the Unity editor to render custom inspector UI for this component.
+        /// </summary>
         public override void OnInspectorGUI()
         {
             if (serializedObject == null || serializedObject.targetObject == null)

@@ -7,11 +7,11 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
-    [InitializeOnLoad]
-    [System.Serializable]
     /// <summary>
     /// Root settings class that holds a mapping of build target groups to profiles.
     /// </summary>
+    [InitializeOnLoad]
+    [System.Serializable]
     public class MRTKSettings : ScriptableObject
     {
         internal const string MRTKGeneratedFolder = "Assets/MRTK.Generated";
@@ -61,10 +61,12 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         /// <summary>
         /// Static method to obtain the profile for a given build target group,
-        /// retrieved from <see cref="EditorBuildSettings">.
+        /// retrieved from <see cref="EditorBuildSettings"/>.
         /// </summary>
         /// <param name="targetGroup">An enum specifying which platform group this build is for.</param>
-        /// <returns>The instance of <see cref="MRTKProfile"/> assigned to the key, or null if not.</returns>
+        /// <returns>
+        /// The instance of <see cref="MRTKProfile"/> assigned to the key, or <see langword="null"/> if not.
+        /// </returns>
         public static MRTKProfile ProfileForBuildTarget(BuildTargetGroup targetGroup)
         {
             MRTKSettings buildTargetSettings = GetOrCreateSettings();

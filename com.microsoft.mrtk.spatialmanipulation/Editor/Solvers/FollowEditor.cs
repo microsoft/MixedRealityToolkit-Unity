@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 {
+    /// <summary>
+    /// A custom editor for the <see cref="Follow"/> class.
+    /// </summary>
     [CustomEditor(typeof(Follow))]
     [CanEditMultipleObjects]
     public class FollowEditor : SolverEditor
@@ -75,6 +78,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
             solverInBetween = target as Follow;
         }
 
+        /// <summary>
+        /// Called by the Unity editor to render custom inspector UI for this component.
+        /// </summary>
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();

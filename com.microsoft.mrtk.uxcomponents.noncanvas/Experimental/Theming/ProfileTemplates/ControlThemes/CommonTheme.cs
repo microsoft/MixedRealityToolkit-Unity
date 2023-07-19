@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.UX.Experimental
 {
     /// <summary>
-    /// Button control theme elements.
+    /// Common MRTK control theme elements.
     /// </summary>
     /// <remarks>
     /// This is an experimental feature. This class is early in the cycle, it has 

@@ -6,11 +6,14 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.UX.Experimental
 {
+    /// <summary>
+    /// A theme profile for UX components.
+    /// </summary>
     [CreateAssetMenu(fileName = "MRTK_UX_ThemeProfile", menuName = "MRTK/UX/Theme Profile")]
     public class UXThemeProfile : ScriptableObject
     {
         /// <summary>
-        /// A theme profile for UX components.
+        /// A theme for UX components.
         /// </summary>
         /// <remarks>
         /// <para>

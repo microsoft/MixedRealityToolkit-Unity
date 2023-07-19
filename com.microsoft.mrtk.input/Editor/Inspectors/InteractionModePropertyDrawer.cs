@@ -6,10 +6,9 @@ using UnityEditor;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
-{
+{ 
     /// <summary>
-    /// A custom drawer used when rendering information about a <see cref="Microsoft.MixedReality.Toolkit.Input.InteractionMode">InteractionMode</see>
-    /// property within a Unity inspector window.
+    /// A custom property drawer for <see cref="InteractionMode"/> fields.
     /// </summary>
     [CustomPropertyDrawer(typeof(InteractionMode))]
     public class InteractionModePropertyDrawer : PropertyDrawer
@@ -23,6 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         private static float MessageRectOffset => EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
 
+        /// <inheritdoc />
         public override void OnGUI(Rect rect, SerializedProperty property, GUIContent content)
         {
             InteractionModeManager instance = InteractionModeManager.Instance;
@@ -79,6 +79,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             }
         }
 
+        /// <inheritdoc />
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             return InteractionModeManager.Instance != null ?
