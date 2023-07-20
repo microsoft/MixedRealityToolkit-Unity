@@ -24,13 +24,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// This interactor acts as a poking interactor through trigger intersections.
     /// </para>
     /// <para>
-    /// The full <see cref="PokeInteractor"/> implementation used for the user's fingers
+    /// The full <see cref="IPokeInteractor"/> implementation used for the user's fingers
     /// uses a much more advanced sphere cast intersection system to ensure that
     /// high speed pokes are always registered. This interactor, however, uses
     /// simple trigger intersections in the interest of simplicity and demonstration.
     /// At high speeds, and low frame rates, this may miss some intersections with
     /// interactables. For higher fidelity intersections, consider using a sphere cast
-    /// system like <see cref="PokeInteractor"/>.
+    /// system like <see cref="IPokeInteractor"/>.
     /// </para>
     /// </remarks>
     [AddComponentMenu("MRTK/Examples/Pen Interactor")]

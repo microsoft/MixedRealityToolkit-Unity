@@ -76,20 +76,22 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// <summary>
         /// Returns the pan speed.
         /// </summary>
-        /// <param name="uvCursorVal">Normalized cursor position in the hit box. Center is assumed to be at [-0.5, 0.5].</param>
-        protected override float ComputePanSpeed(float uvCursorPos, float maxSpeed, float minDistFromCenterForAutoPan)
+        /// <param name="uvCursorPosition">Normalized cursor position in the hit box. Center is assumed to be at (-0.5, 0.5).</param>        
+        /// <param name="maxSpeed">The maximum speed that can be returned by this function.</param>
+        /// <param name="minDistanceFromCenterForAutoPan">The minium distances from the center at which to start panning.</param>
+        protected override float ComputePanSpeed(float uvCursorPosition, float maxSpeed, float minDistanceFromCenterForAutoPan)
         {
             // UV space from [0,1] -> Center: [-0.5, 0.5]
-            float centeredVal = uvCursorPos - 0.5f;
+            float centeredVal = uvCursorPosition - 0.5f;
 
             // If the UV cursor is close to the center of the image, prevent continuous movements to limit distractions
-            if (Mathf.Abs(centeredVal) < minDistFromCenterForAutoPan)
+            if (Mathf.Abs(centeredVal) < minDistanceFromCenterForAutoPan)
             {
                 return 0f;
             }
             else
             {
-                float normalizedVal = (centeredVal - Mathf.Sign(centeredVal) * minDistFromCenterForAutoPan) / (Mathf.Sign(centeredVal) * (0.5f - minDistFromCenterForAutoPan));
+                float normalizedVal = (centeredVal - Mathf.Sign(centeredVal) * minDistanceFromCenterForAutoPan) / (Mathf.Sign(centeredVal) * (0.5f - minDistanceFromCenterForAutoPan));
                 float speed = normalizedVal * normalizedVal * maxSpeed * Mathf.Sign(centeredVal);
                 return speed;
             }

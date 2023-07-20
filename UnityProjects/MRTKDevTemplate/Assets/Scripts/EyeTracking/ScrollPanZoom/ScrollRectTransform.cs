@@ -18,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         [SerializeField]
         private RectTransform rectTransformToNavigate = null;
 
-        [Tooltip("Reference to the viewport restricting the viewbox. This is important for identifying the max constrains for panning.")]
+        [Tooltip("Reference to the viewport restricting the view box. This is important for identifying the max constrains for panning.")]
         [SerializeField]
         private RectTransform referenceToViewPort = null;
 
@@ -53,8 +53,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         [Tooltip("Custom anchor start position.")]
         [SerializeField]
-        public Vector2 customStartPosition;
+        private Vector2 customStartPosition;
 
+        /// <summary>
+        /// Custom anchor start position.
+        /// </summary>
+        public Vector2 CustomStartPosition => customStartPosition;
+
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
         protected override void Start()
         {
             // Assigning values to base PanZoom class

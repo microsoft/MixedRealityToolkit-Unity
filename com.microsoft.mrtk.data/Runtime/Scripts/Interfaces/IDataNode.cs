@@ -10,19 +10,28 @@ using System.Collections.Generic;
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
+    /// Specifies the type of a <see cref="IDataNode"/>.
+    /// </summary>
+    /// <remarks>
+    /// <para>
     /// Interface for one node in a hierarchical organization of data comprised of
-    /// lists, maps (dictionaries), and objects of arbitrary type and complexity
-    /// such as native data primitives (int, boolean, float), or even an object as
+    /// lists, maps, dictionaries, and objects of arbitrary type and complexity
+    /// such as native data primitives (<see langword="int"/>, <see langword="boolean"/>, <see langword="float"/>) or even an object as
     /// complex as a jpeg byte stream.
-    ///
+    /// </para>
+    /// <para>
     /// This is used by a data source to organize information that matches the
     /// defacto standard key path format that's modeled on JSON/javascript.
-    /// </summary>
+    /// </para>
+    /// </remarks>
     public enum DataNodeType
     {
         Unassigned,
+
         Null,
+
         Array,
+        
         Map,
 
         /// <summary>
@@ -36,7 +45,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Is this node an array of other nodes?
         /// </summary>
-        ///
         /// <returns><see langword="true"/> if an array, <see langword="false"/> otherwise.</returns>
         bool IsArray();
 
@@ -80,13 +88,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Get the value associated with this node.
         /// </summary>
         /// <remarks>
-        /// If this node is an array node, the value is a <see cref="IEnumerable{string}"/> object that
+        /// If this node is an array node, the value is a <see cref="IEnumerable{T}"/> object that
         /// contains all the key paths of its children. Note that this is not the usual way of
         /// retrieving items in an array since paging is not possible. See 
         /// <see cref="DataSourceBase.GetCollectionKeyPathRange"/> for a better method of
         /// accessing members of a collection.
         ///
-        /// If this node is a map node, the value is a <see cref="IEnumerable{string}"/>  object
+        /// If this node is a map node, the value is a <see cref="IEnumerable{T}"/>  object
         /// that contains the full keypath for every key in the map.
         /// </remarks>
         /// <returns>The value associated with this node of arbitrary type and complexity</returns>

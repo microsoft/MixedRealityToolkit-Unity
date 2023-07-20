@@ -141,7 +141,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </para>
         /// </remarks>
         /// <param name="binding">The binding to use when looking up the value at index <paramref name="n"/> in the <see cref="DataBindingProfile.ValueToThemeKeypathLookup"/> array.</param>
-        /// <param name="n">Index for looking up object of type <typeparamref name="T"/></param>
+        /// <param name="n">Index for looking up an object of type <typeparamref name="T"/>.</param>
         /// <returns>Found object of type <typeparamref name="T"/> or <see langword="null"/> if not found.</returns>
         protected virtual T GetObjectByThemeLookupIndex(BindingInfo binding, int n)
         {
@@ -165,9 +165,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// value, the keypath will be appended to the base keypath
         /// provided in the DataConsumerThemeHelper.
         /// </remarks>
-        /// <param name="binding">The binding to use when resolve the request object at index <paramref name="n"/></param>
-        /// <param name="keyValue">Key value provided by data source</param>
-        /// <returns>Found object of type T or null if not found</returns>
+        /// <param name="binding">The binding to use when resolve the request object at index <paramref name="keyValue"/>.</param>
+        /// <param name="keyValue">The key for looking up an object of type <typeparamref name="T"/>.</param>
+        /// <returns>Found object of type <typeparamref name="T"/> or <see langword="null"/> if not found</returns>
         protected virtual T GetObjectByThemeLookupKey(BindingInfo binding, string keyValue)
         {
             // Lookup lists are usually small, but it would make sense to create a dictionary
@@ -362,9 +362,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="dataSource">Which data source called this method.</param>
         /// <param name="resolvedKeyPath">Fully resolved keypath for datum that changed.</param>
         /// <param name="localKeyPath">Local keypath for the datum that changed.</param>
-        /// <param name="inDataValue">The current value of the datum</param>
+        /// <param name="inDataOrThemeValue">The current data or theme value.</param>
         /// <param name="dataChangeType">The type of change that has occurred.</param>
-        protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object inDataOrThemeValue, DataChangeType dataChangeType)
+        protected override void ProcessDataChanged(
+            IDataSource dataSource, 
+            string resolvedKeyPath, 
+            string localKeyPath, 
+            object inDataOrThemeValue,
+             DataChangeType dataChangeType)
         {
             if (_themeKeypathToBindingLookup.TryGetValue(localKeyPath, out BindingInfo binding))
             {
@@ -380,10 +385,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
         /// <summary>
-        /// Given a theme value and a datum value, determine the final output value
+        /// Given a theme value and a data value, determine the final output value.
         /// </summary>
-        /// <param name="dataValue">The data value that may be themed.</param>
-        /// <param name="themeValue">The theme value used to theme the data value.</param>
+        /// <param name="binding">The binding to use when resolve <paramref name="dataValue"/> or <paramref name="themeValue"/>.</param>
+        /// <param name="dataValue">The data value used to produce the output value, and set the value on the binding component.</param>
+        /// <param name="themeValue">The theme value used if <c>BindingInfo.BindingProfile.RetrievalMethod</c> is <see cref="DataRetrievalMethod.StaticThemedValue"/>.</param>
         protected virtual void ProcessThemeOrDataChange(BindingInfo binding, object dataValue, object themeValue = null)
         {
             T outputValue = default(T);

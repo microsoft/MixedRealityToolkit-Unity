@@ -12,10 +12,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// <summary>
     /// A theme data consumer used to help another primary data consumer derived from <see cref="DataConsumerThemableBase{T}"/>
     /// that is designed to manage both dynamically bound data received from a data-centric DataSource, and
-    /// then theme that dynamic data. As an example, a numeric status can be used to look up an appropriate
+    /// then theme that dynamic data. 
+    /// </summary>
+    /// <remarks>
+    /// As an example, a numeric status can be used to look up an appropriate
     /// status icon for the current status.  That icon can then be further themed to adopt the desired, branding or
     /// other specific look and feel appropriate for the currently active theme.
-    /// </summary>
+    /// </remarks>
     [AddComponentMenu("MRTK/Data Binding/Consumers/Data Consumer Theme Helper")]
     public class DataConsumerThemeHelper : DataConsumerGOBase
     {
@@ -132,7 +135,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <param name="dataSource">Which data source called this method.</param>
         /// <param name="resolvedKeyPath">Fully resolved keypath for datum that changed.</param>
         /// <param name="localKeyPath">Local keypath for the datum that changed.</param>
-        /// <param name="inDataValue">The current value of the datum</param>
+        /// <param name="inValue">The current value of the data.</param>
         /// <param name="dataChangeType">The type of change that has occurred.</param>
         protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string localKeyPath, object inValue, DataChangeType dataChangeType)
         {

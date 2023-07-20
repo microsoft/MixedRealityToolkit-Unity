@@ -43,7 +43,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             audioSource = GetComponent<AudioSource>();
 
             // Set default color
-            EyeTrackingUtilities.GameObject_ChangeColor(gameObject, statusColorIdle, ref originalColor, false);
+            EyeTrackingUtilities.SetGameObjectColor(gameObject, statusColorIdle, ref originalColor, false);
         }
 
         #region Handle collision detection
@@ -120,13 +120,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             // Only change color if the status has changed 
             if (allObjectsInZone && !wereAllObjectsInZone)
             {
-                EyeTrackingUtilities.GameObject_ChangeColor(gameObject, statusColorAchieved, ref originalColor, false);
+                EyeTrackingUtilities.SetGameObjectColor(gameObject, statusColorAchieved, ref originalColor, false);
                 audioSource.PlayOneShot(audioFxSuccess);
                 
             }
             else if (!allObjectsInZone && wereAllObjectsInZone)
             {
-                EyeTrackingUtilities.GameObject_ChangeColor(gameObject, statusColorIdle, ref originalColor, false);
+                EyeTrackingUtilities.SetGameObjectColor(gameObject, statusColorIdle, ref originalColor, false);
             }
 
             wereAllObjectsInZone = allObjectsInZone;

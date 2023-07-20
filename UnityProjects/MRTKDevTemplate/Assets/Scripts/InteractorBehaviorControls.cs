@@ -10,8 +10,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
     /// Example class to demonstrate how to turn various interactors on and off.
-    /// Hook up buttons to the public functions to turn interactors on and off.
     /// </summary>
+    /// <remarks>
+    /// Hook up buttons to the public functions to turn interactors on and off.
+    /// </remarks>
     [AddComponentMenu("MRTK/Examples/InteractorBehaviorControls")]
     public class InteractorBehaviorControls : MonoBehaviour
     {
@@ -62,13 +64,30 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         public event Action<bool> onGazeToggled;
 
         /// <summary>
-        /// Sets pointer behavior to mimic HoloLens 2
-        /// Poke interactor will be On
-        /// Grab interactor will be On
-        /// HandRay interactor will be On
-        /// MotionControllerRay interactor will be Off
-        /// Gaze interactor will be On
+        /// Sets pointer behavior to mimic HoloLens.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This will do this following:
+        /// </para>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>Turn on the poke interactors.</description>
+        ///     </item>
+        ///     <item>
+        ///         <description>Turn on the grab interactors.</description>
+        ///     </item>
+        ///     <item>
+        ///         <description>Turn on the hand ray interactors.</description>
+        ///     </item>
+        ///     <item>
+        ///         <description>Turn off the controller ray interactors.</description>
+        ///     </item>
+        ///     <item>
+        ///         <description>Turn on the gaze interactors.</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
         public void SetHololens()
         {
             SetHandPokeActive(true);
@@ -78,14 +97,32 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             SetGazeActive(true);
         }
 
+
         /// <summary>
-        /// Sets pointer states to mimic traditional vr behavior.
-        /// Poke interactor will be Off
-        /// Grab interactor will be Off
-        /// HandRay interactor will be Off
-        /// MotionControllerRay interactor will be On
-        /// Gaze interactor will be Off
+        /// Sets pointer behavior to mimic tradition VR behavior.
         /// </summary>
+        /// <remarks>
+        /// <para>
+        /// This will do this following:
+        /// </para>
+        /// <list type="bullet">
+        ///     <item>
+        ///         <description>Turn off the poke interactors.</description>
+        ///     </item>
+        ///     <item>
+        ///         <description>Turn off the grab interactors.</description>
+        ///     </item>
+        ///     <item>
+        ///         <description>Turn off the hand ray interactors.</description>
+        ///     </item>
+        ///     <item>
+        ///         <description>Turn on the controller ray interactors.</description>
+        ///     </item>
+        ///     <item>
+        ///         <description>Turn off the gaze interactors.</description>
+        ///     </item>
+        /// </list>
+        /// </remarks>
         public void SetVR()
         {
             SetHandPokeActive(false);
@@ -95,30 +132,45 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             SetGazeActive(false);
         }
 
+        /// <summary>
+        /// Enable or disable the specified gaze interactors.
+        /// </summary>
         public void SetGazeActive(bool isActive)
         {
             ToggleInteractor(gazeInteractor, isActive);
             onGazeToggled?.Invoke(isActive);
         }
 
+        /// <summary>
+        /// Enable or disable the specified poke interactors.
+        /// </summary>
         public void SetHandPokeActive(bool isActive)
         {
             ToggleInteractors(pokeInteractors, isActive);
             onPokeToggled?.Invoke(isActive);
         }
 
+        /// <summary>
+        /// Enable or disable the specified hand grab interactors.
+        /// </summary>
         public void SetHandGrabActive(bool isActive)
         {
             ToggleInteractors(grabInteractors, isActive);
             onGrabToggled?.Invoke(isActive);
         }
 
+        /// <summary>
+        /// Enable or disable the specified controller ray interactors.
+        /// </summary>
         public void SetControllerRayActive(bool isActive)
         {
             ToggleInteractors(controllerRayInteractors, isActive);
             onControllerRayToggled?.Invoke(isActive);
         }
 
+        /// <summary>
+        /// Enable or disable the specified hand ray interactors.
+        /// </summary>
         public void SetHandRayActive(bool isActive)
         {
             ToggleInteractors(handRaysInteractors, isActive);

@@ -11,27 +11,33 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
     /// <summary>
     /// Demonstration script showing how to subscribe to and handle
-    /// events fired by DictationSubsystem.
+    /// events fired by a <see cref="DictationSubsystem"/>.
     /// </summary>
     [RequireComponent(typeof(AudioSource))]
     [AddComponentMenu("MRTK/Examples/TextToSpeech Handler")]
     public class TextToSpeechHandler : MonoBehaviour
     {
-        [Tooltip("The audio source where speech will be played.")] [SerializeField]
+        [SerializeField]
+        [Tooltip("The audio source where speech will be played.")] 
         private AudioSource audioSource;
 
         /// <summary>
         /// Gets or sets the audio source where speech will be played.
         /// </summary>
-        public AudioSource AudioSource { get { return audioSource; } set { audioSource = value; } }
+        public AudioSource AudioSource
+        {
+            get { return audioSource; }
+            set { audioSource = value; }
+        }
 
         /// <summary>
         /// Gets or sets the voice that will be used to generate speech. To use a non en-US voice, set this to Other.
         /// </summary>
-        /// <remarks>
-        /// If a custom voice is desired (i.e. this enum is being set to Other) make sure to set the <see cref="VoiceName"/> property.
-        /// </remarks>
-        public TextToSpeechVoice Voice { get { return voice; } set { voice = value; } }
+        public TextToSpeechVoice Voice 
+        { 
+            get { return voice; } 
+            set { voice = value; } 
+        }
 
         [Tooltip("The voice that will be used to generate speech. To use a non en-US voice, set this to Other.")]
         [SerializeField]
@@ -58,7 +64,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// </summary>
         public void Speak()
         {
-
             // If we have a text to speech manager on the target object, say something.
             // This voice will appear to emanate from the object.
             textToSpeechSubsystem = XRSubsystemHelpers.GetFirstRunningSubsystem<TextToSpeechSubsystem>();

@@ -28,6 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
         private readonly GUIContent yawContent = new GUIContent("Yaw");
         private readonly GUIContent rollContent = new GUIContent("Roll");
 
+        /// <inheritdoc />
         public override float GetPropertyHeight(
             SerializedProperty property,
             GUIContent label)

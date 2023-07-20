@@ -394,7 +394,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// This rotates the hand to <paramref name="newRotation"/>, and smooths the handshape based on the provided 
         /// <paramref name="handshapeId"/> over the number of steps provided by <paramref name="numSteps"/>.
         /// </para>
-        /// <remarks>
         /// <para>
         /// The <paramref name="numSteps"/> parameter defaults to a value of -1, which is a sentinel value to indicate that the
         /// default number of steps should be used as specified by <see cref="ControllerMoveSteps"/>.

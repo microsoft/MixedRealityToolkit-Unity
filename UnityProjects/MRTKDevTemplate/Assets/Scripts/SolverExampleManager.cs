@@ -9,7 +9,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
     using UnityEngine.XR.Interaction.Toolkit;
 
     /// <summary>
-    /// Manager class for the SolverExamples scene
+    /// Manager class for the solver examples scene.
     /// </summary>
     [AddComponentMenu("Scripts/MRTK/Examples/SolverExampleManager")]
     public class SolverExampleManager : MonoBehaviour
@@ -28,8 +28,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         private SolverHandler handler;
         private Solver currentSolver;
-
         private TrackedObjectType trackedType = TrackedObjectType.Head;
+
+        /// <summary>
+        /// Get or set the type of object to be tracked.
+        /// </summary>
         public TrackedObjectType TrackedType
         {
             get => trackedType;
