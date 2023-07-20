@@ -92,7 +92,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         }
 
         /// <summary>
-        /// Updates the heat map with a hit at <param name="hitPosition"></param>.
+        /// Updates the heat map with a hit at <paramref name="hitPosition"/>.s
         /// </summary>
         /// <param name="hitPosition">The hit position in world co-ordinates.</param>
         public void DrawAtThisHitPos(Vector3 hitPosition)
