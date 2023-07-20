@@ -989,7 +989,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   filenameToUse: mrtk_log_mostRecentET
-  addTimestampToLogfileName: 0
+  addTimestampToLogFileName: 0
   logStructure: {fileID: 9111033687875367441}
   userName: tester
   sessionDescription: Session00

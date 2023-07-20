@@ -10,7 +10,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
     /// Example of how to use interactors to create a heatmap of eye tracking data.
-    /// Uses MRTKBaseInteractable, but not StatefulInteractable.
     /// </summary>
     [AddComponentMenu("MRTK/Examples/DrawOnTexture")]
     [RequireComponent(typeof(Renderer))]

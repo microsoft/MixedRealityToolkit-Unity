@@ -47,6 +47,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         private InteractorBehaviorControls interactorBehaviorControls;
 
+        /// <summary>
+        /// A Unity event function that is called when an enabled script instance is being loaded.
+        /// </summary>
         private void Awake()
         {
             interactorBehaviorControls = GetComponent<InteractorBehaviorControls>();
@@ -54,11 +57,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             SetupSpeechCommand();
         }
 
+        /// <summary>
+        /// A Unity event function that is called on the frame when a script is enabled just before any of the update methods are called the first time.
+        /// </summary> 
         private void Start()
         {
             ResetExample();
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary> 
         private void OnEnable()
         {
             interactorBehaviorControls.onControllerRayToggled += OnControllerRayToggled;
@@ -68,6 +77,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             interactorBehaviorControls.onPokeToggled += OnPokeToggled;
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         private void OnDisable()
         {
             interactorBehaviorControls.onControllerRayToggled -= OnControllerRayToggled;
@@ -82,9 +94,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             XRSubsystemHelpers.GetFirstSubsystem<KeywordRecognitionSubsystem>().CreateOrGetEventForKeyword("Reset Example").AddListener(ResetExample);
         }
 
+        /// <summary>
+        /// Reset the interactors of this scene, based of the availability of articulated hand input.
+        /// </summary>
+        /// <remarks>
+        /// If the application has configured a <see cref="IHandsAggregatorSubsystem"/>, this will put the interactors into HoloLens mode,
+        /// otherwise the interactors are put into VR mode.
+        /// </remarks>
         public void ResetExample()
         {
-            if(XRSubsystemHelpers.HandsAggregator != null)
+            if (XRSubsystemHelpers.HandsAggregator != null)
             {
                 SetHololensModeActive();
             }
@@ -93,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                 List<InputDevice> motionControllers = new List<InputDevice>();
                 InputDevices.GetDevicesWithCharacteristics(InputDeviceCharacteristics.HeldInHand, motionControllers);
 
-                if(motionControllers.Count > 0)
+                if (motionControllers.Count > 0)
                 {
                     SetVRModeActive();
                 }

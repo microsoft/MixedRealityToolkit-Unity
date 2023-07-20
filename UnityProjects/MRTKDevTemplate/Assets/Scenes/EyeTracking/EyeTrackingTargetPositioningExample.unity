@@ -587,7 +587,7 @@ MonoBehaviour:
   useEyeSupportedTargetPlacement: 1
   minLookAwayDistToEnableEyeWarp: 5
   handInputEnabled: 1
-  handmapping: 2
+  handMapping: 2
   deltaHandMovementThreshold: 0.05
   transparencyInTransition: 0.50980395
   transparencyPreview: 0.2
@@ -1248,7 +1248,7 @@ MonoBehaviour:
   useEyeSupportedTargetPlacement: 1
   minLookAwayDistToEnableEyeWarp: 5
   handInputEnabled: 1
-  handmapping: 2
+  handMapping: 2
   deltaHandMovementThreshold: 0.05
   transparencyInTransition: 0.50980395
   transparencyPreview: 0.2
@@ -14041,7 +14041,7 @@ MonoBehaviour:
   useEyeSupportedTargetPlacement: 1
   minLookAwayDistToEnableEyeWarp: 5
   handInputEnabled: 1
-  handmapping: 2
+  handMapping: 2
   deltaHandMovementThreshold: 0.05
   transparencyInTransition: 0.50980395
   transparencyPreview: 0.2
@@ -14905,7 +14905,7 @@ MonoBehaviour:
   useEyeSupportedTargetPlacement: 1
   minLookAwayDistToEnableEyeWarp: 5
   handInputEnabled: 1
-  handmapping: 2
+  handMapping: 2
   deltaHandMovementThreshold: 0.05
   transparencyInTransition: 0.50980395
   transparencyPreview: 0.2
@@ -35993,7 +35993,7 @@ MonoBehaviour:
   useEyeSupportedTargetPlacement: 1
   minLookAwayDistToEnableEyeWarp: 5
   handInputEnabled: 1
-  handmapping: 2
+  handMapping: 2
   deltaHandMovementThreshold: 0.05
   transparencyInTransition: 0.50980395
   transparencyPreview: 0.2
@@ -36961,7 +36961,7 @@ MonoBehaviour:
   useEyeSupportedTargetPlacement: 1
   minLookAwayDistToEnableEyeWarp: 5
   handInputEnabled: 1
-  handmapping: 2
+  handMapping: 2
   deltaHandMovementThreshold: 0.05
   transparencyInTransition: 0.50980395
   transparencyPreview: 0.2

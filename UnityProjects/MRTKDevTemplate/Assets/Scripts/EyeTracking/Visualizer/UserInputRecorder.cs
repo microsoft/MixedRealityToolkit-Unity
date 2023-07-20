@@ -10,8 +10,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 {
     /// <summary>
     /// Allows the user to record a log file of eye gaze interactions for playback at another time.
-    /// The log file is a CSV file and is created and written to while this behaviour is <see cref="MonoBehaviour.isActiveAndEnabled"/>
     /// </summary>
+    /// <remarks>
+    /// The log file is a CSV file which is created and written to while this behaviour is enabled.
+    /// </remarks>
     [AddComponentMenu("Scripts/MRTK/Examples/UserInputRecorder")]
     public class UserInputRecorder : MonoBehaviour
     {
@@ -21,7 +23,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         [Tooltip("Prepends a timestamp to the log file name if enabled")]
         [SerializeField]
-        private bool addTimestampToLogfileName = false;
+        private bool addTimestampToLogFileName = false;
 
         [Tooltip("The log structure to gather eye gaze samples from")]
         [SerializeField]
@@ -72,7 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 
         private string Filename
         {
-            get { return addTimestampToLogfileName ? FilenameWithTimestamp : FilenameNoTimestamp; }
+            get { return addTimestampToLogFileName ? FilenameWithTimestamp : FilenameNoTimestamp; }
         }
         
         private string FilenameWithTimestamp

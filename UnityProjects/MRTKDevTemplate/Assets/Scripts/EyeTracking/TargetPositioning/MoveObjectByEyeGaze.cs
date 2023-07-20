@@ -1,22 +1,28 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Input;
+using Microsoft.MixedReality.Toolkit.Subsystems;
+using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
 {
-    using Input;
-    using Subsystems;
-    using UnityEngine.XR;
-    using UnityEngine.XR.Interaction.Toolkit;
-
     /// <summary>
-    /// Specifies the allowed surface orientations to place GameObjects with attached <see cref="MoveObjectByEyeGaze"/> on.
+    /// Specifies whether the <see cref="GameObject"/> moves on horizontal or vertical surfaces.
     /// </summary>
     internal enum PlacementSurfaces
     {
+        /// <summary>
+        /// The <see cref="GameObject"/> can moves on horizontal surfaces.
+        /// </summary>
         Horizontal,
+
+        /// <summary>
+        /// The <see cref="GameObject"/> can moves on vertical surfaces.
+        /// </summary>
         Vertical
     }
 
@@ -49,10 +55,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         [SerializeField]
         private bool handInputEnabled = true;
 
-        [Tooltip(
-            "To control whether the hand motion is used 1:1 to move a target or to use different gains to allow for smaller hand motions.")]
+        [Tooltip("To control whether the hand motion is used 1:1 to move a target or to use different gains to allow for smaller hand motions.")]
         [SerializeField]
-        private float handmapping = 1f;
+        private float handMapping = 1f;
 
         [Tooltip("Minimal amount of hand movement to trigger target repositioning.")]
         [SerializeField]
@@ -629,7 +634,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                     // Continuous manual target movement
                     Vector3 oldPos = gameObject.transform.position;
                     Vector3 d = new Vector3(-delta.x * ConstraintX, -delta.y * ConstraintY, -delta.z * ConstraintZ);
-                    gameObject.transform.position = oldPos + d * handmapping;
+                    gameObject.transform.position = oldPos + d * handMapping;
 
                     ConstrainMovement();
                 }

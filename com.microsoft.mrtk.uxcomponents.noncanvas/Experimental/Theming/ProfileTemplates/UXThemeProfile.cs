@@ -26,7 +26,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
         ///     </item>
         ///     <item>
         ///         <term>UX Control Type</term>
-        ///         <description>The nature of the control; for example, <see cref="Button"/>, <see cref="Slider"/>, <see cref="Checkbox"/>, <see cref="Slate"/>, <see cref="Common"/>. This should generally map 1-to-1 to a specific prefab.Common can be used to specify fallback properties across all UX controls.</description>
+        ///         <description>The nature of the control. This should generally map one-to-one to a specific <c>prefab.Common</c> can be used to specify fallback properties across all UX controls.</description>
         ///     </item>
         ///     <item>
         ///         <term>UX Control Part</term>
@@ -34,7 +34,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
         ///     </item>
         ///     <item>
         ///         <term>Component category</term>
-        ///         <description>The component being themed; for example, text, a material, or a sprint. In general, this should reflect the name of the component <see cref="MonoBehavior"/>.</description>
+        ///         <description>The component being themed; for example, text, a material, or a sprint. In general, this should reflect the name of the component <see cref="MonoBehaviour"/>.</description>
         ///     </item>
         ///     <item>
         ///         <term>Optional Property</term>

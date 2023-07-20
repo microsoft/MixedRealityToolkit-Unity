@@ -196,14 +196,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </para>
         /// <para>
         /// The fullyQualifiedPrefix is provided for lists (or collection of lists) to find the correct instance of a specific local keypath.
-        /// If not processing a collection, this can be either null or "". It is considered fully qualified because it has been resolved
+        /// If not processing a collection, this can be either <see langword="null"/> or an empty <see langword="string"/>. It is considered fully qualified because it has been resolved
         /// to the namespaces of the data source where each sub-component may have been mapped from a view key path to a data key path.
         /// This means that the path may not be recognizable on casual observation relative to the key path variables
         /// embedded in views and sub-views.
         /// </para>
         /// <para>
         /// Note that a key path for a collection is useful for regenerating an entire collection. If the object is a collection,
-        /// <see cref="GetValue(string)"/> returns an <see cref="IEnumerable{string}"/> that can be used to enumerate the key paths of all children in the collection.
+        /// <see cref="GetValue(string)"/> returns an <see cref="IEnumerable{T}"/> that can be used to enumerate the key paths of all children in the collection.
         /// </para>
         /// </remarks>
         /// <param name="resolvedKeyPath">Prefix for a collection</param>

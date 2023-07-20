@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 
 using System.Collections;
-using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -48,14 +47,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         }
 
         /// <summary>
-        /// Change the color of game object "gameObject".
+        /// Change the material color of the given <see cref="GameObject"/>.
         /// </summary>
-        /// <param name="originalColor">Enter "null" in case you're passing the original object and want to save the original color.</param>
-        public static void GameObject_ChangeColor(GameObject gobj, Color newColor, ref Color? originalColor, bool onlyApplyToRootObj)
+        /// <param name="gameObject">The object whose material colors will be changed.</param>
+        /// <param name="newColor">The new color to apply to the object's materials.</param> 
+        /// <param name="originalColor">Obtain the original color of the first material's <see cref="Material.color"/>. This must be <see langword="null"/> to obtain this original color.</param>
+        /// <param name="onlyApplyToRoot"><see langword="true"/> to only change materials on the root <see cref="GameObject"/>, and <see langword="false"/> to change children's materials too.</param>
+        public static void SetGameObjectColor(GameObject gameObject, Color newColor, ref Color? originalColor, bool onlyApplyToRoot)
         {
             try
             {
-                Renderer[] renderers = gobj.GetComponents<Renderer>();
+                Renderer[] renderers = gameObject.GetComponents<Renderer>();
                 for (int i = 0; i < renderers.Length; i++)
                 {
                     Material[] mats = renderers[i].materials;
@@ -64,15 +66,17 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                         Color c = mat.color;
 
                         if (!originalColor.HasValue)
+                        {
                             originalColor = c;
+                        }
 
                         mat.color = newColor;
                     }
                 }
 
-                if (!onlyApplyToRootObj)
+                if (!onlyApplyToRoot)
                 {
-                    renderers = gobj.GetComponentsInChildren<Renderer>();
+                    renderers = gameObject.GetComponentsInChildren<Renderer>();
                     for (int i = 0; i < renderers.Length; i++)
                     {
                         Material[] mats = renderers[i].materials;

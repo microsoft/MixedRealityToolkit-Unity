@@ -72,7 +72,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// If optional parameters are needed, this method allows for these to be passed in.
         /// </remarks>
         /// <param name="command">The command to send.</param>
-        /// <para name="optionalParameters">The set of key-vair pairs to send as command parameters.</para>
+        /// <param name="optionalParameters">The set of key-vair pairs to send as command parameters.</param>
         public virtual void SendCommand(string command, Dictionary<string, object> optionalParameters)
         {
             if (DataController != null)

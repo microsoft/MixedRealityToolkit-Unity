@@ -112,7 +112,7 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
         /// </summary>
         /// <param name="clipName">The name to give to the clip.</param>
         /// <param name="waveData">The audio data which will be contained within the clip.</param>
-        /// <param name="samples">The number of audio samples per channel in the <paramref name="waveBytes"/> array.</param>
+        /// <param name="samples">The number of audio samples per channel in the <paramref name="waveData"/> array.</param>
         /// <param name="channels">The number of audio channels, typically 1 (mono) or 2 (stereo).</param>
         /// <param name="sampleRate">The frequency rate of the audio data; for example, 44100 Hz.</param>
         /// <returns>A Unity AudioClip object containing the provided sound data.</returns>

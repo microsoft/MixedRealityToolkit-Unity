@@ -201,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
         /// <summary>
-        /// Calculate an integral level from 0 to &lt; <paramref name="numIntegralLevels"/> based on charging state and <paramref name="analogLevel"/>.
+        /// Calculate an integral level from 0 to &lt; <paramref name="numIntegralLevels"/> based on charging state and <paramref name="level"/>.
         /// </summary>
         /// <param name="level">Current battery level from 0 to 1 inclusive.</param>
         /// <param name="charging">Whether it is currently in the state of being charged.</param>
@@ -213,7 +213,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
             if (charging)
             {
-                /// any algorithm desired for charging
+                // any algorithm desired for charging
                 integralLevel = Math.Min((int)((0.1 + level) * numIntegralLevels), numIntegralLevels - 1);
             }
             else
