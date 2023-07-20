@@ -768,7 +768,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             });
 
             // Switch to motion controller
-            var iss = PlayModeTestUtilities.GetInputSimulationService();
+            var iss =  PlayModeTestUtilities.GetInputSimulationService();
             var oldHandSimMode = iss.ControllerSimulationMode;
             iss.ControllerSimulationMode = ControllerSimulationMode.MotionController;
             TestMotionController motionController = new TestMotionController(Handedness.Right);

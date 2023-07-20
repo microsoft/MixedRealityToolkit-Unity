@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
 {
     /// <summary>
-    /// Custom drawer for the CameraSettings object.
+    /// A custom property drawer for <see cref="CameraSimulationSettings"/> fields.
     /// </summary>
     [CustomPropertyDrawer(typeof(CameraSimulationSettings))]
     public class CameraSimulationSettingsDrawer : PropertyDrawer
@@ -35,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
             return PropertyDrawerUtilities.CalculatePropertyHeight(15);
         }
 
+        /// <inheritdoc />
         public override void OnGUI(
             Rect position,
             SerializedProperty property,

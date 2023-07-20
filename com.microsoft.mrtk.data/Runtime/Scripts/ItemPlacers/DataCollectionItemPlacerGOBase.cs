@@ -13,17 +13,21 @@ namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
     /// A data collection item placer base implementation that supports paging.
-    ///
+    /// </summary>
+    /// <remarks>
+    /// <para>
     /// This is a base object that can be derived from to support more complex scenarios.
-    ///
+    /// </para>
+    /// <para>
     /// A typical item placer will populate a UX element designed to present lists or grids of
     /// items, and typically also supports paging and/or scrolling for larger lists.
-    ///
-    /// TODO: Make a simpler GO base class that is used in DataConsumerCollection so that it is not
-    /// assumed what functionality may be desired in an item placer.
-    /// </summary>
+    /// </para>
+    /// </remarks>
     public abstract class DataCollectionItemPlacerGOBase : MonoBehaviour, IDataCollectionItemPlacer
     {
+        // TODO: Make a simpler GO base class that is used in DataConsumerCollection so that it is not
+        // assumed what functionality may be desired in an item placer.
+
         [Tooltip("(Optional) Private request reference or ID that is provided with every request for collection items to correlate the PlaceItem calls to the original request.")]
         [SerializeField, Experimental]
         protected string requestRef = "";
@@ -71,11 +75,30 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         protected enum State
         {
-            Requested = 0,          // Requested but not yet received
-            Visible,                // Currently visible
-            Prefetched,             // Prefetched but not yet visible
-            Removable,              // Removable
-            StashRemovable          // Temporarily stash removables that are still being fetched
+            /// <summary>
+            /// Requested but not yet received.
+            /// </summary>
+            Requested = 0,
+
+            /// <summary>
+            /// Currently visible.
+            /// </summary>
+            Visible,
+
+            /// <summary>
+            /// Prefetched but not yet visible.
+            /// </summary>
+            Prefetched,
+
+            /// <summary>
+            /// Removable
+            /// </summary>
+            Removable,
+
+            /// <summary>
+            /// Temporarily stash removable entries that are still being fetched. 
+            /// </summary>
+            StashRemovable
         }
 
         protected class ItemInfo
@@ -101,8 +124,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Item placer is going into attached state either after initialization or after being dormant in game object pool.
         /// </summary>
         /// <remarks>
-        /// NOTE: if derived class needs to do more Attach readiness logic, this can be done
-        /// by overriding AttachItemPlacer
+        /// NOTE: if derived class needs to do more <see cref="Attach"/> readiness logic, this can be done
+        /// by overriding <see cref="AttachItemPlacer"/>.
         /// </remarks>
         public void Attach()
         {
@@ -136,8 +159,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Item placer is going into detached state either before returning in game object pool or destroy
         /// </summary>
         /// <remarks>
-        /// NOTE: if derived class needs to do more Detach readiness logic, this can be done
-        /// by overriding AttachItemPlacer
+        /// NOTE: if derived class needs to do more <see cref="Detach"/> readiness logic, this can be done
+        /// by overriding <see cref="DetachItemPlacer"/>.
         /// </remarks>
         public void Detach()
         {
@@ -150,19 +173,17 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
         /// <summary>
-        /// Perform additional attach prep in derived class
+        /// Perform additional attach prep in derived class.
         /// </summary>
         protected virtual void AttachItemPlacer()
         {
-
         }
 
         /// <summary>
-        /// Perform additional detach teardown in derived class
+        /// Perform additional detach teardown in derived class.
         /// </summary>
         protected virtual void DetachItemPlacer()
         {
-
         }
 
         protected void CheckForEventsToTrigger()
@@ -313,7 +334,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
         /// <summary>
         /// Can be called for debug purposes to ensure the state is always consistent
-        /// between _itemStateByIndex and _ItemsByState
+        /// between <see cref="_itemStateByIndex"/> and <see cref="_itemsByState"/>.
         /// </summary>
         private void DebugCheckStateIntegrity()
         {
@@ -402,15 +423,19 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Purge all game objects that have been queued for removal.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// Normally items are removed as soon as they have been scrolled out of visibility, but
         /// to allow for transition effects, that default behavior for all scroll related methods
         /// can be delayed and the items can be manually purged with this method.
-        ///
+        /// </para>
+        /// <para>
         /// NOTE: if objects are not purged, they will indefinitely be referenced by this item placer,
         /// creating an effective memory leak.
-        ///
+        /// </para>
+        /// <para>
         /// This is useful for purging all previously visible items, such as
         /// after a transition effect, such as fade out, is done.
+        /// </para>
         /// </remarks>
         public void PurgeAllRemovableGameObjects()
         {
@@ -440,15 +465,19 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Purge a range of game objects that have been queued for removal.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// Normally items are removed as soon as they have been scrolled out of visibility, but
         /// to allow for transition effects, that default behavior for all scroll related methods
         /// can be delayed and the items can be manually purged with this method.
-        ///
+        /// </para>
+        /// <para>
         /// NOTE: if objects are not purged, they will indefinitely be referenced by this item placer,
         /// creating an effective memory leak.
-        ///
+        /// </para>
+        /// <para>
         /// This is useful for purging a series of previously visible items, such as
         /// after a transition effect, such as fade out, is done.
+        /// </para>
         /// </remarks>
         /// <param name="firstItemIdx">Index into collection of first item to purge.</param>
         /// <param name="itemCount">Number of items to purge.</param>
@@ -475,9 +504,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
         /// <summary>
-        /// Makes copy if keys to allow modification of the dictionary during iteration
+        /// Makes copy if keys to allow modification of the dictionary during iteration.
         /// </summary>
-        /// <param name="itemsByState">one of the state item dicts.</param>
+        /// <param name="stateItems">one of the state item dictionaries.</param>
         /// <returns>An array containing copies of ItemInfo objects, or null if zero entries to avoid alloc.</returns>
         private ItemInfo[] GetCopyOfStateItems(Dictionary<int, ItemInfo> stateItems)
         {
@@ -521,9 +550,9 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
         /// <summary>
-        /// Set the Data Consumer that is providing items for this item placer.
+        /// Set the data consumer collection that is providing items for this item placer.
         /// </summary>
-        /// <param name="removeExitingObjectsNow">Release objects going out of visibility back to object pool immediately.</param>
+        /// <param name="dataConsumerCollection">Release objects going out of visibility back to object pool immediately.</param>
         /// <returns>Actual number of items scrolled.</returns>
         public void SetDataConsumerCollection(IDataConsumerCollection dataConsumerCollection)
         {
@@ -582,8 +611,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Scroll visible data window to the specified first visible item
         /// </summary>
         /// <remarks>
-        /// Note if objects are not removed immediately, they must be removed later (such as after a transition effect)
-        /// using PurgeAllRemovableGameObjects() or PurgeRemovableGameObjectRange()
+        /// Note, if objects are not removed immediately, they must be removed later (such as after a transition effect)
+        /// using  <see cref="PurgeAllRemovableGameObjects"/> or <see cref="PurgeRemovableGameObjectRange"/>
         /// </remarks>
         /// <param name="firstItem">The first visible item to navigate to.</param>
         /// <param name="purgeExitingObjectsNow">Purge no longer visible objects immediately and return back to object pool.</param>
@@ -597,12 +626,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Scroll visible data window by itemCount items forward or backward
         /// </summary>
         /// <remarks>
-        /// Note if objects are not removed immediately, they must be removed later (such as after a transition effect)
-        /// using PurgeAllRemovableGameObjects() or PurgeRemovableGameObjectRange()
+        /// Note, if objects are not removed immediately, they must be removed later (such as after a transition effect)
+        /// using <see cref="PurgeAllRemovableGameObjects"/> or <see cref="PurgeRemovableGameObjectRange"/>.
         /// </remarks>
         /// <param name="itemCount">THe number of items to scroll. Negative=previous. Positive=next.</param>
         /// <param name="purgeExitingObjectsNow">Purge no longer visible objects immediately and return back to object pool.</param>
-        /// <returns>Actual number of items scrolled. Note: Always positive for previous or next.</returns>
+        /// <returns>Actual number of items scrolled. This must always be positive for previous or next.</returns>
         public int MoveRelative(int itemCount, bool purgeExitingObjectsNow = true)
         {
             int actualScrollAmount;
@@ -1212,11 +1241,10 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
         /// <summary>
-        /// Search through game object hierarchy for the nearest IDataCollectionEvents implementation.
+        /// Search through game object hierarchy for the nearest <see cref="IDataCollectionEvents"/> implementation.
         /// </summary>
-        ///
         /// <remarks>
-        /// This protected method is unique to collection related Data Consumers. A CollectionEvents is used to
+        /// This protected method is unique to collection related data consumers. A <see cref="DataCollectionEventsGOBase"/> is used to
         /// notify other systems that various changes in the state have occurred. This is useful for
         /// changing the state of paging and scrolling UX elements and for triggering transition effects.
         /// </remarks>

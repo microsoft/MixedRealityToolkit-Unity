@@ -17,17 +17,21 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// </summary>
     ///
     /// <remarks>
+    /// <para>
     /// Each item in the collection can be of arbitrary type(s) and complexity, but there is an assumption that each item
     /// contains the same types of information and organized in the same way.  Collections can be nested as well.
-    ///
+    /// </para>
+    /// <para>
     /// KeyPaths within a collection item are typically "local" or "view" key paths that are treated as relative paths
     /// that will then be combined with the fully resolved (absolute) keypath of the specific item in the collection container.
-    ///
+    /// </para>
+    /// <para>
     /// When a change in a collection is received, this object will instantiate game objects for each collection item
     /// using the specified prefab.  That prefab can contain any number of its own Data Consumers. Note that the data consumers
     /// in an object should not be assigned a data source for any purpose other than testing. These data sources will be replaced when
     /// the prefab is instantiated and modified via data from the data source associated with this data consumer,
     /// whenever a request for one of the list items is made.
+    /// </para>
     /// </remarks>
     [AddComponentMenu("MRTK/Data Binding/Consumers/Data Consumer Collection")]
     public class DataConsumerCollection : DataConsumerGOBase, IDataConsumerCollection
@@ -98,9 +102,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
         /// <summary>
-        /// Search through game object hierarchy for the nearest IDataCollectionItemPlacer implementation.
+        /// Search through game object hierarchy for the nearest <see cref="IDataCollectionItemPlacer"/> implementation.
         /// </summary>
-        ///
         /// <remarks>
         /// This protected method is unique to collection related Data Consumers. An Item Placer is used to
         /// place game objects (usually a prefab), into the viewers experience when all or a subset
@@ -122,7 +125,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Return the component types managed by this Data Consumer.
         /// </summary>
-        ///
         /// <remarks>
         /// Normally this returns Unity specific component types, but this one only needs to manage itself.
         /// </remarks>
@@ -136,12 +138,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Report whether this data consumer should manage components in any of its child game objects.
         /// </summary>
-        ///
         /// <remarks>
         /// A typical collection only manifests in a single list, so the default behavior is false, but can
         /// be overridden for handling more complex scenarios.
         /// </remarks>
-        /// <returns><see langword="true"/> if manage DataConsumerCollection objects in this GO's children game objects, or <see langword="false"/> if only manage this one.</returns>
+        /// <returns><see langword="true"/> if manage <see cref="DataConsumerCollection"/> objects in this GO's children game objects, or <see langword="false"/> if only manage this one.</returns>
         protected override bool ManageChildren()
         {
             return false;
@@ -150,13 +151,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// For all components managed by this data consumer, add keypath(s) to listen for.
         /// </summary>
-        ///
         /// <remarks>
+        /// <para>
         /// For a collection, the only keypath typically is the keypath explicitly assigned to this collection by the inspector.
         /// This keypath is for the collection itself in the data source. For example, if this list is designed to show an address
         /// book of contacts, and the JSON data for the data source looks like this:
-        ///
-        ///    {
+        /// </para>
+        /// <code>
+        ///     {
         ///       "data_result" :
         ///         {
         ///            "result_code" : 0,
@@ -176,13 +178,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
         ///            }
         ///        }
         ///     }
-        ///
-        /// then the key path would be: "data_result.address_books.primary_contacts.persons"
-        ///
+        /// </code>
+        /// <para>
+        /// Then the key path would be: <c>data_result.address_books.primary_contacts.persons</c>.
+        /// </para>
         /// </remarks>
-        ///
         /// <param name="component">The component of that type, typically the game object on which this script exists.</param>
-        ///
         protected override void AddVariableKeyPathsForComponent(Component component)
         {
             if (collectionKeyPath != null)
@@ -200,15 +201,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </summary>
         ///
         /// <remarks>
-        /// The only key path typically reported is the keypath provided by AddVariableKeyPathsForComponent, which is the
+        /// The only key path typically reported is the keypath provided by <see cref="AddVariableKeyPathsForComponent"/>, which is the
         /// key path of the collection itself in the data source.
-        ///
         /// </remarks>
         ///
         /// <param name="dataSource">The data source reporting a data change in the collection.</param>
         /// <param name="resolvedKeyPath">Fully resolved key path after key mapping and disambiguating any parent collections.</param>
         /// <param name="collectionLocalKeypath">the originally provided local key path, usually the one provided in the Unity inspector.</param>
-        /// <param name="itemKeypath">An object that represents the changed collection or item in the collection, typically its index.</param>
+        /// <param name="itemIdentifier">An object that represents the changed collection or item in the collection, typically its index.</param>
         /// <param name="dataChangeType">The nature of the data change, either at collection level or individual item level.</param>
         protected override void ProcessDataChanged(IDataSource dataSource, string resolvedKeyPath, string collectionLocalKeypath, object itemIdentifier, DataChangeType dataChangeType)
         {
@@ -274,10 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Request the specified range of items and provide them to the item placer.
         /// </summary>
-        ///
-        /// <remarks>
-        /// See RequestCollectionItems() method of IDataConsumer interface.
-        /// </remarks>
+        /// <seealso cref="IDataConsumerCollection.RequestCollectionItems"/>
         public void RequestCollectionItems(IDataCollectionItemPlacer itemPlacer, int indexRangeStart, int indexRangeCount, object requestRef)
         {
             itemPlacer.StartPlacement();
@@ -289,13 +286,17 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </summary>
         ///
         /// <remarks>
+        /// <para>
         /// For the specified range, instantiate prefabs and provide them to the specified item placer.
-        ///
+        /// </para>
+        /// <para>
         /// Any prefab data consumers in the prefab are automatically connected to the same data source as the collection itself, and
         /// its key path prefix is set to the full resolve prefix for this collection combined with the array index position of the item in the
         /// array.
-        ///
-        /// NOTE: If you need to know that an item has been created, override ItemAdded().
+        /// </para>
+        /// <para>
+        /// NOTE: If you need to know that an item has been created, override <see cref="ItemAdded"/>.
+        /// </para>
         /// </remarks>
         ///
         /// <param name="itemPlacer">Item placer to receive the specified range of prefabs.</param>
@@ -340,7 +341,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Optional logic that can be provided by a subclasses that's triggered when an item is added to this collection.
         /// </summary>
         /// <param name="itemIndex">The collection item index of the item being added.</param>
-        /// <param name="itemPrefab">The gameobject or prefab being added.</param>
+        /// <param name="itemPrefab">The game object or prefab being added.</param>
         public virtual void ItemAdded(int itemIndex, GameObject itemPrefab)
         {
             // No default behavior. Provided to override if useful.
@@ -350,7 +351,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Optional logic that can be provided by a subclasses that's triggered when an item is removed from collection.
         /// </summary>
         /// <param name="itemIndex">The collection item index of the item being removed.</param>
-        /// <param name="itemPrefab">The gameobject or prefab being removed.</param>
+        /// <param name="itemPrefab">The game object or prefab being removed.</param>
         public virtual void ItemRemoved(int itemIndex, GameObject itemPrefab)
         {
             // No default behavior. Provided to override if useful.
@@ -363,7 +364,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <remarks>
         /// Return the collection size at the time of this call. Note that no attempt is made to track changes in collection makeup or size
         /// during the course of processing a collection.
-        ///
         /// </remarks>
         /// <returns>Collection size.</returns>
         public int GetCollectionItemCount()
@@ -467,10 +467,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </summary>
         ///
         /// <remarks>
+        /// <para>
         /// This is the mechanism for returning a prefab to a pool of available prefabs so that they
         /// can be repopulated with new embedded data, but otherwise are ready-to-go.
-        ///
-        /// Note: If you need to know when an item has been removed, override ItemRemoved().
+        /// </para>
+        /// <para>
+        /// Note: If you need to know when an item has been removed, override <see cref="ItemRemoved"/>.
+        /// </para> 
         /// </remarks>
         ///
         /// <param name="itemIndex">Index of the game object being returned.</param>
@@ -589,7 +592,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
         /// <summary>
-        /// Update all IDataConsumer Components in the prefab GO hierarchy.
+        /// Update all <see cref="IDataConsumer"/> components in the prefab GO hierarchy.
         /// </summary>
         ///
         /// <remarks>

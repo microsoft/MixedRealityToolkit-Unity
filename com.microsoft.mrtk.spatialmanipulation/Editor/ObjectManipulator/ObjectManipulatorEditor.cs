@@ -98,6 +98,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 
         static bool baseInteractableFoldout = false;
 
+        /// <inheritdoc/>
         protected override void DrawProperties()
         {
             EditorGUILayout.Space();

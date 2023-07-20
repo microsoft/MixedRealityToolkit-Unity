@@ -14,17 +14,21 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// Dispatch commands along with reference data bound to this consumer.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// This command dispatcher is useful for enabling UX elements, such as action buttons, to
     /// invoke functionality that is specific to this instance of an data bound entity. This
     /// is particularly useful in combination with DataConsumerCollection where each item
     /// is bound to different data and yet each item may wish to invoke functionality specific to
     /// itself via some form of unique identifier.
-    ///
+    /// </para>
+    /// <para>
     /// As an example, given a list of contacts that has been populated via data binding, each entry may have
     /// an "Edit" and a "Delete" button for that contact.  With this component, it's possible to invoke a
     /// command from the "Edit" and "Delete" button prefabs that is automatically bound to the correct "contactID"
     /// field so that the command receiver is able to invoke the appropriate functionality for the specific
-    /// contact associated with the contact ID.</remarks>
+    /// contact associated with the contact ID.
+    /// </para>
+    /// </remarks>
     [AddComponentMenu("MRTK/Data Binding/Consumers/Data Consumer Command Dispatcher")]
     public class DataConsumerCommandDispatcher : DataConsumerGOBase
     {
@@ -62,12 +66,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
         /// <summary>
-        /// Send a command through the Data Controller with optional parameters
+        /// Send a command through the <see cref="IDataController"/>, with optional parameters
         /// </summary>
         /// <remarks>
         /// If optional parameters are needed, this method allows for these to be passed in.
         /// </remarks>
         /// <param name="command">The command to send.</param>
+        /// <para name="optionalParameters">The set of key-vair pairs to send as command parameters.</para>
         public virtual void SendCommand(string command, Dictionary<string, object> optionalParameters)
         {
             if (DataController != null)

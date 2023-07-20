@@ -6,16 +6,23 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
+    /// <summary>
+    /// A custom property drawer for fields decorated with the <see cref="VariableRangeAttribute"/> attribute.
+    /// </summary>
     [CustomPropertyDrawer(typeof(VariableRangeAttribute))]
     public class VariableRangePropertyDrawer : PropertyDrawer
     {
         private GUIStyle labelStyle;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VariableRangePropertyDrawer"/> class.
+        /// </summary>
         public VariableRangePropertyDrawer()
         {
             labelStyle = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).label;
         }
 
+        /// <inheritdoc />
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             EditorGUI.BeginProperty(position, label, property);

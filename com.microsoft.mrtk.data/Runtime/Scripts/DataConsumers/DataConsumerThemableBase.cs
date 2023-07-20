@@ -16,7 +16,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
     // This helps get around issue when mixing generics, concrete classes and interfaces in the inheritance.
     public abstract class DataConsumerThemableBase : DataConsumerGOBase, IDataBindable
     {
-        [Tooltip("One or more data binding profiles to map data and theme keypaths to the materials they should manage.")]
+        [Tooltip("One or more data binding profiles to map data and theme key paths to the materials they should manage.")]
         [SerializeField]
         private DataBindingProfile[] dataBindingProfiles;
         public DataBindingProfile[] DataBindingProfiles
@@ -32,7 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
         /// <summary>
-        /// All additional information related to a single DataBindingProfile.
+        /// All additional information related to a single <see cref="DataBindingProfile"/>.
         /// </summary>
         protected class BindingInfo
         {
@@ -54,23 +54,32 @@ namespace Microsoft.MixedReality.Toolkit.Data
     }
 
     /// <summary>
-    /// This class provides a way to load a resource via many different
-    /// potential retrieval means based on the nature of the value received
-    /// from the data source:
-    ///
-    ///    Object of correct type provided directly
-    ///    Numeric index lookup
-    ///    <key,value> pair lookup
-    ///    Resource path to load a Unity resource ("resource://pathToUnityResource")
-    ///    Streaming asset path to a file that can be loaded using any appropriate means ("file://pathToUnityStreamingAsset")
-    ///
-    /// Generic type T is the type of object expected from the data source
-    /// Generic type U is the Component type in the scene hierarchy where that object of type T will be modified.
-    ///
+    /// This class provides a way to load a resource via many different sources.
     /// </summary>
-
-    /// <typeparam name="T">The type of the object expected such as Image, Material, Texture2D, Sprite, Mesh</typeparam>
-    /// <typeparam name="U">The type of Component to be managed, typically a Renderer, Material, or Texture2D</typeparam>
+    /// <remarks>
+    /// <para>
+    /// The potential sources are based on the nature of the value received
+    /// from the data source. For example the methods of the value retrieval can be:
+    /// </para>
+    /// <list type="bullet">
+    ///    <item>
+    ///        <description>Object of correct type provided directly</description>
+    ///    </item>
+    ///    <item>
+    ///        <description>Numeric index lookup</description>
+    ///    </item>
+    ///    <item>
+    ///        <description>Key-value pair lookup</description>
+    ///    </item>
+    ///    <item>
+    ///        <description>Resource path to load a Unity resource; for example, "resource://pathToUnityResource"</description>
+    ///    </item>
+    ///    <item>
+    ///        <description>Streaming asset path to a file that can be loaded using any appropriate means; for example, "file://pathToUnityStreamingAsset"</description>
+    ///    </item>
+    /// </list>
+    /// </remarks>
+    /// <typeparam name="T">The type of the object expected from the data source, such as Image, Material, Texture2D, Sprite, Mesh</typeparam>
     [Serializable]
     public abstract class DataConsumerThemableBase<T> : DataConsumerThemableBase where T : class
     {
@@ -98,33 +107,42 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected abstract void SetObject(Component component, object inValue, T objectToSet);
 
         /// <summary>
-        /// Given an int N, get the nth entry in lookup as a theme keypath to retrieve theme value
+        /// Get a value within a binding profile using the theme key path at index <paramref name="n"/>.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// Override this method to support data sources that provide integral values
         /// that can be then used as an index lookup of the appropriate theme
         /// relative or absolute keypath. If not already present in the returned
         /// value, the keypath will be appended to the base keypath
         /// provided in the DataConsumerThemeHelper.
-        ///
-        /// Example:
-        ///
+        /// </para>
+        /// <para>
+        /// For example:
+        /// </para>
+        /// <para>
         /// Given the stored value is an integer status where 0=new, 1=in progress and 2=done
         /// and it is desired to load a sprite for the correct status in the look and feel of
         /// the current theme.
-        ///
-        ///  The local lookup in the derived class can be structured as an absolute keypath as follows:
+        /// </para>
+        /// <para>
+        ///  The local lookup in the derived class can be structured as an absolute keypath as follows: 
+        /// </para>
+        /// <code>
         ///     0 : Status.Sprites.New
         ///     1 : Status.Sprites.InProgress
         ///     2 : Status.Sprites.Done
-        ///
+        /// </code>
+        /// <para>
         /// This keypath returned from this method will be used to retrieve its value via the
-        /// DataConsuemerThemeHelper.  Whatever value is stored in the matching field of the
+        /// <see cref="DataConsumerThemeHelper"/>.  Whatever value is stored in the matching field of the
         /// theme data source will then be used to autodetect the method of retrieving the
         /// final sprite and the sprite will be retrieved and returned.
+        /// </para>
         /// </remarks>
-        /// <param name="n">Index for looking up object of type T</param>
-        /// <returns>Found object of type T or null if not found</returns>
+        /// <param name="binding">The binding to use when looking up the value at index <paramref name="n"/> in the <see cref="DataBindingProfile.ValueToThemeKeypathLookup"/> array.</param>
+        /// <param name="n">Index for looking up object of type <typeparamref name="T"/></param>
+        /// <returns>Found object of type <typeparamref name="T"/> or <see langword="null"/> if not found.</returns>
         protected virtual T GetObjectByThemeLookupIndex(BindingInfo binding, int n)
         {
             if (n < binding.BindingProfile.ValueToThemeKeypathLookup.Length)
@@ -138,7 +156,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
         /// <summary>
-        /// Given a string key, lookup desired theme keypath to retrieve the theme value.
+        /// Get a value within a binding profile using this <paramref name="keyValue"/> string.
         /// </summary>
         /// <remarks>
         /// Override this method to support data sources that provide string key values
@@ -147,6 +165,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// value, the keypath will be appended to the base keypath
         /// provided in the DataConsumerThemeHelper.
         /// </remarks>
+        /// <param name="binding">The binding to use when resolve the request object at index <paramref name="n"/></param>
         /// <param name="keyValue">Key value provided by data source</param>
         /// <returns>Found object of type T or null if not found</returns>
         protected virtual T GetObjectByThemeLookupKey(BindingInfo binding, string keyValue)
@@ -316,13 +335,29 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </summary>
         /// <remarks>
         /// The object can be any of a number of types and loaded accordingly:
-        ///
-        /// int                     Use as index to select Nth entry in ValueToObjectInfo
-        /// T                       Directly use the value to replace the managed variable of that type
-        /// "resource://<<path>>"   Use path to load a Unity Resource
-        /// "file://<<path>>"       Use path to load a streaming asset
-        /// other string            Use string value to find entry by value in ValueToObjectInfo
-        ///
+        ///  
+        /// <list type="bullet">
+        ///     <item>
+        ///         <term>int</term>
+        ///         <description>Use as index to select Nth entry in ValueToObjectInfo.</description>         
+        ///     </item>
+        ///     <item>
+        ///         <term>T</term>
+        ///         <description>Directly use the value to replace the managed variable of that type.</description>         
+        ///     </item>
+        ///     <item>
+        ///         <term>"resource://[path]"</term>
+        ///         <description>Use path to load a Unity Resource.</description>         
+        ///     </item>
+        ///     <item>
+        ///         <term>"file://[path]"</term>
+        ///         <description>Use path to load a streaming asset.</description>         
+        ///     </item>
+        ///     <item>
+        ///         <term>other string</term>
+        ///         <description>Use string value to find entry by value in ValueToObjectInfo.</description>         
+        ///     </item>
+        /// </list>
         /// </remarks>
         /// <param name="dataSource">Which data source called this method.</param>
         /// <param name="resolvedKeyPath">Fully resolved keypath for datum that changed.</param>

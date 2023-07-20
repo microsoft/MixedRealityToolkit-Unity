@@ -598,7 +598,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// <summary>
         /// Returns true if the solver handler's transform target is not valid
         /// </summary>
-        /// <returns>true if not tracking valid hands and/or target, false otherwise</returns>
+        /// <returns><see langword="true"/> if not tracking valid hands and/or target, <see langword="false"/> otherwise</returns>
         private bool IsInvalidTracking()
         {
             if (trackingTarget == null || trackingTarget.transform.parent == null)

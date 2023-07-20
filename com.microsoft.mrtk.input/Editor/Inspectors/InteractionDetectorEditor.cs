@@ -5,10 +5,10 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.Input.Editor
 {
-    [CustomEditor(typeof(InteractionDetector))]
     /// <summary>
-    /// Custom editor for the basic interaction mode detector implementation.
+    /// A custom editor for the <see cref="InteractionDetector"/> class.
     /// </summary>
+    [CustomEditor(typeof(InteractionDetector))]
     public class InteractionDetectorEditor : UnityEditor.Editor
     {
         private SerializedProperty interactor;
@@ -23,6 +23,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
 
         private SerializedProperty modeOnSelect;
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
         public void OnEnable()
         {
             interactor = serializedObject.FindProperty("interactor");
@@ -33,6 +36,9 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
             modeOnSelect = serializedObject.FindProperty("modeOnSelect");
         }
 
+        /// <summary>
+        /// Called by the Unity editor to render custom inspector UI for this component.
+        /// </summary>
         public override void OnInspectorGUI()
         {
             EditorGUILayout.PropertyField(interactor);

@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the Apache License.
 
+// Disable "missing XML comment" warning for samples. While nice to have, this XML documentation is not required for samples.
+#pragma warning disable CS1591
+
 using System;
 using System.IO;
 using System.Linq;
@@ -10,6 +13,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Build
 {
+    /// <summary>
+    /// A static class that provides functions for compiling the example scenes via command line.
+    /// </summary>
     public static class BuildApp
     {
         private static string[] scenes = {
@@ -49,6 +55,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Build
 
         private static string buildPath = "build";
 
+        /// <summary>
+        /// Build the Unity project's example scenes.
+        /// </summary>
         public static void StartCommandLineBuild()
         {
             ParseBuildCommandLine();
@@ -82,6 +91,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Build
             EditorApplication.Exit(success ? 0 : 1);
         }
 
+        /// <summary>
+        /// Ensure that the Text Mesh Pro assets are included in the Unity project.
+        /// </summary>
+        /// <remarks>
+        /// This is currently not functioning correctly. When running via command line,
+        /// the assets are imported, but are not available in the built application.
+        /// </remarks>
         public static void EnsureTMPro()
         {
             string assetsFullPath = Path.GetFullPath("Assets/TextMesh Pro");
@@ -129,3 +145,4 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Build
         }
     }
 }
+#pragma warning restore CS1591

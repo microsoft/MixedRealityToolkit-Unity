@@ -5,6 +5,9 @@ using UnityEditor;
 
 namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
 {
+    /// <summary>
+    /// A custom editor for the <see cref="Solver"/> class.
+    /// </summary>
     [CustomEditor(typeof(Solver))]
     [CanEditMultipleObjects]
     public class SolverEditor : UnityEditor.Editor
@@ -31,6 +34,9 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Editor
             lifetimeProperty = serializedObject.FindProperty("lifetime");
         }
 
+        /// <summary>
+        /// Called by the Unity editor to render custom inspector UI for this component.
+        /// </summary>
         public override void OnInspectorGUI()
         {
             serializedObject.Update();

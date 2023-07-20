@@ -40,61 +40,227 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         private static readonly Color ProfessionalThemeColorTint25 = new Color(0.75f, 0.75f, 0.75f);
         private static readonly Color ProfessionalThemeColorTint10 = new Color(0.9f, 0.9f, 0.9f);
 
+        /// <summary>
+        /// A color based on the Unity theme color at a 100% tint.
+        /// </summary>
+        /// <remarks>
+        /// The Unity theme color is based on whether the user is using a Unity Pro license.
+        /// </remarks>
         public static Color ColorTint100 => EditorGUIUtility.isProSkin ? ProfessionalThemeColorTint100 : PersonalThemeColorTint100;
+
+        /// <summary>
+        /// A color based on the Unity theme color at a 75% tint.
+        /// </summary>
+        /// <remarks>
+        /// The Unity theme color is based on whether the user is using a Unity Pro license.
+        /// </remarks>
         public static Color ColorTint75 => EditorGUIUtility.isProSkin ? ProfessionalThemeColorTint75 : PersonalThemeColorTint75;
+
+        /// <summary>
+        /// A color based on the Unity theme color at a 50% tint.
+        /// </summary>
+        /// <remarks>
+        /// The Unity theme color is based on whether the user is using a Unity Pro license.
+        /// </remarks>
         public static Color ColorTint50 => EditorGUIUtility.isProSkin ? ProfessionalThemeColorTint50 : PersonalThemeColorTint50;
+
+        /// <summary>
+        /// A color based on the Unity theme color at a 25% tint.
+        /// </summary>
+        /// <remarks>
+        /// The Unity theme color is based on whether the user is using a Unity Pro license.
+        /// </remarks>
         public static Color ColorTint25 => EditorGUIUtility.isProSkin ? ProfessionalThemeColorTint25 : PersonalThemeColorTint25;
+
+        /// <summary>
+        /// A color based on the Unity theme color at a 10% tint.
+        /// </summary>
+        /// <remarks>
+        /// The Unity theme color is based on whether the user is using a Unity Pro license.
+        /// </remarks>
         public static Color ColorTint10 => EditorGUIUtility.isProSkin ? ProfessionalThemeColorTint10 : PersonalThemeColorTint10;
 
+        /// <summary>
+        /// A color to use for disabled elements in custom editor UI.
+        /// </summary>
         public static readonly Color DisabledColor = new Color(0.6f, 0.6f, 0.6f);
+
+        /// <summary>
+        /// A color to use for warning elements in custom editor UI.
+        /// </summary>
         public static readonly Color WarningColor = new Color(1f, 0.85f, 0.6f);
+
+        /// <summary>
+        /// A color to use for error elements in custom editor UI.
+        /// </summary>
         public static readonly Color ErrorColor = new Color(1f, 0.55f, 0.5f);
+
+        /// <summary>
+        /// A color to use for success elements in custom editor UI.
+        /// </summary>
         public static readonly Color SuccessColor = new Color(0.8f, 1f, 0.75f);
+
+        /// <summary>
+        /// A color to use for selected elements in custom editor UI.
+        /// </summary>
         public static readonly Color SectionColor = new Color(0.85f, 0.9f, 1f);
+
+        /// <summary>
+        /// A color to use for dark elements in custom editor UI.
+        /// </summary>
         public static readonly Color DarkColor = new Color(0.1f, 0.1f, 0.1f);
+
+        /// <summary>
+        /// A color to use for square handle elements in custom editor UI.
+        /// </summary>
         public static readonly Color HandleColorSquare = new Color(0.0f, 0.9f, 1f);
+
+        /// <summary>
+        /// A color to use for circle handle elements in custom editor UI.
+        /// </summary>
         public static readonly Color HandleColorCircle = new Color(1f, 0.5f, 1f);
+
+        /// <summary>
+        /// A color to use for sphere handle elements in custom editor UI.
+        /// </summary>
         public static readonly Color HandleColorSphere = new Color(1f, 0.5f, 1f);
+
+        /// <summary>
+        /// A color to use for axis handle elements in custom editor UI.
+        /// </summary>
         public static readonly Color HandleColorAxis = new Color(0.0f, 1f, 0.2f);
+
+        /// <summary>
+        /// A color to use for rotation handle elements in custom editor UI.
+        /// </summary>
         public static readonly Color HandleColorRotation = new Color(0.0f, 1f, 0.2f);
+
+        /// <summary>
+        /// A color to use for tangent handle elements in custom editor UI.
+        /// </summary>
         public static readonly Color HandleColorTangent = new Color(0.1f, 0.8f, 0.5f, 0.7f);
+
+        /// <summary>
+        /// A color to use for line velocity elements in custom editor UI.
+        /// </summary>
         public static readonly Color LineVelocityColor = new Color(0.9f, 1f, 0f, 0.8f);
 
         #endregion Color
 
         #region Sizes
 
-        // default UI sizes
+        /// <summary>
+        /// The default font size for title elements in custom editor UI.
+        /// </summary>
         public const int TitleFontSize = 14;
+
+        /// <summary>
+        /// The default font size for header elements in custom editor UI.
+        /// </summary>
         public const int HeaderFontSize = 11;
+
+        /// <summary>
+        /// The default font size for text elements in custom editor UI.
+        /// </summary>
         public const int DefaultFontSize = 10;
+
+        /// <summary>
+        /// The default width of documentation link elements in custom editor UI.
+        /// </summary>
         public const float DocLinkWidth = 175f;
 
         #endregion Sizes
 
         #region Special unicode characters
 
-        // special characters
+        /// <summary>
+        /// The unicode value for the 'minus sign' character.
+        /// </summary>
         public static readonly string Minus = "\u2212";
+
+        /// <summary>
+        /// The unicode value for the 'plus sign' character.
+        /// </summary>
         public static readonly string Plus = "\u002B";
+
+        /// <summary>
+        /// The unicode value for the 'asterisk operator' character.
+        /// </summary>
         public static readonly string Asterisk = "\u2217";
+
+        /// <summary>
+        /// The unicode value for the 'left arrowhead' character.
+        /// </summary>
         public static readonly string Left = "\u02C2";
+
+        /// <summary>
+        /// The unicode value for the 'right arrowhead' character.
+        /// </summary>
         public static readonly string Right = "\u02C3";
+
+        /// <summary>
+        /// The unicode value for the 'up arrowhead' character.
+        /// </summary>
         public static readonly string Up = "\u02C4";
+
+        /// <summary>
+        /// The unicode value for the 'down arrowhead' character.
+        /// </summary>
         public static readonly string Down = "\u02C5";
+
+        /// <summary>
+        /// The unicode value for the 'multiplication x' character.
+        /// </summary>
+        /// <remarks>
+        /// The 'multiplication x' character also represents a 'close' icon in MRTK.
+        /// </remarks>
         public static readonly string Close = "\u2715";
+
+        /// <summary>
+        /// The unicode value for the 'heart suit' character.
+        /// </summary>
         public static readonly string Heart = "\u2661";
+
+        /// <summary>
+        /// The unicode value for the 'star' character.
+        /// </summary>
         public static readonly string Star = "\u2606";
+
+        /// <summary>
+        /// The unicode value for the 'smiling face' character.
+        /// </summary>
         public static readonly string Emoji = "\u263A";
+
+        /// <summary>
+        /// The unicode value for the 'clockwise open circle arrow' character.
+        /// </summary>
+        /// <remarks>
+        /// The 'clockwise open circle arrow' character also represents a 'reload' icon in MRTK.
+        /// </remarks>
         public static readonly string Reload = "\u21BB";
 
         #endregion Special unicode characters
 
         #region Handy icon textures
 
+        /// <summary>
+        /// A Unity <see cref="Texture"/> representing a 'help' icon.
+        /// </summary>
         public static readonly Texture HelpIcon = EditorGUIUtility.IconContent("_Help").image;
+
+        /// <summary>
+        /// A Unity <see cref="Texture"/> representing a 'success' icon.
+        /// </summary>
         public static readonly Texture SuccessIcon = EditorGUIUtility.IconContent("Collab").image;
+
+        /// <summary>
+        /// A Unity <see cref="Texture"/> representing a 'warning' icon.
+        /// </summary>
         public static readonly Texture WarningIcon = EditorGUIUtility.IconContent("console.warnicon").image;
+
+        /// <summary>
+        /// A Unity <see cref="Texture"/> representing a 'information' icon.
+        /// </summary>
         public static readonly Texture InfoIcon = EditorGUIUtility.IconContent("console.infoicon").image;
 
         // StandardAssets/Textures/MRTK_Logo_Black.png
@@ -103,24 +269,19 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         // StandardAssets/Textures/MRTK_Logo_White.png
         private const string LogoDarkThemeGuid = "fe5cc215f12ea5e40b5021c4040bce24";
 
-        /// <summary> MRTK Logo texture suitable for light theme. </summary>
+        /// <summary>
+        /// The MRTK logo texture suitable for a light theme.
+        /// </summary>
         public static readonly Texture2D LogoLightTheme = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(LogoLightThemeGuid));
 
-        /// <summary> MRTK Logo texture suitable for light theme. </summary>
+        /// <summary> 
+        /// The MRTK logo texture suitable for a dark theme.
+        /// </summary>
         public static readonly Texture2D LogoDarkTheme = AssetDatabase.LoadAssetAtPath<Texture2D>(AssetDatabase.GUIDToAssetPath(LogoDarkThemeGuid));
 
         #endregion Handy icon textures
 
         #region Handy drawables/controls
-
-        /// <summary>
-        /// A data container for managing scrolling lists or nested drawers in custom inspectors.
-        /// </summary>
-        public struct ListSettings
-        {
-            public bool Show;
-            public Vector2 Scroll;
-        }
 
         /// <summary>
         /// Delegate for button callbacks, single index
@@ -171,7 +332,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         /// <param name="buttonText">text to place in button</param>
         /// <param name="options">layout options</param>
-        /// <returns>true if button clicked, false if otherwise</returns>
+        /// <returns><see langword="true"/> if button clicked, <see langword="false"/> if otherwise</returns>
         public static bool RenderIndentedButton(string buttonText, params GUILayoutOption[] options)
         {
             return RenderIndentedButton(() => { return GUILayout.Button(buttonText, options); });
@@ -183,7 +344,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <param name="content">What to draw in button</param>
         /// <param name="style">Style configuration for button</param>
         /// <param name="options">layout options</param>
-        /// <returns>true if button clicked, false if otherwise</returns>
+        /// <returns><see langword="true"/> if button clicked, <see langword="false"/> if otherwise.</returns>
         public static bool RenderIndentedButton(GUIContent content, GUIStyle style, params GUILayoutOption[] options)
         {
             return RenderIndentedButton(() => { return GUILayout.Button(content, style, options); });
@@ -193,7 +354,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// Helper function to support primary overloaded version of this functionality
         /// </summary>
         /// <param name="renderButton">The code to render button correctly based on parameter types passed</param>
-        /// <returns>true if button clicked, false if otherwise</returns>
+        /// <returns><see langword="true"/> if button clicked, <see langword="false"/> if otherwise.</returns>
         public static bool RenderIndentedButton(Func<bool> renderButton)
         {
             bool result = false;
@@ -205,10 +366,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Render documentation button routing to relevant URI
+        /// Render documentation button routing to relevant URI.
         /// </summary>
-        /// <param name="docURL">documentation URL to open on button click</param>
-        /// <returns>true if button clicked, false otherwise</returns>
+        /// <param name="docURL">The documentation URL to open on button click.</param>
+        /// <param name="width">The width of the documentation link button.</param>
+        /// <returns>
+        /// <see langword="true"/> if button clicked, <see langword="false"/> otherwise.
+        /// </returns>
         public static bool RenderDocumentationButton(string docURL, float width = DocLinkWidth)
         {
             if (!string.IsNullOrEmpty(docURL))
@@ -238,7 +402,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// Render a documentation header with button if Object contains HelpURLAttribute
         /// </summary>
         /// <param name="targetType">Type to test for HelpURLAttribute</param>
-        /// <returns>true if object drawn and button clicked, false otherwise</returns>
+        /// <returns><see langword="true"/> if object drawn and button clicked, <see langword="false"/> otherwise.</returns>
         public static bool RenderHelpURL(Type targetType)
         {
             bool result = false;
@@ -259,7 +423,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// Render a documentation header with button for given url value
         /// </summary>
         /// <param name="url">Url to open if button is clicked</param>
-        /// <returns>true if object drawn and button clicked, false otherwise</returns>
+        /// <returns><see langword="true"/> if object drawn and button clicked, <see langword="false"/> otherwise.</returns>
         public static bool RenderDocumentationSection(string url)
         {
             bool result = false;
@@ -292,7 +456,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// <summary>
         /// A button that is as wide as the label
         /// </summary>
-        /// <returns>true if button clicked, false otherwise</returns>
+        /// <returns><see langword="true"/> if button clicked, <see langword="false"/> otherwise.</returns>
         public static bool FlexButton(GUIContent label, int[] indexArr, MultiListButtonEvent callback, SerializedProperty prop = null)
         {
             if (FlexButton(label))
@@ -308,7 +472,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// A button that is as wide as the label
         /// </summary>
         /// <param name="label">content for button</param>
-        /// <returns>true if button clicked, false otherwise</returns>
+        /// <returns><see langword="true"/> if button clicked, <see langword="false"/> otherwise.</returns>
         public static bool FlexButton(GUIContent label)
         {
             GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
@@ -328,7 +492,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// A button that is as wide as the available space
+        /// A button that is as wide as the available space.
         /// </summary>
         public static bool FullWidthButton(GUIContent label, float padding, int index, ListButtonEvent callback, SerializedProperty prop = null)
         {
@@ -354,7 +518,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// A button that is as wide as the available space
+        /// A button that is as wide as the available space.
         /// </summary>
         public static bool FullWidthButton(GUIContent label, float padding, int[] indexArr, MultiListButtonEvent callback, SerializedProperty prop = null)
         {
@@ -380,15 +544,23 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// A small button, good for a single icon like + or - with single index callback events
+        /// A small editor button.
         /// </summary>
-        /// <param name="label">content to place in the button</param>
-        /// <returns>true if button selected, false otherwise</returns>
-        public static bool SmallButton(GUIContent label, int index, ListButtonEvent callback, SerializedProperty prop = null)
+        /// <remarks>
+        /// This is good for a single icon, like a 'plus sign' or 'minus sign', with a single index callback event.
+        /// </remarks>
+        /// <param name="label">The content to place in the button.</param>
+        /// <param name="index">The index to pass into the <paramref name="callback"/> when the editor button is clicked.</param>
+        /// <param name="callback">A delegate callback to invoke when the button is clicked.</param>
+        /// <param name="property">The <see cref="SerializedProperty"/> to pass into the <paramref name="callback"/> when the editor button is clicked.</param>
+        /// <returns>
+        /// <see langword="true"/> if button selected, <see langword="false"/> otherwise.
+        /// </returns>
+        public static bool SmallButton(GUIContent label, int index, ListButtonEvent callback, SerializedProperty property = null)
         {
             if (SmallButton(label))
             {
-                callback(index, prop);
+                callback(index, property);
                 return true;
             }
 
@@ -396,15 +568,23 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// A small button, good for a single icon like + or - with multi-index callback events
+        /// A small editor button.
         /// </summary>
-        /// <param name="label">content to place in the button</param>
-        /// <returns>true if button selected, false otherwise</returns>
-        public static bool SmallButton(GUIContent label, int[] indexArr, MultiListButtonEvent callback, SerializedProperty prop = null)
+        /// <remarks>
+        /// This is good for a single icon, like a 'plus sign' or 'minus sign', with a multiple-indices callback event.
+        /// </remarks>
+        /// <param name="label">The content to place in the button.</param>
+        /// <param name="indices">The indices to pass into the <paramref name="callback"/> when the editor button is clicked.</param>
+        /// <param name="callback">A delegate callback to invoke when the button is clicked.</param>
+        /// <param name="property">The <see cref="SerializedProperty"/> to pass into the <paramref name="callback"/> when the editor button is clicked.</param>
+        /// <returns>
+        /// <see langword="true"/> if button selected, <see langword="false"/> otherwise.
+        /// </returns>
+        public static bool SmallButton(GUIContent label, int[] indices, MultiListButtonEvent callback, SerializedProperty property = null)
         {
             if (SmallButton(label))
             {
-                callback(indexArr, prop);
+                callback(indices, property);
                 return true;
             }
 
@@ -412,10 +592,15 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// A small button, good for a single icon like + or -
+        /// A small editor button.
         /// </summary>
-        /// <param name="label">content to place in the button</param>
-        /// <returns>true if button selected, false otherwise</returns>
+        /// <remarks>
+        /// This is good for a single icon, like a 'plus sign' or 'minus sign'.
+        /// </remarks>
+        /// <param name="label">The content to place in the button.</param>
+        /// <returns>
+        /// <see langword="true"/> if button selected, <see langword="false"/> otherwise.
+        /// </returns>
         public static bool SmallButton(GUIContent label)
         {
             GUIStyle smallButton = new GUIStyle(EditorStyles.miniButton);
@@ -430,8 +615,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Large title format
+        /// Large title format.
         /// </summary>
+        /// <param name="title">The <see langword="string"/> content to render.</param>
         public static void DrawTitle(string title)
         {
             GUIStyle labelStyle = MRTKEditorStyles.LabelStyle(TitleFontSize, ColorTint50);
@@ -440,9 +626,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Medium title format
+        /// Medium title format.
         /// </summary>
-        /// <param name="header">string content to render</param>
+        /// <param name="header">The <see langword="string"/> content to render.</param>
         public static void DrawHeader(string header)
         {
             GUIStyle labelStyle = MRTKEditorStyles.LabelStyle(HeaderFontSize, ColorTint10);
@@ -450,8 +636,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Draw a basic label
+        /// Draw a basic label.
         /// </summary>
+        /// <param name="title">The <see langword="string"/> content to render.</param>
+        /// <param name="size">The label size.</param>
+        /// <param name="color">The label color.</param>
         public static void DrawLabel(string title, int size, Color color)
         {
             GUIStyle labelStyle = MRTKEditorStyles.LabelStyle(size, color);
@@ -459,8 +648,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// draw a label with a yellow coloring
+        /// Draw a label with a yellow warning color.
         /// </summary>
+        /// <param name="warning">The <see langword="string"/> content to render.</param>
         public static void DrawWarning(string warning)
         {
             Color prevColor = GUI.color;
@@ -474,8 +664,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// draw a notice area, normal coloring
+        /// Draw a notice area, normal coloring.
         /// </summary>
+        /// <param name="notice">The <see langword="string"/> content to render.</param>
         public static void DrawNotice(string notice)
         {
             Color prevColor = GUI.color;
@@ -490,8 +681,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// draw a notice with green coloring
+        /// Draw a notice with green success color.
         /// </summary>
+        /// <param name="notice">The <see langword="string"/> content to render.</param>
         public static void DrawSuccess(string notice)
         {
             Color prevColor = GUI.color;
@@ -505,8 +697,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// draw a notice with red coloring
+        /// Draw a notice with red error coloring.
         /// </summary>
+        /// <param name="error">The <see langword="string"/> content to render.</param>
         public static void DrawError(string error)
         {
             Color prevColor = GUI.color;
@@ -520,7 +713,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Create a line across the negative space
+        /// Create a line across the negative space.
         /// </summary>
         public static void DrawDivider()
         {
@@ -528,7 +721,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Draws a section start (initiated by the Header attribute)
+        /// Draws a start section start.
         /// </summary>
         public static bool DrawSectionFoldout(string headerName, bool open = true, GUIStyle style = null)
         {
@@ -539,8 +732,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 return EditorGUILayout.Foldout(open, headerName, true, style);
             }
         }
+
         /// <summary>
-        /// Draws a section start with header name and save open/close state to given preference key in SessionState
+        /// Draws a section start with header name and save the open and close state to given
+        ///  preference key in a <see cref="SessionState"/>.
         /// </summary>
         public static bool DrawSectionFoldoutWithKey(string headerName, string preferenceKey = null, GUIStyle style = null, bool defaultOpen = true)
         {
@@ -555,34 +750,32 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Draws a popup UI with PropertyField type features.
-        /// Displays prefab pending updates
+        /// Draws a popup UI with <see cref="SerializedProperty"/> type features.
         /// </summary>
-        /// <param name="prop">serialized property corresponding to Enum</param>
-        /// <param name="label">label for property</param>
-        /// <param name="propValue">Current enum value for property</param>
-        /// <returns>New enum value after draw</returns>
-        public static Enum DrawEnumSerializedProperty(SerializedProperty prop, GUIContent label, Enum propValue)
+        /// <param name="property">The serialized property corresponding to the <see cref="Enum"/>.</param>
+        /// <param name="label">The label for the property.</param>
+        /// <param name="propertyValue">Current enumeration value for the property.</param>
+        /// <returns>New enumeration value after draw.</returns>
+        public static Enum DrawEnumSerializedProperty(SerializedProperty property, GUIContent label, Enum propertyValue)
         {
-            return DrawEnumSerializedProperty(EditorGUILayout.GetControlRect(), prop, label, propValue);
+            return DrawEnumSerializedProperty(EditorGUILayout.GetControlRect(), property, label, propertyValue);
         }
 
         /// <summary>
-        /// Draws a popup UI with PropertyField type features.
-        /// Displays prefab pending updates
+        /// Draws a popup UI with <see cref="SerializedProperty"/> type features.
         /// </summary>
-        /// <param name="position">position to render the serialized property</param>
-        /// <param name="prop">serialized property corresponding to Enum</param>
-        /// <param name="label">label for property</param>
-        /// <param name="propValue">Current enum value for property</param>
-        /// <returns>New enum value after draw</returns>
-        public static Enum DrawEnumSerializedProperty(Rect position, SerializedProperty prop, GUIContent label, Enum propValue)
+        /// <param name="position">The position to render the serialized property.</param>
+        /// <param name="property">serialized property corresponding to <see cref="Enum"/>.</param>
+        /// <param name="label">The label for the property.</param>
+        /// <param name="propertyValue">Current enumeration value for the property.</param>
+        /// <returns>New enumeration value after draw.</returns>
+        public static Enum DrawEnumSerializedProperty(Rect position, SerializedProperty property, GUIContent label, Enum propertyValue)
         {
-            Enum result = propValue;
-            EditorGUI.BeginProperty(position, label, prop);
+            Enum result = propertyValue;
+            EditorGUI.BeginProperty(position, label, property);
             {
-                result = EditorGUI.EnumPopup(position, label, propValue);
-                prop.intValue = Convert.ToInt32(result);
+                result = EditorGUI.EnumPopup(position, label, propertyValue);
+                property.intValue = Convert.ToInt32(result);
             }
             EditorGUI.EndProperty();
 
@@ -590,9 +783,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Draws a foldout enlisting all components (or derived types) of the given type attached to the passed GameObject.
-        /// Adds a button for adding any of the component (or derived types) and a follow button to highlight existing attached components.
+        /// Draws a foldout enlisting all components, or derived types, of the given type attached to the passed <see cref="GameObject"/>.
         /// </summary>
+        /// <remarks>
+        /// This adds a button for adding any of the component, or derived types, and a follow button to highlight existing attached components.
+        /// </remarks>
         public static bool DrawComponentTypeFoldout<T>(GameObject gameObject, bool isExpanded, string typeDescription) where T : MonoBehaviour
         {
             isExpanded = EditorGUILayout.Foldout(isExpanded, typeDescription + "s", true);
@@ -654,13 +849,18 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         #region Utilities
 
+        /// <summary>
+        /// Obtain the name for an field which is capable of holding a value for the given property.
+        /// </summary>
+        /// <param name="propertyName">The name of a property.</param>
         public static string GetBackingField(string propertyName) => $"<{propertyName}>k__BackingField";
 
         /// <summary>
-        /// Found at https://answers.unity.com/questions/960413/editor-window-how-to-center-a-window.html
+        /// Get the Unity editor main window position.
         /// </summary>
-        public static Rect GetEditorMainWindowPos()
+        public static Rect GetEditorMainWindowPosition()
         {
+            // Found at https://answers.unity.com/questions/960413/editor-window-how-to-center-a-window.html
             var containerWinType = AppDomain.CurrentDomain.GetAllDerivedTypes(typeof(ScriptableObject)).FirstOrDefault(t => t.Name == "ContainerWindow");
 
             if (containerWinType == null)
@@ -711,7 +911,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// </summary>
         public static void CenterOnMainWin(this EditorWindow window)
         {
-            var main = GetEditorMainWindowPos();
+            var main = GetEditorMainWindowPosition();
             var pos = window.position;
             float w = (main.width - pos.width) * 0.5f;
             float h = (main.height - pos.height) * 0.5f;
@@ -894,14 +1094,25 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         /// Draw a vector handle.
         /// </summary>
         /// <param name="target"><see href="https://docs.unity3d.com/ScriptReference/Object.html">Object</see> that is undergoing the transformation. Also used for recording undo.</param>
+        /// <param name="origin">The origin of the vector.</param>
+        /// <param name="vector">The vector being drawn.</param>
         /// <param name="normalize">Optional, Normalize the new vector value.</param>
-        /// <param name="clamp">Optional, Clamp new vector's value based on the distance to the origin.</param>
+        /// <param name="clamp">Optional, Clamp new vector's value based on the distance to the <paramref name="origin"/>.</param>
         /// <param name="handleLength">Optional, handle length.</param>
         /// <param name="handleSize">Optional, handle size.</param>
         /// <param name="autoSize">Optional, auto sizes the handles based on position and handle size.</param>
         /// <param name="recordUndo">Optional, records undo state.</param>
         /// <returns>The new <see href="https://docs.unity3d.com/ScriptReference/Vector3.html">Vector3</see> value.</returns>
-        public static Vector3 VectorHandle(Object target, Vector3 origin, Vector3 vector, bool normalize = true, bool clamp = true, float handleLength = 1f, float handleSize = 0.1f, bool recordUndo = true, bool autoSize = true)
+        public static Vector3 VectorHandle(
+            Object target,
+            Vector3 origin,
+            Vector3 vector,
+            bool normalize = true,
+            bool clamp = true,
+            float handleLength = 1f,
+            float handleSize = 0.1f,
+            bool recordUndo = true,
+            bool autoSize = true)
         {
             Handles.color = HandleColorTangent;
 

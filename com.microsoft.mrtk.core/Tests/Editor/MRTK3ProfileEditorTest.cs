@@ -16,8 +16,8 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests.EditMode
     internal class MRTK3ProfileEditorTest
     {
         /// <summary>
-        /// Verify that the <see cref="MRTK3ProfileEditor"/> window can be opened.
-        /// </summary>
+        /// Verify that the <see cref="Microsoft.MixedReality.Toolkit.Editor.MRTKProfileEditor"/> window can be opened.
+        /// </summary>v
         /// <remarks>
         /// This test is disabled when executing in batch mode, since it requires a Unity graphic device.
         /// </remarks>

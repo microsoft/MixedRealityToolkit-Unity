@@ -1,18 +1,21 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for samples. While nice to have, this XML documentation is not required for samples.
+#pragma warning disable CS1591
+
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
-    [RequireComponent(typeof(GridLayoutGroup))]
-    [ExecuteAlways]
     /// <summary>
-    /// Demonstration script showing how to squeeze/resize
+    /// Demonstration script showing how to squeeze or resize
     /// a grid layout to fit a fixed number of columns, while
     /// resizing children to fit.
     /// </summary>
+    [RequireComponent(typeof(GridLayoutGroup))]
+    [ExecuteAlways]
     [AddComponentMenu("MRTK/Examples/Grid Squeezer")]
     public class GridSqueezer : MonoBehaviour
     {
@@ -84,3 +87,4 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
     }
 }
+#pragma warning restore CS1591

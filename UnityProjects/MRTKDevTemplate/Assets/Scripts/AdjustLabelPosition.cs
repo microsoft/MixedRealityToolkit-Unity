@@ -1,14 +1,20 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for samples. While nice to have, this XML documentation is not required for samples.
+#pragma warning disable CS1591
+
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
-    /// Script to adjust the position of this GameObject when another GameObject resizes.
-    /// Used to position see-it say-it labels when non-canvas button backplate resizes. 
+    /// Script to adjust the position of this <see cref="GameObject"/> when another
+    /// <see cref="GameObject"/> resizes.
     /// </summary>
+    /// <remarks>
+    /// Used to position see-it say-it labels when non-canvas button backplate resizes. 
+    /// </remarks>
     public class AdjustLabelPosition : MonoBehaviour
     {
         [SerializeField]
@@ -26,3 +32,4 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
     }
 }
+#pragma warning restore CS1591

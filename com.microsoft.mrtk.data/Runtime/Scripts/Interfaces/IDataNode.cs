@@ -17,7 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Data
     ///
     /// This is used by a data source to organize information that matches the
     /// defacto standard key path format that's modeled on JSON/javascript.
-    ///
     /// </summary>
     public enum DataNodeType
     {
@@ -25,7 +24,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
         Null,
         Array,
         Map,
-        Other       // primitives, strings, or complex objects not navigable.
+
+        /// <summary>
+        /// Represents primitives, strings, or complex objects not navigable.
+        /// </summary>
+        Other
     }
 
     public interface IDataNode
@@ -34,14 +37,14 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Is this node an array of other nodes?
         /// </summary>
         ///
-        /// <returns>true if an array, false otherwise.</returns>
+        /// <returns><see langword="true"/> if an array, <see langword="false"/> otherwise.</returns>
         bool IsArray();
 
         /// <summary>
         /// Is this node a map (dictionary) to other nodes?
         /// </summary>
         ///
-        /// <returns>true if a map, false otherwise.</returns>
+        /// <returns><see langword="true"/> if a map, <see langword="false"/> otherwise.</returns>
         bool IsMap();
 
         /// <summary>
@@ -54,7 +57,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// knowing what type it should be.
         /// </remarks>
         ///
-        /// <returns>true if unassigned, false otherwise.</returns>
+        /// <returns><see langword="true"/> if unassigned, <see langword="false"/> otherwise.</returns>
         bool IsUnassigned();
 
         /// <summary>
@@ -69,34 +72,29 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Return the child node of a map node by its key.
         /// </summary>
-        ///
         /// <param name="key">The key specifying which child node to return.</param>
-        ///
         /// <returns>The child node for specified key, if this is a map node and the key exists, or null otherwise.</returns>
         IDataNode GetNodeByKey(string key);
 
         /// <summary>
         /// Get the value associated with this node.
         /// </summary>
-        ///
         /// <remarks>
-        /// If this node is an array node, the value is an IEnumerable<string> object that
-        /// contains all the keypaths of its children. Note that this is not the usual way of
-        /// retrieving items in an array since paging is not possible. See
-        /// IEnumerable<string> GetCollectionKeyPathRange() for a better method of
+        /// If this node is an array node, the value is a <see cref="IEnumerable{string}"/> object that
+        /// contains all the key paths of its children. Note that this is not the usual way of
+        /// retrieving items in an array since paging is not possible. See 
+        /// <see cref="DataSourceBase.GetCollectionKeyPathRange"/> for a better method of
         /// accessing members of a collection.
         ///
-        /// If this node is a map node, the value is an IEnumerable<string> object
+        /// If this node is a map node, the value is a <see cref="IEnumerable{string}"/>  object
         /// that contains the full keypath for every key in the map.
         /// </remarks>
-        ///
         /// <returns>The value associated with this node of arbitrary type and complexity</returns>
         object GetValue();
 
         /// <summary>
         /// Set the value associated with this node.
         /// </summary>
-        ///
         /// <remarks>
         /// The value can be of arbitrary type and complexity.
         ///
@@ -109,19 +107,16 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// <summary>
         /// Get the type for this node.
         /// </summary>
-        ///
         /// <remarks>
         /// An alternative way to determine the type is by using the IsArray(), IsMap() and IsUnassigned()
         /// methods.
         /// </remarks>
-        ///
         /// <returns>The type for this node.</returns>
         DataNodeType GetNodeType();
 
         /// <summary>
         /// Set the type, and the associated value for this node.
         /// </summary>
-        ///
         /// <remarks>
         /// The primary use of this is to convert an unassigned node to
         /// a node of a specific type.
@@ -134,10 +129,8 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// If the new type is an array or a map, the value argument is ignored
         /// even if not null.
         /// </remarks>
-        ///
         /// <param name="newNodeType">The new type for this node</param>
         /// <param name="value">The value to be associated with this node.</param>
-        ///
         void SetNodeType(DataNodeType newNodeType, object value = null);
 
         /// <summary>

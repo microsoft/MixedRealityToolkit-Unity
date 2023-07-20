@@ -12,13 +12,18 @@ using System.Text.RegularExpressions;
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
-    /// Base implementation of the IDataSource interface. This base class
-    /// contains no Unity specific code and can be used as the base for
+    /// Base implementation of the <see cref="IDataSource"/> interface.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This base class contains no Unity specific code and can be used as the base for
     /// implementing other concrete data source classes.
-    ///
+    /// </para>
+    /// <para>
     /// To make any data source available as a MonoBehavior, see
     /// DataSourceGOBase.
-    /// </summary>
+    /// </para>
+    /// </remarks>
     public class DataSourceBase : IDataSource
     {
         protected IDataKeyPathMapper _dataKeyPathMapper = null;
@@ -173,7 +178,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// </summary>
         /// <remarks>
         /// Note that the collection object may not actually an actual C# collection from the data source. It may
-        /// be an IEnumerator that can enumerate the keypaths of the collection items.
+        /// be an IEnumerator that can enumerate the key paths of the collection items.
         /// </remarks>
         /// <param name="resolvedKeyPath">Fully resolved key path for the collection</param>
         /// <param name="collection">The collection being added.</param>
@@ -182,21 +187,18 @@ namespace Microsoft.MixedReality.Toolkit.Data
             // no default action. Override for further collection listener setup.
         }
 
-
         /// <summary>
-        /// Triggered whenever a datum is removed that is a collection
+        /// Triggered whenever a datum is removed that is a collection.
         /// </summary>
         /// <remarks>
-        /// Note that the collection object may not actually an actual C# collection from the data source. It may
-        /// be an IEnumerator that can enumerate the keypaths of the collection items.
+        /// Note that the collection object may not actually be a collection from the data source. It may
+        /// be a <see cref="System.Collections.Generic.IEnumerator{T}"/> that can enumerate the key paths of the collection items.
         /// </remarks>
-        /// <param name="resolvedKeyPath">Fully resolved key path for the collection</param>
-        /// <param name="collection">The collection itself that will be removed.</param>
+        /// <param name="resolvedKeyPath">Fully resolved key path for the collection.</param>
         public virtual void OnCollectionListenerRemoved(string resolvedKeyPath)
         {
             // no default action. Override for further collection listener setup.
         }
-
 
         /// <inheritdoc/>
         public virtual void RemoveDataConsumerListener(string resolvedKeyPath, IDataConsumer dataConsumer)
@@ -212,7 +214,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
                 if (--_dataConsumerKeyPathCounts[dataConsumer] == 0)
                 {
-                    // all keypaths for this dataconsumer have been removed, so remove data consumer
+                    // all key paths for this data consumer have been removed, so remove data consumer
                     _dataConsumerKeyPathCounts.Remove(dataConsumer);
                 }
             }

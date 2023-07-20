@@ -11,7 +11,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
-    /// Custom build processor that determines the correct <cref see="MRTKProfile"> to bundle
+    /// Custom build processor that determines the correct <see cref="MRTKProfile"/> to bundle
     /// with the build assets.
     /// </summary>
     internal class MRTKBuildProcessor : IPreprocessBuildWithReport, IPostprocessBuildWithReport

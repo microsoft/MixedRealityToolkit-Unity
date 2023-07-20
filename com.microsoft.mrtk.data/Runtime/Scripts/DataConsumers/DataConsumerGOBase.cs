@@ -14,18 +14,20 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Data
 {
     /// <summary>
-    /// Base class for Data Consumers that must derive from a Game Object MonoBehaviour.
+    /// Base class for <see cref="IDataConsumer"/> that must derive from a game object <see cref="MonoBehaviour"/>.
     /// </summary>
-    ///
     /// <remarks>
-    /// This class encapsulates as much of the basic logic that is needed to serve as a Data Consumer,
+    /// <para>
+    /// This class encapsulates as much of the basic logic that is needed to serve as a <see cref="IDataConsumer"/>,
     /// without getting into the specifics that might deviate based on the types of views being
     /// managed.
-    ///
-    /// Although this may change in future implementations, since an IDataConsumer does not currently
+    /// </para>
+    /// <para>
+    /// Although this may change in future implementations, since an <see cref="IDataConsumer"/> does not currently
     /// need to be discoverable by other game objects, this base class
-    /// does not attempt to proxy a full IDataConsumer interface. It does however pass through many of the
-    /// IDataConsumer methods to a non-Unity base class to reduce the mix of Unity and business logic.
+    /// does not attempt to proxy a full <see cref="IDataConsumer"/> interface. It does however pass through many of the
+    /// <see cref="IDataConsumer"/> methods to a non-Unity base class to reduce the mix of Unity and business logic.
+    /// </para>
     /// </remarks>
     [Serializable]
     public abstract class DataConsumerGOBase : MonoBehaviour, IDataConsumer
@@ -33,6 +35,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         [Tooltip("Data source types used to identify an appropriate data source for automatic attachment. If no type is provided, the first data source found in parents will be used.")]
         [SerializeField, Experimental]
         private string[] dataSourceTypes;
+
         /// <summary>
         /// Data source types used to identify an appropriate data source for
         /// automatic attachment. If no type is provided, the first data source
@@ -55,13 +58,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
             }
         }
 
-        [Tooltip("For items in collections, it can be useful to ignore the prefix prepended to local keypaths, such as when it is used to look up theme data in a separate DataSource.")]
-        [SerializeField]
         /// <summary>
         /// For items in collections, it can be useful to ignore the prefix
-        /// prepended to local keypaths, such as when it is used to look up
-        /// theme data in a separate DataSource.
+        /// prepended to local key paths, such as when it is used to look up
+        /// theme data in a separate <see cref="IDataSource"/>.
         /// </summary>
+        [Tooltip("For items in collections, it can be useful to ignore the prefix prepended to local key paths, such as when it is used to look up theme data in a separate DataSource.")]
+        [SerializeField]
         protected bool ignoreKeyPathPrefix = false;
 
         [Tooltip("Specifies if this data consumer should include inactive components when managing components in child game objects.")]
@@ -77,7 +80,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// object will not change. This will use the cached types and
         /// component references to scan for after they are attained a first
         /// time. This avoids an extensive amount of <see cref="GameObject.GetComponent{T}()"/> in each
-        /// Attach(), which is super expensive especially for DataConsumerText.
+        /// <see cref="Attach"/>, which is super expensive especially for DataConsumerText.
         /// </summary>
         public bool IsFixedHierarchyWillUseCachedValues => isFixedHierarchyWillUseCachedValues;
 
@@ -136,7 +139,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         protected HashSet<Component> _componentsToManage = new HashSet<Component>();
 
         /// <summary>
-        /// Note that runtime changes to this will not be reflected in the serialized data for this Component.
+        /// Note that runtime changes to this will not be reflected in the serialized data for this component.
         /// </summary>
         public Dictionary<string, IDataSource> DataSources
         {
@@ -162,10 +165,13 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// A Unity event function that is called when the script component has been enabled.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// Note that this should rarely be overridden but is declared virtual for circumstances
         /// where this is required. If overridden, make sure to call this default behavior.
-        ///
+        /// </para>
+        /// <para>
         /// Any initialization should be accomplished by overriding <see cref="InitializeDataConsumer"/>.
+        /// </para>
         /// </remarks>
         public virtual void OnEnable()
         {
@@ -302,39 +308,51 @@ namespace Microsoft.MixedReality.Toolkit.Data
         /// Perform any detach logic here that is specific to this data consumer.
         /// </summary>
         /// <remarks>
-        /// This usually frees up any resources that were established in AttachDataConsumer.
+        /// This usually frees up any resources that were established in <see cref="AttachDataConsumer"/>.
         /// </remarks>
         protected virtual void DetachDataConsumer()
         {
         }
 
         /// <summary>
+        /// Add variable key paths for a component.
+        /// </summary>
+        /// <remarks>
+        /// <para>
         /// For consumers that manage one or more components for modification based on data received,
         /// this is a convenience method that is called once per component of the specified types
-        /// declared in GetComponentTypes().
-        ///
+        /// declared in <see cref="GetComponentTypes"/>.
+        /// <para>
+        /// </para>
         /// Note that if you do not manage specific components, no need to override
         /// this method. Instead, register keypath listeners via a different
         /// method specified to the need.
-        /// </summary>
-        /// <param name="component">The found Component to process for keypaths.</param>
+        /// </para>
+        /// </remarks>
+        /// <param name="component">The found Component to process for key paths.</param>
         protected virtual void AddVariableKeyPathsForComponent(Component component)
         {
             // No default behavior, but also not needed if not a component based binding
         }
 
         /// <summary>
-        /// If your data consumer modifies components, particularly all components found of a
-        /// certain type, then declaring them here will result in AddVariableKeyPathsForComponent
-        /// to be called for each found component in this or is specified in child objects.
-        ///
-        /// If you do not operate on components, then no need to override this method. Instead
-        /// simply override InitializeDataConsumer for one-time initialization and
-        /// override AttachDataConsumer for any setup that should occur each time
-        /// your class is enabled, in which you should call AddKeyPathListener() for any keypaths
-        /// that you want the datasource to notify of any changes.
+        /// Get the component types.
         /// </summary>
-        /// <returns>List of Component types.</returns>
+        /// <remarks>
+        /// <para>
+        /// If your data consumer modifies components, particularly all components found of a
+        /// certain type, then declaring them here will result in <see cref="AddVariableKeyPathsForComponent"/>
+        /// to be called for each found component in this or is specified in child objects.
+        /// </para>
+        /// <para>
+        /// If you do not operate on components, then no need to override this method. Instead
+        /// simply override <see cref="InitializeDataConsumer"/> for one-time initialization and
+        /// override <see cref="AttachDataConsumer"/> for any setup that should occur each time
+        /// your class is enabled, in which you should call <see cref="AddKeyPathListener"/> for any key paths
+        /// that you want the datasource to notify of any changes.
+        /// </para>
+        /// </remarks>
+        /// <returns>List of component types.</returns>
         protected virtual Type[] GetComponentTypes()
         {
             Type[] types = Array.Empty<Type>();
@@ -352,9 +370,12 @@ namespace Microsoft.MixedReality.Toolkit.Data
 
 
         /// <summary>
-        /// Allows for using GetComponentInChildren with the optional second parameter, if non-active components should be considered.
-        /// Defaults to only consider ACTIVE components -- Should be overridden if this behavior is not desired by data consumers.
+        /// Get whether or not to inactive child components should be included.
         /// </summary>
+        /// <remarks>
+        /// Allows for using <see cref="GameObject.GetComponentsInChildren(Type, bool)"/> with the optional second parameter, if non-active components should be considered.
+        /// Defaults to only consider active components. This should be overridden if this behavior is not desired by data consumers.
+        /// </remarks>
         protected virtual bool ShouldIncludeInactiveComponentsInChildren()
         {
             return includeInactiveComponentsInChildren;
@@ -564,11 +585,11 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return null;
         }
 
-
         /// <summary>
         /// Add a key path to the data source so that this object will be notified when it has changed.
         /// </summary>
         /// <param name="localKeyPath">Local key path prior to any key path mapping or resolving.</param>
+        /// <param name="specificDataSource">The specific data source to add a listener too. If null, the <see cref="ResolvedKeyPathPrefix"/> is used to resolve the data source.</param>
         /// <returns>The fully resolved keypath for the specified local keypath.</returns>
         protected string AddKeyPathListener(string localKeyPath, IDataSource specificDataSource = null)
         {

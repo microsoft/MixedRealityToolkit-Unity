@@ -62,6 +62,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// to use the default number of steps. For more information on this value, see
         /// <see cref="InputTestUtilities.ControllerMoveStepsSentinelValue"/>
         /// </param>
+        /// <param name="waitForFixedUpdate">If true, waits a physics frame after moving the controller</param>
         public abstract IEnumerator Move(Vector3 delta, int numSteps = InputTestUtilities.ControllerMoveStepsSentinelValue, bool waitForFixedUpdate = true);
 
         /// <summary>

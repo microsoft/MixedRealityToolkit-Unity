@@ -37,8 +37,8 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
         private XRInteractionManager cachedInteractionManager = null;
 
         /// <summary>
-        /// A cached reference to the <see cref="MRTKInteractionManager"/> on the XR rig.
-        /// Cleared during <see cref="TearDown"/> at the end of each test.
+        /// A cached reference to the <see cref="XRInteractionManager"/> in the scene.
+        /// Cleared during <see cref="Teardown"/> at the end of each test.
         /// </summary>
         private XRInteractionManager CachedInteractionManager
         {

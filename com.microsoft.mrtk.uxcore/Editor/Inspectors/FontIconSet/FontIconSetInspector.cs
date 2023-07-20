@@ -12,6 +12,9 @@ using UnityEngine.TextCore;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
+    /// <summary>
+    /// A custom Unity editor for the <see cref="FontIconSet"/> class.
+    /// </summary>
     [CustomEditor(typeof(FontIconSet))]
     public class FontIconSetInspector : UnityEditor.Editor
     {
@@ -64,6 +67,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        /// <summary>
+        /// Called by the Unity editor to render custom inspector UI for this component.
+        /// </summary>
         public override void OnInspectorGUI()
         {
             FontIconSet fontIconSet = (FontIconSet)target;
@@ -182,6 +188,11 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             serializedObject.ApplyModifiedProperties();
         }
 
+        /// <summary>
+        /// Draw a grid of buttons than can be clicked to select a glyph from a set up glyphs.
+        /// </summary>
+        /// <param name="fontIconSet">The set of font glyphs to draw.</param>
+        /// <param name="maxButtonsPerColumn">The number of buttons per column.</param>
         public void DrawFontGlyphsGrid(FontIconSet fontIconSet, int maxButtonsPerColumn)
         {
             TMP_FontAsset fontAsset = fontIconSet.IconFontAsset;
@@ -275,6 +286,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             return false;
         }
 
+        /// <summary>
+        /// Draws a Text Mesh Pro glyph in the supplied <see cref="Rect"/>.
+        /// </summary>
         public static void EditorDrawTMPGlyph(Rect position, uint unicode, TMP_FontAsset fontAsset, bool selected = false, Material fontRenderMaterial = null)
         {
             if (fontAsset.characterLookupTable.TryGetValue(unicode, out TMP_Character character))
@@ -284,7 +298,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Draws a Text Mesh Pro glyph in the supplied rect. Used for inspectors.
+        /// Draws a Text Mesh Pro glyph in the supplied <see cref="Rect"/>.
         /// </summary>
         public static void EditorDrawTMPGlyph(Rect glyphRect, TMP_FontAsset fontAsset, TMP_Character character, bool selected = false, Material fontRenderMaterial = null)
         {

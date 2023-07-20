@@ -1,13 +1,16 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for samples. While nice to have, this XML documentation is not required for samples.
+#pragma warning disable CS1591
+
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UX;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
-    /// Spins object on events
+    /// Spins object on events.
     /// </summary>
     [AddComponentMenu("MRTK/Examples/Object Spinner")]
     public class ObjectSpinner : MonoBehaviour
@@ -69,3 +72,4 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
     }
 }
+#pragma warning restore CS1591

@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
 {
     /// <summary>
-    /// Custom drawer for the EyeGazeSimulationSettings object.
+    /// A custom property drawer for <see cref="EyeGazeSimulationSettings"/> fields.
     /// </summary>
     [CustomPropertyDrawer(typeof(EyeGazeSimulationSettings))]
     public class EyeGazeSimulationSettingsDrawer : PropertyDrawer
@@ -24,6 +24,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
         private readonly GUIContent lookHorizontalContent = new GUIContent("Horizontal");
         private readonly GUIContent lookVerticalContent = new GUIContent("Vertical");
 
+        /// <inheritdoc />
         public override float GetPropertyHeight(
             SerializedProperty property,
             GUIContent label)
@@ -31,6 +32,7 @@ namespace Microsoft.MixedReality.Toolkit.Input.Simulation.Editor
             return PropertyDrawerUtilities.CalculatePropertyHeight(6);
         }
 
+        /// <inheritdoc />
         public override void OnGUI(
             Rect position,
             SerializedProperty property,

@@ -6,10 +6,13 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
+    /// <summary>
+    /// A static class holding default MRTK editor styles.
+    /// </summary>
     public static class MRTKEditorStyles
     {
         /// <summary>
-        /// Default style for foldouts with bold title
+        /// A default style for foldouts with bold title.
         /// </summary>
         public static readonly GUIStyle BoldFoldoutStyle = new GUIStyle(EditorStyles.foldout)
         {
@@ -17,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         };
 
         /// <summary>
-        /// Default style for foldouts with bold large font size title
+        /// A default style for foldouts with bold large font size title.
         /// </summary>
         public static readonly GUIStyle BoldTitleFoldoutStyle = new GUIStyle(EditorStyles.foldout)
         {
@@ -26,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         };
 
         /// <summary>
-        /// Default style for foldouts with large font size title
+        /// A default style for foldouts with large font size title.
         /// </summary>
         public static readonly GUIStyle TitleFoldoutStyle = new GUIStyle(EditorStyles.foldout)
         {
@@ -34,7 +37,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         };
 
         /// <summary>
-        /// Default style for controller mapping buttons
+        /// A default style for controller mapping buttons.
         /// </summary>
         public static readonly GUIStyle ControllerButtonStyle = new GUIStyle("iconButton")
         {
@@ -51,7 +54,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         };
 
         /// <summary>
-        /// Default style for bold large font size title
+        /// A default style for bold large font size title.
         /// </summary>
         public static readonly GUIStyle BoldLargeTitleStyle = new GUIStyle(EditorStyles.boldLabel)
         {
@@ -64,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         };
         
         /// <summary>
-        /// Reusable GUIStyle for drawing the MRTK product name label.
+        /// A reusable <see cref="GUIStyle"/> for drawing the MRTK product name label.
         /// </summary>
         public static readonly GUIStyle ProductNameStyle = new GUIStyle(EditorStyles.boldLabel)
         {
@@ -74,7 +77,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         };
 
         /// <summary>
-        /// Box style with left margin
+        /// Get a box style with left margin.
         /// </summary>
         public static GUIStyle BoxStyle(int margin)
         {
@@ -84,10 +87,10 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Help box style with left margin
+        /// Get a help box style with left margin.
         /// </summary>
         /// <param name="margin">amount of left margin</param>
-        /// <returns>Configured helpbox GUIStyle</returns>
+        /// <returns>A <see cref="GUIStyle"/> configured for the help box.</returns>
         public static GUIStyle HelpBoxStyle(int margin)
         {
             GUIStyle box = new GUIStyle(EditorStyles.helpBox);
@@ -96,7 +99,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         }
 
         /// <summary>
-        /// Create a custom label style based on color and size
+        /// Create a custom label style based on color and size.
         /// </summary>
         public static GUIStyle LabelStyle(int size, Color color)
         {

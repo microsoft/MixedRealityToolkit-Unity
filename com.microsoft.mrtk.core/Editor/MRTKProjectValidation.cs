@@ -26,6 +26,12 @@ namespace Microsoft.MixedReality.Toolkit
         private const string DefaultMRTKProfileGuid = "c677e5c4eb85b7849a8da406775c299d";
         private static readonly Dictionary<BuildTargetGroup, List<BuildValidationRule>> validationRulesDictionary = new Dictionary<BuildTargetGroup, List<BuildValidationRule>>();
 
+        /// <summary>
+        /// Get all the possible <see cref="BuildTargetGroup"/> enumeration values.
+        /// </summary>
+        /// <remarks>
+        /// Build targets currently not supported by MRTK will be filtered out.
+        /// </remarks>
         public static readonly BuildTargetGroup[] BuildTargetGroups = ((BuildTargetGroup[])Enum.GetValues(typeof(BuildTargetGroup))).Distinct().Except(excludedBuildTargetGroups).ToArray();
 
         [MenuItem("Mixed Reality/MRTK3/Utilities/Project Validation", priority = 0)]

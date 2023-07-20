@@ -46,6 +46,9 @@ namespace Microsoft.MixedReality.Toolkit.Tools
             }
         }
 
+        /// <summary>
+        /// A function called by Unity to render and handle GUI events.
+        /// </summary>
         private void OnGUI()
         {
             if (window == null)

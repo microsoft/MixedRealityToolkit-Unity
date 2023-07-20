@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for samples. While nice to have, this XML documentation is not required for samples.
+#pragma warning disable CS1591
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,16 +12,21 @@ using UnityEngine.UI;
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
-    /// This component works on the content of a ScrollRect window! It will
-    /// 'curve' the position and orientation of contents based on their
-    /// position within the ScrollRect's viewport.
-    /// 
-    /// This component should be placed on the "Content" GameObject of a Scroll
-    /// View, as it uses OnTransformChildrenChanged, and works directly on the
-    /// children of the GameObject it's assigned to. This component will not
-    /// look great on items that are vertically large, as items are curved at a
-    /// GameObject level. Their contents will remain flat.
+    /// This component works on the content of a <see cref="ScrollRect"/> window.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This will 'curve' the position and orientation of contents based on their
+    /// position within the viewport of the <see cref="ScrollRect"/>.
+    /// </para>
+    /// <para>
+    /// This component should be placed on the "Content" <see cref="GameObject"/> in
+    /// a scroll view, as it uses <see cref="OnTransformChildrenChanged"/>, and works
+    /// directly on the children of the  <see cref="GameObject"/> it's assigned to. 
+    /// This component will not look great on items that are vertically large, as
+    /// items are curved at a <see cref="GameObject"/> level. Their contents will remain flat.
+    /// </para>
+    /// </remarks>
     [AddComponentMenu("MRTK/Examples/Scroll Rect Curve")]
     public class ScrollRectCurve : MonoBehaviour
     {
@@ -45,7 +53,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private void OnTransformChildrenChanged() => UpdatePositions();
 
         /// <summary>
-        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// A Unity Editor only event function that is called when the script is loaded or a value changes in the Unity Inspector.
         /// </summary>
         private void OnValidate() => UpdatePositions();
 
@@ -91,3 +99,4 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
     }
 }
+#pragma warning restore CS1591

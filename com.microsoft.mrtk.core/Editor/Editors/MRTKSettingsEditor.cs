@@ -35,6 +35,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             profileDict = serializedObject.FindProperty("settings");
         }
 
+        /// <summary>
+        /// Called by the Unity editor to render custom inspector UI for this component.
+        /// </summary>
         public override void OnInspectorGUI()
         {
             if (serializedObject == null || serializedObject.targetObject == null)

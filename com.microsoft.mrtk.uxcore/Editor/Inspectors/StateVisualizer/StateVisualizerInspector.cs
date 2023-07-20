@@ -49,6 +49,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             }
         }
 
+        /// <summary>
+        /// Called by the Unity editor to render custom inspector UI for this component.
+        /// </summary>
         public override void OnInspectorGUI()
         {
             valueLabelStyle = EditorStyles.miniLabel;

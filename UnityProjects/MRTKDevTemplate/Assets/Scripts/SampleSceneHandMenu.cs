@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for samples. While nice to have, this XML documentation is not required for samples.
+#pragma warning disable CS1591
+
 using Microsoft.MixedReality.Toolkit.Input;
 using Microsoft.MixedReality.Toolkit.UX;
 using Microsoft.MixedReality.Toolkit.Diagnostics;
@@ -130,3 +133,4 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         private bool IsSceneValid(int buildIndex) => buildIndex < SceneManager.sceneCountInBuildSettings && buildIndex >= 0;
     }
 }
+#pragma warning restore CS1591

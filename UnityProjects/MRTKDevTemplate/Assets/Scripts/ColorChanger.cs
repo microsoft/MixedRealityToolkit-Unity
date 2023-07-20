@@ -1,13 +1,19 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for samples. While nice to have, this XML documentation is not required for samples.
+#pragma warning disable CS1591
+
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 {
     /// <summary>
-    /// Change the color of the material on a renderer.  Useful for visualizing button presses.
+    /// Change the color of the material on a renderer. 
     /// </summary>
+    /// <remarks>
+    /// This is useful for visualizing button presses.
+    /// </remarks>
     [AddComponentMenu("MRTK/Examples/Color Changer")]
     public class ColorChanger : MonoBehaviour
     {
@@ -69,3 +75,4 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
     }
 }
+#pragma warning restore CS1591

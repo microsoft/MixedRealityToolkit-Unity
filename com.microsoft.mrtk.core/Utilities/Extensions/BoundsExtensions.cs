@@ -244,7 +244,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <remarks>
         /// An invalid <see cref="Bounds"/> is one which has its size vector set to <see cref="float.MaxValue"/> for 
         /// all <see cref="Bounds"/> components. The center of an invalid bounds instance is the zero vector.
-        /// </summary>
+        /// </remarks>
         public static Bounds GetInvalidBoundsInstance()
         {
             return new Bounds(Vector3.zero, GetInvalidBoundsSize());
@@ -256,7 +256,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// <remarks>
         /// A valid <see cref="Bounds"/> instance is one whose size vector does not have all <see cref="Bounds"/>
         /// components set to <see cref="float.MaxValue"/>.
-        /// </summary>
+        /// </remarks>
         public static bool IsValid(this Bounds bounds)
         {
             return bounds.size != GetInvalidBoundsSize();
@@ -847,7 +847,7 @@ namespace Microsoft.MixedReality.Toolkit
             Vector3 aabbCenter = bounds.center;
             Vector3 aabbExtents = bounds.extents;
 
-            //  Return the screen space point array
+            // Return the screen space point array
             return new Vector2[]
             {
             camera.WorldToScreenPoint(new Vector3(aabbCenter.x - aabbExtents.x, aabbCenter.y - aabbExtents.y, aabbCenter.z - aabbExtents.z)),

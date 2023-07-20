@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for samples. While nice to have, this XML documentation is not required for samples.
+#pragma warning disable CS1591
+
 using System;
 using UnityEngine;
 
@@ -45,3 +48,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         // Other battery related assets could go here such as for lifetime battery charge/discharge cycles, or battery malfunction warning icons.
     }
 }
+#pragma warning restore CS1591

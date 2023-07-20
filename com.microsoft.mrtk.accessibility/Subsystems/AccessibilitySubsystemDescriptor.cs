@@ -40,7 +40,10 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// Tests for equality.
         /// </summary>
         /// <param name="other">The other <see cref="AccessibilitySubsystemCinfo"/> to compare against.</param>
-        /// <returns><see langword="true"/> if every field in <paramref name="other"/> is equal to this <see cref="AccessibilitySubsystemCinfo"/>, otherwise false.</returns>
+        /// <returns>
+        /// <see langword="true"/> if every field in <paramref name="other"/> is equal to this 
+        /// <see cref="AccessibilitySubsystemCinfo"/>, otherwise <see langword="false"/>.
+        /// </returns>
         public bool Equals(AccessibilitySubsystemCinfo other)
         {
             return
@@ -53,20 +56,29 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// Tests for equality.
         /// </summary>
         /// <param name="obj">The `object` to compare against.</param>
-        /// <returns><see langword="true"/> if <paramref name="obj"/> is of type <see cref=AccessibilitySubsystemCinfo"/> and
-        /// <see cref="Equals(AccessibilitySubsystemCinfo)"/> also returns <see langword="true"/>; otherwise <see langword="false"/>.</returns>
+        /// <returns>
+        /// <see langword="true"/> if <paramref name="obj"/> is of type <see cref="AccessibilitySubsystemCinfo" /> and
+        /// <see cref="Equals(AccessibilitySubsystemCinfo)"/> also returns <see langword="true"/>,
+        /// otherwise <see langword="false"/>.
+        /// </returns>
         public override bool Equals(System.Object obj)
         {
             return (obj is AccessibilitySubsystemCinfo cinfo) && Equals(cinfo);
         }
 
         /// <summary>
-        /// Tests for equality. Same as <see cref="Equals(AccessibilitySubsystemCinfo)"/>.
+        /// Tests for equality. 
         /// </summary>
+        /// <remarks>
+        /// This is a same as <see cref="Equals(AccessibilitySubsystemCinfo)"/>.
+        /// </remarks>
         /// <param name="lhs">The left-hand side of the comparison.</param>
         /// <param name="rhs">The right-hand side of the comparison.</param>
-        /// <returns><see langword="true"/> if <paramref name="lhs"/> is equal to <paramref name="rhs"/>, otherwise <see langword="false"/>.</returns>
-        public static bool operator ==(AccessibilitySubsystemCinfo lhs, AccessibilitySubsystemCinfo rhs)
+        /// <returns>
+        /// <see langword="true"/> if <paramref name="lhs"/> is equal to <paramref name="rhs"/>, 
+        /// otherwise <see langword="false"/>.
+        /// </returns>
+        public static bool operator==(AccessibilitySubsystemCinfo lhs, AccessibilitySubsystemCinfo rhs)
         {
             return lhs.Equals(rhs);
         }
@@ -83,7 +95,8 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         }
 
         /// <summary>
-        /// This <see cref="GetHashCode"/> override is meant to disable hash lookups of <see cref="AccessibilitySubsystemCinfo"/> objects.
+        /// This <see cref="GetHashCode"/> override is meant to disable hash lookups of 
+        /// <see cref="AccessibilitySubsystemCinfo"/> objects.
         /// </summary>
         /// <remarks>
         /// This will throw a <see cref="ApplicationException"/> if called.
@@ -108,7 +121,7 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
         /// <summary>
         /// Initializes a new instance of the <see cref="AccessibilitySubsystemDescriptor"/> class.
         /// </summary>
-        /// <param name='AccessibilitySubsystemCinfo'>The parameters required to initialize the descriptor.</param>
+        /// <param name='accessibilitySubsystemCinfo'>The parameters required to initialize the descriptor.</param>
         AccessibilitySubsystemDescriptor(AccessibilitySubsystemCinfo accessibilitySubsystemCinfo)
         {
             Name = accessibilitySubsystemCinfo.Name;

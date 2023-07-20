@@ -237,10 +237,15 @@ namespace Microsoft.MixedReality.Toolkit.Data
             return start != -1;                  // If we never found a start character, this isn't a token.
         }
 
-        /// <summary>This is a simplified integer parser that works from a
+        /// <summary>
+        /// This is a simplified integer parser that works from a
         /// substring, avoiding the need to allocate a separate substring
-        /// variable. It does _not_ handle trailing or leading spaces.
+        /// variable. It does not handle trailing or leading spaces.
+        /// </summary>
         /// <param name="str">String parent to parse.</param>
+        /// <param name="start">The index at which to start parsing. Parsing will include the character at this index.</param>
+        /// <param name="end">The index at which to stop parsing. Parsing will stop with the character immediately before this index.</param>
+        /// <param name="result">The resulting integer result.</param>
         public static bool TryParseIntSubstring(string str, int start, int end, out int result)
         {
             int multiplier = 1;

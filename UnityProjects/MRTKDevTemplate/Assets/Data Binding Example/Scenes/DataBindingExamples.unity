@@ -1144,7 +1144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dataSourceType: themeFetcher
   keyPathMapper: {fileID: 0}
-  url: http://TryMRTK.com/api/data
+  url: 
   secondsBetweenFetches: 1
   themeSelector: {fileID: 297520969}
 --- !u!114 &297520967
@@ -2662,7 +2662,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dataSourceType: data
   keyPathMapper: {fileID: 0}
-  url: http://TryMRTK.com/nature-photos/photo_data.json
+  url: 
   secondsBetweenFetches: 60
 --- !u!4 &874612861
 Transform:
@@ -3930,7 +3930,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dataSourceType: data
   keyPathMapper: {fileID: 0}
-  url: http://TryMRTK.com/api/random_joke
+  url: 
   secondsBetweenFetches: 15
 --- !u!114 &1322284030
 MonoBehaviour:
@@ -7158,7 +7158,7 @@ MonoBehaviour:
   dataSourceType: data
   _staticCollectionSize: 20
   _fluxCollectionSize: 20
-  imageUrlTemplate: http://TryMRTK.com/nature-photos/images/{0:D4}.jpg
+  imageUrlTemplate: 
 --- !u!4 &1987298545
 Transform:
   m_ObjectHideFlags: 0

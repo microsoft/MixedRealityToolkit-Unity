@@ -1,6 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for samples. While nice to have, this XML documentation is not required for samples.
+#pragma warning disable CS1591
+
 using System;
 using UnityEngine;
 
@@ -9,26 +12,55 @@ namespace Microsoft.MixedReality.Toolkit.Data
     /// <summary>
     /// A data source that manages a battery level and provides information that can be
     /// used by any data consumer related to battery level.
-    ///
+    /// </summary>
+    /// <remarks>
+    /// <para>
     /// As the battery level and charging state change, the desired icon may change.
     /// This class contains the logic to take the actual reported analog charge level
     /// and properly calculate the correct icon.
-    ///
+    /// </para>
+    /// <para>
     /// The icons are retrieved from a separate data source. This allows the actual icon
     /// assets to be organized and managed in a theme profile along with other theme profile
     /// assets.
-    ///
+    /// </para>
+    /// <para>
     /// The information this data source makes available are managed in a dictionary with the
-    /// following keypaths available for data consumers:
-    ///
-    /// Data Type    Keypath       Description
-    /// ========================================================
-    /// Sprite       batteryIcon   The current sprite
-    /// bool         isCharging    Whether currently in a charging state
-    /// string       label         Status text, usually a % of charge
-    /// int          intLevel      Integral level from 0 .. # sprites - 1
-    /// float        realLevel     Analog level from 0..1
-    /// </summary>
+    /// following key paths available for data consumers:
+    /// </para>
+    /// <list type="table">
+    ///     <listheader>
+    ///         <term>Date Type</term>
+    ///         <term>Key Path</term>
+    ///         <description>Description</description>
+    ///     </listheader>
+    ///     <item>
+    ///         <term>Sprite</term>
+    ///         <term><c>batteryIcon</c></term>
+    ///         <description>The current sprite.</description>
+    ///     </item>
+    ///     <item>
+    ///         <term>bool</term>
+    ///         <term><c>isCharging</c></term>
+    ///         <description>Whether currently in a charging state.</description>
+    ///     </item>
+    ///     <item>
+    ///         <term>string</term>
+    ///         <term><c>label</c></term>
+    ///         <description>Status text, usually a percentage of charge.</description>
+    ///     </item>
+    ///     <item>
+    ///         <term>int</term>
+    ///         <term><c>intLevel</c></term>
+    ///         <description>Integral level from 0 to the number of sprites - 1.</description>
+    ///     </item>
+    ///     <item>
+    ///         <term>float</term>
+    ///         <term><c>realLevel</c></term>
+    ///         <description>Analog level from 0 to 1.</description>
+    ///     </item>
+    /// </list>        
+    /// </remarks>
     [Serializable]
     [AddComponentMenu("MRTK/Examples/Battery Level Data Source")]
     public class BatteryLevelDataSource : DataSourceGOBase
@@ -169,7 +201,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
 
         /// <summary>
-        /// Calculate an integral level from 0 to < numIntegralLevels based on charging state and analogLevel.
+        /// Calculate an integral level from 0 to &lt; <paramref name="numIntegralLevels"/> based on charging state and <paramref name="analogLevel"/>.
         /// </summary>
         /// <param name="level">Current battery level from 0 to 1 inclusive.</param>
         /// <param name="charging">Whether it is currently in the state of being charged.</param>
@@ -192,7 +224,7 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     
         /// <summary>
-        /// A Unity Editor-only event function that is called when the script is loaded or a value changes in the Unity Inspector.
+        /// A Unity Editor only event function that is called when the script is loaded or a value changes in the Unity Inspector.
         /// </summary>
         private void OnValidate()
         {
@@ -211,5 +243,4 @@ namespace Microsoft.MixedReality.Toolkit.Data
         }
     }
 }
-
-
+#pragma warning restore CS1591

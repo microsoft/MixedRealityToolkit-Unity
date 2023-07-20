@@ -10,6 +10,10 @@ using UnityEngine.Scripting;
 
 namespace Microsoft.MixedReality.Toolkit.Accessibility
 {
+    /// <summary>
+    /// The MRTK subsystem that exposes information about the current enabled 
+    /// assistive technologies.
+    /// </summary>
     [Preserve]
     [MRTKSubsystem(
         Name = "com.microsoft.mixedreality.accessibility",
@@ -32,6 +36,9 @@ namespace Microsoft.MixedReality.Toolkit.Accessibility
             }
         }
 
+        /// <summary>
+        /// A class for providing accessibility functionality for the implementation.
+        /// </summary>
         [Preserve]
         class AccessibilityProvider : Provider
         {

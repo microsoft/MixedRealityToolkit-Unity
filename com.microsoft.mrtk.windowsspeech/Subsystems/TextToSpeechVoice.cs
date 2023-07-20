@@ -4,8 +4,11 @@
 namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 {
     /// <summary>
-    /// The en-US voices that can be used by <see cref="TextToSpeech"/>. Voices for all other locales are categorized as Other.
+    /// The en-US voices that can be used by <see cref="WindowsTextToSpeechSubsystemConfig"/>.
     /// </summary>
+    /// <remarks>
+    /// Voices for all other locales are categorized as <see cref="Other"/>.
+    /// </remarks>
     public enum TextToSpeechVoice
     {
         /// <summary>
@@ -29,8 +32,11 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
         Zira,
 
         /// <summary>
-        /// Voice not listed above (for non en-US languages)
+        /// Voice not listed above.
         /// </summary>
+        /// <remarks>
+        /// For use with languages which are not en-US.
+        /// </remarks>
         Other
     }
 }

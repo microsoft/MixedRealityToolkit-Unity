@@ -7,10 +7,16 @@ using UnityEngine;
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
     /// <summary>
-    /// Similar to the scope classes in Unity (i.e VerticalScope),
-    /// This class is a helper class designed to force enable GUI.enabled over some lifetime.
-    /// Should be utilized with using{} code block.
+    /// A helper class designed to force enable <see cref="GUI.enabled"/> over some lifetime. 
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This should be utilized within a <see langword="using"/> code block.
+    /// </para>
+    /// <para>
+    /// This class is similar to the scope classes in Unity, like <see cref="UnityEditor.EditorGUILayout.VerticalScope"/>.
+    /// </para>
+    /// </remarks> 
     public class GUIEnabledWrapper : IDisposable
     {
         private readonly bool wasGUIEnabled;
@@ -24,6 +30,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GUI.enabled = true;
         }
 
+        /// <summary>
+        /// Reset the previous state of <see cref="GUI.enabled"/>, before this class was initialized.
+        /// </summary>
         public void Dispose()
         {
             // Dispose of unmanaged resources.
@@ -32,6 +41,9 @@ namespace Microsoft.MixedReality.Toolkit.Editor
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Reset the previous state of <see cref="GUI.enabled"/>, before this class was initialized.
+        /// </summary>
         protected virtual void Dispose(bool disposing)
         {
             GUI.enabled = wasGUIEnabled;

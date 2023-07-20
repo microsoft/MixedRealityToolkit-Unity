@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+// Disable "missing XML comment" warning for samples. While nice to have, this XML documentation is not required for samples.
+#pragma warning disable CS1591
+
 using TMPro;
 using UnityEngine;
 using Microsoft.MixedReality.Toolkit.UX.Experimental;
@@ -60,14 +63,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             }
         }
 
-        /// <summary>Scrolls the VirtualizedScrollRect to the next page.</summary>
+        /// <summary>
+        /// Scrolls the VirtualizedScrollRect to the next page.
+        /// </summary>
         public void Next()
         {
             sinScroll  = false;
             animate    = true;
             destScroll = Mathf.Min(list.MaxScroll, Mathf.Floor(list.Scroll / list.RowsOrColumns) * list.RowsOrColumns + list.TotallyVisibleCount);
         }
-        /// <summary>Scrolls the VirtualizedScrollRect to the previous page.</summary>
+        /// <summary>
+        /// Scrolls the VirtualizedScrollRect to the previous page.
+        /// </summary>
         public void Prev()
         {
             sinScroll  = false;
@@ -75,13 +82,19 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             destScroll = Mathf.Max(0, Mathf.Floor(list.Scroll / list.RowsOrColumns) * list.RowsOrColumns - list.TotallyVisibleCount);
         }
 
-        /// <summary>Testing function for adjusting the number of items during
-        /// runtime.</summary>
+        /// <summary>
+        /// Testing function for adjusting the number of items during
+        /// runtime.
+        /// </summary>
         [ContextMenu("Set Item Count 50")]
         public void TestItemCount1() => list.SetItemCount(50);
-        /// <summary>Testing function for adjusting the number of items during
-        /// runtime.</summary>
+
+        /// <summary>
+        /// Testing function for adjusting the number of items during
+        /// runtime.
+        /// </summary>
         [ContextMenu("Set Item Count 200")]
         public void TestItemCount2() => list.SetItemCount(200);
     }
 }
+#pragma warning restore CS1591

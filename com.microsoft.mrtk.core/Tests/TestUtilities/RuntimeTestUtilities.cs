@@ -22,7 +22,7 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
     /// Utilities that are useful for all runtime tests. Mainly used for scene setup and controlling test flow.
     /// </summary>
     /// <remarks>
-    /// Does not include utilities for input tests; see <see cref="RuntimeInputTestUtilities"/>
+    /// Does not include utilities for input tests; see <c>Microsoft.MixedReality.Toolkit.Input.Tests.InputTestUtilities</c>
     /// for utilities for working with simulated input devices.
     /// </remarks>
     public static class RuntimeTestUtilities
@@ -111,7 +111,10 @@ namespace Microsoft.MixedReality.Toolkit.Core.Tests
                 window.Show();
             }
 
-            void OnGUI()
+            /// <summary>
+            /// A function called by Unity to render and handle GUI events.
+            /// </summary>
+            private void OnGUI()
             {
                 GUILayout.Label("Test Paused for Debugging", EditorStyles.boldLabel);
                 if (GUILayout.Button("Resume Test"))

@@ -20,7 +20,7 @@ namespace Microsoft.MixedReality.Toolkit.Subsystems
         /// Tests for equality.
         /// </summary>
         /// <param name="other">The other <see cref="KeywordRecognitionSubsystemCinfo"/> to compare against.</param>
-        /// <returns><see langword="true"/> if every field in <paramref name="other"/> is equal to this <see cref="KeywordRecognitionSubsystemCinfo"/>, otherwise false.</returns>
+        /// <returns><see langword="true"/> if every field in <paramref name="other"/> is equal to this <see cref="KeywordRecognitionSubsystemCinfo"/>, otherwise <see langword="false"/>.</returns>
         public override bool Equals(MRTKSubsystemCinfo other)
         {
             return base.Equals(other) && IsCloudBased == (other as KeywordRecognitionSubsystemCinfo)?.IsCloudBased;

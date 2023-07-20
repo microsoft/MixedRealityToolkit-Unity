@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Editor
 {
+    /// <summary>
+    /// A custom Unity editor for the <see cref="PressableButton"/> class.
+    /// </summary>
     [CustomEditor(typeof(PressableButton), true)]
     public class PressableButtonEditor : StatefulInteractableEditor
     {
@@ -207,6 +210,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
         static bool advancedButtonFoldout = false;
         static bool editorFoldout = false;
 
+        /// <inheritdoc />
         protected override void DrawProperties()
         {
             base.DrawProperties();
@@ -243,7 +247,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                     EditorGUILayout.PropertyField(extendSpeed);
                     EditorGUILayout.PropertyField(returnSpeed);
 
-                    // Rolloff rejection
+                    // Roll-off rejection
                     EditorGUILayout.PropertyField(enforceFrontPush);
                     EditorGUILayout.PropertyField(rejectXYRollOff);
                     if (rejectXYRollOff.boolValue)

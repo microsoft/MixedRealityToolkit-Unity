@@ -98,11 +98,12 @@ namespace Microsoft.MixedReality.Toolkit.Input.Tests
         /// <summary>
         /// Changes the hand's pose to the given handshape.  Does not animate the hand between the current pose and new pose.
         /// </summary>
-        /// <param name="newhandshapeId">The new hand pose</param>
+        /// <param name="newHandshapeId">The new hand pose.</param>
+        /// <param name="numSteps">The new hand pose.</param>
         /// <param name="waitForFixedUpdate">If true, waits for a fixed update after moving to the new pose.</param>
-        public IEnumerator SetHandshape(HandshapeId newhandshapeId, int numSteps = InputTestUtilities.ControllerMoveStepsSentinelValue, bool waitForFixedUpdate = true)
+        public IEnumerator SetHandshape(HandshapeId newHandshapeId, int numSteps = InputTestUtilities.ControllerMoveStepsSentinelValue, bool waitForFixedUpdate = true)
         {
-            handshapeId = newhandshapeId;
+            handshapeId = newHandshapeId;
             yield return InputTestUtilities.SetHandshape(handshapeId, handedness, numSteps);
             if (waitForFixedUpdate)
             {

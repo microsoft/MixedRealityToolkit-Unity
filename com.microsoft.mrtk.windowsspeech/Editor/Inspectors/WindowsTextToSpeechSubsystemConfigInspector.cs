@@ -6,6 +6,9 @@ using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Speech.Windows
 {
+    /// <summary>
+    /// A custom editor for the <see cref="WindowsTextToSpeechSubsystemConfig"/> class.
+    /// </summary>
     [CustomEditor(typeof(WindowsTextToSpeechSubsystemConfig))]
     public class WindowsTextToSpeechSubsystemConfigInspector : UnityEditor.Editor
     {
@@ -19,6 +22,9 @@ namespace Microsoft.MixedReality.Toolkit.Speech.Windows
             voiceProperty = serializedObject.FindProperty("voice");
         }
 
+        /// <summary>
+        /// Called by the Unity editor to render custom inspector UI for this component.
+        /// </summary>
         public override void OnInspectorGUI()
         {
             if (voiceProperty.intValue == (int)TextToSpeechVoice.Other)
