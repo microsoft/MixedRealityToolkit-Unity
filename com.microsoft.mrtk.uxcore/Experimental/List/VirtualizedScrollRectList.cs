@@ -11,30 +11,74 @@ using UnityEngine.UI;
 namespace Microsoft.MixedReality.Toolkit.UX.Experimental
 {
     /// <summary>
-    /// The VirtualizedScrollRectList is a helper component that allows you to
-    /// represent very large lists in ScrollRects without paying the cost for a
-    /// very large number of GameObjects! This works by maintaining a number of
-    /// GameObjects that completely cover the visible area of the ScrollRect,
-    /// and reusing/repositioning them as the list scrolls up and down.
-    ///
-    /// Using this is not quite as simple as adding it as a component to your
-    /// ScrollRect, it also requires a bit of code to get going. Here's what
-    /// you need to do:
-    ///
-    /// - Call VirtualizedScrollRectList.SetItemCount to let it know how many
-    ///   items are in the virtualized list.
-    /// - Add your callbacks to OnVisible and OnInvisible, so you can populate
-    ///   the prefab with the data associated with the provided index.
-    /// - Update VirtualizedScrollRectList's representation of the Item Count
-    ///   as your list changes over time.
+    /// A helper for rendering large amounts of data within a Unity <see cref="ScrollRect"/>.
     /// </summary>
     /// <remarks>
+    /// <para>
+    /// The <see cref="VirtualizedScrollRectList"/> is a helper component that 
+    /// can represent a very large lists in a Unity <see cref="ScrollRect"/>,
+    /// without paying the cost for a very large number of <see cref="GameObject"/>
+    /// instances. This works by maintaining a number of <see cref="GameObject"/>
+    /// instances that completely cover the visible area of the <see cref="ScrollRect"/>,
+    /// and reusing them as the list scrolls up and down.
+    /// </para>
+    /// <para>
+    /// Using this is not quite as simple as adding it as a component to your
+    /// <see cref="ScrollRect"/>, it also requires a bit of code to get going.
+    /// The process for using <see cref="VirtualizedScrollRectList"/> is as
+    /// follows:
+    /// </para>
+    /// <list type="number">
+    ///   <item>
+    ///     <description>
+    ///         Add the <see cref="VirtualizedScrollRectList"/> component to a
+    ///         same <see cref="GameObject"/> containing a <see cref="ScrollRect"/>
+    ///         component.
+    ///     </description>
+    ///   </item>
+    ///   <item>
+    ///     <description>
+    ///         Add callbacks to <see cref="VirtualizedScrollRectList.OnVisible"/>
+    ///         and <see cref="VirtualizedScrollRectList.OnInvisible"/>.
+    ///     </description>
+    ///   </item>
+    ///   <item>
+    ///     <description>
+    ///         Call <see cref="VirtualizedScrollRectList.SetItemCount"/>
+    ///         to let the component know how many items are in the virtualized list.
+    ///     </description>
+    ///   </item>
+    ///   <item>
+    ///     <description>
+    ///         As the list loads items into view, the
+    ///         <see cref="VirtualizedScrollRectList.OnVisible"/> callback wll be
+    ///         called. This callback should populate a Unity prefab with the data
+    ///         associated with the provided index.
+    ///     </description>
+    ///   </item>
+    ///   <item>
+    ///     <description>
+    ///         As the list unloads items from view, the
+    ///         <see cref="VirtualizedScrollRectList.OnInvisible"/> callback wll be
+    ///         called. This callback should perform any cleanup for the data
+    ///         associated with the provided index.
+    ///     </description>
+    ///   </item>
+    ///   <item>
+    ///     <description>
+    ///         Call <see cref="VirtualizedScrollRectList.SetItemCount"/>
+    ///         as the size of the data changes.
+    ///     </description>
+    ///   </item>
+    /// </list>
+    /// <para>
     /// This is an experimental feature. This class is early in the cycle, it has 
     /// been labeled as experimental to indicate that it is still evolving, and 
     /// subject to change over time. Parts of the MRTK, such as this class, appear 
     /// to have a lot of value even if the details haven't fully been fleshed out. 
     /// For these types of features, we want the community to see them and get 
-    /// value out of them early enough so to provide feedback. 
+    /// value out of them early enough so to provide feedback.
+    /// </para>
     /// </remarks>
     [AddComponentMenu("MRTK/UX/Virtualized Scroll Rect List")]
     public class VirtualizedScrollRectList : MonoBehaviour
@@ -81,7 +125,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Experimental
         [SerializeField]
         private int layoutRowsOrColumns = 1;
 
-        [Tooltip("(Optional) The size of each layout cell. If an axis is 0, VirualizedList will pull this dimension directly from the prefab's RectTransform.")]
+        [Tooltip("(Optional) The size of each layout cell. If an axis is 0, VirtualizedList will pull this dimension directly from the prefab's RectTransform.")]
         [SerializeField]
         private Vector2 cellSize;
 

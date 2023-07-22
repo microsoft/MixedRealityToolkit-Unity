@@ -110,11 +110,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             if (dictationSubsystem != null)
             {
                 dictationSubsystem.StopDictation();
-                dictationSubsystem.Recognizing -= DictationSubsystem_Recognizing;
-                dictationSubsystem.Recognized -= DictationSubsystem_Recognized;
-                dictationSubsystem.RecognitionFinished -= DictationSubsystem_RecognitionFinished;
-                dictationSubsystem.RecognitionFaulted -= DictationSubsystem_RecognitionFaulted;
-                dictationSubsystem = null;
             }
         }
 
@@ -123,7 +118,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         public void HandleDictationShutdown()
         {
-            StopRecognition();
+            if (dictationSubsystem != null)
+            {
+                dictationSubsystem.Recognizing -= DictationSubsystem_Recognizing;
+                dictationSubsystem.Recognized -= DictationSubsystem_Recognized;
+                dictationSubsystem.RecognitionFinished -= DictationSubsystem_RecognitionFinished;
+                dictationSubsystem.RecognitionFaulted -= DictationSubsystem_RecognitionFaulted;
+                dictationSubsystem = null;
+            }
 
             if (keywordRecognitionSubsystem != null)
             {
