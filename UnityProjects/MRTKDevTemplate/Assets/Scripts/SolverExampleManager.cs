@@ -157,7 +157,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
                 }
                 if (RightInteractor != null)
                 {
-                    handler.LeftInteractor = RightInteractor;
+                    handler.RightInteractor = RightInteractor;
                 }
             }
         }
