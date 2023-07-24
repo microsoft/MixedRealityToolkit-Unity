@@ -200,7 +200,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         [SerializeField]
         [DrawIf("toggleHandlesOnClick")]
         [Tooltip("During a selection of the associated interactable, if the interactable is dragged/moved a smaller distance than this value, the handles will be activated/deactivated.")]
-        private float dragToggleThreshold = 0.005f;
+        private float dragToggleThreshold = 0.02f;
 
         /// <summary>
         /// During a selection of the associated interactable, if the interactable is
