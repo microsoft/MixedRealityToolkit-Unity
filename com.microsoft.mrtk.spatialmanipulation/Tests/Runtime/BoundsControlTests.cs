@@ -371,7 +371,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             // Move it so the far ray hovers the handle
             Assert.IsNotNull(handle);
             yield return hand.AimAt(handle.transform.position);
-            yield return RuntimeTestUtilities.WaitForUpdates();
+            yield return RuntimeTestUtilities.WaitForUpdates(frameCount:60);
 
             Assert.IsTrue(handle.isHovered, $"Handle should be hovered for {handleName}.");
             SpatialManipulationReticle[] reticles = Object.FindObjectsOfType<SpatialManipulationReticle>();
