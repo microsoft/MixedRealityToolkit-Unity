@@ -142,10 +142,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 boundsControl.EnabledHandles = HandleType.None;
                 yield return WaitForButtonPressOrCommand();
 
-                SetStatus("HandleType Resize");
-                boundsControl.EnabledHandles = HandleType.Resize;
-                yield return WaitForButtonPressOrCommand();
-
                 SetStatus("HandleType Rotation");
                 boundsControl.EnabledHandles = HandleType.Rotation;
                 yield return WaitForButtonPressOrCommand();
@@ -219,7 +215,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             var boundsControl = target.AddComponent<BoundsControl>();
             boundsControl.BoundsVisualsPrefab = boundsVisualsPrefab;
             boundsControl.HandlesActive = true;
-            boundsControl.DragToggleThreshold = .05f;
+            boundsControl.DragToggleThreshold = .02f;
             target.AddComponent<UGUIInputAdapterDraggable>();
 
             return boundsControl;
