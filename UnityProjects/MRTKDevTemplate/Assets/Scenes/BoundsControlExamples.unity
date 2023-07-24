@@ -3196,6 +3196,10 @@ PrefabInstance:
       propertyPath: boundsVisualsPrefab
       value: 
       objectReference: {fileID: 5671351296789090341, guid: ecbf05ce2121a744cb893e82377ba3cd, type: 3}
+    - target: {fileID: 251265376, guid: 0d3b2fd2079cd514d8dbce654f929320, type: 3}
+      propertyPath: dragToggleThreshold
+      value: 0.02
+      objectReference: {fileID: 0}
     - target: {fileID: 251265377, guid: 0d3b2fd2079cd514d8dbce654f929320, type: 3}
       propertyPath: Spatialize
       value: 1
@@ -3795,6 +3799,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2044717239}
     m_Modifications:
+    - target: {fileID: 251265376, guid: 0d3b2fd2079cd514d8dbce654f929320, type: 3}
+      propertyPath: dragToggleThreshold
+      value: 0.02
+      objectReference: {fileID: 0}
     - target: {fileID: 251265377, guid: 0d3b2fd2079cd514d8dbce654f929320, type: 3}
       propertyPath: Spatialize
       value: 1

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 using Microsoft.MixedReality.Toolkit.SpatialManipulation;
+using Microsoft.MixedReality.Toolkit.UX;
 using System.Collections;
 using System.Text;
 using TMPro;
@@ -209,6 +210,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             target.AddComponent<ObjectManipulator>();
             var boundsControl = target.AddComponent<BoundsControl>();
             boundsControl.BoundsVisualsPrefab = boundsVisualsPrefab;
+            boundsControl.HandlesActive = true;
+            boundsControl.DragToggleThreshold = .05f;
+            target.AddComponent<UGUIInputAdapterDraggable>();
 
             return boundsControl;
         }
