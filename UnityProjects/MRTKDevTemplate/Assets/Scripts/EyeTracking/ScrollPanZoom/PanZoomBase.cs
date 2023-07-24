@@ -148,7 +148,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         protected abstract void ZoomOut();
 
         /// <summary>
-        /// 
+        /// Update pan zoom
         /// </summary>
         protected abstract void UpdatePanZoom();
 
