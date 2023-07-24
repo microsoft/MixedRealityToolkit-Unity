@@ -51,6 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void OnEnable()
         {
             rayInteractor.selectEntered.AddListener(LocateTargetHitPoint);
+            Application.onBeforeRender += UpdateReticle;
 
             // If no custom reticle root is specified, just use the interactor's transform.
             if (reticleRoot == null)
@@ -66,20 +67,14 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void OnDisable()
         {
             rayInteractor.selectEntered.RemoveListener(LocateTargetHitPoint);
+            Application.onBeforeRender -= UpdateReticle;
 
             ReticleSetActive(false);
         }
 
-        /// <summary>
-        /// A Unity event function that is called every frame, if this object is enabled.
-        /// </summary>
-        private void Update()
-        {
-            UpdateReticle();
-        }
-
         private static readonly ProfilerMarker UpdateReticlePerfMarker = new ProfilerMarker("[MRTK] MRTKRayReticleVisual.UpdateReticle");
 
+        [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
         private void UpdateReticle()
         {
             using (UpdateReticlePerfMarker.Auto())
