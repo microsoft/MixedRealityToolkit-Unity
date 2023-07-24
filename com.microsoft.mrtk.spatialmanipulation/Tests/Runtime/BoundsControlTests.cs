@@ -331,7 +331,8 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
         {
             return Mathf.Abs(a.x - b.x) <= tolerance
                 && Mathf.Abs(a.y - b.y) <= tolerance
-                && Mathf.Abs(a.z - b.z) <= tolerance;
+                && Mathf.Abs(a.z - b.z) <= tolerance
+                && Mathf.Abs(a.w - b.w) <= tolerance;
         }
 
         private IEnumerator HoverCursorRotation(string handleName, Vector3 expectedRotation, string visualsPath)
@@ -376,7 +377,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             SpatialManipulationReticle[] reticles = Object.FindObjectsOfType<SpatialManipulationReticle>();
             Assert.AreEqual(reticles.Length, 1, "Cursor should appear.");
             GameObject cursor = reticles[0].gameObject;
-            Assert.IsTrue(ApproximatelyEquals(cursor.transform.eulerAngles, expectedRotation), $"Cursor should be rotated for {handleName}.");
+            Assert.IsTrue(ApproximatelyEquals(cursor.transform.eulerAngles, expectedRotation), $"Cursor should be rotated for {handleName}.  Expected euler angles: {expectedRotation}.  Actual: {cursor.transform.eulerAngles}");
             Quaternion worldRotation = cursor.transform.rotation;
 
             // Select the handle
