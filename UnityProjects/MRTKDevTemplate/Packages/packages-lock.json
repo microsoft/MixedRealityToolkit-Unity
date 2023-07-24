@@ -96,11 +96,11 @@
       }
     },
     "com.microsoft.mrtk.graphicstools.unity": {
-      "version": "https://github.com/microsoft/MixedReality-GraphicsTools-Unity.git?path=/com.microsoft.mrtk.graphicstools.unity#v0.5.12",
+      "version": "https://github.com/microsoft/MixedReality-GraphicsTools-Unity.git?path=/com.microsoft.mrtk.graphicstools.unity#v0.5.14",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "3361204314b43c83990b9148ebfcfb913ae657f4"
+      "hash": "96743038a313c93322c935d99d2deb18e831aa2d"
     },
     "com.microsoft.mrtk.input": {
       "version": "file:../../../com.microsoft.mrtk.input",

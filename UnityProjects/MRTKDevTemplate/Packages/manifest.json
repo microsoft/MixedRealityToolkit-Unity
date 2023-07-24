@@ -10,7 +10,7 @@
     "com.microsoft.mrtk.data": "file:../../../com.microsoft.mrtk.data",
     "com.microsoft.mrtk.diagnostics": "file:../../../com.microsoft.mrtk.diagnostics",
     "com.microsoft.mrtk.extendedassets": "file:../../../com.microsoft.mrtk.extendedassets",
-    "com.microsoft.mrtk.graphicstools.unity": "https://github.com/microsoft/MixedReality-GraphicsTools-Unity.git?path=/com.microsoft.mrtk.graphicstools.unity#v0.5.12",
+    "com.microsoft.mrtk.graphicstools.unity": "https://github.com/microsoft/MixedReality-GraphicsTools-Unity.git?path=/com.microsoft.mrtk.graphicstools.unity#v0.5.14",
     "com.microsoft.mrtk.input": "file:../../../com.microsoft.mrtk.input",
     "com.microsoft.mrtk.spatialmanipulation": "file:../../../com.microsoft.mrtk.spatialmanipulation",
     "com.microsoft.mrtk.standardassets": "file:../../../com.microsoft.mrtk.standardassets",
