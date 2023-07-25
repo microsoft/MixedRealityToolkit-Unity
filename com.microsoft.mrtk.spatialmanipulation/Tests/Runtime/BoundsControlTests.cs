@@ -318,7 +318,6 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             yield return HoverCursorRotation("RotateHandle (5)", new Vector3(0f, 180f, 90f), visualsPath);
             // Known side rotate handle
             yield return HoverCursorRotation("RotateHandle (10)", new Vector3(0f, 180f, 0f), visualsPath);
-            
         }
 
         private bool ApproximatelyEquals(Vector3 a, Vector3 b, float tolerance = 0.1f)
@@ -372,7 +371,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             // Move it so the far ray hovers the handle
             Assert.IsNotNull(handle);
             yield return hand.AimAt(handle.transform.position);
-            yield return RuntimeTestUtilities.WaitForUpdates(frameCount:60);
+            yield return RuntimeTestUtilities.WaitForUpdates();
 
             Assert.IsTrue(handle.isHovered, $"Handle should be hovered for {handleName}.");
             SpatialManipulationReticle[] reticles = Object.FindObjectsOfType<SpatialManipulationReticle>();
