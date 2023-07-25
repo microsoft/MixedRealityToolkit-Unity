@@ -72,6 +72,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
             ReticleSetActive(false);
         }
 
+        /// <summary>
+        /// A Unity event function that is called every frame, if this object is enabled.
+        /// </summary>
+        private void LateUpdate()
+        {
+            // if running in batch mode the onBeforeRender event doesn't fire so
+            // we need to update the reticle here
+            if (Application.isBatchMode)
+            {
+                UpdateReticle();
+            }
+        }
+
         private static readonly ProfilerMarker UpdateReticlePerfMarker = new ProfilerMarker("[MRTK] MRTKRayReticleVisual.UpdateReticle");
 
         [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
