@@ -358,7 +358,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         {
             var stepCount = value / SliderStepVal;
             var snappedValue = SliderStepVal * Mathf.RoundToInt(stepCount);
-            Mathf.Clamp(snappedValue, MinValue, MaxValue);
+            Mathf.Clamp(snappedValue, 0f, 1.0f);
             return snappedValue;
         }
 
@@ -369,10 +369,11 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
             var handDelta = Vector3.Dot(SliderTrackDirection.normalized, interactorDelta);
 
-            float unsnappedValue = Mathf.Clamp(StartSliderValue + handDelta / SliderTrackDirection.magnitude, MinValue, MaxValue);
+            float unsnappedValue = Mathf.Clamp(StartSliderValue + handDelta / SliderTrackDirection.magnitude, 0f, 1.0f);
 
-            Value = useSliderStepDivisions ? SnapSliderToStepPositions(unsnappedValue) : unsnappedValue;
-        }
+            var normalizedValue = useSliderStepDivisions ? SnapSliderToStepPositions(unsnappedValue) : unsnappedValue;
+            Value = normalizedValue * (MaxValue - MinValue) + MinValue;
+    }
 
         #endregion
 
