@@ -319,6 +319,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation.Runtime.Tests
             // yield return HoverCursorRotation("RotateHandle (5)", new Vector3(0f, 180f, 90f), visualsPath);
             // Known side rotate handle
             // yield return HoverCursorRotation("RotateHandle (10)", new Vector3(0f, 180f, 0f), visualsPath);
+            yield return null;
         }
 
         private bool ApproximatelyEquals(Vector3 a, Vector3 b, float tolerance = 0.1f)
