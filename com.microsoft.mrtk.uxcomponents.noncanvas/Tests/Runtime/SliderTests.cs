@@ -395,6 +395,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
             Assert.IsFalse(interactionUpdated, "Slider updated value when we didn't touch the handle and snapToPosition = false");
             Assert.AreEqual(0.5f, slider.Value, "Slider shouldn't have snapped to the finger point when SnapToPosition = false");
 
+            // Must move down then up in order to avoid nudging the slider
             yield return rightHand.MoveTo(Vector3.zero, 60);
             yield return RuntimeTestUtilities.WaitForUpdates();
 
@@ -404,7 +405,7 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             Assert.IsTrue(slider.IsPokeSelected, "Slider should be poked!");
             Assert.IsTrue(interactionStarted, "Slider didn't start interaction when we poked the handle");
-            Assert.IsTrue(interactionUpdated, "Slider didn't invoke OnValueUpdated when we poked the handle");
+            Assert.IsFalse(interactionUpdated, "Slider incorrectly invoked OnValueUpdated when we poked the handle");
             Assert.AreEqual(0.5f, slider.Value, 0.001f, "Slider should still be roughly the same value");
 
             interactionUpdated = false;
