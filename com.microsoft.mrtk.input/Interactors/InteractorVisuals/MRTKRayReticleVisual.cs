@@ -51,7 +51,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void OnEnable()
         {
             rayInteractor.selectEntered.AddListener(LocateTargetHitPoint);
-            Application.onBeforeRender += UpdateReticle;
+            Application.onBeforeRender += OnBeforeRender;
 
             // If no custom reticle root is specified, just use the interactor's transform.
             if (reticleRoot == null)
@@ -61,13 +61,20 @@ namespace Microsoft.MixedReality.Toolkit.Input
             UpdateReticle();
         }
 
+        [BeforeRenderOrder(XRInteractionUpdateOrder.k_BeforeRenderLineVisual)]
+        private void OnBeforeRender()
+        {
+            Debug.Log("OnBeforeRender()");
+            UpdateReticle();
+        }
+
         /// <summary>
         /// A Unity event function that is called when the script component has been disabled.
         /// </summary>
         private void OnDisable()
         {
             rayInteractor.selectEntered.RemoveListener(LocateTargetHitPoint);
-            Application.onBeforeRender -= UpdateReticle;
+            Application.onBeforeRender -= OnBeforeRender;
 
             ReticleSetActive(false);
         }
