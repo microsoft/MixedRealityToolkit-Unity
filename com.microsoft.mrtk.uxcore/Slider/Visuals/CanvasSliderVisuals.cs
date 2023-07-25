@@ -193,8 +193,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
         // Update the things that depend on the slider value.
         void UpdateHandle(SliderEventData data)
         {
-            var normalizedValue = (SliderState.MaxValue - SliderState.MinValue) != 0 ? (data.NewValue - SliderState.MinValue) / (SliderState.MaxValue - SliderState.MinValue) : 0;
-            UpdateHandle(normalizedValue);
+            UpdateHandle(SliderState.NormalizedValue);
         }
 
         // Update the things that depend on the slider value.
