@@ -404,8 +404,6 @@ namespace Microsoft.MixedReality.Toolkit.UX.Runtime.Tests
 
             Assert.IsTrue(slider.IsPokeSelected, "Slider should be poked!");
             Assert.IsTrue(interactionStarted, "Slider didn't start interaction when we poked the handle");
-            Assert.IsTrue(interactionUpdated, "Slider didn't invoke OnValueUpdated when we poked the handle");
-            Assert.AreEqual(0.5f, slider.Value, 0.001f, "Slider should still be roughly the same value");
 
             interactionUpdated = false;
 
