@@ -74,6 +74,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// </summary>
         public void ShowStartButton()
         {
+            StopRecording();
             SetPlaybackButtons(true, false, false);
         }
 

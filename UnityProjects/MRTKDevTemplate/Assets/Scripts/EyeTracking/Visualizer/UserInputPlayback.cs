@@ -264,6 +264,12 @@ namespace Microsoft.MixedReality.Toolkit.Examples
 #if WINDOWS_UWP
             yield return new WaitUntil(() => IsDataLoaded);
 #endif
+            if (loggedLines == null)
+            {
+                Debug.LogError("Unable to populate heatmap, no log data found.");
+                yield return null;
+            }
+
             IsPlaying = true;
 
             // Now let's populate the visualizer

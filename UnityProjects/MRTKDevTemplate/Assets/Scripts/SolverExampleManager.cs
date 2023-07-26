@@ -89,23 +89,27 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         }
 
         /// <summary>
-        /// Method to change to the <see cref="RadialView"/> solver
+        /// Method to change to the <see cref="Follow"/> solver.
         /// </summary>
-        public void SetRadialView()
+        public void SetFollowSolver()
         {
-            DestroySolver();
-
-            AddSolver<RadialView>();
+            EnableSolver<Follow>();
         }
 
         /// <summary>
-        /// Method to change to the <see cref="Orbital"/> solver
+        /// Method to change to the <see cref="RadialView"/> solver.
+        /// </summary>
+        public void SetRadialView()
+        {
+            EnableSolver<RadialView>();
+        }
+
+        /// <summary>
+        /// Method to change to the <see cref="Orbital"/> solver.
         /// </summary>
         public void SetOrbital()
         {
-            DestroySolver();
-
-            AddSolver<Orbital>();
+            EnableSolver<Orbital>();
 
             // Modify properties of solver custom to this example
             var orbital = currentSolver as Orbital;
@@ -117,20 +121,20 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// </summary>
         public void SetSurfaceMagnetism()
         {
-            DestroySolver();
-
-            AddSolver<SurfaceMagnetism>();
+            EnableSolver<SurfaceMagnetism>();
 
             // Modify properties of solver custom to this example
             var surfaceMagnetism = currentSolver as SurfaceMagnetism;
             surfaceMagnetism.SurfaceNormalOffset = 0.2f;
         }
 
-        private void AddSolver<T>() where T : Solver
+        private void EnableSolver<T>() where T : Solver
         {
-            currentSolver = gameObject.AddComponent<T>();
-            handler = GetComponent<SolverHandler>();
+            DisableCurrentSolver();
+            currentSolver = gameObject.EnsureComponent<T>();
+            handler = gameObject.EnsureComponent<SolverHandler>();
             RefreshSolverHandler();
+            currentSolver.enabled = true;
         }
 
         private void RefreshSolverHandler()
@@ -162,11 +166,11 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
         }
 
-        private void DestroySolver()
+        private void DisableCurrentSolver()
         {
             if (currentSolver != null)
             {
-                Destroy(currentSolver);
+                currentSolver.enabled = false;
                 currentSolver = null;
             }
         }
