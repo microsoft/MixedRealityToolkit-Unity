@@ -259,6 +259,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2351505566903569412}
   - component: {fileID: 3712792914886690938}
+  - component: {fileID: 2813607766961918107}
   m_Layer: 0
   m_Name: Camera Offset
   m_TagString: Untagged
@@ -302,6 +303,18 @@ MonoBehaviour:
   m_CameraFloorOffsetObject: {fileID: 2351505566903569413}
   m_RequestedTrackingOriginMode: 0
   m_CameraYOffset: 1.6
+--- !u!114 &2813607766961918107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2351505566903569413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4d642881628ba842b14068a50038965, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2351505567455720334
 GameObject:
   m_ObjectHideFlags: 0
