@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TMPro;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples
@@ -37,6 +38,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         [SerializeField]
         private string sessionDescription = "Session00";
 
+        [Tooltip("Displays status updates for file loading and replay status")]
+        [SerializeField]
+        private TextMeshPro recordingUpdateStatusText;
+
         private FileInputLogger fileLogger = null;
         private string dataFormat;
         private DateTime timerStart;
@@ -45,15 +50,20 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         {
             fileLogger = new FileInputLogger(Filename);
             timerStart = DateTime.Now;
-            fileLogger.AppendLog(GetHeader());
+
+            try
+            {
+                fileLogger.AppendLog(GetHeader());
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+                DisplayMessage($"Failed to write log header ({ex.Message}");
+            }
         }
 
         private void OnDisable()
         {
-            #if WINDOWS_UWP
-            fileLogger.SaveLogs();
-            #endif
-
             fileLogger.Dispose();
             fileLogger = null;
         }
@@ -61,7 +71,16 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         private void Update()
         {
             object[] data = MergeObjArrays(GetData_Part1(), logStructure.GetData());
-            fileLogger.AppendLog(string.Format(dataFormat, data));
+
+            try
+            {
+                fileLogger.AppendLog(string.Format(dataFormat, data));
+            }
+            catch (Exception ex)
+            {
+                Debug.LogException(ex);
+                DisplayMessage($"Failed to write to log ({ex.Message}");
+            }
         }
 
         private static string FormattedTimeStamp
@@ -135,6 +154,14 @@ namespace Microsoft.MixedReality.Toolkit.Examples
             }
             strFormat.Append("{" + (data.Count - 1) + "}" + Environment.NewLine);
             return strFormat.ToString();
+        }
+
+        private void DisplayMessage(string message)
+        {
+            if (recordingUpdateStatusText != null)
+            {
+                recordingUpdateStatusText.text = message;
+            }
         }
     }
 }

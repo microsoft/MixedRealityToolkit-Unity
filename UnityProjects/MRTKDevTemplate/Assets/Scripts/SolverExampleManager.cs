@@ -110,10 +110,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         public void SetOrbital()
         {
             EnableSolver<Orbital>();
-
-            // Modify properties of solver custom to this example
-            var orbital = currentSolver as Orbital;
-            orbital.LocalOffset = new Vector3(0.0f, -0f, 1.0f);
         }
 
         /// <summary>
@@ -122,10 +118,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         public void SetSurfaceMagnetism()
         {
             EnableSolver<SurfaceMagnetism>();
-
-            // Modify properties of solver custom to this example
-            var surfaceMagnetism = currentSolver as SurfaceMagnetism;
-            surfaceMagnetism.SurfaceNormalOffset = 0.2f;
         }
 
         private void EnableSolver<T>() where T : Solver

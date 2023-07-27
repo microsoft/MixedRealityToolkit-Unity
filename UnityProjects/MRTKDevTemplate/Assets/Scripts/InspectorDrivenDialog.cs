@@ -18,32 +18,98 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
     /// </summary>
     public class InspectorDrivenDialog : MonoBehaviour
     {
-        // A handy struct for keeping button actions and their labels together.
+        /// <summary>
+        /// A struct that holds <see cref="IDialog"/> button actions and their labels.
+        /// </summary>
+        /// <remarks>
+        /// This is used with the <see cref="InspectorDrivenDialog"/> helper class.
+        /// </remarks>
         [Serializable]
-        internal struct Option
+        public struct Option
         {
             public string Text;
             public UnityEvent<DialogButtonEventArgs> Action;
         }
-        
-        [SerializeField]
-        private DialogPool DialogPool;
 
         [SerializeField]
+        [Tooltip("The DialogPool to use when showing a dialog.")]
+        private DialogPool dialogPool;
+
+        /// <summary>
+        /// The <see cref="DialogPool"/> to use when showing a dialog.
+        /// </summary>
+        public DialogPool DialogPool
+        {
+            get => dialogPool;
+            set => dialogPool = value;
+        }
+
+
+        [SerializeField]
+        [Tooltip("The header of the dialog to show.")]
         private string header;
+
+        /// <summary>
+        /// The header of the dialog to show.
+        /// </summary>
+        public string Header
+        {
+            get => header;
+            set => header = value;
+        }
 
         [SerializeField]
         [TextArea]
+        [Tooltip("The body of the dialog to show.")]
         private string body;
 
+        /// <summary>
+        /// The body of the dialog to show.
+        /// </summary>
+        public string Body
+        {
+            get => body;
+            set => body = value;
+        }
+
         [SerializeField]
+        [Tooltip("The negative button option of the dialog to show.")]
         private Option negative;
 
-        [SerializeField]
-        private Option positive;
+        /// <summary>
+        /// The negative button option of the dialog to show.
+        /// </summary>
+        public Option Negative
+        {
+            get => negative;
+            set => negative = value;
+        }
 
         [SerializeField]
+        [Tooltip("The positive button option of the dialog to show.")]
+        private Option positive;
+
+        /// <summary>
+        /// The positive button option of the dialog to show.
+        /// </summary>
+        public Option Positive
+        {
+            get => positive;
+            set => positive = value;
+        }
+
+        [SerializeField]
+        [Tooltip("The neutral button option of the dialog to show.")]
         private Option neutral;
+
+        /// <summary>
+        /// The neutral button option of the dialog to show.
+        /// </summary>
+        public Option Neutral
+        {
+            get => neutral;
+            set => neutral = value;
+        }
 
         /// <summary>
         /// A Unity event function that is called when the script component has been enabled.

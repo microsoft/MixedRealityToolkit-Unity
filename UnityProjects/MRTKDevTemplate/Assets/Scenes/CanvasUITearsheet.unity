@@ -28189,7 +28189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c1b7fdcb0605945a98acc0ba322998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DialogPool: {fileID: 1854885403}
+  dialogPool: {fileID: 1854885403}
   header: Inspector Driven Dialog
   body: This dialog was specified in the inspector in InspectorDrivenDialog.cs. The
     header, body, and button parameters were then passed to the Dialog after having

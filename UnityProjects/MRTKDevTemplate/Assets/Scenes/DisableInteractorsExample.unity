@@ -1262,7 +1262,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1214529608091490941, guid: 0d3b2fd2079cd514d8dbce654f929320, type: 3}
       propertyPath: m_Name
-      value: CoffeeBoundsControl
+      value: CoffeeBoundsControl - Left
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d3b2fd2079cd514d8dbce654f929320, type: 3}
@@ -2459,7 +2459,7 @@ GameObject:
   - component: {fileID: 417239719}
   - component: {fileID: 417239718}
   m_Layer: 0
-  m_Name: Text (TMP) (2)
+  m_Name: Text (TMP) - CoffeeBoundsControl - Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2473,16 +2473,16 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 417239716}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
-  m_LocalScale: {x: 0.16129032, y: 0.16129032, z: 0.16129032}
+  m_LocalPosition: {x: 0, y: 0, z: -0.1458}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 199029539}
-  m_RootOrder: 1
+  m_Father: {fileID: 1801737451}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3.1767743, y: -1.6951603}
+  m_AnchoredPosition: {x: -0.38795996, y: -0.5460999}
   m_SizeDelta: {x: 17.27645, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &417239718
@@ -5375,7 +5375,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1214529608091387485, guid: 0d3b2fd2079cd514d8dbce654f929320, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1214529608091387485, guid: 0d3b2fd2079cd514d8dbce654f929320, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5419,7 +5419,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1214529608091490941, guid: 0d3b2fd2079cd514d8dbce654f929320, type: 3}
       propertyPath: m_Name
-      value: CoffeeBoundsControl (1)
+      value: CoffeeBoundsControl - Right
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0d3b2fd2079cd514d8dbce654f929320, type: 3}
@@ -7086,7 +7086,7 @@ GameObject:
   - component: {fileID: 1017706709}
   - component: {fileID: 1017706708}
   m_Layer: 0
-  m_Name: Text (TMP) (3)
+  m_Name: Text (TMP) - CoffeeBoundsControl - Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7100,16 +7100,16 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1017706706}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
-  m_LocalScale: {x: 0.16129032, y: 0.16129032, z: 0.16129032}
+  m_LocalPosition: {x: 0, y: 0, z: -0.1458}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 803048051}
-  m_RootOrder: 1
+  m_Father: {fileID: 1801737451}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3.491935, y: -1.6951603}
+  m_AnchoredPosition: {x: -0.18949986, y: -0.5460999}
   m_SizeDelta: {x: 17.27645, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1017706708
@@ -12917,7 +12917,9 @@ Transform:
   m_Children:
   - {fileID: 408641663}
   - {fileID: 199029539}
+  - {fileID: 417239717}
   - {fileID: 803048051}
+  - {fileID: 1017706707}
   m_Father: {fileID: 1203713056}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
