@@ -45,6 +45,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         private void Awake()
         {
+            rayToggle.ForceSetToggled(GetHandRaysActive());
+            gazePinchToggle.ForceSetToggled(GetGazePinchActive());
+
             rayToggle.OnClicked.AddListener(() => SetHandRaysActive(rayToggle.IsToggled));
             gazePinchToggle.OnClicked.AddListener(() => SetGazePinchActive(gazePinchToggle.IsToggled));
             
@@ -83,6 +86,26 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         }
 
         /// <summary>
+        /// Get if all hand rays in the scene are active.
+        /// </summary>
+        private bool GetHandRaysActive()
+        {
+            bool active = true;
+            var handRays = PlayspaceUtilities.XROrigin.GetComponentsInChildren<MRTKRayInteractor>(true);
+
+            foreach (var interactor in handRays)
+            {
+                active &= interactor.gameObject.activeSelf;
+                if (!active)
+                {
+                    break;
+                }
+            }
+
+            return active;
+        }
+
+        /// <summary>
         /// Toggle gaze pinch interactors.
         /// </summary>
         public void SetGazePinchActive(bool value)
@@ -93,6 +116,26 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
             {
                 interactor.gameObject.SetActive(value);
             }
+        }
+
+        /// <summary>
+        /// Get if all pinch interactors in the scene are active.
+        /// </summary>
+        private bool GetGazePinchActive()
+        {
+            bool active = true;
+            var gazePinchInteractors = PlayspaceUtilities.XROrigin.GetComponentsInChildren<GazePinchInteractor>(true);
+
+            foreach (var interactor in gazePinchInteractors)
+            {
+                active &= interactor.gameObject.activeSelf;
+                if (!active)
+                {
+                    break;
+                }
+            }
+
+            return active;
         }
 
         /// <summary>

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7173684231665593445}
   - component: {fileID: 7173684231665593442}
   m_Layer: 0
-  m_Name: EyeGazeRotation (2)
+  m_Name: EyeGazeRotation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

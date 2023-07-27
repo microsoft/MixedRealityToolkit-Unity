@@ -319,7 +319,6 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         public void OnVoiceSelectedExited()
         {
             DragAndDrop_Finish();
-
         }
         #endregion
 

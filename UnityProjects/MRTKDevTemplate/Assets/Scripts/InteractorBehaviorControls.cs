@@ -36,6 +36,9 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         private XRBaseInteractor[] pokeInteractors;
 
         [SerializeField]
+        private XRBaseInteractor[] gazePinchInteractors;
+
+        [SerializeField]
         private XRBaseInteractor gazeInteractor;
 
         /// <summary>
@@ -64,72 +67,97 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         public event Action<bool> onGazeToggled;
 
         /// <summary>
-        /// Sets pointer behavior to mimic HoloLens.
+        /// event triggered when gaze pinch interactors are toggled on/off
         /// </summary>
-        /// <remarks>
-        /// <para>
-        /// This will do this following:
-        /// </para>
-        /// <list type="bullet">
-        ///     <item>
-        ///         <description>Turn on the poke interactors.</description>
-        ///     </item>
-        ///     <item>
-        ///         <description>Turn on the grab interactors.</description>
-        ///     </item>
-        ///     <item>
-        ///         <description>Turn on the hand ray interactors.</description>
-        ///     </item>
-        ///     <item>
-        ///         <description>Turn off the controller ray interactors.</description>
-        ///     </item>
-        ///     <item>
-        ///         <description>Turn on the gaze interactors.</description>
-        ///     </item>
-        /// </list>
-        /// </remarks>
-        public void SetHololens()
-        {
-            SetHandPokeActive(true);
-            SetHandGrabActive(true);
-            SetHandRayActive(true);
-            SetControllerRayActive(false);
-            SetGazeActive(true);
-        }
-
+        public event Action<bool> onGazePinchToggled;
 
         /// <summary>
-        /// Sets pointer behavior to mimic tradition VR behavior.
+        /// Enable all interactors
         /// </summary>
-        /// <remarks>
-        /// <para>
-        /// This will do this following:
-        /// </para>
-        /// <list type="bullet">
-        ///     <item>
-        ///         <description>Turn off the poke interactors.</description>
-        ///     </item>
-        ///     <item>
-        ///         <description>Turn off the grab interactors.</description>
-        ///     </item>
-        ///     <item>
-        ///         <description>Turn off the hand ray interactors.</description>
-        ///     </item>
-        ///     <item>
-        ///         <description>Turn on the controller ray interactors.</description>
-        ///     </item>
-        ///     <item>
-        ///         <description>Turn off the gaze interactors.</description>
-        ///     </item>
-        /// </list>
-        /// </remarks>
-        public void SetVR()
+        public void EnableAll()
         {
-            SetHandPokeActive(false);
-            SetHandGrabActive(false);
-            SetHandRayActive(false);
             SetControllerRayActive(true);
+            SetHandGrabActive(true);
+            SetHandPokeActive(true);
+            SetHandRayActive(true);
+            SetGazeActive(true);
+            SetGazePinchActive(true);
+        }
+
+        /// <summary>
+        /// Enable everything, and disable all gaze interactions.
+        /// </summary>
+        public void OnlyHands()
+        {
+            EnableAll();
             SetGazeActive(false);
+            SetGazePinchActive(false);
+        }
+
+        /// <summary>
+        /// Enable everything, and disable all hand interactions.
+        /// </summary>
+        public void OnlyGaze()
+        {
+            EnableAll();
+            SetControllerRayActive(false);
+            SetHandGrabActive(false);
+            SetHandPokeActive(false);
+            SetHandRayActive(false);
+        }
+
+        /// <summary>
+        /// Enable everything, and disable controller ray interactors.
+        /// </summary>
+        public void DisablControllerRays()
+        {
+            EnableAll();
+            SetControllerRayActive(false);
+        }
+
+        /// <summary>
+        /// Enable everything, and disable hand grab interactors.
+        /// </summary>
+        public void DisableHandGrabs()
+        {
+            EnableAll();
+            SetHandGrabActive(false);
+        }
+
+        /// <summary>
+        /// Enable everything, and disable hand poke interactors.
+        /// </summary>
+        public void DisableHandPokes()
+        {
+            EnableAll();
+            SetHandPokeActive(false);
+        }
+
+        /// <summary>
+        /// Enable everything, and disable hand poke interactors.
+        /// </summary>
+        public void DisableHandRays()
+        {
+            EnableAll();
+            SetHandRayActive(false);
+        }
+
+        /// <summary>
+        /// Enable everything, and disable gaze interactors.
+        /// </summary>
+        public void DisableGaze()
+        {
+            EnableAll();
+            SetGazeActive(false);
+        }
+
+        /// <summary>
+        /// Enable everything, and disable gaze pinch interactors.
+        /// </summary>
+        public void DisableGazePinch()
+        {
+            EnableAll();
+            SetGazePinchActive(false);
         }
 
         /// <summary>
@@ -137,8 +165,21 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// </summary>
         public void SetGazeActive(bool isActive)
         {
-            ToggleInteractor(gazeInteractor, isActive);
-            onGazeToggled?.Invoke(isActive);
+            if (ToggleInteractor(gazeInteractor, isActive))
+            {
+                onGazeToggled?.Invoke(isActive);
+            }
+        }
+
+        /// <summary>
+        /// Enable or disable the specified gaze pinch interactors.
+        /// </summary>
+        public void SetGazePinchActive(bool isActive)
+        {
+            if (ToggleInteractors(gazePinchInteractors, isActive))
+            {
+                onGazeToggled?.Invoke(isActive);
+            }
         }
 
         /// <summary>
@@ -146,8 +187,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// </summary>
         public void SetHandPokeActive(bool isActive)
         {
-            ToggleInteractors(pokeInteractors, isActive);
-            onPokeToggled?.Invoke(isActive);
+            if (ToggleInteractors(pokeInteractors, isActive))
+            {
+                onPokeToggled?.Invoke(isActive);
+            }
         }
 
         /// <summary>
@@ -155,8 +198,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// </summary>
         public void SetHandGrabActive(bool isActive)
         {
-            ToggleInteractors(grabInteractors, isActive);
-            onGrabToggled?.Invoke(isActive);
+            if (ToggleInteractors(grabInteractors, isActive))
+            {
+                onGrabToggled?.Invoke(isActive);
+            }
         }
 
         /// <summary>
@@ -164,8 +209,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// </summary>
         public void SetControllerRayActive(bool isActive)
         {
-            ToggleInteractors(controllerRayInteractors, isActive);
-            onControllerRayToggled?.Invoke(isActive);
+            if (ToggleInteractors(controllerRayInteractors, isActive))
+            {
+                onControllerRayToggled?.Invoke(isActive);
+            }
         }
 
         /// <summary>
@@ -173,60 +220,96 @@ namespace Microsoft.MixedReality.Toolkit.Examples
         /// </summary>
         public void SetHandRayActive(bool isActive)
         {
-            ToggleInteractors(handRaysInteractors, isActive);
-            onHandRayToggled?.Invoke(isActive);
+            if (ToggleInteractors(handRaysInteractors, isActive))
+            {
+                onHandRayToggled?.Invoke(isActive);
+            }
         }
 
-        private void ToggleInteractors(XRBaseInteractor[] interactors, bool isActive)
+        /// <summary>
+        /// Toggle interactors, and return true if something changed.
+        /// </summary>
+        private bool ToggleInteractors(XRBaseInteractor[] interactors, bool isActive)
         {
             if (isActive)
             {
-                ActivateInteractors(interactors);
+                return ActivateInteractors(interactors);
             }
             else
             {
-                DeactivateInteractors(interactors);
+                return DeactivateInteractors(interactors);
             }
         }
 
-        private void ToggleInteractor(XRBaseInteractor interactor, bool isActive)
+        /// <summary>
+        /// Toggle interactor, and return true if something changed.
+        /// </summary>
+        private bool ToggleInteractor(XRBaseInteractor interactor, bool isActive)
         {
             if (isActive)
             {
-                ActivateInteractor(interactor);
+                return ActivateInteractor(interactor);
             }
             else
             {
-                DeactivateInteractor(interactor);
+                return DeactivateInteractor(interactor);
             }
         }
 
-        private void ActivateInteractors(XRBaseInteractor[] interactors)
+        /// <summary>
+        /// Activate interactors, and return true if something changed.
+        /// </summary>
+        private bool ActivateInteractors(XRBaseInteractor[] interactors)
         {
+            bool change = false;
             for (int i = 0; i < interactors.Length; i++)
             {
-                ActivateInteractor(interactors[i]);
+                change |= ActivateInteractor(interactors[i]);
             }
+            return change;
         }
 
-        private void ActivateInteractor(XRBaseInteractor interactor)
+        /// <summary>
+        /// Activate interactor, and return true if something changed.
+        /// </summary>
+        private bool ActivateInteractor(XRBaseInteractor interactor)
         {
+            if (interactor.gameObject.activeSelf)
+            {
+                return false;
+            }
+
             interactor.gameObject.SetActive(true);
             interactionModeManager.RegisterInteractor(interactor);
+            return true;
         }
 
-        private void DeactivateInteractors(XRBaseInteractor[] interactors)
+        /// <summary>
+        /// Deactivate interactors, and return true if something changed.
+        /// </summary>
+        private bool DeactivateInteractors(XRBaseInteractor[] interactors)
         {
+            bool change = false;
             for (int i = 0; i < interactors.Length; i++)
             {
-                DeactivateInteractor(interactors[i]);
+                change |= DeactivateInteractor(interactors[i]);
             }
+            return change;
         }
 
-        private void DeactivateInteractor(XRBaseInteractor interactor)
+        /// <summary>
+        /// Deactivate interactor, and return true if something changed.
+        /// </summary>
+        private bool DeactivateInteractor(XRBaseInteractor interactor)
         {
+            if (!interactor.gameObject.activeSelf)
+            {
+                return false;
+            }
+
             interactionModeManager.UnregisterInteractor(interactor);
             interactor.gameObject.SetActive(false);
+            return true;
         }
     }
 }

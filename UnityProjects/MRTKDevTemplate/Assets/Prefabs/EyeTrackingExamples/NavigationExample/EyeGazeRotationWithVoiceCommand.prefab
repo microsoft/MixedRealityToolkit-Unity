@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1808124033984213309}
   - component: {fileID: 1808124033984213307}
   m_Layer: 0
-  m_Name: EyeGazeRotation (1)
+  m_Name: EyeGazeRotationWithVoiceCommand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1808124033441063062}
+  - {fileID: 2566544794671369418}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -281,16 +281,48 @@ MonoBehaviour:
   maxRotationX: 10
   minRotationY: -180
   maxRotationY: 180
-  DistanceToCamera: 1
+  DistanceToCamera: 0.65
   speed: 3
   minDistanceToStopTransition: 0.1
   setToAutoRotateIfFocused: 1
+--- !u!1 &6928618237584882502
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2566544794671369418}
+  m_Layer: 0
+  m_Name: LunarModuleContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2566544794671369418
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6928618237584882502}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.0388, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1808124033441063062}
+  m_Father: {fileID: 1808124033984213306}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1808124033441462822
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1808124033984213306}
+    m_TransformParent: {fileID: 2566544794671369418}
     m_Modifications:
     - target: {fileID: 100048, guid: 60260aaff9ed8764d9aad59253d848f7, type: 3}
       propertyPath: m_Name
@@ -318,7 +350,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400048, guid: 60260aaff9ed8764d9aad59253d848f7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.09
       objectReference: {fileID: 0}
     - target: {fileID: 400048, guid: 60260aaff9ed8764d9aad59253d848f7, type: 3}
       propertyPath: m_LocalPosition.z
