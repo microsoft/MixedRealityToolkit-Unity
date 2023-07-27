@@ -23,13 +23,18 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
 
         [SerializeField]
         private Material darkGrayMaterial;
+
         [SerializeField]
         private Material redMaterial;
+
         [SerializeField]
         private Material cyanMaterial;
 
         [SerializeField]
         private GameObject boundsVisualsPrefab;
+
+        [SerializeField]
+        private Transform cubeParent;
 
         private bool nextTriggeredFlag;
         private Vector3 cubePosition = new Vector3(0, 1.2f, 2);
@@ -63,10 +68,13 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
         /// </summary>
         private IEnumerator Sequence()
         {
+            // Keep cycling through test until scene is exitted.
+            while (true)
             {
                 var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 Debug.Assert(darkGrayMaterial != null);
                 cube.GetComponent<MeshRenderer>().material = darkGrayMaterial;
+                cube.transform.SetParent(cubeParent == null ? transform : cubeParent);
                 cube.transform.position = cubePosition;
                 cube.transform.localScale = cubeSize;
 
@@ -198,9 +206,10 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos
                 yield return WaitForButtonPressOrCommand();
 
                 Destroy(multiRoot);
-            }
 
-            SetStatus("Done!");
+                SetStatus("Done!");
+                yield return WaitForButtonPressOrCommand();
+            }
         }
 
         /// <summary>
