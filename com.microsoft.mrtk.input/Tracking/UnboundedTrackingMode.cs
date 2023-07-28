@@ -5,6 +5,10 @@ using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.XR;
 
+#if MROPENXR_PRESENT
+using Microsoft.MixedReality.OpenXR.Remoting;
+#endif
+
 #if UNITYXR_MANAGEMENT_PRESENT
 using UnityEngine.XR.Management;
 #endif
@@ -107,8 +111,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             TrackingOriginModeFlags currentMode = m_inputSubsystem.GetTrackingOriginMode();
             TrackingOriginModeFlags desiredMode = GetDesiredTrackingOriginMode(m_inputSubsystem);
+            
             if (m_requestedTrackingOriginMode == XROrigin.TrackingOriginMode.NotSpecified &&
-                currentMode == TrackingOriginModeFlags.Device &&
+                (currentMode == TrackingOriginModeFlags.Device || currentMode == TrackingOriginModeFlags.Unbounded) &&
                 currentMode != desiredMode)
             {
                 Debug.Log($"UnboundedTrackingMode: TrySetTrackingOriginMode to {desiredMode}");
@@ -121,6 +126,17 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
         private static TrackingOriginModeFlags GetDesiredTrackingOriginMode(XRInputSubsystem xrInput)
         {
+#if MROPENXR_PRESENT
+            // Unbounded space is not currently supported by HoloLens remoting, in this case continue to use
+            // device mode. If unbounded space is used on remoting, the camera offset is incorrectly reset
+            // to zero. So avoid using unbounded space until this is addressed.
+            if (AppRemoting.TryGetConnectionState(out var connectionState, out var disconnectReason))
+            {
+                Debug.Log($"UnboundedTrackingMode: Avoiding unbounded space on unsupported platform");
+                return TrackingOriginModeFlags.Device;
+            }
+#endif
+
             TrackingOriginModeFlags supportedFlags = xrInput.GetSupportedTrackingOriginModes();
             TrackingOriginModeFlags targetFlag = TrackingOriginModeFlags.Device;   // All OpenXR runtime must support LOCAL space
 
