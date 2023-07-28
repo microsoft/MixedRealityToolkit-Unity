@@ -4,10 +4,12 @@
     "references": [
         "Microsoft.MixedReality.Toolkit.Core",
         "Microsoft.MixedReality.Toolkit.Core.Editor",
-        "Microsoft.MixedReality.Toolkit.Input",
+        "Microsoft.MixedReality.Toolkit.Input",        
+        "Unity.XR.CoreUtils",
         "Unity.XR.CoreUtils.Editor",
         "Unity.XR.Interaction.Toolkit",
-        "Unity.XR.Interaction.Toolkit.Editor"
+        "Unity.XR.Interaction.Toolkit.Editor",
+        "Unity.XR.Management"
     ],
     "includePlatforms": [
         "Editor"
@@ -28,6 +30,11 @@
             "name": "com.atteneder.ktx",
             "expression": "",
             "define": "KTX_PRESENT"
+        },
+        {
+            "name": "com.unity.xr.management",
+            "expression": "4.2",
+            "define": "UNITYXR_MANAGEMENT_PRESENT"
         }
     ],
     "noEngineReferences": false
