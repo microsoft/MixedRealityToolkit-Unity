@@ -9,7 +9,7 @@ using UnityEngine.XR;
 using UnityEngine.XR.Management;
 #endif
 
-namespace Microsoft.MixedReality.Toolkit
+namespace Microsoft.MixedReality.Toolkit.Input
 {
     /// <summary>
     /// This component works along side Unity's <see cref="XROrigin"/> to ensure that the <see cref="XRInputSubsystem"/> has
@@ -24,16 +24,24 @@ namespace Microsoft.MixedReality.Toolkit
     /// </para>
     /// <para>
     /// The <see cref="TrackingOriginModeFlags.Unbounded"/> flag is only applied if the <see cref="XROrigin.RequestedTrackingOriginMode"/>
-    /// is set to <see cref="XROrigin.TrackingOriginMode.NotSpecified"/> and the device supports unbounded spaces.
-    /// </para>  UnboundedTrackingModeInspector
+    /// is set to <see cref="XROrigin.TrackingOriginMode.NotSpecified"/>, the device supports unbounded spaces, and <see cref="XRInputSubsystem"/>
+    /// current tracking mode is set to <see cref="TrackingOriginModeFlags.Device"/>.
+    /// </para> 
     /// </remarks>
     [RequireComponent(typeof(XROrigin))]
+    [AddComponentMenu("MRTK/Input/Unbounded Tracking Mode")]
     public class UnboundedTrackingMode : MonoBehaviour
     {
 #if UNITYXR_MANAGEMENT_PRESENT
         private XRInputSubsystem m_inputSubsystem;
         private XROrigin.TrackingOriginMode m_requestedTrackingOriginMode = XROrigin.TrackingOriginMode.NotSpecified;
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
+        /// <remarks>
+        /// This will attempt to set <see cref="XRInputSubsystem"/> tracking mode to <see cref="TrackingOriginModeFlags.Unbounded"/>.
+        /// </remarks>
         private void OnEnable()
         {
             XRGeneralSettings xrSettings = XRGeneralSettings.Instance;
@@ -75,6 +83,9 @@ namespace Microsoft.MixedReality.Toolkit
             EnsureSceneOriginAtEyeLevel();
         }
 
+        /// <summary>
+        /// A Unity event function that is called when the script component has been disabled.
+        /// </summary>
         private void OnDisable()
         {
             if (m_inputSubsystem != null)
@@ -96,14 +107,14 @@ namespace Microsoft.MixedReality.Toolkit
         {
             TrackingOriginModeFlags currentMode = m_inputSubsystem.GetTrackingOriginMode();
             TrackingOriginModeFlags desiredMode = GetDesiredTrackingOriginMode(m_inputSubsystem);
-            if (m_requestedTrackingOriginMode == TrackingOriginMode.NotSpecified &&
+            if (m_requestedTrackingOriginMode == XROrigin.TrackingOriginMode.NotSpecified &&
                 currentMode == TrackingOriginModeFlags.Device &&
                 currentMode != desiredMode)
             {
-                Debug.Log($"EyeLevelSceneOrigin: TrySetTrackingOriginMode to {desiredMode}");
+                Debug.Log($"UnboundedTrackingMode: TrySetTrackingOriginMode to {desiredMode}");
                 if (!m_inputSubsystem.TrySetTrackingOriginMode(desiredMode))
                 {
-                    Debug.LogWarning($"EyeLevelSceneOrigin: Failed to set tracking origin to {desiredMode}.");
+                    Debug.LogWarning($"UnboundedTrackingMode: Failed to set tracking origin to {desiredMode}.");
                 }
             }
         }
