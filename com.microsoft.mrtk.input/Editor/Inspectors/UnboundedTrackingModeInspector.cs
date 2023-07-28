@@ -14,7 +14,6 @@ namespace Microsoft.MixedReality.Toolkit.Input.Editor
     [CustomEditor(typeof(UnboundedTrackingMode))]
     internal class UnboundedTrackingModeInspector : UnityEditor.Editor
     {
-
         /// <inheritdoc/>
         public override void OnInspectorGUI()
         {

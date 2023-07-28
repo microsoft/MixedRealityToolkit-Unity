@@ -84,7 +84,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
 
             m_inputSubsystem.trackingOriginUpdated += XrInput_trackingOriginUpdated;
 
-            EnsureSceneOriginAtEyeLevel();
+            EnsureUnboundedModeSetIfSupported();
         }
 
         /// <summary>
@@ -103,11 +103,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         {
             if (isActiveAndEnabled)
             {
-                EnsureSceneOriginAtEyeLevel();
+                EnsureUnboundedModeSetIfSupported();
             }
         }
 
-        private void EnsureSceneOriginAtEyeLevel()
+        private void EnsureUnboundedModeSetIfSupported()
         {
             TrackingOriginModeFlags currentMode = m_inputSubsystem.GetTrackingOriginMode();
             TrackingOriginModeFlags desiredMode = GetDesiredTrackingOriginMode(m_inputSubsystem);
