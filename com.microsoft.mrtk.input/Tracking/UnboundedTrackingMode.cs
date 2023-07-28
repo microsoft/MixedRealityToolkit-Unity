@@ -121,22 +121,48 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 {
                     Debug.LogWarning($"UnboundedTrackingMode: Failed to set tracking origin to {desiredMode}.");
                 }
+                else if (desiredMode == TrackingOriginModeFlags.Unbounded)
+                {
+                    ApplyUnboundedCameraOffset();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Apply the <see cref="XROrigin.CameraYOffset"/> to the transform.
+        /// </summary>
+        /// <remarks>
+        /// <para>
+        /// The <see cref="XROrigin"/> class does not yet support "unbounded" devices, which results in 
+        /// <see cref="XROrigin"/> failing to correctly apply the specified camera height offset for
+        /// "unbounded" device. This function addresses this limitation that is typically seen during
+        /// remoting scenarios.
+        /// </para>
+        /// <para>
+        /// Note, problems with the camera height offset are typically seen when using holographic
+        /// remoting on HoloLens.
+        /// </para>
+        /// </remarks>
+        private void ApplyUnboundedCameraOffset()
+        {
+            if (!Application.isPlaying)
+            {
+                return;
+            }
+
+            XROrigin xrOrigin = gameObject.GetComponent<XROrigin>();
+            if (xrOrigin != null &&
+                xrOrigin.CameraFloorOffsetObject != null)
+            {
+                var offsetTransform = xrOrigin.CameraFloorOffsetObject.transform;
+                var desiredPosition = offsetTransform.localPosition;
+                desiredPosition.y = xrOrigin.CameraYOffset;
+                offsetTransform.localPosition = desiredPosition;
             }
         }
 
         private static TrackingOriginModeFlags GetDesiredTrackingOriginMode(XRInputSubsystem xrInput)
         {
-#if MROPENXR_PRESENT
-            // Unbounded space is not currently supported by HoloLens remoting, in this case continue to use
-            // device mode. If unbounded space is used on remoting, the camera offset is incorrectly reset
-            // to zero. So avoid using unbounded space until this is addressed.
-            if (AppRemoting.TryGetConnectionState(out var connectionState, out var disconnectReason))
-            {
-                Debug.Log($"UnboundedTrackingMode: Avoiding unbounded space on unsupported platform");
-                return TrackingOriginModeFlags.Device;
-            }
-#endif
-
             TrackingOriginModeFlags supportedFlags = xrInput.GetSupportedTrackingOriginModes();
             TrackingOriginModeFlags targetFlag = TrackingOriginModeFlags.Device;   // All OpenXR runtime must support LOCAL space
 
