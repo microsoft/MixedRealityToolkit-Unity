@@ -4,10 +4,10 @@
 namespace Microsoft.MixedReality.Toolkit
 {
     /// <summary>
-    /// A reticle that is compable of displaying progress of an interaction.
+    /// A reticle that is capable of displaying interaction progress.
     /// </summary>
     /// <remarks>
-    /// This is used to show selection progress and touch proximity.
+    /// This may be used to show selection progress and touch proximity.
     /// </remarks>
     /// <seealso cref="VariableProgressReticleUpdateArgs"/>
     public interface IVariableProgressReticle
@@ -24,8 +24,11 @@ namespace Microsoft.MixedReality.Toolkit
     public struct VariableProgressReticleUpdateArgs
     {
         /// <summary>
-        /// A value from 0 to 1 indicating progress of am interaction.
+        /// A value from 0 to 1 indicating interaction progress of an.
         /// </summary>
+        /// <remarks>
+        /// This may be used to show selection progress and touch proximity. 
+        /// </remarks>
         public float Progress;
 
         /// <summary>

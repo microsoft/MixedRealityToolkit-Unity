@@ -16,8 +16,8 @@ namespace Microsoft.MixedReality.Toolkit
         /// amount of "selection" that this interactor is performing.
         /// </summary>
         /// <remarks>
-        /// For gaze-pinch interactors, this is the pinch progress;
-        /// for motion controllers, this is the analog trigger press amount.
+        /// For gaze-pinch interactors, this is the pinch progress.
+        /// For motion controllers, this is the analog trigger press amount.
         /// </remarks>
         float SelectProgress { get; }
     }

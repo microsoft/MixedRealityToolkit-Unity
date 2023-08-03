@@ -13,11 +13,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
     internal class RingReticle : MonoBehaviour, IReticleVisual, IVariableProgressReticle
     {
         [SerializeField]
-        [Tooltip("The amount of smoothing to apply to the reticle's grow/shrink effect.")]
+        [Tooltip("The amount of smoothing to apply to the reticle's grow and shrink effect.")]
         private float animationSmoothing = 0.000001f;
 
         /// <summary>
-        /// The amount of smoothing to apply to the reticle's grow/shrink effect.
+        /// The amount of smoothing to apply to the reticle's grow and shrink effect.
         /// </summary>
         public float AnimationSmoothing
         {
@@ -26,11 +26,11 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         [SerializeField]
-        [Tooltip("Should the ring fade when the value is small?")]
+        [Tooltip("Turn on or off the ring fade when the value is small.")]
         private bool fadeEnabled = false;
 
         /// <summary>
-        /// Should the ring fade when the value is small?
+        /// Turn on or off the ring fade when the value is small.
         /// </summary>
         public bool FadeEnabled
         {
