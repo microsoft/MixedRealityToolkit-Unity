@@ -10,7 +10,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
     /// A ring-like reticle that expands/contracts.
     /// </summary>
     [AddComponentMenu("MRTK/Input/Ring Reticle")]
-    internal class RingReticle : MonoBehaviour, IVariableReticle
+    internal class RingReticle : MonoBehaviour, IReticleVisual, IVariableProgressReticle
     {
         [SerializeField]
         [Tooltip("The amount of smoothing to apply to the reticle's grow/shrink effect.")]
@@ -40,6 +40,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 fadeEnabled = value;
                 InitializeFadeBehavior(fadeEnabled);
             }
+        }
+
+        [SerializeField]
+        [Tooltip("Turn on or off the handling of selection progress.")]
+        private bool displaySelectionProgress = true;
+
+        /// <summary>
+        /// Turn on or off the handling of selection progress.
+        /// </summary>
+        public bool DisplaySelectionProgress
+        {
+            get => displaySelectionProgress;
+            set => displaySelectionProgress = value;
         }
 
         private MaterialPropertyBlock propertyBlock;
@@ -77,28 +90,33 @@ namespace Microsoft.MixedReality.Toolkit.Input
         }
 
         /// <inheritdoc />
-        public void UpdateVisuals(float value)
+        public void UpdateProgress(VariableProgressReticleUpdateArgs args)
         {
-            if (reticleRenderer == null || Mathf.Approximately(value, smoothedValue)) { return; }
-
-            smoothedValue = Smoothing.SmoothTo(smoothedValue, value, animationSmoothing, Time.deltaTime);
-            SetReticleShrink(smoothedValue);
+            UpdateReticleProgressVisual(args.Progress);
         }
 
-        /// Extracts values from VariableReticleArgs to call UpdateVisuals
-        public void UpdateVisuals(VariableReticleUpdateArgs args)
+        /// <inheritdoc />
+        public void UpdateVisual(ReticleVisualUpdateArgs args)
         {
-            if (args.Interactor is XRRayInteractor rayInteractor)
+            if (displaySelectionProgress)
             {
-                if (rayInteractor is IVariableSelectInteractor variableSelectInteractor)
+                if (args.Interactor is IVariableSelectInteractor variableSelectInteractor)
                 {
-                    UpdateVisuals(variableSelectInteractor.SelectProgress);
+                    UpdateReticleProgressVisual(variableSelectInteractor.SelectProgress);
                 }
-                else
+                else if (args.Interactor is IXRSelectInteractor selectInteractor)
                 {
-                    UpdateVisuals(rayInteractor.isSelectActive ? 1 : 0);
+                    UpdateReticleProgressVisual(selectInteractor.isSelectActive ? 1 : 0);
                 }
             }
+        }
+
+        private void UpdateReticleProgressVisual(float progress)
+        {
+            if (reticleRenderer == null || Mathf.Approximately(progress, smoothedValue)) { return; }
+
+            smoothedValue = Smoothing.SmoothTo(smoothedValue, progress, animationSmoothing, Time.deltaTime);
+            SetReticleShrink(smoothedValue);
         }
 
         private void SetReticleShrink(float value)

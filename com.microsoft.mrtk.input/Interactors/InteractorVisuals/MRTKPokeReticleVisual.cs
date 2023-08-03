@@ -24,15 +24,16 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// A Unity event function that is called when the script component has been enabled.
         /// </summary>
-        protected void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
             Application.onBeforeRender += UpdateReticle;
         }
 
         /// <summary>
         /// A Unity event function that is called when the script component has been disabled.
         /// </summary>
-        protected void OnDisable()
+        protected virtual void OnDisable()
         {
             UpdateReticle();
             Application.onBeforeRender -= UpdateReticle;
@@ -61,6 +62,12 @@ namespace Microsoft.MixedReality.Toolkit.Input
                     {
                         proximityLight.SetActive(Reticle.activeSelf);
                     }
+                }
+
+                // If the reticle is an IReticleVisual, have the reticle update based on selectedness
+                if (Visual != null)
+                {
+                    Visual.UpdateVisual(new ReticleVisualUpdateArgs(pokeInteractor, Reticle.transform.position, Reticle.transform.forward));
                 }
             }
         }

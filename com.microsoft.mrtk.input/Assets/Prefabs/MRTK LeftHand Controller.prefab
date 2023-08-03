@@ -312,8 +312,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70ec73306ca3ef44a95bbb45b96f0538, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseReticle: {fileID: 8992338914735331379}
   reticleRoot: {fileID: 3988544559415115452}
+  baseReticle: {fileID: 8992338914735331379}
   rayInteractor: {fileID: 2940030942784507886}
   proximityLight: {fileID: 4448665028262160152}
   visibilitySettings: 0
@@ -1100,6 +1100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 518e5c0e6d2c664478d85d0ceae60c36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reticleRoot: {fileID: 0}
   baseReticle: {fileID: 8086910922498750391}
   pokeInteractor: {fileID: 1948193616346090107}
   proximityLight: {fileID: 3552666654439622812}
@@ -1845,6 +1846,10 @@ PrefabInstance:
     - target: {fileID: 7949002557058872435, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
       propertyPath: fadeEnabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949002557058872435, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
+      propertyPath: displaySelectionProgress
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9095796513279534737, guid: fddee8b412d753e40a02681891de4a7b, type: 3}
       propertyPath: m_IsActive

@@ -35,8 +35,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Experimental
         /// <summary>
         /// A Unity event function that is called when the script component has been enabled.
         /// </summary>
-        protected virtual void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             mouseInteractor.selectEntered.AddListener(LocateTargetHitPoint);
 
             Application.onBeforeRender += OnBeforeRenderCursor;
@@ -121,10 +123,10 @@ namespace Microsoft.MixedReality.Toolkit.Input.Experimental
             Reticle.transform.position = reticlePosition;
             Reticle.transform.forward = reticleNormal;
 
-            // If the reticle is an IVariableSelectReticle, have the reticle update based on selectedness
-            if (VariableReticle != null)
+            // If the reticle is an IReticleVisual, have the reticle update based on selectedness
+            if (Visual != null)
             {
-                VariableReticle.UpdateVisuals(new VariableReticleUpdateArgs(mouseInteractor, reticlePosition, reticleNormal));
+                Visual.UpdateVisual(new ReticleVisualUpdateArgs(mouseInteractor, reticlePosition, reticleNormal));
             }
 
             if (Reticle.activeSelf == false)
