@@ -10,8 +10,7 @@ namespace Microsoft.MixedReality.Toolkit
     /// A customizable visual component of a reticle.
     /// </summary>
     /// <remarks>
-    /// If a custom reticle can contains a component that implements <see cref="IReticleVisual"/>, the
-    /// implementation of <see cref="IReticleVisual"/> can receive updates to the base reticle's
+    /// Implementations of <see cref="IReticleVisual"/> can receive updates to the base reticle's
     /// position and normal every frame, if the base reticle is shown. For more information on how
     /// set a custom reticle, see <see cref="XRBaseInteractable.AttachCustomReticle(IXRInteractor)"/>.
     /// </remarks>c
