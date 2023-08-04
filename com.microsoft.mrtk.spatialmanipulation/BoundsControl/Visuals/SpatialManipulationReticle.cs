@@ -11,7 +11,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
     /// A reticle used to visualize spatial manipulation capabilities when hovering over a bounding box handle.
     /// The reticle is oriented in relation to the bounding box, to indicate the direction for rotation or scaling.
     /// </summary>
-    public class SpatialManipulationReticle : MonoBehaviour, IVariableReticle
+    public class SpatialManipulationReticle : MonoBehaviour, IReticleVisual
     {
         /// <summary>
         /// The type of the reticle visuals. Scale or Rotate.
@@ -28,7 +28,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// <remarks>
         /// Rotates the cursor reticle based on the hovered or selected handle's position relative to the box visuals. 
         /// </remarks>
-        public void UpdateVisuals(VariableReticleUpdateArgs args)
+        public void UpdateVisual(ReticleVisualUpdateArgs args)
         {
             if (args.Interactor is XRRayInteractor rayInteractor)
             {

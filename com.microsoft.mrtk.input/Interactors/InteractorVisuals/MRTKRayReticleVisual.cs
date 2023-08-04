@@ -17,10 +17,6 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class MRTKRayReticleVisual : BaseReticleVisual
     {
         [SerializeField]
-        [Tooltip("The root of the reticle visuals")]
-        private Transform reticleRoot;
-
-        [SerializeField]
         [Tooltip("The interactor which this visual represents.")]
         private XRRayInteractor rayInteractor;
 
@@ -48,23 +44,19 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// A Unity event function that is called when the script component has been enabled.
         /// </summary>
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
+
             rayInteractor.selectEntered.AddListener(LocateTargetHitPoint);
             Application.onBeforeRender += UpdateReticle;
-
-            // If no custom reticle root is specified, just use the interactor's transform.
-            if (reticleRoot == null)
-            {
-                reticleRoot = transform;
-            }
             UpdateReticle();
         }
 
         /// <summary>
         /// A Unity event function that is called when the script component has been disabled.
         /// </summary>
-        private void OnDisable()
+        protected virtual void OnDisable()
         {
             rayInteractor.selectEntered.RemoveListener(LocateTargetHitPoint);
             Application.onBeforeRender -= UpdateReticle;
@@ -75,7 +67,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <summary>
         /// A Unity event function that is called every frame, if this object is enabled.
         /// </summary>
-        private void LateUpdate()
+        protected virtual void LateUpdate()
         {
             // if running in batch mode the onBeforeRender event doesn't fire so
             // we need to update the reticle here
@@ -112,22 +104,22 @@ namespace Microsoft.MixedReality.Toolkit.Input
                         }
 
                         // If we have a reticle, set its position and rotation.
-                        if (reticleRoot != null)
+                        if (ReticleRoot != null)
                         {
                             if (reticleNormal != Vector3.zero)
                             {
-                                reticleRoot.transform.SetPositionAndRotation(reticlePosition, Quaternion.LookRotation(reticleNormal, Vector3.up));
+                                ReticleRoot.transform.SetPositionAndRotation(reticlePosition, Quaternion.LookRotation(reticleNormal, Vector3.up));
                             }
                             else
                             {
-                                reticleRoot.transform.position = reticlePosition;
+                                ReticleRoot.transform.position = reticlePosition;
                             }
                         }
 
-                        // If the reticle is an IVariableSelectReticle, have the reticle update based on selectedness
-                        if (VariableReticle != null)
+                        // If the reticle is an IReticleVisual, have the reticle update based on selectedness
+                        if (Visual != null)
                         {
-                            VariableReticle.UpdateVisuals(new VariableReticleUpdateArgs(rayInteractor, reticlePosition, reticleNormal));
+                            Visual.UpdateVisual(new ReticleVisualUpdateArgs(rayInteractor, reticlePosition, reticleNormal));
                         }
                     }
                     else

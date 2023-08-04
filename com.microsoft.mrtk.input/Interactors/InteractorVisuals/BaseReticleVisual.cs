@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using System;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -17,47 +18,85 @@ namespace Microsoft.MixedReality.Toolkit.Input
     public class BaseReticleVisual : MonoBehaviour, IXRCustomReticleProvider
     {
         [SerializeField]
+        [Tooltip("The root of the reticle visuals")]
+        private Transform reticleRoot;
+
+        /// <summary>
+        /// The root of the reticle visuals. 
+        /// </summary>
+        /// <remarks>
+        /// This transform hold both the base and custom reticle.
+        /// </remarks>
+        protected Transform ReticleRoot => reticleRoot;
+
+        [SerializeField]
         [Tooltip("The reticle model to use when the interactable doesn't specify a custom one.")]
         private GameObject baseReticle;
 
         /// <summary>
+        /// The reticle model to use when the interactable doesn't specify a custom one.
+        /// </summary>
+        protected GameObject BaseReticle => baseReticle;
+
+        /// <summary>
         /// Staging area for custom reticles that interactors can attach to show unique visuals.
         /// </summary>
-        protected GameObject customReticle;
+        protected GameObject CustomReticle
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Is there a custom reticle currently attached to this interactor?
         /// </summary>
-        protected bool customReticleAttached;
+        protected bool CustomReticleAttached
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// The current reticle that the interactor is using.
         /// </summary>
-        public GameObject Reticle => customReticleAttached ? customReticle : baseReticle;
+        public GameObject Reticle => CustomReticleAttached ? CustomReticle : baseReticle;
 
-        private IVariableReticle variableReticle;
+        private IReticleVisual visual;
 
         /// <summary>
-        /// Cached variable reticle reference.
+        /// Cached reference to the <see cref="IReticleVisual"/> component on <see cref="Reticle"/>.
         /// </summary>
-        protected IVariableReticle VariableReticle
+        protected IReticleVisual Visual
         {
             get
             {
-                if (variableReticle == null)
+                if (visual == null)
                 {
-                    variableReticle = Reticle.GetComponent<IVariableReticle>();
+                    visual = Reticle.GetComponent<IReticleVisual>();
                 }
 
-                return variableReticle;
+                return visual;
             }
         }
+
+        /// <summary>
+        /// A Unity event function that is called when the script component has been enabled.
+        /// </summary>
+        protected virtual void OnEnable()
+        {
+            // If no reticle root is specified, use the interactor's transform.
+            if (reticleRoot == null)
+            {
+                reticleRoot = transform;
+            }
+        }
+
         #region IXRCustomReticleProvider
 
         /// <inheritdoc />
         public bool AttachCustomReticle(GameObject reticleInstance)
         {
-            if (!customReticleAttached)
+            if (!CustomReticleAttached)
             {
                 if (baseReticle != null)
                 {
@@ -66,27 +105,27 @@ namespace Microsoft.MixedReality.Toolkit.Input
             }
             else
             {
-                if (customReticle != null)
+                if (CustomReticle != null)
                 {
-                    customReticle.SetActive(false);
+                    CustomReticle.SetActive(false);
                 }
             }
 
-            customReticle = reticleInstance;
-            if (customReticle != null)
+            CustomReticle = reticleInstance;
+            if (CustomReticle != null)
             {
-                customReticle.SetActive(true);
+                CustomReticle.SetActive(true);
 
-                // Ensure the custom reticle is parented under this gameobject
-                customReticle.transform.parent = transform;
-                customReticle.transform.localPosition = Vector3.zero;
-                customReticle.transform.localRotation = Quaternion.identity;
+                // Ensure the custom reticle is parented under this game object
+                CustomReticle.transform.parent = reticleRoot;
+                CustomReticle.transform.localPosition = Vector3.zero;
+                CustomReticle.transform.localRotation = Quaternion.identity;
             }
 
-            customReticleAttached = true;
+            CustomReticleAttached = true;
 
-            // Make sure that the variable reticle now refers to the correct reticle
-            variableReticle = Reticle.GetComponent<IVariableReticle>();
+            // Clear old references to the old Reticle components.
+            visual = null;
 
             return true;
         }
@@ -94,9 +133,9 @@ namespace Microsoft.MixedReality.Toolkit.Input
         /// <inheritdoc />
         public bool RemoveCustomReticle()
         {
-            if (customReticle != null)
+            if (CustomReticle != null)
             {
-                customReticle.SetActive(false);
+                CustomReticle.SetActive(false);
             }
 
             // If we have a standard reticle, re-enable that one.
@@ -105,9 +144,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 baseReticle.SetActive(true);
             }
 
-            customReticle = null;
-            customReticleAttached = false;
-            variableReticle = null;
+            CustomReticle = null;
+            CustomReticleAttached = false;
+            visual = null;
+
             return false;
         }
 

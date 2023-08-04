@@ -94,7 +94,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         public float RotationSmoothing { get => rotationSmoothing; set => rotationSmoothing = value; }
 
         // Reference to the variable visuals.
-        private IVariableReticle variableReticleVisuals;
+        private IVariableProgressReticle variableProgressVisual;
 
         // The smoothed magnetization point, usually the nearest point on the nearest collider.
         // Not necessarily the same as the current reticle rotation!
@@ -126,7 +126,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
         private void Awake()
         {
             // Optional.
-            variableReticleVisuals = GetComponentInChildren<IVariableReticle>(includeInactive: true);
+            variableProgressVisual = GetComponentInChildren<IVariableProgressReticle>(includeInactive: true);
             pokeInteractor = gameObject.GetComponentInParent<IPokeInteractor>(includeInactive: true);
         }
 
@@ -243,10 +243,10 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 }
             }
 
-            // If we're using variable reticle visuals, update the visuals with the progress/proximity.
-            if (variableReticleVisuals != null && variableReticleVisuals is RingReticle ringReticleVisuals)
+            // If we're using variable progress visuals, update the visuals with the progress/proximity.
+            if (variableProgressVisual != null)
             {
-                ringReticleVisuals.UpdateVisuals(1.0f - progressFraction);
+                variableProgressVisual.UpdateProgress(new VariableProgressReticleUpdateArgs(1.0f - progressFraction));
             }
         }
 
