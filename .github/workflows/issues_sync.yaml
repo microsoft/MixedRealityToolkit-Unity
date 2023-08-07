@@ -14,7 +14,7 @@ jobs:
   run-sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: Maximisch/issue-sync-action
+      - uses: Maximisch/issue-sync-action@v1
         with:
           repo_target: "MixedRealityToolkit/MixedRealityToolkit-Unity" # The target repository
           only_sync_on_label: "MRTK3" # Only syncs issues with this label set
