@@ -1,11 +1,6 @@
 name: Sync issues
 on:
   workflow_dispatch:
-    inputs:
-      input:
-        description: "Sync request"
-        required: false
-        default: "All"
 
 env:
   GITHUB_TOKEN: ${{ secrets.ISSUE_SYNC_TOKEN }}
