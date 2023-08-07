@@ -1,15 +1,29 @@
-name: Sync issues
+name: sync-issues
+
 on:
   workflow_dispatch:
-
-env:
-  GITHUB_TOKEN: ${{ secrets.ISSUE_SYNC_TOKEN }}
+  issues:
+    types:
+      [
+        opened,
+        deleted,
+        transferred,
+        closed,
+        reopened,
+        assigned,
+        unassigned,
+        labeled,
+        unlabeled,
+      ]
 
 jobs:
   run-sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: Maximisch/issue-sync-action@v1
+      - name: sync-issues
+        uses: Maximisch/issue-sync-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.ISSUE_SYNC_TOKEN }}
         with:
           repo_target: "MixedRealityToolkit/MixedRealityToolkit-Unity" # The target repository
           only_sync_on_label: "MRTK3" # Only syncs issues with this label set
