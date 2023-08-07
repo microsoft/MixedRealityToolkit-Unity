@@ -1,4 +1,4 @@
-name: "Issues sync"
+name: Sync issues
 on:
   workflow_dispatch:
     inputs:
@@ -10,9 +10,12 @@ on:
 env:
   GITHUB_TOKEN: ${{ secrets.ISSUE_SYNC_TOKEN }}
 
-- name: Run the typescript action
-  uses: Maximisch/issue-sync-action
-  with:
-    repo_target: "MixedRealityToolkit/MixedRealityToolkit-Unity" # The target repository
-    only_sync_on_label: "MRTK3" # Only syncs issues with this label set
-    only_sync_main_issue: false # Excludes comments
+jobs:
+  run-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Maximisch/issue-sync-action
+        with:
+          repo_target: "MixedRealityToolkit/MixedRealityToolkit-Unity" # The target repository
+          only_sync_on_label: "MRTK3" # Only syncs issues with this label set
+          only_sync_main_issue: false # Excludes comments
