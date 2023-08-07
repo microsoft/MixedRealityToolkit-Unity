@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: sync-issues
-        uses: Maximisch/issue-sync-action@v1
+        uses: ./
         env:
           GITHUB_TOKEN: ${{ secrets.ISSUE_SYNC_TOKEN }}
         with:
