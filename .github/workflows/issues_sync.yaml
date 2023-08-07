@@ -2,6 +2,7 @@ name: sync-issues
 
 on:
   workflow_dispatch:
+  push:
   issues:
     types:
       [
