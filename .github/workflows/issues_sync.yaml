@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./
+      - uses: ./issues_sync_action
         env:
           GITHUB_TOKEN: ${{ secrets.ISSUE_SYNC_TOKEN }}
         with:
