@@ -21,8 +21,10 @@ jobs:
   run-sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@c60a92eb51acca2de954c3fe8ff9b67de265c56f
-      - uses: ./issues_sync_action
+      - name: checkout
+        uses: actions/checkout@c60a92eb51acca2de954c3fe8ff9b67de265c56f
+      - name: sync
+        uses: ./issues_sync_action
         env:
           GITHUB_TOKEN: ${{ secrets.ISSUE_SYNC_TOKEN }}
         with:
