@@ -1,3 +1,27 @@
+> [!IMPORTANT]  
+> This branch is now locked, and will no longer be maintained. Please visit https://github.com/MixedRealityToolkit/MixedRealityToolkit-Unity
+> for the newest version the Mixed Reality Toolkit.
+
+> [!NOTE] 
+> With the creation of the new <a href="https://github.com/MixedRealityToolkit/">Mixed Reality Toolkit</a> organization, there now exists two MRTK repositories,
+> one repository for version 3+ and a legacy one for version 2.
+> <br/><br/>
+> <strong>MRTK v3+</strong>
+> <br/><br/>
+> New versions of the Mixed Reality Toolkit will be released by the <a href="https://github.com/MixedRealityToolkit/">Mixed Reality Toolkit</a>
+> organization using a repository at https://github.com/MixedRealityToolkit/MixedRealityToolkit-Unity. Visit this
+>  <a href="https://github.com/MixedRealityToolkit/MixedRealityToolkit-Unity">repository</a> for the latest version of the MRTK project, and when
+> creating new issues or discussion topics for MRTK version 3 or later.
+> <br/><br/>
+> <strong>MRTK v2 (Legacy)</strong>
+> <br/><br/>
+> The old MRTK2 repository, https://github.com/microsoft/MixedRealityToolkit-Unity, is remaining under Microsoft's management and will stay on
+> version 2. Microsoft is committed to the next version of MRTK, and recommends applications move to MRTK version 3 or later. However, Microsoft
+> will continue to support and address critical MRTK2 issues, until MRTK2 is deprecated. Please open
+> MRTK2 issues and discussion topics using the <a href="https://github.com/microsoft/MixedRealityToolkit-Unity">old repository</a>.
+
+<br/><br/>
+
 ![Mixed Reality Toolkit](https://user-images.githubusercontent.com/13754172/122838732-89ea3400-d2ab-11eb-8c79-32dd84944989.png)
 
 
