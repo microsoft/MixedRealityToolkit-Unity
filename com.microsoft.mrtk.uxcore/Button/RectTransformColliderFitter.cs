@@ -66,6 +66,10 @@ namespace Microsoft.MixedReality.Toolkit.UX
         [Tooltip("2D padding around the AttachedRectTransform.")]
         private Vector2 padding = Vector2.zero;
 
+        [SerializeField]
+        [Tooltip("Whether the collider should be affected by Rect2DMasks in parent components")]
+        private bool useMask = true;
+
         /// <summary>
         /// Get or set the 2D padding around the rect transform.
         /// </summary>
@@ -87,6 +91,8 @@ namespace Microsoft.MixedReality.Toolkit.UX
         private RectMask2D mask;
 
         private ScrollRect scrollRect;
+
+        private bool maskApplied = false;
 
         #region IClippable
 
@@ -124,11 +130,6 @@ namespace Microsoft.MixedReality.Toolkit.UX
             if (mask == null)
             {
                 mask = GetComponentInParent<RectMask2D>();
-            }
-
-            if (mask != null)
-            {
-                mask.AddClippable(this);
             }
 
             if (scrollRect == null)
@@ -202,7 +203,7 @@ namespace Microsoft.MixedReality.Toolkit.UX
 
                 Rect computedRect = attachedRectTransform.rect;
 
-                if (mask != null)
+                if (UpdateMask())
                 {
                     // Transform the mask's rect to our local space.
                     Matrix4x4 matrix = AttachedRectTransform.worldToLocalMatrix * mask.transform.localToWorldMatrix;
@@ -234,6 +235,35 @@ namespace Microsoft.MixedReality.Toolkit.UX
                     thisCollider.center = new Vector3(computedRect.center.x, computedRect.center.y, thisCollider.center.z);
                 }
             }
+        }
+
+        /// <summary>
+        /// Updates whether this object is added to the parent Rect2DColliderFitter's clippables.
+        /// </summary>
+        /// <returns>True if a mask is currently active and applied</returns>
+        private bool UpdateMask()
+        {
+            if (mask == null)
+            {
+                return false;
+            }
+
+            if (useMask && !maskApplied)
+            {
+                mask.AddClippable(this);
+                maskApplied = true;
+            }
+            else if (!useMask && maskApplied)
+            {
+                maskApplied = false;
+                mask.RemoveClippable(this);
+                if (thisCollider != null && !thisCollider.enabled)
+                {
+                    thisCollider.enabled = true;
+                }
+            }
+
+            return maskApplied;
         }
     }
 }
