@@ -422,7 +422,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                 {
                     case CameraFaderTargets.All:
                         // Add every single camera in all scenes
-                        targetCameras.AddRange(GameObject.FindObjectsOfType<Camera>());
+                        targetCameras.AddRange(FindObjectUtility.FindObjectsOfType<Camera>());
                         break;
 
                     case CameraFaderTargets.Main:
@@ -430,7 +430,7 @@ namespace Microsoft.MixedReality.Toolkit.Extensions.SceneTransitions
                         break;
 
                     case CameraFaderTargets.UI:
-                        foreach (Canvas canvas in GameObject.FindObjectsOfType<Canvas>())
+                        foreach (Canvas canvas in FindObjectUtility.FindObjectsOfType<Canvas>())
                         {
                             switch (canvas.renderMode)
                             {

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Input;
 using System;
 using System.IO;
@@ -26,7 +27,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking.Logging
             {
                 if (instance == null)
                 {
-                    instance = FindObjectOfType<UserInputRecorder>();
+                    instance = FindObjectUtility.FindObjectByType<UserInputRecorder>();
                 }
                 return instance;
             }

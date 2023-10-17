@@ -360,9 +360,9 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         public IEnumerator CursorScaling()
         {
             // Finding or initializing necessary objects
-            Camera cam = GameObject.FindObjectOfType<Camera>();
+            Camera cam = FindObjectUtility.FindObjectByType<Camera>();
 
-            BaseCursor baseCursor = GameObject.FindObjectOfType<BaseCursor>();
+            BaseCursor baseCursor = FindObjectUtility.FindObjectByType<BaseCursor>();
             Assert.IsNotNull(baseCursor);
 
             // Make sure resizing is turned on

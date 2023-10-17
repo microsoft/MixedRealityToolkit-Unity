@@ -506,13 +506,13 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void AnalyzeScene()
         {
-            sceneLights = FindObjectsOfType<Light>();
+            sceneLights = FindObjectUtility.FindObjectsOfType<Light>();
 
             AnalyzeRaycastTargets();
 
             // TODO: Consider searching for particle renderers count?
 
-            MeshesOrderedByPolyCountDesc = FindObjectsOfType<MeshFilter>()
+            MeshesOrderedByPolyCountDesc = FindObjectUtility.FindObjectsOfType<MeshFilter>()
                 .Where(f => f != null && f.sharedMesh != null)
                 .OrderByDescending(f => f.sharedMesh.triangles.Length)
                 .ToArray();
@@ -537,8 +537,8 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void AnalyzeRaycastTargets()
         {
-            totalRaycastableUnityUI_Text = FindObjectsOfType<Text>().Where(t => t.raycastTarget).Count();
-            totalRaycastableUnityUI_TMP_UGUI = FindObjectsOfType<TextMeshProUGUI>().Where(t => t.raycastTarget).Count();
+            totalRaycastableUnityUI_Text = FindObjectUtility.FindObjectsOfType<Text>().Where(t => t.raycastTarget).Count();
+            totalRaycastableUnityUI_TMP_UGUI = FindObjectUtility.FindObjectsOfType<TextMeshProUGUI>().Where(t => t.raycastTarget).Count();
         }
 
         private void DiscoverMaterials()
@@ -591,7 +591,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private static void DisableRaycastTargetAll<T>() where T : Graphic
         {
-            DisableRaycastTarget(FindObjectsOfType<T>());
+            DisableRaycastTarget(FindObjectUtility.FindObjectsOfType<T>());
         }
 
         private static void DisableRaycastTarget(Graphic[] elements)

@@ -29,7 +29,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
         {
             // Set up the AsyncCoroutineRunner to be parented under the MixedRealityPlayspace,
             // to validate that the runner will correctly unparent it.
-            AsyncCoroutineRunner asyncCoroutineRunner = Object.FindObjectOfType<AsyncCoroutineRunner>();
+            AsyncCoroutineRunner asyncCoroutineRunner = FindObjectUtility.FindObjectByType<AsyncCoroutineRunner>();
             if (asyncCoroutineRunner == null)
             {
                 asyncCoroutineRunner = new GameObject("AsyncCoroutineRunner").AddComponent<AsyncCoroutineRunner>();
