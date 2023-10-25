@@ -274,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         public static void InitializeCamera()
         {
-            Camera[] cameras = FindObjectUtility.FindObjectsOfType<Camera>();
+            Camera[] cameras = FindObjectUtility.FindObjectsByType<Camera>();
 
             if (cameras.Length == 0)
             {

@@ -477,7 +477,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests.EditMode.Core
                 _ = new GameObject("MixedRealityToolkit").AddComponent<MixedRealityToolkit>();
             }
 
-            MixedRealityToolkit[] instances = FindObjectUtility.FindObjectsOfType<MixedRealityToolkit>();
+            MixedRealityToolkit[] instances = FindObjectUtility.FindObjectsByType<MixedRealityToolkit>();
             for (int i = 0; i < instances.Length; i++)
             {
                 MixedRealityToolkit.SetActiveInstance(instances[i]);

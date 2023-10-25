@@ -151,7 +151,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             int uiRaycastCameraCount = 0;
             // Confirm that we have one UIRaycastCamera.
             Debug.Log("Validating UIRaycastCamera count.");
-            Camera[] cameras = FindObjectUtility.FindObjectsOfType<Camera>();
+            Camera[] cameras = FindObjectUtility.FindObjectsByType<Camera>();
             foreach (Camera camera in cameras)
             {
                 if ("UIRaycastCamera" == camera.name)

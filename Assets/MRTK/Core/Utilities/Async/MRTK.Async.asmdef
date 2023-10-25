@@ -1,5 +1,6 @@
 {
     "name": "Microsoft.MixedReality.Toolkit.Async",
+    "rootNamespace": "",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -8,6 +9,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "Unity",
+            "expression": "2021.3.18",
+            "define": "UNITY_2021_3_18_OR_NEWER"
+        }
+    ],
     "noEngineReferences": false
 }

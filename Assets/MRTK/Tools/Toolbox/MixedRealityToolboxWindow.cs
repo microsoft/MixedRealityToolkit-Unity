@@ -354,7 +354,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void FindAllMRTKCanvases()
         {
-            canvasUtilities = FindObjectUtility.FindObjectsOfType<Input.Utilities.CanvasUtility>();
+            canvasUtilities = FindObjectUtility.FindObjectsByType<Input.Utilities.CanvasUtility>();
             dropdownValues = new string[canvasUtilities.Length];
 
             for (int i = 0; i < canvasUtilities.Length; i++)
