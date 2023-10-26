@@ -66,7 +66,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Input
             Initialize<IMixedRealityRaycastProvider>(profile.RaycastProviderType, args: args);
 
 
-            EventSystem[] eventSystems = FindObjectsOfType<EventSystem>();
+            EventSystem[] eventSystems = FindObjectUtility.FindObjectsByType<EventSystem>();
 
             if (eventSystems.Length == 0)
             {

@@ -1,5 +1,6 @@
 {
     "name": "Microsoft.MixedReality.Toolkit",
+    "rootNamespace": "",
     "references": [
         "Microsoft.MixedReality.Toolkit.Async",
         "Microsoft.MixedReality.Toolkit.Editor.Utilities",
@@ -22,6 +23,11 @@
             "name": "com.unity.xr.management",
             "expression": "",
             "define": "XR_MANAGEMENT_ENABLED"
+        },
+        {
+            "name": "Unity",
+            "expression": "2021.3.18",
+            "define": "UNITY_2021_3_18_OR_NEWER"
         }
     ],
     "noEngineReferences": false

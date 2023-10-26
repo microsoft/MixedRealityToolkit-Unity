@@ -266,7 +266,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             UnityEngine.Object.Destroy(CoreServices.InputSystem.GazeProvider.GazeCursor as Behaviour);
             CoreServices.InputSystem.GazeProvider.Enabled = false;
 
-            var diagnosticsVoiceControls = UnityEngine.Object.FindObjectsOfType<DiagnosticsSystemVoiceControls>();
+            var diagnosticsVoiceControls = FindObjectUtility.FindObjectsByType<DiagnosticsSystemVoiceControls>();
             foreach (var diagnosticsComponent in diagnosticsVoiceControls)
             {
                 diagnosticsComponent.enabled = false;

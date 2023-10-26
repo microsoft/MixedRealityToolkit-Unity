@@ -51,7 +51,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 if (instance == null)
                 {
-                    instance = FindObjectOfType<AsyncCoroutineRunner>();
+#if UNITY_2021_3_18_OR_NEWER
+                    instance = UnityEngine.Object.FindFirstObjectByType<AsyncCoroutineRunner>();
+#else
+                    instance = GameObject.FindObjectOfType<AsyncCoroutineRunner>();
+#endif
                 }
 
                 // FindObjectOfType() only search for objects attached to active GameObjects. The FindObjectOfType(bool includeInactive) variant is not available to Unity 2019.4 and earlier so cannot be used.

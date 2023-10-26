@@ -132,7 +132,7 @@ namespace Microsoft.MixedReality.Toolkit
         /// </remarks>
         public static void SetProfileBeforeInitialization(MixedRealityToolkitConfigurationProfile profile)
         {
-            MixedRealityToolkit toolkit = FindObjectOfType<MixedRealityToolkit>();
+            MixedRealityToolkit toolkit = FindObjectUtility.FindObjectByType<MixedRealityToolkit>();
             toolkit.activeProfile = profile;
         }
 
@@ -586,7 +586,7 @@ namespace Microsoft.MixedReality.Toolkit
             bool addedComponents = false;
             if (!Application.isPlaying && CameraCache.Main != null)
             {
-                EventSystem[] eventSystems = FindObjectsOfType<EventSystem>();
+                EventSystem[] eventSystems = FindObjectUtility.FindObjectsByType<EventSystem>();
 
                 if (eventSystems.Length == 0)
                 {
@@ -644,7 +644,7 @@ namespace Microsoft.MixedReality.Toolkit
                 //
                 // To avoid returning null in this case, make sure to search the scene for MRTK.
                 // We do this only when in editor to avoid any performance cost at runtime.
-                List<MixedRealityToolkit> mrtks = new List<MixedRealityToolkit>(FindObjectsOfType<MixedRealityToolkit>());
+                List<MixedRealityToolkit> mrtks = new List<MixedRealityToolkit>(FindObjectUtility.FindObjectsByType<MixedRealityToolkit>());
                 // Sort the list by instance ID so we get deterministic results when selecting our next active instance
                 mrtks.Sort(delegate (MixedRealityToolkit i1, MixedRealityToolkit i2) { return i1.GetInstanceID().CompareTo(i2.GetInstanceID()); });
 

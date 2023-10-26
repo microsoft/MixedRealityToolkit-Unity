@@ -59,7 +59,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities.Facades
 
         private static void CleanupCurrentFacades()
         {
-            foreach (MixedRealityToolkit toolkitInstance in GameObject.FindObjectsOfType<MixedRealityToolkit>())
+            foreach (MixedRealityToolkit toolkitInstance in FindObjectUtility.FindObjectsByType<MixedRealityToolkit>())
             {
                 DestroyAllChildren(toolkitInstance);
             }

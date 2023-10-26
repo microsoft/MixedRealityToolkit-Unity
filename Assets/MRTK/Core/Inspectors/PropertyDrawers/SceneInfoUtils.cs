@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.SceneSystem;
 using System;
 using System.Collections.Generic;
@@ -346,7 +347,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                 foreach (Tuple<Type, FieldInfo> typeFieldInfoPair in cachedComponentTypes)
                 {
                     FieldInfo fieldInfo = typeFieldInfoPair.Item2;
-                    foreach (Component source in GameObject.FindObjectsOfType(typeFieldInfoPair.Item1))
+                    foreach (Component source in FindObjectUtility.FindObjectsByType(typeFieldInfoPair.Item1))
                     {
                         CheckForChangesInField(source, fieldInfo);
                     }

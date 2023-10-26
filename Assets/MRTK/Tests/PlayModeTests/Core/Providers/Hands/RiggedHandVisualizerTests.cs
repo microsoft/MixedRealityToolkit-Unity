@@ -45,7 +45,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             var rightHand = new TestHand(Handedness.Right);
             yield return rightHand.Show(Vector3.zero);
 
-            RiggedHandVisualizer handVisualizer = GameObject.FindObjectOfType<RiggedHandVisualizer>().GetComponent<RiggedHandVisualizer>();
+            RiggedHandVisualizer handVisualizer = FindObjectUtility.FindObjectByType<RiggedHandVisualizer>().GetComponent<RiggedHandVisualizer>();
 
             yield return rightHand.SetGesture(ArticulatedHandPose.GestureId.Open);
             Assert.IsTrue(handVisualizer.HandRenderer.sharedMaterial.GetFloat(handVisualizer.PinchStrengthMaterialProperty) < 0.5f);

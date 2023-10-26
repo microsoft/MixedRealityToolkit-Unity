@@ -423,7 +423,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
                                 }
                                 else
                                 {
-                                    foreach (var dbr in FindObjectsOfType<DepthBufferRenderer>())
+                                    foreach (var dbr in FindObjectUtility.FindObjectsByType<DepthBufferRenderer>())
                                     {
                                         UnityObjectExtensions.DestroyObject(dbr);
                                     }

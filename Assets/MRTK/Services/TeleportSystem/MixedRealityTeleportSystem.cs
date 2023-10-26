@@ -60,7 +60,7 @@ namespace Microsoft.MixedReality.Toolkit.Teleport
 #if UNITY_EDITOR
             if (!UnityEditor.EditorApplication.isPlaying)
             {
-                var eventSystems = Object.FindObjectsOfType<EventSystem>();
+                var eventSystems = FindObjectUtility.FindObjectsByType<EventSystem>();
 
                 if (eventSystems.Length == 0)
                 {

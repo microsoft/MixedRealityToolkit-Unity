@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using Microsoft.MixedReality.Toolkit.Utilities.Editor;
 using System;
 using System.Collections.Generic;
@@ -353,7 +354,7 @@ namespace Microsoft.MixedReality.Toolkit.Editor
 
         private void FindAllMRTKCanvases()
         {
-            canvasUtilities = FindObjectsOfType<Input.Utilities.CanvasUtility>();
+            canvasUtilities = FindObjectUtility.FindObjectsByType<Input.Utilities.CanvasUtility>();
             dropdownValues = new string[canvasUtilities.Length];
 
             for (int i = 0; i < canvasUtilities.Length; i++)

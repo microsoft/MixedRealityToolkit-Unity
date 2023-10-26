@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
+using Microsoft.MixedReality.Toolkit.Utilities;
 using UnityEngine;
 
 namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
@@ -17,7 +18,7 @@ namespace Microsoft.MixedReality.Toolkit.Examples.Demos.EyeTracking
             {
                 if (_Instance == null)
                 {
-                    _Instance = FindObjectOfType<StatusText>();
+                    _Instance = FindObjectUtility.FindObjectByType<StatusText>();
                 }
                 return _Instance;
             }

@@ -38,7 +38,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     Debug.Log("No main camera found. Searching for cameras in the scene.");
 
                     // If no main camera was found, try to determine one.
-                    Camera[] cameras = Object.FindObjectsOfType<Camera>();
+                    Camera[] cameras = FindObjectUtility.FindObjectsByType<Camera>();
                     if (cameras.Length == 0)
                     {
                         Debug.LogWarning("No cameras found. Creating a \"MainCamera\".");

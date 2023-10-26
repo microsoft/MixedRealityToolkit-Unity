@@ -297,7 +297,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         {
             // note: this might be expensive for larger scenes but we don't know where the appbar is 
             // placed in the hierarchy so we have to search the scene for it
-            AppBar[] appBars = Object.FindObjectsOfType<AppBar>();
+            AppBar[] appBars = FindObjectUtility.FindObjectsByType<AppBar>();
             for (int i = 0; i < appBars.Length; ++i)
             {
                 AppBar appBar = appBars[i];

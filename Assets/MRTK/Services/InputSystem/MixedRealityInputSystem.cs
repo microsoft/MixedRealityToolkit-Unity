@@ -170,7 +170,7 @@ namespace Microsoft.MixedReality.Toolkit.Input
                 return;
             }
 
-            BaseInputModule[] inputModules = UnityEngine.Object.FindObjectsOfType<BaseInputModule>();
+            BaseInputModule[] inputModules = FindObjectUtility.FindObjectsByType<BaseInputModule>();
 
             if (inputModules.Length == 0)
             {

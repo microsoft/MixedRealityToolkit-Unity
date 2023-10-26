@@ -274,7 +274,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
 
         public static void InitializeCamera()
         {
-            Camera[] cameras = Object.FindObjectsOfType<Camera>();
+            Camera[] cameras = FindObjectUtility.FindObjectsByType<Camera>();
 
             if (cameras.Length == 0)
             {
@@ -287,7 +287,7 @@ namespace Microsoft.MixedReality.Toolkit.Tests
             InitializeCamera();
 
             // Ensure the AsyncCoroutineRunner is added to avoid log spam in the tests
-            if (Object.FindObjectOfType<AsyncCoroutineRunner>() == null)
+            if (FindObjectUtility.FindObjectByType<AsyncCoroutineRunner>() == null)
             {
                 new GameObject("AsyncCoroutineRunner").AddComponent<AsyncCoroutineRunner>();
             }

@@ -336,7 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.Experimental.Utilities
                 Debug.LogWarning("[WorldAnchorManager] RemoveAllAnchors called before anchor store is ready.");
             }
 
-            var anchors = FindObjectsOfType<WorldAnchor>();
+            var anchors = FindObjectUtility.FindObjectsByType<WorldAnchor>();
 
             if (anchors == null)
             {
