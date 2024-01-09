@@ -7,8 +7,8 @@ on:
     branches: [ "main" ]
 
 permissions:
-  issues: read
-  
+  contents: read
+
 jobs:
   validation:
     runs-on: windows-latest
