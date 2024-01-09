@@ -1,7 +1,11 @@
 name: "Issue Labeling"
-on:
+on:g
   issues:
     types: [opened, edited]
+
+permissions:
+  contents: read
+  issues: write
 
 jobs:
   label-issue:

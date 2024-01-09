@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions:
+  issues: read
+  
 jobs:
   validation:
     runs-on: windows-latest
