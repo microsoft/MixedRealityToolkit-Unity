@@ -530,7 +530,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
             }
         }
 
-        private void Update()
+        public virtual void Update()
         {
             // If we need to recompute bounds (usually because we found a
             // UGUI element), make sure we've waited enough frames since
@@ -672,7 +672,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// Called by <see cref="BoundsHandleInteractable"/> from its OnSelectExited.
         /// Routes the XRI event data through, as well as a reference to itself, the selected handle.
         /// </summary>
-        internal void OnHandleSelectExited(BoundsHandleInteractable handle, SelectExitEventArgs args)
+        public virtual void OnHandleSelectExited(BoundsHandleInteractable handle, SelectExitEventArgs args)
         {
             if (currentHandle == handle)
             {
@@ -687,7 +687,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         /// Called by <see cref="BoundsHandleInteractable"/> from its OnSelectEntered.
         /// Routes the XRI event data through, as well as a reference to itself, the selected handle.
         /// </summary>
-        internal void OnHandleSelectEntered(BoundsHandleInteractable handle, SelectEnterEventArgs args)
+        public virtual void OnHandleSelectEntered(BoundsHandleInteractable handle, SelectEnterEventArgs args)
         {
             if (currentHandle != null)
             {
@@ -734,7 +734,7 @@ namespace Microsoft.MixedReality.Toolkit.SpatialManipulation
         private static readonly ProfilerMarker TransformTargetPerfMarker =
             new ProfilerMarker("[MRTK] BoundsControl.TransformTarget");
 
-        private void TransformTarget()
+        public virtual void TransformTarget()
         {
             using (TransformTargetPerfMarker.Auto())
             {
